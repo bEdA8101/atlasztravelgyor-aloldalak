@@ -25,18 +25,21 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
+from PIL import Image  # a logó méretéhez; telepítés: pip install pillow
+
 # --- Győri adatok: itt kell módosítani, ha valami változik -------------------
 
 GYOR = {
     "nev": "Atlasz Travel Győr",
     "cim": "9021 Győr, Király u. 1.",
     "nyitvatartas": "hétfő–péntek 10:00–17:00",
-    "telefon": "06 20 266 8144",
+    "telefon": "+36 20 266 8144",
     "telefon_link": "+36202668144",
     "email": "gyor@atlasztravel.hu",
     "weboldal": "https://www.atlasztravelgyor.hu",
-    "weboldal_felirat": "atlasztravelgyor.hu",
+    "weboldal_felirat": "www.atlasztravelgyor.hu",
     "domain": "atlasztravelgyor.hu",
+    "logo": "atlasz-travel-gyor-logo.png",
     "terkep": "https://www.google.com/maps/search/?api=1&query=Atlasz+Travel+Gy%C5%91r+9021+Gy%C5%91r+Kir%C3%A1ly+u.+1.",
 }
 
@@ -57,8 +60,9 @@ ELONEZET = True
 ALAP = Path(__file__).resolve().parent
 KIMENET = ALAP
 URLAP_SABLON = ALAP / "urlap_kuldes.php"
+LOGO = ALAP / "eszkozok" / GYOR["logo"]
 
-TEL_SZOVEG = r"0\d \d\d \d{3} ?\d{2} ?\d{2}|0\d \d\d \d{3} \d{4}"
+TEL_SZOVEG = r"(?:0\d|\+36) \d\d \d{3} ?\d{2} ?\d{2}|(?:0\d|\+36) \d\d \d{3} \d{4}"
 # a beviteli mezők kitöltési mintái (placeholder) nem valódi számok, azokat nem kell cserélni
 MINTA_VAGY_TEL = r'(placeholder="[^"]*")|' + f"(?:{TEL_SZOVEG})"
 
@@ -132,6 +136,7 @@ def kozos_cserek(html, nev):
     html = csere(html, rf"https://{nev}\.atlasztravel\.hu", f"https://{nev}.{g['domain']}", "saját cím", legalabb=0)
     # a központi weboldal és ajánlatai helyett a győri (azonos foglalási rendszer, azonos ajánlatkódok)
     html = re.sub(r"https://(?:www\.)?atlasztravel\.hu", g["weboldal"], html)
+    html = re.sub(r"\b([Aa])z (?=atlasztravel\.hu)", r"\1 ", html)
     html = re.sub(r"(?<![@\w.\-/])atlasztravel\.hu", g["weboldal_felirat"], html)
 
     # telefonszámok
@@ -196,11 +201,20 @@ def lablec_cim(html):
     """A riu és a vietnam láblécének utolsó eleme a webcím; elé kerül az iroda címe."""
     g = GYOR
     return csere(html, r"<span>" + re.escape(g["weboldal_felirat"]) + r"</span>",
-                 f'<span>{g["cim"]} · {g["weboldal_felirat"]}</span>', "iroda címe a láblécben", pontosan=1)
+                 f'<span>{g["cim"]} · <a href="{g["weboldal"]}" target="_blank" rel="noopener">'
+                 f'{g["weboldal_felirat"]}</a></span>', "iroda címe a láblécben", pontosan=1)
+
+
+def logo_meret(html, szelektor):
+    """A kétsoros győri logó kis méretben nehezen olvasható, ezért ezeken az oldalakon nagyobb."""
+    stilus = (f"<style>/* győri logó: kétsoros, ezért nagyobb, mint az eredeti */"
+              f"{szelektor}{{height:clamp(38px,4vw,52px)!important}}</style>\n")
+    return csere(html, r"</head>", stilus + "</head>", "logó mérete", pontosan=1)
 
 
 def riu_cserek(html):
     g = GYOR
+    html = logo_meret(html, ".brands img.atlasz")
     # az ajánlatkérő rész kapcsolati csempéi közé (telefon, e-mail) az iroda címe
     minta = (r'(<a href="mailto:[^"]+"><span class="ico">(<svg[^>]*>).*?</svg></span>'
              r'<div><span>E-mail</span><strong>[^<]+</strong></div></a>)')
@@ -212,6 +226,7 @@ def riu_cserek(html):
 
 def vietnam_cserek(html):
     g = GYOR
+    html = logo_meret(html, ".logo img")
     # a „Hívjon minket” kártya alá e-mail- és irodakártya
     minta = r'(<a class="call-card" href="tel:[^"]+">\s*<span class="ico">(<svg[^>]*>).*?</a>)'
 
@@ -240,6 +255,35 @@ OLDAL_CSEREK = {
 }
 
 
+def logo_csere(html):
+    """Az Atlasz Travel (és Atlasz Prémium) logók helyére a győri logó kerül."""
+    g = GYOR
+    with Image.open(LOGO) as kep:
+        szel, mag = kep.size
+
+    def uj_kep(m):
+        tag = m.group(0)
+        tag = re.sub(r'src="[^"]*"', f'src="img/{g["logo"]}"', tag)
+        tag = re.sub(r'alt="[^"]*"', f'alt="{g["nev"]}"', tag)
+        tag = re.sub(r'width="\d+"', f'width="{szel}"', tag)
+        return re.sub(r'height="\d+"', f'height="{mag}"', tag)
+    html = csere(html, r'<img\b[^>]*\balt="Atlasz Travel[^"]*"[^>]*>', uj_kep, "logók", legalabb=1)
+    # a logólink felolvasóprogramoknak szóló felirata
+    return re.sub(r'aria-label="Atlasz Travel[^"]*?([,–-]\s*oldal teteje)"', rf'aria-label="{g["nev"]} – oldal teteje"', html)
+
+
+def felesleges_torlese(html, mappa, megtart):
+    """Törli a letöltött, de a kész oldalon már nem használt fájlokat (pl. a régi logókat)."""
+    for fajl in sorted(mappa.rglob("*")):
+        if not fajl.is_file():
+            continue
+        utvonal = fajl.relative_to(mappa).as_posix()
+        hasznalt = (utvonal in html or utvonal in megtart
+                    or (utvonal.endswith("-kis.webp") and utvonal[:-len("-kis.webp")] + ".webp" in html))
+        if not hasznalt:
+            fajl.unlink()
+
+
 def ellenoriz(html, nev):
     """Hibát jelez, ha a kész oldalon központi elérhetőség maradt."""
     g = GYOR
@@ -250,6 +294,10 @@ def ellenoriz(html, nev):
         hibak.append(f"idegen telefonszám: {tel}")
     for mail in set(re.findall(r"[\w.+\-]+@atlasztravel\.hu", html)) - {g["email"]}:
         hibak.append(f"idegen e-mail: {mail}")
+    for m in re.finditer(r"(?<![/\w.])" + re.escape(g["weboldal_felirat"]), html):
+        elotte = html[:m.start()]
+        if elotte.rfind("<a ") < elotte.rfind("</a>"):
+            hibak.append(f"a webcím nem link: …{html[max(0, m.start() - 40):m.end() + 10]}…")
     for kotelezo in (g["telefon"], g["email"], g["cim"]):
         if kotelezo not in html:
             hibak.append(f"hiányzik a győri adat: {kotelezo}")
@@ -293,12 +341,16 @@ def frissit(nev):
         html = kozos_cserek(html, nev)
         for fuggveny in OLDAL_CSEREK.get(nev, []):
             html = fuggveny(html)
+        html = logo_csere(html)
         ellenoriz(html, nev)
 
         (uj / "index.html").write_text(html, encoding="utf-8")
         kuldo = urlapkuldo_nev(html)
         if kuldo:
             shutil.copyfile(URLAP_SABLON, uj / kuldo)
+        (uj / "img").mkdir(exist_ok=True)
+        shutil.copyfile(LOGO, uj / "img" / GYOR["logo"])
+        felesleges_torlese(html, uj, {"index.html", kuldo})
     except BaseException:
         shutil.rmtree(uj, ignore_errors=True)
         raise

@@ -18,6 +18,7 @@ A központ engedélyezte a tartalmak átvételét.
 ```
 frissites.py        letölti a központi oldalakat, és elkészíti a győri változatot
 urlap_kuldes.php    az ajánlatkérő űrlap e-mail-küldője (a program másolja az oldalak mellé)
+eszkozok/           a győri logó (átlátszó hátterű PNG), a program minden oldal mellé másolja
 index.html          az előnézet nyitólapja (a program készíti)
 oman/, riu/, …      a KÉSZ oldalak – a program készíti, kézzel ne szerkeszd őket
 ```
@@ -25,16 +26,19 @@ oman/, riu/, …      a KÉSZ oldalak – a program készíti, kézzel ne szerke
 ## Mit változtat a program a központi oldalon?
 
 - A telefonszámok és e-mail-címek helyett a győri iroda elérhetősége szerepel
-  (06 20 266 8144, gyor@atlasztravel.hu), az ajánlatkérések is ide érkeznek.
+  (+36 20 266 8144, gyor@atlasztravel.hu), az ajánlatkérések is ide érkeznek.
+- Az Atlasz Travel és az Atlasz Prémium logó helyén az Atlasz Travel Győr logó áll.
 - Minden oldalon szerepel a győri iroda címe (9021 Győr, Király u. 1.) az ajánlatkérő résznél
   és a láblécben. Az irodalistában a győri iroda és a nyitvatartás áll.
 - Az atlasztravel.hu-ra mutató linkek az atlasztravelgyor.hu-ra mutatnak. A foglalási rendszer
-  azonos, így az ajánlatkódok a győri oldalon is működnek.
+  azonos, így az ajánlatkódok a győri oldalon is működnek. A webcím mindenhol
+  „www.atlasztravelgyor.hu” formában, élő linkként szerepel.
 - Az oldalcímbe és a megosztási adatokba bekerül a „Győr” szó, a saját cím pedig az
   `<aldomain>.atlasztravelgyor.hu` lesz.
 - Az oldalba ágyazott képeket külön fájlba teszi, így az oldalak gyorsabban töltődnek.
 
-A győri adatok a `frissites.py` elején, a `GYOR` részben vannak.
+A győri adatok a `frissites.py` elején, a `GYOR` részben vannak. A program futtatásához a
+Python mellett a Pillow csomag kell (`pip install pillow`).
 
 ## Módosítás
 
