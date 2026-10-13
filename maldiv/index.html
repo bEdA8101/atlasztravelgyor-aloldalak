@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maldív-szigetek | Atlasz Prémium – Győr</title>
+<meta name="description" content="Maldív-szigetek az Atlasz Prémiummal: resortszigetek, Beach és Water villák, legjobb időszak, transzfer, víz alatti világ, 50 kérdés és válasz. Kérjen személyre szabott ajánlatot!">
+<link rel="canonical" href="https://maldiv.atlasztravelgyor.hu/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://maldiv.atlasztravelgyor.hu/">
+<meta property="og:site_name" content="Atlasz Travel Prémium – Győr">
+<meta property="og:locale" content="hu_HU">
+<meta property="og:title" content="Maldív-szigetek – nem csupán úti cél, egy érzés | Atlasz Prémium">
+<meta property="og:description" content="Melyik resort, melyik villa, mikor és hogyan? Szakértői kalauz, 50 kérdés és válasz, személyre szabott ajánlat.">
+<meta property="og:image" content="https://maldiv.atlasztravelgyor.hu/maldiv-og.jpg">
+<meta property="og:image:secure_url" content="https://maldiv.atlasztravelgyor.hu/maldiv-og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Pálmás, fehér homokos maldív part türkiz lagúnával – Atlasz Prémium">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://maldiv.atlasztravelgyor.hu/maldiv-og.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Koncepció: tengerészeti térkép a lagúnáról – világos vízfelület, mono koordináták és mélységjelek, a sekély homoktól a mély kékig tartó színskála vezeti végig az oldalt */
+:root{
+  --water:#F1FAFA;      /* oldal alapja: halvány lagúnavíz */
+  --foam:#FFFFFF;
+  --sand:#F3EBDD;       /* homok */
+  --shallow:#BDEBEA;    /* sekély lagúna */
+  --lagoon:#17AEB8;     /* türkiz */
+  --reef:#0B7F8C;       /* zátonyél */
+  --deep:#0D3D4A;       /* szöveg, mély víz */
+  --muted:#557177;
+  --line:rgba(13,61,74,.14);
+  --magenta:#E0137F; --magenta-d:#B70E67;
+  --f-display:"Figtree","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --f-body:"Figtree","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --hero:url(img/beagyazott-23cdb0ad752d.jpg);
+  --ease:cubic-bezier(.2,.7,.2,1);
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+html,body{overflow-x:clip}
+body{margin:0;background:var(--water);color:var(--deep);font:400 17px/1.65 var(--f-body);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block;height:auto}
+a{color:var(--reef)}
+:focus-visible{outline:2px solid var(--magenta);outline-offset:3px;border-radius:6px}
+.wrap{width:min(1220px,100% - 40px);margin-inline:auto}
+h1,h2,h3,h4{font-family:var(--f-display);font-weight:600;margin:0;line-height:1.05;text-wrap:balance;color:var(--deep)}
+h2{font-size:clamp(34px,4.4vw,60px);letter-spacing:-.025em}
+h2 em,h3 em{font-style:normal;color:var(--reef)}
+p{margin:0 0 1em;max-width:62ch}
+.mono{font-family:var(--f-mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--reef)}
+.lead{font-size:19px;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;gap:10px;border:0;cursor:pointer;background:var(--magenta);color:#fff;font:600 15px/1 var(--f-body);padding:17px 26px;border-radius:999px;text-decoration:none;transition:background .25s,transform .25s}
+.btn:hover{background:var(--magenta-d);transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--deep);box-shadow:inset 0 0 0 1.5px var(--deep)}
+.btn.ghost:hover{background:var(--deep);color:#fff}
+section{padding-block:clamp(70px,9vw,130px)}
+.shead{display:grid;grid-template-columns:1fr 1fr;gap:20px 60px;align-items:end;margin-bottom:clamp(36px,5vw,64px)}
+.shead .mono{display:block;margin-bottom:16px}
+.shead p{margin:0}
+@media (max-width:860px){.shead{grid-template-columns:1fr}}
+
+/* fejléc */
+.top{position:fixed;inset:0 0 auto;z-index:50;padding-top:env(safe-area-inset-top,0px);transition:background .3s,box-shadow .3s}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;height:76px}
+.top .logo img{height:46px;width:auto}
+.top nav{display:flex;align-items:center;gap:26px;font-weight:500;font-size:15px}
+.top nav a:not(.btn){color:var(--deep);text-decoration:none}
+.top nav a:not(.btn):hover{color:var(--magenta)}
+.top .btn{padding:13px 20px;font-size:14px}
+.top.solid{background:rgba(241,250,250,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--line)}
+.navlinks{display:contents}
+@media (max-width:1000px){.navlinks{display:none}}
+@media (max-width:520px){.top .tel{display:none}.top .logo img{height:38px}}
+
+/* hős: a szó maga a lagúna */
+.hero{padding-top:calc(env(safe-area-inset-top,0px) + 100px);padding-bottom:0;position:relative}
+.coords{display:flex;flex-wrap:wrap;gap:6px 22px;margin-bottom:6px}
+.coords span::before{content:"◦ ";color:var(--lagoon)}
+.word{font-family:var(--f-display);font-weight:800;font-size:clamp(84px,21vw,310px);line-height:.9;letter-spacing:-.05em;margin:0 0 0 -.04em;
+  color:var(--deep)}
+.word em{font-style:normal;color:var(--lagoon)}
+@keyframes tide{to{background-position:62% 70%}}
+.hero-row{display:grid;grid-template-columns:1.1fr .9fr;gap:24px 60px;align-items:end;margin-top:clamp(14px,2vw,26px)}
+.hero-row .tag{font-family:var(--f-display);font-weight:500;letter-spacing:-.01em;font-size:clamp(26px,3vw,40px);line-height:1.15;margin:0;max-width:20ch}
+.hero-row .side p{color:var(--muted);margin-bottom:22px}
+.cta{display:flex;flex-wrap:wrap;gap:10px}
+@media (max-width:820px){.hero-row{grid-template-columns:1fr}}
+.band{margin-top:clamp(36px,5vw,60px);height:clamp(300px,52vw,640px);border-radius:28px 28px 0 0;background:var(--hero) 60% 55%/cover no-repeat;position:relative;overflow:hidden}
+.band .cap{position:absolute;left:20px;bottom:18px;color:#fff;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;text-shadow:0 1px 8px rgba(0,0,0,.35)}
+
+/* mélységskála navigáció */
+.depth{display:grid;grid-template-columns:repeat(6,1fr);border-radius:0 0 28px 28px;overflow:hidden}
+.depth a{display:flex;flex-direction:column;gap:4px;padding:18px 18px 20px;text-decoration:none;color:var(--deep);font-weight:600;font-size:15px;transition:filter .2s}
+.depth a small{font-family:var(--f-mono);font-weight:400;font-size:11px;letter-spacing:.06em;text-transform:uppercase;opacity:.75}
+.depth a:hover{filter:brightness(1.06)}
+.depth a:nth-child(1){background:var(--sand)}
+.depth a:nth-child(2){background:#DDF3EE}
+.depth a:nth-child(3){background:var(--shallow)}
+.depth a:nth-child(4){background:#7DD6D9}
+.depth a:nth-child(5){background:var(--lagoon);color:#fff}
+.depth a:nth-child(6){background:var(--reef);color:#fff}
+@media (max-width:760px){.depth{grid-template-columns:repeat(3,1fr)}.depth a{padding:14px 12px 16px;font-size:14px}}
+
+/* beszállókártya */
+.pass{display:grid;grid-template-columns:1fr auto;background:var(--foam);border-radius:22px;box-shadow:0 30px 60px -40px rgba(13,61,74,.45);margin-top:clamp(60px,8vw,110px);position:relative}
+.pass-main{padding:clamp(24px,3.5vw,44px);min-width:0}
+.route{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:26px}
+.route .iata{font-family:var(--f-display);font-size:clamp(40px,5vw,64px);line-height:1}
+.route .iata small{display:block;font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.route .path{flex:1;min-width:80px;height:2px;background:repeating-linear-gradient(90deg,var(--lagoon) 0 8px,transparent 8px 14px);position:relative}
+.route .path::after{content:"✈";position:absolute;left:50%;top:50%;transform:translate(-50%,-55%);color:var(--magenta);font-size:20px;background:var(--foam);padding:0 8px}
+.pfields{display:grid;grid-template-columns:repeat(5,1fr);gap:18px 22px;border-top:1px dashed var(--line);padding-top:22px}
+.pfields div{min-width:0}
+.pfields small{display:block;font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.pfields b{display:block;font-size:19px;font-weight:600;margin-top:4px;font-variant-numeric:tabular-nums}
+.pfields span{display:block;font-size:13.5px;color:var(--muted);line-height:1.4;margin-top:2px}
+.stub{border-left:2px dashed var(--line);padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;justify-content:space-between;gap:20px;width:min(270px,100%);position:relative}
+.stub::before,.stub::after{content:"";position:absolute;left:-14px;width:26px;height:26px;border-radius:50%;background:var(--water)}
+.stub::before{top:-13px}.stub::after{bottom:-13px}
+.stub .mono{color:var(--muted)}
+.stub h3{font-size:28px}
+@media (max-width:980px){.pfields{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:760px){.pass{grid-template-columns:1fr}.stub{border-left:0;border-top:2px dashed var(--line);width:auto}.stub::before,.stub::after{display:none}.pfields{grid-template-columns:1fr 1fr}}
+
+/* bevezető */
+.intro{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,6vw,90px);align-items:center}
+.intro .pics{display:grid;grid-template-columns:1.25fr 1fr;gap:14px;align-items:end}
+.intro .pics img{border-radius:18px;width:100%}
+.intro .pics img:last-child{border-radius:999px 999px 18px 18px;aspect-ratio:3/4;object-fit:cover;margin-bottom:-40px}
+.intro h2{margin:14px 0 22px}
+.pull{font-family:var(--f-display);font-weight:500;font-size:clamp(24px,2.4vw,32px);line-height:1.25;color:var(--reef);margin-top:28px;max-width:24ch}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:clamp(60px,7vw,100px);border-top:1px solid var(--line);padding-top:28px}
+.trio h4{font-family:var(--f-body);font-weight:600;font-size:17px;margin-bottom:6px}
+.trio p{color:var(--muted);font-size:15.5px;margin:0}
+@media (max-width:860px){.intro{grid-template-columns:1fr}.trio{grid-template-columns:1fr}.intro .pics img:last-child{margin-bottom:0}}
+
+/* videó */
+.video{padding-top:0}
+.vframe{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:28px;overflow:hidden;background:linear-gradient(135deg,var(--shallow),var(--lagoon));box-shadow:0 40px 80px -50px rgba(13,61,74,.6)}
+.vframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vframe .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:18px;text-align:center;padding:20px}
+.vmeta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 24px;margin-top:16px;font-size:15px;color:var(--muted)}
+.vmeta a{font-weight:600;color:var(--reef)}
+
+/* villaválasztó */
+.villa{background:var(--foam)}
+.seg{display:inline-flex;flex-wrap:wrap;gap:6px;padding:6px;background:var(--water);border-radius:999px;margin-bottom:34px}
+.seg button{border:0;background:transparent;font:600 15px var(--f-body);color:var(--deep);padding:12px 20px;border-radius:999px;cursor:pointer;transition:background .25s,color .25s}
+.seg button[aria-selected="true"]{background:var(--deep);color:#fff}
+.vpanel{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(28px,5vw,70px);align-items:center}
+.vpanel[hidden]{display:none}
+.vpanel figure{margin:0;border-radius:22px;overflow:hidden;aspect-ratio:16/10}
+.vpanel figure img{width:100%;height:100%;object-fit:cover}
+.vpanel h3{font-size:clamp(32px,3.4vw,48px);margin-bottom:14px}
+.vpanel .ideal{margin-top:18px;padding:16px 18px;background:var(--water);border-radius:14px;font-size:15.5px}
+.vpanel .ideal b{display:block;font-family:var(--f-mono);font-weight:500;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--reef);margin-bottom:4px}
+@media (max-width:860px){.vpanel{grid-template-columns:1fr}}
+.board{margin-top:clamp(40px,5vw,60px);display:grid;grid-template-columns:auto 1fr;gap:10px 30px;padding:24px 28px;border-radius:18px;background:var(--sand)}
+.board b{font-family:var(--f-mono);font-weight:500;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--reef);padding-top:3px}
+.board p{margin:0;font-size:16px}
+@media (max-width:700px){.board{grid-template-columns:1fr}}
+
+/* évszak-gyűrű */
+.season{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(36px,6vw,90px);align-items:center}
+.ring{position:relative;max-width:520px;width:100%;margin-inline:auto}
+.ring svg{width:100%;height:auto;display:block;overflow:visible}
+.ring .seg-arc{cursor:pointer;transition:opacity .2s,transform .3s var(--ease);transform-origin:50% 50%}
+.ring .seg-arc:hover,.ring .seg-arc.on{opacity:1}
+.ring .seg-arc.dim{opacity:.45}
+.ring .mlabel{font-family:var(--f-mono);font-size:13px;letter-spacing:.04em;fill:var(--deep);pointer-events:none;text-transform:uppercase}
+.ring .center{position:absolute;inset:27%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:50%;background:var(--foam);box-shadow:0 20px 50px -30px rgba(13,61,74,.5);padding:8%}
+.ring .center .m{font-family:var(--f-display);font-size:clamp(26px,3.6vw,40px);line-height:1}
+.ring .center .k{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--reef);margin-top:8px}
+.ring .center p{font-size:13.5px;color:var(--muted);margin:8px 0 0;line-height:1.4}
+.keys{display:flex;flex-wrap:wrap;gap:8px 20px;margin:20px 0 26px;font-size:14.5px;color:var(--muted)}
+.keys i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:8px;vertical-align:-1px}
+.season h3{font-size:24px;font-family:var(--f-body);font-weight:600;margin:22px 0 6px}
+.season p{color:var(--deep)}
+@media (max-width:860px){.season{grid-template-columns:1fr}}
+.note{padding:18px 20px;border-left:3px solid var(--magenta);background:var(--foam);border-radius:0 14px 14px 0;font-size:15.5px;margin-top:22px}
+
+/* transzfer útvonal */
+.transfer{background:linear-gradient(180deg,var(--water) 0%,#E3F6F5 100%)}
+.legs{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.leg{background:var(--foam);border-radius:20px;padding:28px 26px;position:relative}
+.leg svg{width:40px;height:40px;color:var(--reef);margin-bottom:16px}
+.leg h3{font-size:30px;margin-bottom:8px}
+.leg .mono{display:block;margin-bottom:10px;color:var(--muted)}
+.leg p{margin:0;font-size:16px}
+.tline{display:flex;align-items:center;gap:12px;margin-bottom:26px;flex-wrap:wrap;font-family:var(--f-mono);font-size:12.5px;letter-spacing:.05em;text-transform:uppercase}
+.tline .stop{padding:9px 14px;border-radius:999px;background:var(--foam);box-shadow:inset 0 0 0 1px var(--line)}
+.tline .stop.mle{background:var(--deep);color:#fff;box-shadow:none}
+.tline .stop.direct{background:var(--magenta);color:#fff;box-shadow:none;font-weight:700}
+.tline + .tline{margin-top:-12px}
+.tline .dash{flex:1;min-width:30px;height:2px;background:repeating-linear-gradient(90deg,var(--lagoon) 0 6px,transparent 6px 11px)}
+.tphoto{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,70px);align-items:center;margin-top:clamp(40px,6vw,80px)}
+.tphoto img{border-radius:22px}
+@media (max-width:860px){.legs,.tphoto{grid-template-columns:1fr}}
+
+/* víz alatt */
+.under{position:relative;padding:0;min-height:clamp(520px,60vw,760px);display:flex;align-items:flex-end}
+.under>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.under .wrap{position:relative;padding-block:clamp(40px,6vw,80px)}
+.ucard{background:rgba(255,255,255,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:24px;padding:clamp(24px,3.5vw,44px);max-width:760px}
+.ucard h2{margin:12px 0 18px}
+.ulist{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:20px}
+.ulist h4{font-family:var(--f-body);font-weight:600;font-size:16.5px;margin-bottom:4px}
+.ulist p{font-size:14.5px;color:var(--muted);margin:0}
+.under .cap{position:absolute;right:20px;top:20px;color:#fff;font-family:var(--f-mono);font-size:11px;text-shadow:0 1px 6px rgba(0,0,0,.4)}
+@media (max-width:700px){.ulist{grid-template-columns:1fr}}
+
+/* resort ellenőrzőlista */
+.check{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line)}
+.check div{padding:26px 22px 28px 0;border-bottom:1px solid var(--line)}
+.check h4{display:flex;align-items:center;gap:10px;font-family:var(--f-body);font-weight:600;font-size:17px;margin-bottom:8px}
+.check h4::before{content:"";flex:none;width:20px;height:20px;border-radius:50%;background:var(--lagoon) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10.5l3 3 6-7' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat}
+.check p{margin:0;font-size:15.5px;color:var(--muted)}
+@media (max-width:980px){.check{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.check{grid-template-columns:1fr}}
+.quote2{font-family:var(--f-display);font-weight:500;font-size:clamp(26px,3vw,40px);line-height:1.2;max-width:28ch;margin:clamp(40px,6vw,70px) 0 0;color:var(--reef)}
+
+/* beutazás */
+.entry{background:var(--sand)}
+.dl{display:grid;grid-template-columns:1fr 1fr;gap:0 60px}
+.dl div{padding:22px 0;border-top:1px solid rgba(13,61,74,.16)}
+.dl h4{font-family:var(--f-body);font-weight:600;font-size:17.5px;margin-bottom:6px}
+.dl h4 small{display:block;font-family:var(--f-mono);font-weight:400;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--reef);margin-bottom:6px}
+.dl p{margin:0;font-size:15.5px}
+.src{margin-top:26px;font-size:14px;color:var(--muted)}
+@media (max-width:800px){.dl{grid-template-columns:1fr}}
+
+/* esküvő (lenyitható) */
+.wed{padding-block:clamp(56px,7vw,96px)}
+.wteaser{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(28px,5vw,70px);align-items:center}
+.wteaser figure{margin:0;border-radius:999px 999px 22px 22px;overflow:hidden;aspect-ratio:4/3}
+.wteaser figure img{width:100%;height:100%;object-fit:cover}
+.wteaser h2{font-size:clamp(34px,4vw,54px);margin:12px 0 14px}
+.wteaser p{color:var(--muted)}
+.btn .arr{transition:transform .3s var(--ease)}
+.btn[aria-expanded="true"] .arr{transform:rotate(180deg)}
+@media (max-width:800px){.wteaser{grid-template-columns:1fr}}
+.wdetail{padding-top:clamp(44px,6vw,80px)}
+.wgal{display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:14px;align-items:center;margin-bottom:clamp(40px,6vw,70px)}
+.wgal img{border-radius:18px;width:100%}
+.wmid{display:grid;gap:14px}
+.wtext{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,70px)}
+.wtext h3{font-size:clamp(28px,3vw,40px);margin-bottom:12px}
+.wsteps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:clamp(36px,5vw,60px)}
+.wsteps div{background:var(--foam);border-radius:18px;padding:24px}
+.wsteps .mono{display:block;margin-bottom:8px}
+.wsteps h4{font-size:26px;margin-bottom:6px}
+.wsteps p{margin:0;font-size:15.5px;color:var(--muted)}
+.wcoord{margin-top:18px;padding:24px;border-radius:18px;background:var(--shallow)}
+.wcoord p{margin:0}
+.wnote{font-size:13.5px;color:var(--muted);margin-top:26px}
+@media (max-width:800px){.wgal{grid-template-columns:1fr 1fr}.wgal .wmid{grid-column:1/-1;order:-1}.wtext,.wsteps{grid-template-columns:1fr}}
+
+/* tervezés */
+.plan{background:var(--foam)}
+.psteps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;counter-reset:s}
+.psteps div{padding:0 30px 0 0;margin-right:30px;border-right:1px solid var(--line)}
+.psteps div:last-child{border:0;margin:0}
+.psteps .n{font-family:var(--f-display);font-size:72px;line-height:.9;color:var(--lagoon);display:block;margin-bottom:14px}
+.psteps h3{font-size:28px;margin-bottom:8px}
+.psteps p{margin:0;color:var(--muted)}
+@media (max-width:860px){.psteps{grid-template-columns:1fr;gap:30px}.psteps div{border:0;margin:0;padding:0}}
+
+/* GYIK */
+.faqtools{display:flex;flex-wrap:wrap;gap:16px 22px;align-items:center;margin-bottom:18px}
+.search{flex:1 1 280px;position:relative}
+.search input{width:100%;font:400 17px var(--f-body);padding:15px 18px 15px 46px;border:0;border-radius:999px;background:var(--foam);color:var(--deep);box-shadow:inset 0 0 0 1px var(--line)}
+.search input:focus{outline:none;box-shadow:inset 0 0 0 2px var(--lagoon)}
+.search svg{position:absolute;left:18px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--reef)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{font:500 14px var(--f-body);padding:10px 16px;border-radius:999px;border:0;background:var(--foam);box-shadow:inset 0 0 0 1px var(--line);color:var(--deep);cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--deep);color:#fff;box-shadow:none}
+.faq-count{font-family:var(--f-mono);font-size:12px;letter-spacing:.05em;color:var(--muted);margin:0 0 14px}
+.faq{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px;align-items:start}
+@media (max-width:860px){.faq{grid-template-columns:1fr}}
+details{background:var(--foam);border-radius:14px}
+summary{list-style:none;cursor:pointer;padding:18px 48px 18px 20px;position:relative;font-weight:600;font-size:16.5px;line-height:1.35}
+summary::-webkit-details-marker{display:none}
+summary .n{font-family:var(--f-mono);font-weight:400;font-size:12px;color:var(--lagoon);margin-right:10px}
+summary::after{content:"+";position:absolute;right:20px;top:50%;transform:translateY(-50%);font:400 22px var(--f-body);color:var(--reef);transition:transform .3s}
+details[open] summary::after{transform:translateY(-50%) rotate(45deg)}
+details p{margin:0;padding:0 20px 18px 46px;font-size:15.5px;color:var(--muted)}
+.faq-empty{display:none;color:var(--muted)}
+
+/* űrlap */
+.offer{background:linear-gradient(180deg,var(--water),#DDF3F2)}
+.formgrid{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(36px,6vw,90px);align-items:start}
+.aside{position:sticky;top:100px}
+.aside h2{margin:14px 0 18px}
+.aside p{color:var(--muted)}
+.contact{margin-top:26px;padding:22px 24px;border-radius:18px;background:var(--foam)}
+.contact .mono{color:var(--muted)}
+.contact .nm{font-family:var(--f-display);font-size:28px;margin:6px 0 8px}
+.contact a{display:block;color:var(--deep);text-decoration:none;font-size:16px;line-height:1.9;word-break:break-word}
+.contact a.big{font-weight:600;font-size:22px}
+@media (max-width:900px){.formgrid{grid-template-columns:1fr}.aside{position:static}}
+form{background:var(--foam);border-radius:26px;padding:clamp(24px,4vw,48px);box-shadow:0 40px 80px -60px rgba(13,61,74,.55)}
+fieldset{border:0;padding:0;margin:0 0 34px;min-width:0}
+legend{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--reef);margin-bottom:16px;padding:0}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 20px}
+.full{grid-column:1/-1}
+label{display:block;font-size:14px;font-weight:500;margin-bottom:6px}
+label .req{color:var(--magenta)}
+label .opt{color:var(--muted);font-weight:400}
+.hint{font-size:12.5px;color:var(--muted);margin-top:5px}
+input,select,textarea{width:100%;font:400 16.5px var(--f-body);color:var(--deep);background:var(--water);border:1px solid transparent;border-radius:12px;padding:13px 14px;transition:border-color .2s,background .2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--lagoon);background:var(--foam)}
+::placeholder{color:#8AA3A7}
+select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--reef) 50%),linear-gradient(135deg,var(--reef) 50%,transparent 50%);background-position:calc(100% - 18px) 52%,calc(100% - 13px) 52%;background-size:5px 5px;background-repeat:no-repeat;padding-right:36px}
+textarea{min-height:100px;resize:vertical}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pills label{margin:0;font-weight:500;font-size:14.5px;display:flex;align-items:center;gap:8px;background:var(--water);border-radius:999px;padding:10px 16px;cursor:pointer;transition:background .2s,color .2s}
+.pills input{width:auto;margin:0;accent-color:var(--magenta)}
+.pills label:has(input:checked){background:var(--deep);color:#fff}
+.stepper{display:flex;align-items:center;gap:6px;background:var(--water);border-radius:12px;padding:5px}
+.stepper button{flex:none;width:38px;height:38px;border:0;border-radius:9px;background:var(--foam);font-size:18px;color:var(--deep);cursor:pointer}
+.stepper button:hover{background:var(--deep);color:#fff}
+.stepper input{background:transparent;border:0;text-align:center;font-family:var(--f-display);font-size:26px;padding:2px 0;-moz-appearance:textfield}
+.stepper input::-webkit-outer-spin-button,.stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.ages{display:none;margin-top:16px}.ages.on{display:block}
+.submit{width:100%;justify-content:center;padding:20px;font-size:16px}
+.legal{font-size:13px;color:var(--muted);margin:14px 0 0}
+.msg{display:none;margin-top:14px;padding:14px 16px;border-radius:12px;font-size:15px}
+.msg.ok{display:block;background:var(--shallow)}
+.msg.err{display:block;background:#FDE8EF;color:#8A1C3D}
+input.bad{border-color:#C9302C}
+@media (max-width:620px){.g2,.g3{grid-template-columns:1fr}}
+
+/* irodák, lábléc */
+.offices{padding-block:44px;background:var(--foam);border-top:1px solid var(--line)}
+.offices h2{font-size:clamp(26px,2.4vw,34px);margin-bottom:16px}
+.offrow{display:flex;flex-wrap:wrap;gap:14px 46px}
+.offrow p{margin:0;font-size:15.5px}
+.offrow b{display:block;font-family:var(--f-mono);font-weight:500;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--reef);margin-bottom:6px}
+.offrow a{color:var(--deep);font-weight:600;text-decoration:none}
+footer{padding-block:56px 46px;background:var(--sand);font-size:14px;color:var(--muted)}
+footer .wrap{display:grid;grid-template-columns:1fr 1.2fr;gap:30px}
+footer img{height:52px;width:auto;margin-bottom:12px}
+footer a{color:var(--deep)}
+footer .srcs{font-size:12.5px;line-height:1.75}
+@media (max-width:760px){footer .wrap{grid-template-columns:1fr}}
+.mob-cta{display:none}
+@media (max-width:760px){.mob-cta{display:flex;justify-content:center;position:fixed;left:14px;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:45;transition:opacity .3s,transform .3s}.mob-cta.away{opacity:0;pointer-events:none;transform:translateY(20px)}body{padding-bottom:76px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="logo" href="#" aria-label="Atlasz Travel Prémium – oldal teteje"><img src="img/beagyazott-9b5f1d06270c.png" alt="Atlasz Travel Prémium" width="510" height="177"></a>
+    <nav aria-label="Fő navigáció">
+      <span class="navlinks">
+        <a href="#villa">Villák</a>
+        <a href="#idoszak">Mikor?</a>
+        <a href="#kerdesek">50 kérdés</a>
+      </span>
+      <a class="tel" href="tel:+36202668144">06 20 266 8144</a>
+      <a class="btn" href="#ajanlat">Ajánlatkérés</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="hero" aria-labelledby="cim">
+  <div class="wrap">
+    <div class="coords mono"><span>4°10′ É · 73°30′ K</span><span>Indiai-óceán</span><span>26 atoll</span><span>Atlasz Prémium</span></div>
+    <h1 class="word" id="cim">Mal<em>dív</em></h1>
+    <div class="hero-row">
+      <p class="tag">Nem csupán úti cél. Egy érzés, amely elkísér.</p>
+      <div class="side">
+        <p>Resortszigetek, villák és élmények – személyre szabva. Megkeressük azt a szigetet, ahol az Önök számára minden a helyére kerül.</p>
+        <div class="cta"><a class="btn" href="#ajanlat">Személyre szabott ajánlat <span class="arr">→</span></a><a class="btn ghost" href="#villa">A kalauz</a></div>
+      </div>
+    </div>
+    <div class="band" role="img" aria-label="Pálmás, fehér homokos maldív part kristálytiszta türkiz lagúnával"></div>
+    <nav class="depth" aria-label="Kalauz a homoktól a mély vízig">
+      <a href="#villa"><small>Homok</small>Villák</a>
+      <a href="#idoszak"><small>Part</small>Mikor menjünk?</a>
+      <a href="#transzfer"><small>Lagúna</small>Úton a resortba</a>
+      <a href="#viz"><small>House reef</small>A víz alatt</a>
+      <a href="#resort"><small>Zátonyél</small>A jó resort</a>
+      <a href="#beutazas"><small>Óceán</small>Beutazás</a>
+    </nav>
+
+    <div class="pass" aria-label="Az utazás röviden">
+      <div class="pass-main">
+        <div class="route">
+          <div class="iata">VIE<small>Bécsből közvetlen járat · Budapest, Kassa, Prága átszállással</small></div>
+          <div class="path" aria-hidden="true"></div>
+          <div class="iata">MLE<small>Velana, Malé</small></div>
+        </div>
+        <div class="pfields">
+          <div><small>Időeltolódás</small><b>+3 / +4 óra</b><span>nyári / téli időszámításkor</span></div>
+          <div><small>Ajánlott</small><b>7–10 éj</b><span>első utazáskor</span></div>
+          <div><small>Vízum</small><b>Érkezéskor*</b><span>turistaként</span></div>
+          <div><small>Pénznem</small><b>MVR</b><span>rufiyaa; resortban kártya, USD</span></div>
+          <div><small>Transzfer</small><b>Az árban</b><span>általában a resort szervezi</span></div>
+        </div>
+      </div>
+      <div class="stub">
+        <div><span class="mono">Atlasz Prémium</span><h3>Melyik sziget illik Önhöz?</h3></div>
+        <a class="btn" href="#ajanlat">Ajánlatot kérek</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="intro-cim">
+  <div class="wrap">
+    <div class="intro">
+      <div class="pics">
+        <img src="img/beagyazott-22554a4c08cb.jpg" alt="Víz feletti villák a türkiz lagúnában, felülről" width="1600" height="828" loading="lazy">
+        <img src="img/beagyazott-1c8780819a30.jpg" alt="Körben elhelyezkedő víz feletti villák a türkiz lagúnában, pálmás resortszigettel" width="470" height="626" loading="lazy">
+      </div>
+      <div>
+        <span class="mono">Belépő a paradicsomba</span>
+        <h2 id="intro-cim">Nem egyetlen szigetet választunk. <em>Egy teljes élményt.</em></h2>
+        <p>Van az a pillanat, amikor a repülőgép ablakából először meglátjuk a Maldív-szigeteket. Apró zöld szigetek, vakítóan fehér homok és olyan árnyalatú víz, amit az ember először el sem hisz.</p>
+        <p>A lakott, helyi szigetek is a Maldív részei, kínálatunkban azonban a resortszigetekre koncentrálunk: privát szigetekre, ahol minden a pihenésről, a szolgáltatásokról és az exkluzív élményről szól.</p>
+        <p class="pull">„Ahol a valóság felülmúlja a legszebb képeket is.”</p>
+      </div>
+    </div>
+    <div class="trio">
+      <div><h4>Egy privát világ</h4><p>A resortszigeteken a strand, a villa, az éttermek, a spa és a programok egyetlen harmonikus élményt alkotnak.</p></div>
+      <div><h4>Víz, ameddig a szem ellát</h4><p>A türkiz lagúna látványa nem háttérdíszlet: a Maldív mindennapjainak középpontja.</p></div>
+      <div><h4>Lassabb ritmus</h4><p>Reggeli mezítláb, délutáni snorkel, naplemente a teraszon. Itt a napirend inkább érzés, mint időpont.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="video" id="video" aria-label="Videó a Maldív-szigetekről">
+  <div class="wrap">
+    <div class="vframe" id="vframe" data-yt="tPvKviZowS8"><div class="ph">A videó betöltése…</div></div>
+    <div class="vmeta"><span class="mono">Maldív-szigetek · videó</span></div>
+  </div>
+</section>
+
+<section class="villa" id="villa" aria-labelledby="villa-cim">
+  <div class="wrap">
+    <div class="shead">
+      <div><span class="mono">Az Ön szigete</span><h2 id="villa-cim">Beach Villa vagy <em>Water Villa?</em></h2></div>
+      <p class="lead">A villa nem csupán szoba. A Maldívon ez az utazás hangulatának egyik legfontosabb része.</p>
+    </div>
+    <div class="seg" role="tablist" aria-label="Villatípusok">
+      <button role="tab" id="vt-beach" aria-controls="vp-beach" aria-selected="true">Beach Villa</button>
+      <button role="tab" id="vt-water" aria-controls="vp-water" aria-selected="false" tabindex="-1">Water Villa</button>
+      <button role="tab" id="vt-pool" aria-controls="vp-pool" aria-selected="false" tabindex="-1">Private pool</button>
+      <button role="tab" id="vt-sun" aria-controls="vp-sun" aria-selected="false" tabindex="-1">Sunrise / Sunset</button>
+    </div>
+    <div class="vpanel" role="tabpanel" id="vp-beach" aria-labelledby="vt-beach">
+      <figure><img src="img/beagyazott-6a08cf2c7457.jpg" alt="Resortsziget fehér homokos parttal és víz feletti villákkal a türkiz lagúnában" width="480" height="270" loading="lazy"></figure>
+      <div><h3>Mezítlábas reggelek, privát kert</h3><p>Puha homok, buja növényzet, közvetlen strandkapcsolat és sokszor saját medence.</p><div class="ideal"><b>Kinek ideális?</b>Aki szereti a mezítlábas reggeleket, a privát kertet és a közvetlen partot.</div></div>
+    </div>
+    <div class="vpanel" role="tabpanel" id="vp-water" aria-labelledby="vt-water" hidden>
+      <figure><img src="img/beagyazott-22554a4c08cb.jpg" alt="Víz feletti villák felülről" width="1600" height="828" loading="lazy"></figure>
+      <div><h3>A klasszikus Maldív-álom</h3><p>Saját terasz, közvetlen vízkapcsolat, naplemente és a lagúna szinte karnyújtásnyira.</p><div class="ideal"><b>Mire figyelünk?</b>A vízmélységet mindig az adott villa helyén ellenőrizzük – nem minden water villa úszható közvetlenül.</div></div>
+    </div>
+    <div class="vpanel" role="tabpanel" id="vp-pool" aria-labelledby="vt-pool" hidden>
+      <figure><img src="img/beagyazott-6d1c57b665e8.jpg" alt="Resortsziget villákkal és medencékkel, madártávlatból" width="1739" height="1550" loading="lazy" style="object-position:50% 78%"></figure>
+      <div><h3>Saját medence, teljes privát szféra</h3><p>Sok prémium villa saját medencével is rendelkezik, a parton és a víz felett egyaránt.</p><div class="ideal"><b>Kinek ideális?</b>Akinek a teljes privát szféra a legfontosabb.</div></div>
+    </div>
+    <div class="vpanel" role="tabpanel" id="vp-sun" aria-labelledby="vt-sun" hidden>
+      <figure><img src="img/beagyazott-1c8780819a30.jpg" alt="Körben elhelyezkedő víz feletti villák, felülről" width="470" height="626" loading="lazy" style="object-position:50% 45%"></figure>
+      <div><h3>A villa tájolása számít</h3><p>Napfelkelte vagy naplemente? Nem jobb vagy rosszabb – csak más hangulat. Naplementét megfelelő tájolású villából látni.</p><div class="ideal"><b>Mire figyelünk?</b>A villa pontos elhelyezkedésére a szigeten, nem csak a kategóriájára.</div></div>
+    </div>
+    <div class="board">
+      <b>És az étkezés?</b>
+      <p>Félpanziótól a teljes ellátáson át az All Inclusive-ig sokféle konstrukció létezik. Mindig azt nézzük, mi tartozik ténylegesen a csomagba: italok, à la carte éttermek, prémium italok, programok és egyéb extrák resortonként eltérnek.</p>
+    </div>
+  </div>
+</section>
+
+<section id="idoszak" aria-labelledby="ido-cim">
+  <div class="wrap season">
+    <div class="ring" id="ring">
+      <svg viewBox="-40 -40 600 600" aria-hidden="true" id="ringsvg"></svg>
+      <div class="center" aria-live="polite"><span class="m" id="rm">Január</span><span class="k" id="rk">Főszezon</span><p id="rt">Szárazabb, stabilabb időszak.</p></div>
+    </div>
+    <div>
+      <span class="mono">Az utazás időpontja</span>
+      <h2 id="ido-cim" style="margin-top:14px">Mikor érdemes <em>menni?</em></h2>
+      <div class="keys"><span><i style="background:var(--lagoon)"></i>November – április: főszezon</span><span><i style="background:var(--sand);box-shadow:inset 0 0 0 1px var(--line)"></i>Május – október: változékonyabb</span></div>
+      <p>A Maldív egész évben trópusi úti cél. A különbség abban van, mennyire szeretnénk a szárazabb, stabilabb időszakot előnyben részesíteni. Kattintson egy hónapra a körön.</p>
+      <h3>Napvédelem és öltözet</h3>
+      <p>A trópusi nap erős: magas faktorszámú naptej, napszemüveg, kalap és hidratálás az alap. A resortokban laza nyári öltözet a természetes, a lakott szigeteken a helyi kulturális normákat is figyelembe kell venni.</p>
+      <div class="note">Ha a kérdés az, hogy „mikor a legszebb?” – a válasz: amikor Önöknek a legszebb. Mi pedig az időpont mellé a megfelelő resortot választjuk.</div>
+    </div>
+  </div>
+</section>
+
+<section class="transfer" id="transzfer" aria-labelledby="tr-cim">
+  <div class="wrap">
+    <div class="shead">
+      <div><span class="mono">Az utazás része</span><h2 id="tr-cim">Malé után kezdődik <em>az igazi kaland</em></h2></div>
+      <p class="lead">A transzfert jellemzően maga a resort szervezi, és általában benne van az árban. A repülőjáratot ehhez időzítjük.</p>
+    </div>
+    <div class="tline"><span class="stop">Bécs</span><span class="dash"></span><span class="stop direct">✈ Közvetlen járat</span><span class="dash"></span><span class="stop mle">MLE · Malé</span><span class="dash"></span><span class="stop">Resortsziget</span></div>
+    <div class="tline"><span class="stop">Budapest / Kassa / Prága</span><span class="dash"></span><span class="stop">átszállással</span><span class="dash"></span><span class="stop mle">MLE · Malé</span><span class="dash"></span><span class="stop">Resortsziget</span></div>
+    <div class="legs">
+      <div class="leg">
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 26h28l4-6H10l-3 6"/><path d="M14 20l3-6h9l2 6"/><path d="M3 32c3 0 3-2 6-2s3 2 6 2 3-2 6-2 3 2 6 2 3-2 6-2"/></svg>
+        <span class="mono">Közelebbi resortok</span><h3>Speedboat</h3>
+        <p>Motoros gyorshajó. Már az első percekben érezni, hogy egy teljesen más világba érkeztünk.</p>
+      </div>
+      <div class="leg">
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18h26c2 0 3 1 3 2s-1 2-3 2H6l-2-7h3z"/><path d="M16 18l4-8h4l-2 8M18 22l-2 6M28 22l2 6"/><path d="M12 31h8M26 31h8"/></svg>
+        <span class="mono">Távolabbi szigetek</span><h3>Hidroplán</h3>
+        <p>Látványos, ikonikus érkezés: felülről látni a lagúnák és apró szigetek mintázatát. Nappali időszakhoz kötött lehet.</p>
+      </div>
+      <div class="leg">
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 4v20M8 16l12-6 12 6M14 26l6-2 6 2"/><path d="M3 34c3 0 3-2 6-2s3 2 6 2 3-2 6-2 3 2 6 2 3-2 6-2"/></svg>
+        <span class="mono">Távoli atollok</span><h3>Belső járat + hajó</h3>
+        <p>Egyes távolabbi atolloknál ez a kényelmes és természetes kombináció.</p>
+      </div>
+    </div>
+    <div class="tphoto">
+      <img src="img/beagyazott-e31949a824c5.jpg" alt="Hidroplán a sekély türkiz lagúnában" width="1600" height="1012">
+      <div>
+        <h3 style="font-size:clamp(28px,3vw,40px);margin-bottom:14px">Késő esti érkezés?</h3>
+        <p>A továbbutazás a resort transzferlehetőségeitől függ; néha egy Malé környéki éjszaka a legjobb megoldás. Ezt előre ellenőrizzük, ahogy azt is, mennyi ideig tart az út a kiválasztott szigetig.</p>
+        <p style="color:var(--muted);font-size:14px;margin:0">Hidroplán a lagúnában · Fotó: Hassan Rafhan / Unsplash</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="under" id="viz" aria-labelledby="viz-cim">
+  <img src="img/beagyazott-5ca81f239fb5.jpg" alt="Tengeri teknős a korallzátony felett, halrajjal" width="1600" height="1012">
+  <span class="cap">Fotó: Mohamed Ahunaf / Unsplash</span>
+  <div class="wrap">
+    <div class="ucard">
+      <span class="mono">A víz alatt</span>
+      <h2 id="viz-cim">A Maldív <em>második arca</em></h2>
+      <p>A lagúna felszíne csak a történet fele. És amikor éppen nem a vízben vagyunk, egy spa-kezelés, egy naplementés dhoni-kirándulás vagy egy privát vacsora a parton ugyanúgy hozzátartozik az élményhez.</p>
+      <div class="ulist">
+        <div><h4>Snorkeling</h4><p>House reef, színes halak és sok resortnál teknősök, akár közvetlenül a sziget mellett.</p></div>
+        <div><h4>Búvárkodás</h4><p>Világhírű merülőhelyek: csatornák, thilák és gazdag zátonyok.</p></div>
+        <div><h4>Manta és cetcápa</h4><p>Egyes térségekben nagyobb az esély, de a természet nem garantálható.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="resort" aria-labelledby="res-cim">
+  <div class="wrap">
+    <div class="shead">
+      <div><span class="mono">A tökéletes resort</span><h2 id="res-cim">Mitől lesz <em>valóban prémium?</em></h2></div>
+      <p class="lead">A csillagok száma csak a kezdet. Ezeket nézzük meg minden resortnál, mielőtt ajánljuk.</p>
+    </div>
+    <div class="check">
+      <div><h4>House reef</h4><p>Ha bármikor snorkelezni szeretne, a zátony közelsége kulcsfontosságú.</p></div>
+      <div><h4>Lagúna</h4><p>Sekély, türkiz lagúna vagy mélyebb, drámaibb óceán? Más és más élmény.</p></div>
+      <div><h4>Villa</h4><p>Beach, Water, Pool, Sunrise, Sunset – a villa helye legalább olyan fontos, mint a kategóriája.</p></div>
+      <div><h4>Gasztronómia</h4><p>Éttermi választék, à la carte lehetőségek, speciális étrendek, étkezési csomagok.</p></div>
+      <div><h4>Transzfer</h4><p>Speedboat, hidroplán vagy belső járat? Az utazási idő is számít.</p></div>
+      <div><h4>Hangulat</h4><p>Romantikus, adults only, családbarát, sportos vagy teljesen elvonulós?</p></div>
+      <div><h4>Spa</h4><p>Egy prémium resortnál a wellness nem extra, hanem az élmény része lehet.</p></div>
+      <div><h4>Service</h4><p>A valódi luxus sokszor nem látható: figyelem, rugalmasság és apró gesztusok.</p></div>
+    </div>
+    <p class="quote2">Ugyanaz a Maldív két különböző embernek két teljesen különböző utazást jelent.</p>
+  </div>
+</section>
+
+<section class="entry" id="beutazas" aria-labelledby="be-cim">
+  <div class="wrap">
+    <div class="shead">
+      <div><span class="mono">Beutazás és tudnivalók</span><h2 id="be-cim">Indulás előtt <em>tudni érdemes</em></h2></div>
+      <p class="lead">Ellenőrzött információk – indulás előtt mindig újra átnézzük őket.</p>
+    </div>
+    <div class="dl">
+      <div><h4><small>Vízum</small>Érkezéskor kapja meg</h4><p>Turistaként a vízumot érkezéskor adják ki, előzetes engedély általában nem kell. Feltétel a megerősített, előre kifizetett szállásfoglalás és az igazolt vissza- vagy továbbutazás.</p></div>
+      <div><h4><small>Útlevél</small>Géppel olvasható útlevél</h4><p>A Maldives Immigration jelenlegi minimuma legalább 1 hónap érvényesség. A légitársaság vagy a tranzitország szigorúbbat is előírhat – ezt foglaláskor ellenőrizzük.</p></div>
+      <div><h4><small>Indulás előtt</small>IMUGA nyilatkozat</h4><p>A hivatalos online beutazási és egészségügyi nyilatkozat érkezés előtt legfeljebb 96 órával tölthető ki, ingyenesen: <a href="https://imuga.immigration.gov.mv/" target="_blank" rel="noopener">imuga.immigration.gov.mv</a></p></div>
+      <div><h4><small>Egészség</small>Sárgaláz-igazolás csak bizonyos esetben</h4><p>Érintett országokból érkezve vagy azokon áthaladva lehet szükséges.</p></div>
+      <div><h4><small>Helyben</small>Green Tax és alkohol</h4><p>A szálláshelyekhez környezetvédelmi adó kapcsolódik, mértékét az ajánlatnál ellenőrizzük. Alkohol a resortokban elérhető, de az országba bevinni nem szabad.</p></div>
+      <div><h4><small>Pénz, áram, kultúra</small>Rufiyaa, dollár, 240 V</h4><p>Resortban a bankkártya széles körben használható, tartaléknak inkább dollárt vigyen. Adaptert érdemes vinni. A Maldív muszlim ország: a lakott szigeteken visszafogottabb öltözet illik.</p></div>
+    </div>
+    <p class="src">Források: <a href="https://immigration.gov.mv/visa/tourist-visa" target="_blank" rel="noopener">Maldives Immigration</a> · <a href="https://konzinfo.mfa.gov.hu/" target="_blank" rel="noopener">Konzuli Szolgálat</a>. Ellenőrizve: 2026. október 9.</p>
+  </div>
+</section>
+
+<section class="wed" id="eskuvo" aria-labelledby="eskuvo-cim">
+  <div class="wrap">
+    <div class="wteaser">
+      <figure><img src="img/beagyazott-4832bb49d481.jpg" alt="Virágos esküvői boltív a fehér homokos parton, háttérben víz feletti villák" width="1600" height="1066" loading="lazy"></figure>
+      <div>
+        <span class="mono">Különleges alkalom</span>
+        <h2 id="eskuvo-cim">Esküvő és nászút <em>a Maldívon</em></h2>
+        <p>Szimbolikus szertartás a parton, utána nászút ugyanabban a resortban – ha erre készülnek, ezt is megszervezzük.</p>
+        <button type="button" class="btn ghost" id="wtoggle" aria-expanded="false" aria-controls="eskuvo-reszletek"><span>Részletek</span> <span class="arr" aria-hidden="true">↓</span></button>
+      </div>
+    </div>
+    <div id="eskuvo-reszletek" class="wdetail" hidden>
+      <div class="wgal">
+        <img src="img/beagyazott-9ceaeb4db20f.jpg" alt="Ifjú pár a virágos esküvői boltív alatt a parton" width="1000" height="1500" loading="lazy">
+        <div class="wmid">
+          <img src="img/beagyazott-bb3b56ffa095.jpg" alt="Ifjú pár kézen fogva a parton, mellettük maldív bodu beru dobosok" width="944" height="510" loading="lazy">
+          <img src="img/beagyazott-4832bb49d481.jpg" alt="Esküvői boltív a lagúna partján" width="1600" height="1066" loading="lazy">
+        </div>
+        <img src="img/beagyazott-07778a6c14fe.jpg" alt="Ifjú pár a virágos körív előtt a víz feletti teraszon, rózsaszirmok között" width="1000" height="1500" loading="lazy">
+      </div>
+      <div class="wtext">
+        <div><h3>Egy igen, ahogyan mindig megálmodták</h3><p>Mezítláb a puha homokon, ünnepi ruhában, az óceán halk morajlása mellett. Nincsenek kötelező forgatókönyvek: a szertartás hangulata, a helyszín és az apró részletek is a megálmodott ünnepet idézik. Virágokkal díszített helyszín, összehangolt dekoráció és esküvői fotózás.</p></div>
+        <div><h3>A nászút legyen épp olyan különleges</h3><p>Romantikus vacsora az óceán mellett, közös naplementék és lassú reggelek a villában. Az élményt páros spa-kezelés vagy más wellnessprogram is teljessé teheti.</p></div>
+      </div>
+      <div class="wsteps">
+        <div><span class="mono">1. lépés</span><h4>Megálmodjuk</h4><p>A pár elképzeléseihez keressük meg a hozzájuk illő resortot és esküvői lehetőséget.</p></div>
+        <div><span class="mono">2. lépés</span><h4>Összehangoljuk</h4><p>Már az utazás előtt egyeztetjük az igényeket, a helyszínen a koordinátorral véglegesítik a részleteket.</p></div>
+        <div><span class="mono">3. lépés</span><h4>Megélik</h4><p>A szertartás és az ünneplés után már csak a közös időé és a nászúté a főszerep.</p></div>
+      </div>
+      <div class="wcoord"><p><b>Személyes törődés a helyszínen:</b> érkezés után a resort esküvői koordinátora fogadja a párt, átbeszélik a szertartás menetét, a dekorációt, a fotózást és az időzítést, és végigkíséri az esküvő napját.</p></div>
+      <p class="wnote">Kínálatunkban szimbolikus szertartás szerepel, amely nem keletkeztet jogi házasságot. A pontos tartalmat a választott resort ajánlatában egyeztetjük. Fotók: You &amp; Me Maldives – a resort hivatalos esküvői galériája.</p>
+    </div>
+  </div>
+</section>
+
+<section class="plan" aria-labelledby="terv-cim">
+  <div class="wrap">
+    <div class="shead">
+      <div><span class="mono">Atlasz Prémium</span><h2 id="terv-cim">Így tervezzük meg <em>az Ön útját</em></h2></div>
+      <p class="lead">Nem csak szállást keresünk. Az Önöknek megfelelő szigetet, villát, étkezést és élményt állítjuk össze.</p>
+    </div>
+    <div class="psteps">
+      <div><span class="n">1</span><h3>Az utazás stílusa</h3><p>Pihenés kettesben, családi nyaralás, búvárkodás vagy teljes csend? Elmondja, mire vágyik – ebből indulunk.</p></div>
+      <div><span class="n">2</span><h3>Sziget és villa</h3><p>Resortot, villatípust és tájolást, lagúnát, house reefet és ellátást választunk az időponthoz.</p></div>
+      <div><span class="n">3</span><h3>Repülés</h3><p>A nemzetközi járatot a resort transzferéhez időzítjük – egyetlen, átlátható ajánlatban.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="kerdesek" aria-labelledby="faq-cim">
+  <div class="wrap">
+    <div class="shead">
+      <div><span class="mono">Utastájékoztató</span><h2 id="faq-cim">50 kérdés, <em>50 válasz</em></h2></div>
+      <p class="lead">Hasznos válaszok a nyugodt utazástervezéshez – keressen rá arra, ami Önt érdekli.</p>
+    </div>
+    <div class="faqtools">
+      <label class="search"><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Keresés a kérdések között</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input type="search" id="faqq" placeholder="Keresés: vízum, IMUGA, hidroplán, house reef…" autocomplete="off"></label>
+      <div class="chips" role="group" aria-label="Témák">
+        <button aria-pressed="true" data-cat="all">Összes</button>
+        <button aria-pressed="false" data-cat="1">Beutazás, gyakorlati</button>
+        <button aria-pressed="false" data-cat="2">Resort, villa, étkezés</button>
+        <button aria-pressed="false" data-cat="3">Transzfer, élmények</button>
+      </div>
+    </div>
+    <p class="faq-count" id="faqcount" aria-live="polite"></p>
+    <div class="faq" id="faq"></div>
+    <p class="faq-empty" id="faqempty">Erre nem találtunk választ a listában – kérdezze meg tőlünk, szívesen válaszolunk.</p>
+  </div>
+</section>
+
+<section class="offer" id="ajanlat" aria-labelledby="form-cim">
+  <div class="wrap formgrid">
+    <div class="aside">
+      <span class="mono">Ajánlatkérés</span>
+      <h2 id="form-cim">Találkozunk <em>a túloldalon</em></h2>
+      <p>Csak a név, a telefonszám és az e-mail kötelező – minden további információ segít, hogy elsőre pontos ajánlatot küldhessünk. Repülőjegyet is intézünk, a resort transzfere pedig általában benne van az árban.</p>
+      <div class="contact">
+        <span class="mono">Az Ön Maldív-tanácsadója</span>
+        <div class="nm">Atlasz Travel Győr</div>
+        <a class="big" href="tel:+36202668144">06 20 266 8144</a>
+        <a href="mailto:gyor@atlasztravel.hu">gyor@atlasztravel.hu</a>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=Atlasz+Travel+Gy%C5%91r+9021+Gy%C5%91r+Kir%C3%A1ly+u.+1." target="_blank" rel="noopener">9021 Győr, Király u. 1.</a>
+      </div>
+    </div>
+    <form id="form" novalidate>
+      <fieldset>
+        <legend>Elérhetőség</legend>
+        <div class="g2">
+          <div class="full"><label for="f-nev">Név <span class="req">*</span></label><input id="f-nev" name="nev" autocomplete="name" required></div>
+          <div><label for="f-tel">Telefonszám <span class="req">*</span></label><input id="f-tel" name="telefon" type="tel" autocomplete="tel" placeholder="06 30 123 4567" required></div>
+          <div><label for="f-email">E-mail <span class="req">*</span></label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Utasok</legend>
+        <div class="g3">
+          <div><label for="f-felnott">Felnőttek</label><div class="stepper"><button type="button" data-step="-1" aria-label="Kevesebb felnőtt">−</button><input id="f-felnott" name="felnottek" type="number" min="0" max="20" value="2" inputmode="numeric"><button type="button" data-step="1" aria-label="Több felnőtt">+</button></div></div>
+          <div><label for="f-gyerek">Gyerekek <span class="opt">(2–17 év)</span></label><div class="stepper"><button type="button" data-step="-1" aria-label="Kevesebb gyerek">−</button><input id="f-gyerek" name="gyerekek" type="number" min="0" max="10" value="0" inputmode="numeric"><button type="button" data-step="1" aria-label="Több gyerek">+</button></div></div>
+          <div><label for="f-baba">2 év alatti</label><div class="stepper"><button type="button" data-step="-1" aria-label="Kevesebb kisbaba">−</button><input id="f-baba" name="ket_ev_alatti" type="number" min="0" max="5" value="0" inputmode="numeric"><button type="button" data-step="1" aria-label="Több kisbaba">+</button></div></div>
+        </div>
+        <div class="ages" id="ages"><label for="f-korok">Gyerekek életkora <span class="opt">(utazáskor)</span></label><input id="f-korok" name="gyerekek_kora" placeholder="pl. 5 és 9 év"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Repülés</legend>
+        <label style="margin-bottom:12px">Melyik repülőtérről indulna?</label>
+        <div class="pills" role="group" aria-label="Indulási repülőtér">
+          <label><input type="radio" name="repuloter" value="Budapest"> Budapest</label>
+          <label><input type="radio" name="repuloter" value="Bécs"> Bécs (közvetlen járat)</label>
+          <label><input type="radio" name="repuloter" value="Kassa"> Kassa</label>
+          <label><input type="radio" name="repuloter" value="Prága"> Prága</label>
+          <label><input type="radio" name="repuloter" value="Mindegy, a kedvezőbb"> Mindegy, a kedvezőbb</label>
+        </div>
+        <div style="margin-top:24px"><label for="f-legi">Van preferált légitársasága?</label><input id="f-legi" name="legitarsasag" list="legik" placeholder="Nincs preferencia, vagy írja be"><datalist id="legik"><option value="Nincs preferencia"><option value="Emirates"><option value="Qatar Airways"><option value="Etihad Airways"><option value="Turkish Airlines"><option value="flydubai"></datalist></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Időpont és hossz</legend>
+        <div class="g2">
+          <div><label for="f-mikor">Mikor utazna?</label><input id="f-mikor" name="indulas" type="date"></div>
+          <div><label for="f-rug">Rugalmasság</label><select id="f-rug" name="rugalmassag"><option value="">Válasszon…</option><option>Pontos dátum</option><option>± 3 nap</option><option>± 1 hét</option><option>Csak a hónap számít</option><option>Teljesen rugalmas</option></select></div>
+          <div class="full"><label for="f-idoszak">Vagy írja le szavakkal <span class="opt">(ha még nincs dátum)</span></label><input id="f-idoszak" name="idoszak" placeholder="pl. 2027 tavasza, karácsony, nászút szeptemberben"></div>
+          <div><label for="f-ej">Hány éjszakás utazást tervez?</label><input id="f-ej" name="utazas_ejszaka" type="number" min="1" max="60" inputmode="numeric" placeholder="pl. 10"><div class="hint">a teljes utazás, repüléssel együtt</div></div>
+          <div><label for="f-ejmal">Ebből hány éjszakát a Maldívon?</label><input id="f-ejmal" name="maldiv_ejszaka" type="number" min="1" max="60" inputmode="numeric" placeholder="pl. 8"><div class="hint">pl. ha útközben Dubajban is megállna</div></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Elképzelések</legend>
+        <label style="margin-bottom:12px">Az utazás jellege</label>
+        <div class="pills" role="group" aria-label="Az utazás jellege">
+          <label><input type="checkbox" name="jelleg" value="Kettesben pihenés"> Kettesben pihenés</label>
+          <label><input type="checkbox" name="jelleg" value="Családi nyaralás"> Családi nyaralás</label>
+          <label><input type="checkbox" name="jelleg" value="Snorkel, búvárkodás"> Snorkel, búvárkodás</label>
+          <label><input type="checkbox" name="jelleg" value="Teljes csend, wellness"> Csend, wellness</label>
+          <label><input type="checkbox" name="jelleg" value="Nászút"> Nászút</label>
+          <label><input type="checkbox" name="jelleg" value="Szimbolikus esküvő"> Szimbolikus esküvő</label>
+        </div>
+        <label style="margin:24px 0 12px">Villa</label>
+        <div class="pills" role="group" aria-label="Villa">
+          <label><input type="checkbox" name="villa" value="Beach Villa"> Beach Villa</label>
+          <label><input type="checkbox" name="villa" value="Water Villa"> Water Villa</label>
+          <label><input type="checkbox" name="villa" value="Saját medencés"> Saját medencés</label>
+          <label><input type="checkbox" name="villa" value="Naplementés tájolás"> Sunset</label>
+          <label><input type="checkbox" name="villa" value="Ajánljanak"> Ajánljanak</label>
+        </div>
+        <div class="g2" style="margin-top:26px">
+          <div><label for="f-ellatas">Ellátás</label><select id="f-ellatas" name="ellatas"><option value="">Mindegy / ajánljanak</option><option>Reggeli</option><option>Félpanzió</option><option>Teljes panzió</option><option>All Inclusive</option></select></div>
+          <div><label for="f-kat">Resort</label><select id="f-kat" name="resort"><option value="">Mindegy / ajánljanak</option><option>4 csillagos</option><option>5 csillagos</option><option>5 csillagos luxus</option><option>Adults only</option></select></div>
+          <div class="full"><label for="f-keret">Elképzelt keret <span class="opt">(fő / utazás)</span></label><input id="f-keret" name="keret" placeholder="pl. 1,5–2 millió Ft/fő"></div>
+          <div class="full"><label for="f-megj" style="margin-bottom:10px">Megjegyzés, kérdés</label><textarea id="f-megj" name="megjegyzes" placeholder="Pl. house reef fontos, ételallergia, gyerekklub, esküvői elképzelés, személyes konzultáció valamelyik irodánkban…"></textarea></div>
+        </div>
+      </fieldset>
+
+      <button class="btn submit" type="submit">Ajánlatkérés elküldése <span class="arr">→</span></button>
+      <p class="legal">Az ajánlatkérés nem kötelez semmire. Elküldésével hozzájárul, hogy az Atlasz Travel a megadott adatokat az ajánlat elkészítése és a kapcsolatfelvétel céljából kezelje.</p>
+      <div class="msg" id="formmsg" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+</section>
+</main>
+
+<section class="offices" id="irodak" aria-labelledby="iroda-cim">
+  <div class="wrap">
+    <h2 id="iroda-cim">Személyesen is várjuk győri irodánkban</h2>
+    <div class="offrow">
+      <p><b>Győri irodánk</b>9021 Győr, Király u. 1.</p>
+      <p><b>Nyitvatartás</b>hétfő–péntek 10:00–17:00</p>
+      <p><b>Időpontfoglalás</b><a href="tel:+36202668144">06 20 266 8144</a> · <a href="mailto:gyor@atlasztravel.hu">gyor@atlasztravel.hu</a></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <img src="img/beagyazott-9b5f1d06270c.png" alt="Atlasz Travel Prémium" width="510" height="177" loading="lazy">
+      <p>© 2026 Atlasz Travel Győr · <a href="https://www.atlasztravelgyor.hu" target="_blank" rel="noopener">atlasztravelgyor.hu</a><br>
+      9021 Győr, Király u. 1. · <a href="tel:+36202668144">06 20 266 8144</a><br>
+      <a href="mailto:gyor@atlasztravel.hu">gyor@atlasztravel.hu</a></p>
+    </div>
+    <div class="srcs">
+      <b style="color:var(--deep)">Fotók és források</b><br>
+      Resortsziget madártávlatból – Ekmed Ali · Víz feletti villák – Ishan @seefromthesky · Hidroplán – Hassan Rafhan · Pálmafák és fehér homok – Rayyu Maldives · Teknős – Mohamed Ahunaf (Unsplash License). Esküvői fotók: You &amp; Me Maldives.<br>
+      Információk: Maldives Immigration, IMUGA, Konzuli Szolgálat. A képek hangulatot szemléltetnek, nem konkrét ajánlat részei. *A vízum érkezéskori kiadása a belépési feltételek teljesítése mellett érvényes. Ellenőrizve: 2026. október 9.
+    </div>
+  </div>
+</footer>
+
+<a class="btn mob-cta" href="#ajanlat">Ajánlatkérés <span class="arr">→</span></a>
+
+<script>
+// videó: automatikusan indul (némítva), amikor a látogató odagörget
+(function(){const f=document.getElementById("vframe");if(!f)return;let done=false;
+  function load(){if(done)return;done=true;const id=f.dataset.yt;const i=document.createElement("iframe");
+    i.src=`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&playsinline=1&rel=0&modestbranding=1`;
+    i.title="Maldív-szigetek videó";i.allow="autoplay; encrypted-media; picture-in-picture; fullscreen";i.allowFullscreen=true;f.appendChild(i)}
+  if("IntersectionObserver" in window){const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){load();io.disconnect()}},{rootMargin:"200px"});io.observe(f)}else load()})();
+
+// villaválasztó
+(function(){const tabs=[...document.querySelectorAll('.seg [role="tab"]')];
+  function sel(t,f){tabs.forEach(o=>{const on=o===t;o.setAttribute("aria-selected",on);o.tabIndex=on?0:-1;document.getElementById(o.getAttribute("aria-controls")).hidden=!on});if(f)t.focus()}
+  tabs.forEach((t,i)=>{t.addEventListener("click",()=>sel(t));t.addEventListener("keydown",e=>{if(e.key==="ArrowRight"){e.preventDefault();sel(tabs[(i+1)%tabs.length],true)}if(e.key==="ArrowLeft"){e.preventDefault();sel(tabs[(i-1+tabs.length)%tabs.length],true)}})})})();
+
+// évszak-gyűrű
+(function(){
+  const M=["Január","Február","Március","Április","Május","Június","Július","Augusztus","Szeptember","Október","November","December"];
+  const S=["jan","feb","márc","ápr","máj","jún","júl","aug","szept","okt","nov","dec"];
+  const peak=m=>m>=10||m<=3;
+  const txt=m=>m===11||m===0?"A legkeresettebb időszak a karácsonyi és téli hónapokban – érdemes korán foglalni.":peak(m)?"Szárazabb, stabilabb időszak, sok utazó ezt választja.":"Több zápor előfordulhat, de a trópusi eső sokszor gyorsan jön és megy. Az árak jóval kedvezőbbek.";
+  const svg=document.getElementById("ringsvg"),ns="http://www.w3.org/2000/svg",c=260,R=255,r=170;
+  const pt=(rad,a)=>[c+rad*Math.sin(a),c-rad*Math.cos(a)];
+  const segs=[];
+  for(let i=0;i<12;i++){
+    const a0=i*Math.PI/6+0.012,a1=(i+1)*Math.PI/6-0.012;
+    const [x0,y0]=pt(R,a0),[x1,y1]=pt(R,a1),[x2,y2]=pt(r,a1),[x3,y3]=pt(r,a0);
+    const p=document.createElementNS(ns,"path");
+    p.setAttribute("d",`M${x0} ${y0}A${R} ${R} 0 0 1 ${x1} ${y1}L${x2} ${y2}A${r} ${r} 0 0 0 ${x3} ${y3}Z`);
+    p.setAttribute("fill",peak(i)?"var(--lagoon)":"var(--sand)");
+    p.setAttribute("class","seg-arc");p.setAttribute("tabindex","0");p.setAttribute("role","button");p.setAttribute("aria-label",M[i]);
+    svg.appendChild(p);segs.push(p);
+    const [lx,ly]=pt((R+r)/2,(a0+a1)/2);const t=document.createElementNS(ns,"text");
+    t.setAttribute("x",lx);t.setAttribute("y",ly+4);t.setAttribute("text-anchor","middle");t.setAttribute("class","mlabel");
+    t.setAttribute("fill",peak(i)?"#fff":"var(--deep)");t.style.fill=peak(i)?"#fff":"var(--deep)";t.textContent=S[i];svg.appendChild(t);
+    const go=()=>pick(i);p.addEventListener("click",go);p.addEventListener("mouseenter",go);p.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}});
+  }
+  function pick(i){segs.forEach((s,j)=>{s.classList.toggle("on",j===i);s.classList.toggle("dim",j!==i)});
+    document.getElementById("rm").textContent=M[i];document.getElementById("rk").textContent=peak(i)?"Főszezon":"Változékonyabb";document.getElementById("rt").textContent=txt(i)}
+  pick(new Date().getMonth());
+})();
+
+// esküvő lenyitás
+(function(){const b=document.getElementById("wtoggle"),d=document.getElementById("eskuvo-reszletek");
+  function set(o){d.hidden=!o;b.setAttribute("aria-expanded",o);b.firstChild.textContent=o?"Bezárás":"Részletek"}
+  b.addEventListener("click",()=>set(d.hidden));if(location.hash==="#eskuvo")set(true)})();
+
+const FAQ=[
+[1,"Kell vízum?","Turistaként a vízum érkezéskor kerül kiadásra, előzetes vízumengedély általában nem szükséges, a belépési feltételek teljesítése mellett."],
+[1,"Mennyi útlevél-érvényesség kell?","A Maldives Immigration jelenlegi minimuma géppel olvasható útlevél és legalább 1 hónap érvényesség. Az utazásszervező, a légitársaság vagy a tranzitország szigorúbb feltételt is előírhat; ezt foglaláskor külön ellenőrizzük."],
+[1,"Mi az IMUGA?","A Maldív-szigetek hivatalos online beutazási és egészségügyi nyilatkozatokat kezelő portálja. Érkezés előtt legfeljebb 96 órával tölthető ki, és a hivatalos oldalon ingyenes."],
+[1,"Hol töltöm ki?","Kizárólag a hivatalos IMUGA felületen: imuga.immigration.gov.mv. Más oldalaknak ne fizessen érte."],
+[1,"Kell visszaúti jegy?","Igen, a belépési feltételek között igazolt vissza- vagy továbbutazás szerepel."],
+[1,"Kell szállásfoglalás?","Igen, a turistavízumhoz megerősített, előre kifizetett szállásfoglalás szükséges."],
+[1,"Kell oltás?","Sárgaláz-igazolás bizonyos érintett országokból érkezés vagy áthaladás esetén lehet szükséges."],
+[1,"Milyen pénzt vigyek?","A helyi pénznem a rufiyaa, de a resortokban a bankkártya széles körben használható."],
+[1,"Elfogadják az amerikai dollárt/eurót?","Inkább a dollárt. Egyes helyeken eurót is, de nem erre érdemes alapozni. Bankkártya és megfelelő tartalék készpénz praktikus."],
+[1,"Milyen a konnektor?","240 V-os hálózat működik; adaptert érdemes vinni, mert a csatlakozó kialakítása eltérhet."],
+[1,"Van internet?","A resortok többségében van Wi-Fi, a lefedettség és sebesség szigetenként változhat."],
+[1,"Van alkohol a resortban?","Igen, a resortokban elérhető; alkoholt azonban magánszemélyként az országba bevinni nem megengedett."],
+[2,"Gyerekekkel is jó?","Igen, de családbarát resortot kell választani: villa, lagúna, gyerekklub és transzferidő mind számít."],
+[2,"Nászútra való?","Nagyon. A privát villák, víz feletti teraszok, spa és romantikus programok miatt klasszikus nászút-úti cél."],
+[2,"Egyedül is jó?","Igen. A teljes lelassulás, spa, snorkel és saját tempóban töltött napok egyedül is különlegesek."],
+[2,"Hány éjszaka ideális?","Első alkalommal általában 7–10 éjszaka kényelmes, de a resort és a repülési lehetőségek is befolyásolják."],
+[2,"Érdemes két resortot kombinálni?","Lehet, de számoljunk a transzferek idejével. Általában vissza kell menni a főszigetre, majd onnan a választott resortba."],
+[2,"Minden water villa közvetlenül úszható?","Nem. A vízmélység, az áramlás és a zátony elhelyezkedése szigetenként eltér."],
+[2,"Lehet naplementét látni a villából?","Igen, megfelelő tájolású villa esetén. Ezért is fontos a villa pontos elhelyezkedése."],
+[2,"Mi a house reef?","A resort közvetlen közelében lévő korallzátony, amely sok helyen kiváló snorkelélményt ad."],
+[3,"Lehet delfineket látni?","Szerveznek delfinleső kirándulásokat, de vadon élő állatnál nincs garantált találkozás."],
+[3,"Mi a dhoni?","Hagyományos maldív hajótípus, amely kirándulásokon és egyes vízi programokon is megjelenik."],
+[2,"Milyen az étel?","Friss hal, tenger gyümölcsei, ázsiai és nemzetközi fogások; a prémium resortok kínálata általában széles."],
+[2,"Speciális étrend megoldható?","Sok resortban igen, de gluténmentes, allergén- vagy egyéb speciális étrendet előre jelezni kell."],
+[1,"Kell borravaló?","Nem mindenhol kötelező; a resort saját rendszere és az esetleges service charge az irányadó."],
+[1,"Mi a Green Tax?","Turisztikai szálláshelyekhez kapcsolódó környezetvédelmi adó. Az aktuális mértéket az ajánlatnál ellenőrizzük."],
+[1,"Mennyire párás?","Nagyon trópusi. Könnyű ruha, hidratálás és megfelelő napvédelem sokat számít."],
+[3,"Milyen meleg a tenger?","Egész évben kellemesen meleg, így a vízben töltött idő ritkán a hőmérséklet miatt ér véget."],
+[3,"Kell vízicipő?","Nem kötelező, de bizonyos korallos vagy kavicsos partszakaszokon praktikus."],
+[1,"Vannak szúnyogok?","Trópusi környezetben előfordulhatnak; riasztó használata ettől függetlenül hasznos."],
+[1,"Milyen naptejet vigyek?","Magas faktorszámú, lehetőleg reef-safe naptejet."],
+[1,"Mit pakoljak?","Fürdőruha, könnyű ruhák, napszemüveg, kalap, naptej, gyógyszerek, adapter, vízicipő és egy elegánsabb vacsoraszett."],
+[1,"Milyen a helyi kultúra?","A Maldív muszlim ország. A resortszigeteken lazább a dress code, a helyi szigeteken visszafogottabb öltözet illik."],
+[2,"Kell elegáns ruha?","Resortfüggő, de egy smart casual összeállítás mindig jó ötlet."],
+[3,"Mi van, ha késik a gépem?","A resort vagy a transzferszolgáltató felé mielőbb jelezni kell; különösen hidroplán esetén fontos az időzítés."],
+[3,"Mi történik késő esti érkezésnél?","A továbbutazás a resort transzferlehetőségeitől függ; néha szükség lehet egy Malé környéki éjszakára."],
+[3,"Mennyire hosszú a hidroplán transzfer?","Resortfüggő; az útvonal és az időjárás befolyásolja. A konkrét szigetnél mindig külön ellenőrizzük."],
+[3,"Milyen a speedboat?","Motoros gyorshajó, amely főként a Maléhez közelebbi resortoknál praktikus."],
+[1,"Kell utasbiztosítás?","Kifejezetten ajánlott, különösen búvárkodás, vízi sportok és prémium értékű utazás esetén."],
+[3,"Biztonságos a vízi sport?","Megfelelő körülmények között igen, de mindig a resort személyzetének és az aktuális időjárásnak az utasításait kell követni."],
+[3,"Lehet drónt használni?","Resort- és helyi szabályoktól függ; indulás előtt mindig külön ellenőrizni kell, sokszor előzetes engedély szükséges."],
+[2,"Van spa?","A prémium resortok nagy részében igen, sok helyen páros és privát kezelésekkel."],
+[3,"Milyen programokat ajánlunk?","Snorkeling, búvárkodás, sunset cruise, sandbank, manta- és delfinles, spa, jóga és privát vacsorák."],
+[3,"Mi az a sandbank?","Apró, homokos képződmény a türkiz tenger közepén; az egyik legszebb rövid kirándulás lehet."],
+[3,"Láthatok mantát?","Bizonyos atollokban nagyobb az esély, de a természet nem garantálható."],
+[2,"Minden resort egyforma?","Egyáltalán nem. A reef, a lagúna, a villa, a gasztronómia, a szolgáltatás és maga a helyszín karaktere is nagyon eltérő."],
+[2,"Melyik a legjobb resort?","Nincs univerzális válasz. Az a legjobb, amelyik az Önök utazási stílusához illik."],
+[2,"Miért ilyen különleges a Maldív?","Mert a szálloda itt maga a sziget: egyetlen helyen kapunk privát strandot, lagúnát, villát, gasztronómiát és természetet."],
+[2,"És ha egyszerűen csak pihenni szeretnék?","Akkor pontosan ezért érdemes menni. A Maldív egyik legnagyobb luxusa, hogy végre semmit sem kell siettetni."],
+[2,"Miért Atlasz Prémium?","Mert nem csak szállást keresünk: az Önöknek megfelelő szigetet, villát, étkezést és élményt állítjuk össze."]
+];
+(function(){
+  const box=document.getElementById("faq"),q=document.getElementById("faqq"),cnt=document.getElementById("faqcount"),empty=document.getElementById("faqempty");
+  const norm=s=>s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+  FAQ.forEach(([c,k,v],i)=>{const d=document.createElement("details");d.dataset.cat=c;d.dataset.t=norm(k+" "+v);
+    d.innerHTML=`<summary><span class="n">${String(i+1).padStart(2,"0")}</span>${k}</summary><p>${v}</p>`;box.appendChild(d)});
+  let cat="all";
+  function apply(){const s=norm(q.value.trim());let n=0;
+    box.querySelectorAll("details").forEach(d=>{const ok=(cat==="all"||d.dataset.cat===cat)&&(!s||d.dataset.t.includes(s));d.hidden=!ok;if(ok)n++;if(s&&ok)d.open=true;if(!s)d.open=false});
+    cnt.textContent=n===FAQ.length?"Mind az 50 kérdés látható.":n+" találat";empty.style.display=n?"none":"block"}
+  q.addEventListener("input",apply);
+  document.querySelectorAll(".chips button").forEach(b=>b.addEventListener("click",()=>{cat=b.dataset.cat;document.querySelectorAll(".chips button").forEach(o=>o.setAttribute("aria-pressed",o===b));apply()}));
+  apply();
+})();
+
+
+
+document.querySelectorAll(".stepper").forEach(s=>{const inp=s.querySelector("input");
+  s.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{const v=Math.min(+inp.max,Math.max(+inp.min,(+inp.value||0)+ +b.dataset.step));inp.value=v;inp.dispatchEvent(new Event("input"))}))});
+const gy=document.getElementById("f-gyerek"),ages=document.getElementById("ages");
+gy.addEventListener("input",()=>ages.classList.toggle("on",+gy.value>0));
+
+const RECIPIENTS="gyor@atlasztravel.hu";
+const LABELS={nev:"Név",telefon:"Telefon",email:"E-mail",felnottek:"Felnőttek",gyerekek:"Gyerekek (2–17 év)",ket_ev_alatti:"2 év alatti",gyerekek_kora:"Gyerekek életkora",repuloter:"Indulási repülőtér",legitarsasag:"Preferált légitársaság",indulas:"Indulás",rugalmassag:"Rugalmasság",idoszak:"Időszak",utazas_ejszaka:"Utazás hossza (éj)",maldiv_ejszaka:"Ebből a Maldívon (éj)",jelleg:"Utazás jellege",villa:"Villa",ellatas:"Ellátás",resort:"Resort",keret:"Keret",megjegyzes:"Megjegyzés"};
+const form=document.getElementById("form"),fm=document.getElementById("formmsg");
+form.addEventListener("submit",async e=>{
+  e.preventDefault();fm.className="msg";form.querySelectorAll(".bad").forEach(x=>x.classList.remove("bad"));
+  const chk=[["f-nev",v=>v.trim().length>1,"Kérjük, adja meg a nevét."],["f-tel",v=>v.replace(/\D/g,"").length>=8,"Kérjük, adja meg a telefonszámát."],["f-email",v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),"Kérjük, adjon meg érvényes e-mail címet."]];
+  for(const[id,ok,t]of chk){const el=document.getElementById(id);if(!ok(el.value)){fm.textContent=t;fm.className="msg err";el.classList.add("bad");el.focus();return}}
+  const fd=new FormData(form);
+  const merged=new FormData();const seen={};
+  for(const[k,v]of fd.entries()){if(!String(v).trim())continue;if(seen[k]!==undefined){seen[k]+=", "+v}else seen[k]=v}
+  for(const k in seen)merged.append(k,seen[k]);
+  merged.append("oldal","Maldív-szigetek – Atlasz Prémium");
+  const btn=form.querySelector(".submit");btn.disabled=true;btn.textContent="Küldés…";
+  try{
+    const r=await fetch("send.php",{method:"POST",body:merged});const j=await r.json();if(!j.ok)throw 0;
+    fm.textContent="Köszönjük! Ajánlatkérését megkaptuk, munkatársunk hamarosan jelentkezik.";fm.className="msg ok";form.reset();ages.classList.remove("on");
+  }catch(_){
+    let body="";for(const k in seen)body+=`${LABELS[k]||k}: ${seen[k]}\n`;
+    location.href=`mailto:${RECIPIENTS}?subject=${encodeURIComponent("Ajánlatkérés – Maldív-szigetek")}&body=${encodeURIComponent(body)}`;
+    fm.textContent="Megnyitottuk a levelezőprogramját a kitöltött adatokkal – kérjük, küldje el a levelet. Ha nem nyílt meg, hívjon minket: 06 20 266 8144.";fm.className="msg ok";
+  }finally{btn.disabled=false;btn.textContent="Ajánlatkérés elküldése"}
+});
+
+
+// fejléc, mobil gomb
+(function(){const h=document.getElementById("top");const f=()=>h.classList.toggle("solid",window.scrollY>40);f();addEventListener("scroll",f,{passive:true})})();
+(function(){const c=document.querySelector(".mob-cta");if(!("IntersectionObserver" in window))return;const st={};
+  const io=new IntersectionObserver(es=>{es.forEach(e=>st[e.target.id]=e.isIntersecting);c.classList.toggle("away",Object.values(st).some(Boolean))},{threshold:0.05});
+  io.observe(document.getElementById("ajanlat"));io.observe(document.getElementById("cim"))})();
+</script>
+</body>
+</html>

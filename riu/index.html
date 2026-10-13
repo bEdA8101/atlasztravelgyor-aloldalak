@@ -1,0 +1,1576 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RIU tengerparti szállodák | Atlasz Travel – Győr</title>
+<meta name="description" content="RIU Hotels & Resorts tengerparti szállodák az Atlasz Travel kínálatában: Törökország, Portugália, Kanári-szigetek, Dubai, Szenegál, Mauritius, Zanzibár, Maldív-szigetek, Dominikai Köztársaság.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --riu:#E4002B;--riu-dark:#B80023;
+  --lagoon:#0F5260;--lagoon-2:#16707F;--foam:#E7F2F1;--sand:#F4EEE6;--sand-2:#EAE1D4;
+  --ground:#FFFFFF;--ink:#1B2A2E;--muted:#5C6B6E;--line:#E4DED4;
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
+  --body:"Outfit","Segoe UI","Helvetica Neue",Arial,sans-serif;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 150px);background:#fff}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:1.06rem;line-height:1.65;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--lagoon);outline-offset:3px;border-radius:4px}
+.wrap{width:min(1240px,100% - 3rem);margin-inline:auto}
+.h2{font:300 clamp(2rem,4.2vw,3.4rem)/1.08 var(--display);font-variation-settings:"opsz" 144;letter-spacing:-.02em;margin:0 0 1rem;text-wrap:balance}
+.h2 em{font-style:italic;color:var(--lagoon-2)}
+.lead{color:var(--muted);font-size:1.15rem;max-width:58ch;margin:0}
+
+/* Gombok */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;min-height:50px;padding:.85rem 1.6rem;border-radius:999px;font:500 1rem/1 var(--body);text-decoration:none;border:1px solid transparent;cursor:pointer;transition:background-color .2s ease,color .2s ease,border-color .2s ease,transform .15s ease}
+.btn:active{transform:scale(.97)}
+.btn-red{background:var(--riu);color:#fff}
+.btn-red:hover{background:var(--riu-dark)}
+.btn-line{border-color:var(--ink);color:var(--ink);background:transparent}
+.btn-line:hover{background:var(--ink);color:#fff}
+.btn svg{width:18px;height:18px;flex:none}
+
+/* Fejléc: két logó */
+.top{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:76px}
+.brands{display:flex;align-items:center;gap:clamp(.8rem,2vw,1.4rem)}
+.brands img.atlasz{height:40px;width:auto}
+.brands img.riu{height:44px;width:auto}
+.brands .x{width:1px;height:38px;background:var(--line)}
+.top .phone{display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;font-weight:500;min-height:44px}
+.top .phone svg{width:18px;height:18px;color:var(--riu)}
+
+/* Úti cél fülek */
+.tabs-bar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 77px);z-index:25;background:#fff;border-bottom:1px solid var(--line)}
+.tabs{display:flex;gap:.3rem;overflow-x:auto;scrollbar-width:none;padding:.7rem 0;scroll-snap-type:x proximity}
+.tabs::-webkit-scrollbar{display:none}
+@media (min-width:760px){.tabs{flex-wrap:wrap;justify-content:center;overflow-x:visible}}
+@media (max-width:759px){.tabs-bar .wrap{position:relative}.tabs-bar .wrap::after{content:"";position:absolute;top:0;right:0;bottom:0;width:36px;pointer-events:none;background:linear-gradient(to right,rgba(255,255,255,0),var(--sandy,#fff))}}
+.tab{flex:none;scroll-snap-align:start;display:inline-flex;align-items:center;gap:.5rem;min-height:46px;padding:.55rem 1.1rem;border-radius:999px;border:1px solid transparent;background:transparent;color:var(--muted);font:500 1rem/1 var(--body);cursor:pointer;white-space:nowrap;transition:background-color .2s ease,color .2s ease,border-color .2s ease}
+.tab:hover{color:var(--ink);background:var(--sand)}
+.tab[aria-selected="true"]{background:var(--lagoon);color:#fff}
+.tab .count{font-size:.78rem;background:rgba(0,0,0,.08);border-radius:999px;padding:.15rem .45rem}
+.tab[aria-selected="true"] .count{background:rgba(255,255,255,.22)}
+
+/* Hero: horizont illusztráció */
+.hero{position:relative;overflow:hidden;background:linear-gradient(180deg,#FBE9DC 0%,#F8D9C6 38%,#9FD3D6 62%,#3E9CA8 82%,#0F5260 100%);min-height:min(640px,82svh);display:flex;align-items:flex-end}
+.sun{position:absolute;left:62%;top:22%;width:clamp(140px,18vw,240px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 50% 45%,#FFF6E8 0%,#FFD9A8 55%,rgba(255,190,140,0) 72%);animation:sunrise 2.2s cubic-bezier(.2,.8,.2,1) both}
+@keyframes sunrise{from{transform:translateY(60px);opacity:0}to{transform:none;opacity:1}}
+.waves{position:absolute;left:0;right:0;bottom:0;height:46%;pointer-events:none}
+.waves svg{position:absolute;left:0;width:200%;height:100%}
+.waves .w1{animation:drift 26s linear infinite;opacity:.35}
+.waves .w2{animation:drift 18s linear infinite reverse;opacity:.25;bottom:-12%}
+@keyframes drift{to{transform:translateX(-50%)}}
+.hero-body{position:relative;z-index:2;padding-block:clamp(5rem,10vw,7rem) clamp(3rem,6vw,4.5rem);color:#fff}
+.eyebrow{display:inline-flex;align-items:center;gap:.6rem;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:.4rem .95rem;border-radius:999px;font-weight:500;font-size:.95rem;color:#fff}
+.hero h1{font:300 clamp(2.6rem,6.4vw,5.6rem)/1.02 var(--display);font-variation-settings:"opsz" 144;letter-spacing:-.03em;margin:1.2rem 0 1.2rem;max-width:15ch;color:#fff;text-shadow:0 2px 30px rgba(15,82,96,.35);text-wrap:balance}
+.hero h1 em{font-style:italic}
+.hero p{font-size:1.2rem;max-width:46ch;margin:0 0 2rem;color:rgba(255,255,255,.95);text-shadow:0 1px 12px rgba(15,82,96,.4)}
+.hero .btn-line{border-color:#fff;color:#fff}
+.hero .btn-line:hover{background:#fff;color:var(--lagoon)}
+.dest-strip{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:2.2rem}
+.dest-strip button{min-height:40px;padding:.4rem .9rem;border-radius:999px;border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.12);color:#fff;font:500 .95rem/1 var(--body);cursor:pointer;transition:background-color .2s ease}
+.dest-strip button:hover{background:rgba(255,255,255,.3)}
+
+/* Úti cél panel */
+.dest{padding-block:clamp(3rem,6vw,4.5rem)}
+.dest-head{display:grid;grid-template-columns:1.1fr .9fr;gap:2rem 4rem;align-items:end;margin-bottom:2.4rem}
+.dest-name{font:300 clamp(2.4rem,5.4vw,4.4rem)/1 var(--display);font-variation-settings:"opsz" 144;letter-spacing:-.03em;margin:.3rem 0 0}
+.dest-kicker{color:var(--riu);font-weight:600;font-size:.9rem;letter-spacing:.08em;text-transform:uppercase}
+.dest-meta{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{display:inline-flex;align-items:center;gap:.4rem;background:var(--sand);border-radius:999px;padding:.4rem .9rem;font-size:.92rem;font-weight:500}
+
+/* Szállodakártyák */
+.hotels{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.4rem}
+.hotel{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s ease}
+.hotel:hover{transform:translateY(-6px);box-shadow:0 30px 50px -34px rgba(15,82,96,.55)}
+.hotel-img{position:relative;aspect-ratio:4/3;background:var(--foam);overflow:hidden}
+.hotel-img img{width:100%;height:100%;object-fit:cover;transition:transform 1s cubic-bezier(.2,.8,.2,1)}
+.hotel:hover .hotel-img img{transform:scale(1.06)}
+.hotel-img .badge{position:absolute;left:1rem;top:1rem;background:#fff;color:var(--riu);font-weight:600;font-size:.82rem;border-radius:999px;padding:.35rem .75rem}
+.hotel-body{padding:1.3rem 1.4rem 1.4rem;display:flex;flex-direction:column;gap:.6rem;flex:1}
+.stars{display:inline-flex;gap:2px;color:#E9A93B}
+.stars svg{width:15px;height:15px}
+.hotel h3{font:400 1.55rem/1.15 var(--display);letter-spacing:-.01em;margin:0}
+.hotel .loc{color:var(--muted);font-size:.95rem;display:flex;align-items:center;gap:.35rem}
+.hotel .loc svg{width:15px;height:15px;color:var(--lagoon-2)}
+.feat{list-style:none;margin:.2rem 0 0;padding:0;display:flex;flex-wrap:wrap;gap:.4rem}
+.feat li{font-size:.85rem;background:var(--foam);color:var(--lagoon);border-radius:8px;padding:.25rem .6rem;font-weight:500}
+.hotel-foot{margin-top:auto;padding-top:1rem;border-top:1px dashed var(--line);display:flex;justify-content:space-between;align-items:end;gap:1rem}
+.price small{display:block;color:var(--muted);font-size:.85rem}
+.price strong{font:400 1.9rem/1 var(--display);letter-spacing:-.02em}
+.price span{font-size:.9rem;color:var(--muted)}
+.hotel .btn{min-height:44px;padding:.65rem 1.1rem;font-size:.95rem}
+
+/* Üres állapot, amíg nincs adat */
+.empty{border:1.5px dashed var(--sand-2);border-radius:22px;padding:clamp(2rem,5vw,3.5rem);display:grid;grid-template-columns:auto 1fr auto;gap:1.5rem 2rem;align-items:center;background:linear-gradient(135deg,var(--sand) 0%,#fff 100%)}
+.empty .ico{width:64px;height:64px;border-radius:50%;background:#fff;display:grid;place-items:center;color:var(--lagoon-2)}
+.empty .ico svg{width:30px;height:30px}
+.empty h3{font:400 1.6rem/1.2 var(--display);margin:0 0 .3rem}
+.empty p{margin:0;color:var(--muted)}
+
+/* Miért RIU + Atlasz */
+.why{background:var(--sand)}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2.2rem}
+.why-item{background:#fff;border-radius:20px;padding:1.5rem}
+.why-item svg{width:32px;height:32px;color:var(--riu);margin-bottom:.8rem}
+.why-item h3{font:400 1.25rem/1.2 var(--display);margin:0 0 .35rem}
+.why-item p{margin:0;color:var(--muted);font-size:.98rem}
+
+/* Ajánlatkérés */
+.enquire{background:var(--lagoon);color:#fff;position:relative;overflow:hidden}
+.enquire::before{content:"";position:absolute;right:-10%;bottom:-40%;width:60%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.1),rgba(255,255,255,0) 65%)}
+.enquire-grid{position:relative;display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(2rem,5vw,4.5rem);align-items:start;padding-block:clamp(3.5rem,7vw,5.5rem)}
+.enquire .h2{color:#fff}
+.enquire .h2 em{color:#BFE6E4}
+.enquire .lead{color:#CFE7E6}
+.contact{display:grid;gap:.7rem;margin-top:2rem;max-width:420px}
+.contact a{display:flex;align-items:center;gap:1rem;text-decoration:none;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:.9rem 1.1rem;transition:background-color .2s ease}
+.contact a:hover{background:rgba(255,255,255,.15)}
+.contact .ico{width:44px;height:44px;border-radius:50%;background:#fff;color:var(--riu);display:grid;place-items:center;flex:none}
+.contact .ico svg{width:20px;height:20px}
+.contact span{display:block;font-size:.85rem;color:#CFE7E6}
+.contact strong{display:block;font-weight:500;font-size:1.1rem}
+form{background:#fff;color:var(--ink);border-radius:24px;padding:clamp(1.4rem,3vw,2.4rem);display:grid;grid-template-columns:1fr 1fr;gap:1.1rem 1rem}
+.form-title{grid-column:1/-1;font:400 1.7rem/1.15 var(--display);margin:0}
+.field{display:grid;gap:.4rem}
+.field.full{grid-column:1/-1}
+label,.legend{font-weight:500;font-size:.92rem}
+input,select,textarea{width:100%;font:400 1rem/1.4 var(--body);color:var(--ink);background:#FAF8F5;border:1px solid var(--line);border-radius:12px;padding:.8rem .95rem;min-height:50px}
+textarea{min-height:100px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--lagoon-2);box-shadow:0 0 0 3px rgba(22,112,127,.18)}
+.check{display:flex;gap:.7rem;align-items:flex-start;font-weight:400;font-size:.95rem;color:var(--muted)}
+.check input{width:20px;height:20px;min-height:0;margin:.15rem 0 0;accent-color:var(--lagoon);flex:none}
+.err{color:var(--riu-dark);font-size:.88rem;font-weight:500}
+form .btn{width:100%;min-height:54px}
+.done{grid-column:1/-1}
+.done h3{font:400 1.9rem/1.1 var(--display);margin:0 0 .5rem}
+.done p{color:var(--muted);margin:0 0 1rem}
+.done pre{white-space:pre-wrap;font:400 .95rem/1.5 var(--body);background:#FAF8F5;border:1px solid var(--line);border-radius:12px;padding:1rem;margin:0 0 1rem}
+
+footer{background:#fff;border-top:1px solid var(--line);padding:2rem 0;font-size:.95rem;color:var(--muted)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1rem}
+footer .brands img.atlasz{height:30px}
+footer .brands img.riu{height:34px}
+.mob-cta{display:none}
+
+/* Megjelenés */
+.js-motion .rv{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1);transition-delay:var(--d,0ms)}
+.js-motion .rv.in{opacity:1;transform:none}
+.panel-enter{animation:panelIn .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes panelIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+@media (max-width:960px){
+  .dest-head,.enquire-grid{grid-template-columns:1fr}
+  .why-grid{grid-template-columns:1fr 1fr}
+  .empty{grid-template-columns:1fr;text-align:left}
+}
+@media (max-width:620px){
+  body{padding-bottom:84px}
+  .brands img.atlasz{height:28px}.brands img.riu{height:32px}
+  .top .phone .num{display:none}
+  .top .wrap{min-height:64px}
+  .tabs-bar{top:calc(env(safe-area-inset-top,0px) + 65px)}
+  html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 130px)}
+  .hotels{grid-template-columns:1fr}
+  .why-grid{grid-template-columns:1fr}
+  form{grid-template-columns:1fr}
+  .mob-cta{display:flex;gap:.6rem;position:fixed;left:0;right:0;bottom:0;z-index:40;padding:.7rem .8rem calc(.7rem + env(safe-area-inset-bottom,0px));background:rgba(255,255,255,.96);border-top:1px solid var(--line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+  .mob-cta .btn{flex:1;min-height:50px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+
+/* Hero: sötét szöveg a világos égen */
+.hero-body{color:var(--ink)}
+.eyebrow{background:rgba(255,255,255,.65);border-color:rgba(15,82,96,.18);color:var(--lagoon)}
+.hero h1{color:var(--ink);text-shadow:none}
+.hero h1 em{color:var(--lagoon)}
+.hero p{color:#1F3B40;text-shadow:none;font-weight:400}
+.dest-strip button{border-color:rgba(255,255,255,.8);background:rgba(255,255,255,.7);color:var(--lagoon)}
+.dest-strip button:hover{background:#fff}
+
+/* Kártya kattinthatóság + képhely */
+.hotel[data-open]{cursor:pointer}
+.hotel[data-open]:focus-visible{outline:2px solid var(--lagoon);outline-offset:3px}
+.ph{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:.5rem;color:var(--lagoon-2);background:linear-gradient(160deg,#FBE9DC 0%,#BFE3E2 60%,#7FC0C6 100%);font-weight:500;font-size:.95rem}
+.ph svg{width:44px;height:44px}
+.ph.big{position:relative;min-height:260px}
+
+/* Részletek ablak */
+dialog#hotel-dlg{padding:0;border:0;border-radius:26px;width:min(980px,100% - 2rem);max-height:calc(100dvh - 2rem);background:#fff;color:var(--ink);box-shadow:0 50px 100px -40px rgba(15,82,96,.6);overflow:hidden}
+dialog#hotel-dlg::backdrop{background:rgba(15,82,96,.45);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+dialog#hotel-dlg[open]{animation:dlgIn .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes dlgIn{from{opacity:0;transform:translateY(24px) scale(.98)}to{opacity:1;transform:none}}
+.dlg-inner{max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain;position:relative}
+.dlg-close{position:sticky;top:1rem;margin:1rem 1rem -4rem auto;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:0;background:#fff;color:var(--ink);cursor:pointer;box-shadow:0 6px 20px -6px rgba(0,0,0,.35);z-index:3}
+.dlg-close svg{width:22px;height:22px}
+.dlg-hero{aspect-ratio:21/8;position:relative;overflow:hidden;background:var(--foam)}
+.dlg-hero img{width:100%;height:100%;object-fit:cover}
+.dlg-hero .ph.big{position:absolute;inset:0;min-height:0}
+.dlg-content{padding:clamp(1.4rem,4vw,2.6rem)}
+.dlg-title{font:300 clamp(2rem,4.5vw,3.2rem)/1.05 var(--display);font-variation-settings:"opsz" 144;letter-spacing:-.02em;margin:.3rem 0 .6rem}
+.dlg-sub{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem 1.2rem;margin-bottom:1rem}
+.dlg-sub .loc{display:flex;align-items:center;gap:.35rem;color:var(--muted)}
+.dlg-sub .loc svg{width:16px;height:16px;color:var(--lagoon-2)}
+.dlg-intro{font-size:1.08rem;color:#33464A;margin:1.2rem 0 1.4rem;max-width:72ch}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:.7rem;margin:0}
+.facts div{background:var(--sand);border-radius:14px;padding:.85rem 1rem}
+.facts dt{font-size:.82rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--lagoon-2)}
+.facts dd{margin:.2rem 0 0;font-size:.98rem}
+.dlg-h{font:400 1.7rem/1.2 var(--display);margin:2.4rem 0 1rem}
+.flight{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:1rem}
+.flight div{border:1px solid var(--line);border-radius:14px;padding:.8rem 1rem;font-size:.98rem}
+.flight .fl-lbl{display:inline-block;background:var(--lagoon);color:#fff;border-radius:999px;font-size:.78rem;font-weight:600;padding:.15rem .6rem;margin-right:.5rem}
+.flight small{display:block;color:var(--muted);margin-top:.25rem}
+.date-list{border-top:1px solid var(--line)}
+.dl-group{font:400 1.3rem/1.2 var(--display);color:var(--riu-dark);margin:1.6rem 0 .6rem}
+.date-row{display:grid;grid-template-columns:1.6fr .9fr 1fr auto;gap:1rem;align-items:center;padding:1rem .2rem;border-bottom:1px solid var(--line);transition:background-color .2s ease}
+.date-row:hover{background:var(--foam)}
+.dr-when strong{display:block;font:400 1.2rem/1.2 var(--display)}
+.dr-when small,.dr-price small,.dr-total small{display:block;color:var(--muted);font-size:.85rem}
+.dr-price strong{font:400 1.45rem/1.1 var(--display);color:var(--riu-dark)}
+.dr-total span{font-weight:500}
+.date-row .btn{min-height:44px;padding:.6rem 1.1rem;font-size:.95rem}
+.dlg-note{color:var(--muted);font-size:.92rem;margin:.9rem 0 0}
+.acc details{border-bottom:1px solid var(--line)}
+.acc summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 0;font-weight:500;font-size:1.08rem;min-height:48px}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary::after{content:"+";font:300 1.6rem/1 var(--body);color:var(--lagoon-2);transition:transform .25s ease}
+.acc details[open] summary::after{transform:rotate(45deg)}
+.acc-body{padding:0 0 1.2rem;color:#33464A}
+.acc-body p{margin:0 0 .7rem}
+.acc-body ul{margin:0 0 .7rem;padding-left:1.2rem}
+@media (max-width:760px){
+  dialog#hotel-dlg{width:100%;max-width:100%;max-height:100dvh;height:100dvh;border-radius:0}
+  .dlg-inner{max-height:100dvh}
+  .dlg-hero{aspect-ratio:16/10}
+  .flight{grid-template-columns:1fr}
+  .date-row{grid-template-columns:1fr 1fr;row-gap:.6rem}
+  .date-row .dr-when{grid-column:1/-1}
+  .date-row .btn{grid-column:1/-1;width:100%}
+}
+.hotel-foot{flex-direction:column;align-items:stretch}
+.price strong{white-space:nowrap}
+.hotel-foot .btn{width:100%}
+
+/* ===== NYÁRI TÉMA ===== */
+:root{--turq:#13B3C4;--sea:#0B7A93;--sun:#FFC845;--coral:#FF6F59;--sandy:#FBE6C0;--ground:#FFFBF4;--line:#EFE2CC;--lagoon:#0B7A93;--lagoon-2:#0E95AE;--foam:#E3F6F8;--sand:#FCEFD8}
+body{background:var(--ground)}
+.top{background:rgba(255,251,244,.94)}
+/* Hero jelenet */
+.hero{background:#7FD3EE;min-height:min(720px,88svh)}
+.scene{position:absolute;inset:0;width:100%;height:100%}
+.palm{animation:sway 6s ease-in-out infinite}
+.palm.p2{animation-duration:7.5s;animation-delay:-2s}
+.palm.p3{animation-duration:5.5s;animation-delay:-1s}
+@keyframes sway{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.8deg)}}
+.clouds{animation:clouds 60s linear infinite}
+@keyframes clouds{to{transform:translateX(120px)}}
+.glints{animation:glint 3s ease-in-out infinite}
+@keyframes glint{0%,100%{opacity:.35}50%{opacity:.85}}
+.foam{stroke-dasharray:40 18;animation:foam 9s linear infinite}
+@keyframes foam{to{stroke-dashoffset:-580}}
+.sunglow{animation:pulse 5s ease-in-out infinite;transform-origin:1060px 300px}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.hero-body{padding-block:clamp(4.5rem,9vw,6.5rem) clamp(9rem,18vw,13rem);align-self:flex-start}
+.hero h1{color:#0B3A47}
+.hero h1 em{color:var(--sea)}
+.hero p{color:#16414C;font-weight:500}
+.eyebrow{background:rgba(255,255,255,.7);color:var(--sea);border-color:rgba(255,255,255,.9)}
+/* Fülek */
+.tabs-bar{background:var(--sandy);border-bottom:0;box-shadow:0 10px 24px -20px rgba(11,122,147,.6)}
+.tab{color:#5A4A2E}
+.tab:hover{background:rgba(255,255,255,.6);color:#0B3A47}
+.tab[aria-selected="true"]{background:var(--turq);color:#fff;box-shadow:0 8px 18px -10px rgba(19,179,196,.9)}
+/* Úti cél fej */
+.dest{position:relative;overflow:hidden}
+.dest::after{content:"";position:absolute;right:-60px;top:-40px;width:340px;height:340px;background:var(--turq);opacity:.07;border-radius:50%;pointer-events:none}
+.dest-kicker{color:var(--coral)}
+.dest-name{color:#0B3A47}
+.chip{background:#fff;border:1px solid var(--line)}
+/* Kártyák */
+.hotel{border:0;box-shadow:0 18px 40px -30px rgba(11,122,147,.55);border-radius:26px}
+.hotel:hover{box-shadow:0 34px 60px -30px rgba(11,122,147,.6)}
+.hotel-img .badge{color:var(--riu)}
+.feat li{background:var(--foam);color:var(--sea)}
+.hotel-foot{border-top:1px dashed #E8D6B8}
+.ph{background:linear-gradient(180deg,#8FD8F0 0%,#CDEFF5 52%,#2BB8CB 53%,#0B8AA3 100%);color:#fff;text-shadow:0 1px 6px rgba(11,58,71,.5)}
+.ph::before{content:"";position:absolute;right:22%;top:18%;width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,#FFF4C7,#FFD66B 60%,rgba(255,214,107,0) 72%)}
+.ph .mini-palm{position:absolute;right:6%;bottom:-6%;width:44%;height:auto;animation:sway 6s ease-in-out infinite;transform-origin:50% 100%}
+.ph span{position:relative;z-index:1;background:rgba(11,58,71,.35);padding:.3rem .8rem;border-radius:999px;text-shadow:none}
+.empty{background:linear-gradient(135deg,#FCEFD8 0%,#FFFBF4 100%);border-color:#EFD9B4}
+.empty .ico{background:linear-gradient(180deg,#8FD8F0,#2BB8CB);overflow:hidden;position:relative}
+.empty .ico .mini-palm{width:120%;height:auto;position:absolute;bottom:-18%;right:-30%}
+/* Miért: tenger háttér hullámmal */
+.why{position:relative;background:linear-gradient(180deg,#13B3C4 0%,#0B8AA3 100%);color:#fff}
+.why .wave-top{display:block;width:100%;height:60px}
+.why .h2{color:#fff}.why .h2 em{color:#FFE7A3}.why .lead{color:#E2F7FA}
+.why-item{background:rgba(255,255,255,.96);color:var(--ink)}
+.why-item svg{color:var(--coral)}
+/* Ajánlatkérés: mélytenger pálmalevéllel */
+.enquire{background:radial-gradient(120% 90% at 100% 100%,#0E95AE 0%,#0B6F86 45%,#0A5568 100%)}
+.enquire::before{display:none}
+.enq-palm{position:absolute;left:-60px;top:-30px;width:420px;height:auto;opacity:.07;transform:rotate(160deg);pointer-events:none}
+.enquire .h2 em{color:#FFE7A3}
+.contact .ico{color:var(--coral)}
+footer{background:var(--sandy);border-top:0}
+/* Részletek ablak nyáriasítva */
+.facts div{background:var(--sand)}
+.facts dt{color:var(--coral)}
+.flight .fl-lbl{background:var(--turq)}
+.date-row:hover{background:var(--foam)}
+.dr-price strong{color:var(--sea)}
+.acc summary::after{color:var(--coral)}
+@media (max-width:760px){.palm.p3{display:none}.hero-body{padding-bottom:clamp(11rem,40vw,14rem)}}
+.hero .btn-line{background:#fff!important;border-color:#fff!important;color:var(--sea)!important}
+.hero .btn-line:hover{background:var(--sandy)!important}
+.hero p{text-shadow:0 0 14px rgba(255,255,255,.85),0 0 4px rgba(255,255,255,.7)}
+.foam{stroke-dasharray:none;stroke-width:7;opacity:.9;animation:foamUp 4s ease-in-out infinite}
+@keyframes foamUp{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
+.gal{background:#0B3A47}
+.gal-main{position:relative;aspect-ratio:16/8;overflow:hidden}
+.gal-main img{width:100%;height:100%;object-fit:cover;animation:galIn .45s ease}
+@keyframes galIn{from{opacity:.4}to{opacity:1}}
+.gal-nav{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;border:0;background:rgba(255,255,255,.9);color:var(--ink);display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 18px -6px rgba(0,0,0,.4)}
+.gal-nav:hover{background:#fff}
+.gal-nav svg{width:22px;height:22px}
+.gal-nav.prev{left:1rem}.gal-nav.next{right:1rem}
+.gal-count{position:absolute;left:1rem;bottom:1rem;background:rgba(11,58,71,.7);color:#fff;font-size:.85rem;font-weight:500;border-radius:999px;padding:.25rem .7rem}
+.gal-thumbs{display:flex;gap:.5rem;padding:.6rem;overflow-x:auto;scrollbar-width:none}
+.gal-th{flex:none;width:96px;height:64px;border-radius:10px;overflow:hidden;border:2px solid transparent;padding:0;cursor:pointer;opacity:.65;background:none;transition:opacity .2s ease,border-color .2s ease}
+.gal-th img{width:100%;height:100%;object-fit:cover}
+.gal-th.on,.gal-th:hover{opacity:1;border-color:var(--sun)}
+@media (max-width:760px){.gal-main{aspect-ratio:4/3}.gal-th{width:72px;height:50px}}
+
+/* ===== FOTÓS DESIGN (rajzok helyett) ===== */
+.hero{background:#0B3A47;min-height:min(760px,90svh);align-items:flex-end}
+.slides{position:absolute;inset:0;overflow:hidden}
+.slides img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.04);transition:opacity 1.6s ease,transform 7.5s ease-out;image-rendering:auto;backface-visibility:hidden}
+.slides img.on{opacity:1;transform:scale(1)}
+.hero-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,40,50,.72) 0%,rgba(6,40,50,.35) 45%,rgba(6,40,50,0) 70%),linear-gradient(180deg,rgba(6,40,50,.35) 0%,rgba(6,40,50,0) 30%,rgba(6,40,50,0) 60%,rgba(6,40,50,.65) 100%)}
+.hero-body{padding-block:clamp(6rem,12vw,9rem) clamp(4rem,8vw,6rem);align-self:flex-end;color:#fff}
+.hero h1{color:#fff;text-shadow:0 4px 30px rgba(0,0,0,.35)}
+.hero h1 em{color:#9FE7EE}
+.hero p{color:rgba(255,255,255,.94);text-shadow:0 1px 12px rgba(0,0,0,.45)}
+.eyebrow{background:rgba(255,255,255,.16);color:#fff;border-color:rgba(255,255,255,.45)}
+.hero .btn-line{background:rgba(255,255,255,.14)!important;border-color:#fff!important;color:#fff!important;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.hero .btn-line:hover{background:#fff!important;color:var(--sea)!important}
+.slide-cap{position:absolute;right:clamp(1rem,3vw,2.5rem);bottom:clamp(1rem,3vw,2rem);z-index:3;background:rgba(255,255,255,.92);color:var(--ink);border:0;border-radius:999px;padding:.55rem 1rem;font:500 .92rem/1.2 var(--body);cursor:pointer;box-shadow:0 10px 24px -12px rgba(0,0,0,.5)}
+.slide-cap span{color:var(--muted)}
+.slide-cap b{color:var(--riu);margin-left:.2rem}
+/* Képhely logóval, ha nincs fotó */
+.ph{background:var(--sand)!important;color:var(--muted);text-shadow:none}
+.ph::before{display:none}
+.ph .ph-logo{width:34%;max-width:140px;height:auto;opacity:.9}
+.ph span{background:none;color:var(--muted);padding:0}
+.empty .ico{background:#fff!important}
+.empty .ico .ph-logo{width:70%;height:auto}
+/* Hátterek fotóval */
+.why{background:linear-gradient(180deg,rgba(8,70,88,.82),rgba(8,70,88,.9)),var(--bg,linear-gradient(180deg,#13B3C4,#0B8AA3)) center/cover no-repeat;background-attachment:scroll}
+.why-item{background:rgba(255,255,255,.93);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.enquire{background:linear-gradient(90deg,rgba(6,50,62,.92) 0%,rgba(6,50,62,.8) 50%,rgba(6,50,62,.6) 100%),var(--bg,#0A5568) center/cover no-repeat}
+/* Kártyakép finom fénycsík hoverre */
+.hotel-img::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,0) 40%,rgba(255,255,255,.35) 50%,rgba(255,255,255,0) 60%);transform:translateX(-120%);transition:transform .9s ease}
+.hotel:hover .hotel-img::after{transform:translateX(120%)}
+@media (max-width:760px){.hero{min-height:min(680px,88svh)}.slide-cap{left:1rem;right:auto}}
+.dest::after{display:none}
+.btn.ext{margin-top:1.2rem;border-color:var(--sea);color:var(--sea)}
+.btn.ext:hover{background:var(--sea);color:#fff}
+.no-dates{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1rem 1.5rem;background:var(--sand);border-radius:16px;padding:1.2rem 1.4rem}
+.no-dates p{margin:0;max-width:56ch}
+
+.flight.multi{grid-template-columns:1fr 1fr}
+.flight > div p{margin:0 0 .5rem}
+.flight > div p:last-child{margin:0}
+.fl-type{display:block;font-weight:600;color:var(--sea);margin-bottom:.5rem}
+.dr-when .dr-fl{color:var(--sea);margin-top:.15rem}
+
+/* Kevés szálloda esetén kitöltő elrendezés */
+.hotels.n1{grid-template-columns:1fr}
+.hotels.n1 .hotel{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}
+.hotels.n1 .hotel-img{aspect-ratio:auto;height:100%;min-height:460px}
+.hotels.n1 .hotel-body{padding:clamp(1.6rem,3vw,2.4rem);gap:.85rem}
+.hotels.n1 .hotel-body h3{font-size:clamp(1.8rem,2.6vw,2.5rem);line-height:1.1}
+.hotel-intro{margin:0;color:#3D5C63;line-height:1.6;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.hotel-thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin:.2rem 0}
+.hotel-thumbs img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px;display:block}
+.hotels.n2{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:900px){
+  .hotels.n1 .hotel{grid-template-columns:1fr}
+  .hotels.n1 .hotel-img{min-height:0;height:auto;aspect-ratio:4/3}
+  .hotels.n2{grid-template-columns:1fr}
+}
+
+/* Gombok: magenta */
+:root{--magenta:#D1007A;--magenta-dark:#A8005F}
+.btn-red{background:var(--magenta);color:#fff}
+.btn-red:hover,.btn-red:focus-visible{background:var(--magenta-dark)}
+.btn-line{border-color:var(--magenta);color:var(--magenta);background:transparent}
+.btn-line:hover,.btn-line:focus-visible{background:var(--magenta);border-color:var(--magenta);color:#fff}
+.hero .btn-line{background:#fff!important;border-color:#fff!important;color:var(--magenta)!important;backdrop-filter:none;-webkit-backdrop-filter:none}
+.hero .btn-line:hover{background:var(--magenta)!important;border-color:var(--magenta)!important;color:#fff!important}
+.mob-cta .btn-line{background:#fff}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brands" href="#top" aria-label="Atlasz Travel és RIU Hotels &amp; Resorts, oldal teteje">
+      <img class="atlasz" src="kepek/logo-abb3ac7f22.png" alt="Atlasz Travel" width="552" height="192">
+      <span class="x" aria-hidden="true"></span>
+      <img class="riu" src="kepek/logo-49bc5924c3.png" alt="RIU Hotels &amp; Resorts" width="343" height="203">
+    </a>
+    <a class="phone" href="tel:+36202668144" aria-label="Hívás: 06 20 266 8144"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><span class="num">06 20 266 8144</span></a>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="slides" id="slides" aria-hidden="true"></div>
+    <div class="hero-shade" aria-hidden="true"></div>
+    <div class="wrap hero-body">
+      <span class="eyebrow">Az Atlasz Travel kínálatában</span>
+      <h1>RIU szállodák, <em>közvetlenül a tengerparton</em></h1>
+      <p>Kilenc úti cél, egy megbízható szállodalánc. Válaszd ki, hová vágysz, a többit mi intézzük.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:.8rem"><a class="btn btn-red" href="#kinalat">Nézd meg a szállodákat</a><a class="btn btn-line" href="#ajanlat">Ajánlatot kérek</a></div>
+    </div>
+  </div>
+
+  <nav class="tabs-bar" aria-label="Úti célok">
+    <div class="wrap"><div class="tabs" role="tablist" id="tabs"></div></div>
+  </nav>
+
+  <section class="dest" id="kinalat">
+    <div class="wrap" id="panel" role="tabpanel" aria-live="polite"></div>
+  </section>
+
+  <section class="why">
+    <div class="wrap" style="padding-block:clamp(3rem,6vw,4.5rem)">
+      <h2 class="h2">Miért <em>RIU</em> az Atlasz Travellel?</h2>
+      <p class="lead">Nemzetközi szállodalánc, ismerős minőség minden úti célon, és egy iroda, amely a teljes utazást összeállítja neked.</p>
+      <div class="why-grid">
+        <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 4a8 8 0 0 0-11 8l11-8zM12 8l4 13M2 21h20M6 12l11-8"/></svg><h3>Tengerparti fekvés</h3><p>Az ajánlatunkban szereplő szállodák a tenger közelében, strandközeli helyen vannak.</p></div>
+        <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg><h3>Repülővel együtt</h3><p>Repülőjegyet, transzfert és biztosítást is egy helyen intézünk.</p></div>
+        <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg><h3>Személyes segítség</h3><p>Irodáinkban és telefonon is segítünk kiválasztani a hozzád illő szállodát.</p></div>
+        <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg><h3>Biztos háttér</h3><p>Utazási irodaként a foglalástól a hazaérkezésig melletted állunk.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="enquire" id="ajanlat">
+    <div class="wrap enquire-grid">
+      <div>
+        <h2 class="h2">Kérj <em>ajánlatot</em></h2>
+        <p class="lead">Írd meg, melyik szálloda és milyen időpont érdekel, és munkatársunk hamarosan jelentkezik a személyre szabott ajánlattal.</p>
+        <div class="contact">
+          <a href="tel:+36202668144"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span><div><span>Telefon</span><strong>06 20 266 8144</strong></div></a>
+          <a href="mailto:gyor@atlasztravel.hu"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><div><span>E-mail</span><strong>gyor@atlasztravel.hu</strong></div></a>
+          <a href="https://www.google.com/maps/search/?api=1&amp;query=Atlasz+Travel+Gy%C5%91r+9021+Gy%C5%91r+Kir%C3%A1ly+u.+1." target="_blank" rel="noopener"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><div><span>Iroda</span><strong>9021 Győr, Király u. 1.</strong></div></a>
+        </div>
+      </div>
+      <form id="form" novalidate>
+        <p class="form-title">Ajánlatkérés</p>
+        <div class="field"><label for="f-name">Név</label><input id="f-name" name="nev" autocomplete="name" required><span class="err" data-for="f-name"></span></div>
+        <div class="field"><label for="f-phone">Telefonszám</label><input id="f-phone" name="telefon" type="tel" autocomplete="tel" inputmode="tel" required><span class="err" data-for="f-phone"></span></div>
+        <div class="field full"><label for="f-email">E-mail-cím</label><input id="f-email" name="email" type="email" autocomplete="email" required><span class="err" data-for="f-email"></span></div>
+        <div class="field"><label for="f-dest">Úti cél</label><select id="f-dest" name="uticel"></select></div>
+        <div class="field"><label for="f-hotel">Szálloda</label><select id="f-hotel" name="szalloda"></select></div>
+        <div class="field"><label for="f-when">Mikor utaznál?</label><input id="f-when" name="idopont" placeholder="Pl. 2027. február, 7 éj"></div>
+        <div class="field"><label for="f-people">Utasok</label><input id="f-people" name="utasok" placeholder="Pl. 2 felnőtt, 1 gyermek (6 éves)"></div>
+        <div class="field full"><label for="f-msg">Üzenet (nem kötelező)</label><textarea id="f-msg" name="uzenet" placeholder="Pl. ellátás, szobatípus, honnan repülnél"></textarea></div>
+        <div class="field full"><label class="check"><input type="checkbox" id="f-gdpr" name="adatkezeles" required> Hozzájárulok, hogy az Atlasz Travel az ajánlatkéréssel kapcsolatban felvegye velem a kapcsolatot.</label><span class="err" data-for="f-gdpr"></span></div>
+        <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label for="f-web">Ezt a mezőt hagyja üresen</label><input id="f-web" name="weboldal" tabindex="-1" autocomplete="off"></div>
+        <div class="field full"><span class="err" id="send-err" role="alert"></span><button class="btn btn-red" type="submit" id="send-btn">Ajánlatkérés elküldése</button></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<dialog id="hotel-dlg" aria-labelledby="dlg-title">
+  <div class="dlg-inner">
+    <button class="dlg-close" type="button" aria-label="Bezárás"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div id="dlg-body"></div>
+  </div>
+</dialog>
+
+<footer>
+  <div class="wrap">
+    <span class="brands"><img class="atlasz" src="kepek/logo-abb3ac7f22.png" alt="Atlasz Travel" width="552" height="192"><span class="x" aria-hidden="true"></span><img class="riu" src="kepek/logo-49bc5924c3.png" alt="RIU Hotels &amp; Resorts" width="343" height="203"></span>
+    <span>Telefon: <a href="tel:+36202668144">06 20 266 8144</a></span>
+    <span>E-mail: <a href="mailto:gyor@atlasztravel.hu">gyor@atlasztravel.hu</a></span>
+    <span>9021 Győr, Király u. 1. · atlasztravelgyor.hu</span>
+  </div>
+</footer>
+
+<div class="mob-cta">
+  <a class="btn btn-line" href="tel:+36202668144">Hívás</a>
+  <a class="btn btn-red" href="#ajanlat">Ajánlatot kérek</a>
+</div>
+
+<script>
+// ===== ADATOK: ide kerülnek a szállodák úti célonként =====
+// Szállodánként: name, stars, location, img (kép), features (lista), nights, board, price (pl. "1 234 €"), note
+const DESTINATIONS = [
+  { id: "torokorszag",      name: "Törökország",      hotels: [
+    {
+      id: "riu-kaya-palazzo",
+      name: "Riu Kaya Palazzo Golf Resort",
+      stars: 5,
+      location: "Belek, Török Riviéra",
+      heroIdx: [0, 2],
+      gallery: [["kepek/0fc6717a03.webp", "A Riu Kaya Palazzo Golf Resort felülről: medencék, kert és a félköríves főépület"], ["kepek/d099da6ff7.webp", "Medencekomplexum hidakkal és kupolás bárokkal, mögötte a homokos part és a tenger"], ["kepek/5d7712ffca.webp", "Lagúnamedence pálmaszigetekkel, napernyőkkel, mellette a strand és a móló"], ["kepek/5d226f60cd.webp", "A resort és a tengerpart madártávlatból, mólókkal és napernyősorokkal"], ["kepek/43bb54a451.webp", "A főépület és a saját medencés villák, háttérben a strand és a tenger"], ["kepek/a705fbdfd6.webp", "Medencék napernyőkkel és kupolás bárokkal a tengerpart mellett"], ["kepek/cfd084b6ef.webp", "Medencebár napernyős ülőszigetekkel a vízben"], ["kepek/d02a5356d0.webp", "Tengerre néző szoba erkéllyel, kanapéval és íróasztallal"]],
+      features: ["Közvetlenül a tengerparton", "All inclusive", "22 medence, vízicsúszdák", "Indulás Budapestről vagy Debrecenből"],
+      nights: "8 nap / 7 éj", board: "all inclusive, repülővel", price: "964 275 Ft",
+      detail: {
+        intro: "Ötcsillagos, 2013-ban épült, 612 szobás golf- és tengerparti resort közvetlenül Belek homokos partján, a Török Riviérán. A szállodában 2 fedett és 20 kültéri medence, vízicsúszdák, gyerekmedence, wellnessrészleg török fürdővel, miniklub, élő zene és éjszakai klub várja a vendégeket, mellettük sport- és golflehetőségekkel. All inclusive ellátás, ingyenes wifi és az antalyai repülőtér közelsége teszi kényelmessé a nyaralást.",
+        facts: [["Elhelyezkedés", "közvetlenül a tengerparton, kb. 7 km Belek központjától, kb. 52 km Manavgattól"], ["Transzfer", "kb. 27 km az antalyai repülőtértől"], ["Szálloda", "ötcsillagos, 2013-ban épült, 612 szoba, akadálymentesített, ingyenes parkoló"], ["Repülő", "charterjárat Budapestről vagy Debrecenből, kb. 3 óra"], ["Poggyász", "feladható max. 20 kg/fő, kézipoggyász max. 8 kg (55×40×20 cm)"], ["Internet", "ingyenes wifi"]],
+        sections: [
+          ["Szobák", "<p>Fürdőszobás szobák erkéllyel vagy terasszal, széffel, telefonnal, TV-vel, wifivel, tea- és kávékészítővel, vasalókészlettel és szobapapuccsal. A fürdőszobában hajszárító, kozmetikai tükör, fürdőköpeny és piperecikkek. Gyerekeknek kiságy kérhető, nemdohányzó szobák is vannak.</p>"],
+          ["Ellátás: all inclusive", "<p>Főétkezések, snackek, alkoholmentes és alkoholos italok az árban. Kérésre diétás és gyerekételeket is készítenek. Étterem, bár, medencebár és strandbár várja a vendégeket.</p>"],
+          ["Medence, sport, wellness, szórakozás", "<p>2 fedett és 20 kültéri medence, gyerekmedence, vízicsúszdák, pezsgőfürdő, napozóterasz, játszótér és játszószoba.</p><p>Ingyenesen: boccia, strandröplabda, minigolf, aquafitness, asztalitenisz, darts, jóga, gimnasztika, aerobik, szauna, gőzfürdő, török fürdő. Felár ellenében: tenisz, golf, lovaglás, vízisí, szörf, jet-ski, banánozás, katamarán, búvárkodás, masszázs és szépségkezelések.</p><p>Élő zene, miniklub, minidiszkó és éjszakai klub.</p>"],
+          ["Az ár tartalmazza", "<ul><li>Repülőjegy (Budapest vagy Debrecen – Antalya – vissza), adók és illetékek</li><li>Repülőtéri transzfer a szállodába és vissza (angol nyelvű asszisztenciával)</li><li>Szállás a megadott éjszakákra, all inclusive ellátással</li></ul><p><strong>Nem tartalmazza:</strong> útlemondási és utasbiztosítás, fizetős szolgáltatások, személyes kiadások, fakultatív kirándulások.</p>"],
+          ["Fontos tudnivalók", "<ul><li>A charterjáratokra online check-in erősen ajánlott (legkorábban 36 órával indulás előtt, sunexpress.com); enélkül a reptéri check-in 5 €/fő/útvonal.</li><li>Ülőhelyfoglalásra a charterjáratokon nincs lehetőség.</li><li>Ősszel, télen és tavasszal a helyszínen csak telefonos magyar nyelvű asszisztencia érhető el.</li><li>A magyar nyelvű fakultatív programok minimum létszámhoz kötöttek.</li><li>A légitársaság a menetrend változtatásának jogát fenntartja. A leírás tájékoztató jellegű.</li></ul>"]
+        ],
+        flights: {
+          a: { label: "Indulás Budapestről", short: "Járat: Budapest 10:50 → Antalya 14:40, vissza 07:30 → 09:20", out: ["Budapest", "10:50", "Antalya", "14:40", "közvetlen, 2 ó 50 p"], back: ["Antalya", "07:30", "Budapest", "09:20", "közvetlen, 2 ó 50 p"] },
+          c: { label: "Indulás Debrecenből (12:45)", short: "Járat: Debrecen 12:45 → Antalya 16:45, vissza 09:45 → 11:45", out: ["Debrecen", "12:45", "Antalya", "16:45", "közvetlen, 3 ó"], back: ["Antalya", "09:45", "Debrecen", "11:45", "közvetlen, 3 ó"] },
+          b: { label: "Indulás Debrecenből (14:00)", short: "Járat: Debrecen 14:00 → Antalya 18:00, vissza 11:00 → 13:00", out: ["Debrecen", "14:00", "Antalya", "18:00", "közvetlen, 3 ó"], back: ["Antalya", "11:00", "Debrecen", "13:00", "közvetlen, 3 ó"] }
+        },
+        dates: [
+          ["2027-06-01", "964 275 Ft", "1 928 550 Ft", 8, 7, "a"],
+          ["2027-06-02", "968 955 Ft", "1 937 910 Ft", 8, 7, "c"],
+          ["2027-06-03", "968 955 Ft", "1 937 910 Ft", 8, 7, "a"],
+          ["2027-06-04", "968 955 Ft", "1 937 910 Ft", 8, 7, "a"],
+          ["2027-06-05", "968 955 Ft", "1 937 910 Ft", 8, 7, "b"],
+          ["2027-06-06", "968 955 Ft", "1 937 910 Ft", 8, 7, "a"],
+          ["2027-06-10", "985 725 Ft", "1 971 450 Ft", 8, 7, "a"],
+          ["2027-06-11", "1 002 495 Ft", "2 004 990 Ft", 8, 7, "a"],
+          ["2027-09-19", "1 020 825 Ft", "2 041 650 Ft", 8, 7, "a"],
+          ["2027-09-20", "999 375 Ft", "1 998 750 Ft", 8, 7, "c"],
+          ["2027-09-21", "982 605 Ft", "1 965 210 Ft", 8, 7, "c"],
+          ["2027-09-22", "982 605 Ft", "1 965 210 Ft", 8, 7, "c"],
+          ["2027-09-23", "987 285 Ft", "1 974 570 Ft", 8, 7, "a"]
+        ],
+        boardName: "All inclusive", fromCity: "Budapest vagy Debrecen"
+      }
+    }
+  ] },
+  { id: "portugalia",       name: "Portugália",       hotels: [
+    {
+      id: "riu-madeira",
+      name: "Riu Madeira",
+      stars: 4,
+      location: "Caniço, Madeira",
+      heroIdx: [0, 1],
+      gallery: [["kepek/9acecf8226.webp", "A Riu Madeira a caniçói óceánparton, mögötte Madeira zöld hegyoldalai"], ["kepek/ffa986a5f6.webp", "Medencék pálmafákkal és napernyőkkel közvetlenül az óceán felett"], ["kepek/e8a7e4d88f.webp", "Pálmafás medenceterasz, háttérben az Atlanti-óceán"], ["kepek/3e105a143e.webp", "Terasz étterem kilátással a medencékre és az óceánra"], ["kepek/81723bbb03.webp", "A medencék és a napozóterasz felülről"], ["kepek/c2e33e50dc.webp", "Óceánra néző szoba erkéllyel és külön nappalival"]],
+      features: ["24 órás all inclusive", "Közvetlenül az óceánparton", "Fűtött és fedett medence", "2022-ben teljesen felújítva"],
+      nights: "8–9 nap / 7 éj", board: "all inclusive, repülővel", price: "420 836 Ft",
+      detail: {
+        intro: "Négycsillagos, 24 órás all inclusive szálloda Madeira déli partján, Caniçóban, a hegyek ölelésében, közvetlenül az óceán mellett. A 2022-ben teljes körűen felújított, modern, 300 szobás szálloda legtöbb szobájából lélegzetelállító kilátás nyílik az óceánra. Fűtött medencék, animáció, wellness és kiváló portugál és nemzetközi gasztronómia várja a vendégeket, párok és családok számára egyaránt ideális.",
+        facts: [["Elhelyezkedés", "Caniço, Madeira déli része; éttermek és boltok a közelben, Funchal kb. 15 perc autóval"], ["Strand", "közvetlenül az óceánparton"], ["Transzfer", "kb. 10 km a madeirai repülőtértől"], ["Szálloda", "négycsillagos, 300 szoba, 2022-ben teljesen felújítva"], ["Repülő", "közvetlen járat Budapestről Funchalba, kb. 5 óra"], ["Internet", "ingyenes wifi"]],
+        sections: [
+          ["Szobák", "<p>Minden szobában két különálló vagy franciaágy, kanapé, erkély, légkondicionáló, wifi, síkképernyős műholdas TV, mini hűtő, hajszárító, telefon; széf felár ellenében. Max. 3 felnőtt vagy 2 felnőtt + 2 gyerek (2–12 év).</p><p><strong>Kétágyas szoba</strong> (30 m², városra néző).</p><p><strong>Oldalról óceánra néző szoba</strong> (30 m²).</p><p><strong>Óceánra néző junior lakosztály</strong> (50 m²).</p>"],
+          ["Ellátás: 24 órás all inclusive", "<p>A nap bármely szakában kérhető étel és ital. A főétteremben kontinentális reggeli, naponta változó portugál és nemzetközi fogások, grillételek; tematikus vacsorák. A Kulinarium à la carte étterem foglalással látogatható.</p>"],
+          ["Medence, wellness, szórakozás", "<p>2 kültéri medence (az egyik fűtött), fűtött gyerekmedence, fedett medence, napernyők és napozóágyak. Gőzfürdő, fitneszközpont, teniszpálya; felár ellenében masszázs, wellness- és szépségkezelések, mosoda.</p><p>Animáció, élő zene és esti szórakoztató programok.</p>"],
+          ["Az ár tartalmazza", "<ul><li>Repülőjegy (közvetlen járat Funchalba), adók és illetékek</li><li>Repülőtéri transzfer a szállodába és vissza</li><li>Szállás 7 éjszakára, 24 órás all inclusive ellátással</li><li>Magyar nyelvű telefonos asszisztencia</li></ul><p><strong>Nem tartalmazza:</strong> BBP- és sztornóbiztosítás, fizetős szolgáltatások, személyes kiadások, fakultatív kirándulások.</p>"],
+          ["Fontos tudnivalók", "<ul><li>A széf és egyes wellness-szolgáltatások felár ellenében vehetők igénybe.</li><li>A Kulinarium à la carte étterembe előzetes foglalás szükséges.</li><li>A leírás tájékoztató jellegű.</li></ul>"]
+        ],
+        flights: {
+          a: { label: "Délutáni indulás (14:30)", short: "Közvetlen járat: Budapest 14:30 → Funchal 19:40, vissza 20:20 → 01:05", out: ["Budapest", "14:30", "Funchal", "19:40", "közvetlen, 5 ó 10 p"], back: ["Funchal", "20:20", "Budapest", "01:05", "közvetlen, 4 ó 45 p"] },
+          b: { label: "Vasárnapi indulás (15:15)", short: "Közvetlen járat: Budapest 15:15 → Funchal 20:25, vissza 21:05 → 01:50", out: ["Budapest", "15:15", "Funchal", "20:25", "közvetlen, 5 ó 10 p"], back: ["Funchal", "21:05", "Budapest", "01:50", "közvetlen, 4 ó 45 p"] }
+        },
+        dates: [
+          ["2026-12-02", "420 836 Ft", "841 672 Ft", 9, 7, "a"],
+          ["2026-12-04", "420 836 Ft", "841 672 Ft", 9, 7, "a"],
+          ["2026-12-09", "428 036 Ft", "856 072 Ft", 8, 7, "a"],
+          ["2027-01-22", "480 600 Ft", "961 200 Ft", 8, 7, "a"],
+          ["2027-02-01", "480 600 Ft", "961 200 Ft", 8, 7, "a"],
+          ["2027-02-03", "478 436 Ft", "956 872 Ft", 8, 7, "a"],
+          ["2027-02-07", "473 400 Ft", "946 800 Ft", 8, 7, "b"],
+          ["2027-02-08", "477 000 Ft", "954 000 Ft", 8, 7, "a"],
+          ["2027-02-21", "477 000 Ft", "954 000 Ft", 8, 7, "b"],
+          ["2027-02-24", "460 436 Ft", "920 872 Ft", 8, 7, "a"],
+          ["2027-02-28", "467 636 Ft", "935 272 Ft", 8, 7, "b"],
+          ["2027-03-01", "467 636 Ft", "935 272 Ft", 8, 7, "a"],
+          ["2027-03-03", "455 400 Ft", "910 800 Ft", 8, 7, "a"],
+          ["2027-03-07", "459 000 Ft", "918 000 Ft", 8, 7, "b"],
+          ["2027-03-08", "482 036 Ft", "964 072 Ft", 8, 7, "a"],
+          ["2027-03-10", "471 236 Ft", "942 472 Ft", 8, 7, "a"],
+          ["2027-03-12", "471 236 Ft", "942 472 Ft", 8, 7, "a"],
+          ["2027-03-14", "471 236 Ft", "942 472 Ft", 8, 7, "b"]
+        ],
+        boardName: "All inclusive", fromCity: "Budapest"
+      }
+    }
+  ] },
+  { id: "kanari-szigetek",  name: "Kanári-szigetek",  hotels: [
+    {
+      id: "riu-palace-maspalomas",
+      name: "Riu Palace Maspalomas",
+      stars: 5,
+      location: "Maspalomas, Gran Canaria",
+      heroIdx: [0, 2],
+      gallery: [["kepek/ab4191c8f9.webp", "A Riu Palace Maspalomas felülről, mögötte a maspalomasi homokdűnék és az óceán"], ["kepek/cc29dfc024.webp", "A szálloda a homokdűnék szélén, háttérben a part és a hegyek"], ["kepek/46c9de577e.webp", "A főmedence napernyőkkel és pálmafákkal, mögötte a dűnék és az óceán"], ["kepek/c6bda44f97.webp", "Medence pálmafákkal és napozóteraszokkal"], ["kepek/f58797c33c.webp", "Balinéz ágyak a pálmás kertben"], ["kepek/8ee0cd2b8d.webp", "Junior lakosztály nagy franciaággyal, erkéllyel és külön nappalival"], ["kepek/833622ee11.webp", "Kétágyas szoba kanapéval és trópusi mintás fallal"]],
+      features: ["Csak felnőtteknek (18+)", "A maspalomasi homokdűnék mellett", "2 medence, télen fűtve", "Közvetlen járat Budapestről"],
+      nights: "9–10 nap", board: "félpanzió, repülővel", price: "590 040 Ft",
+      detail: {
+        intro: "Kizárólag 18 év felettieket fogadó ötcsillagos szálloda Gran Canaria legdélibb csücskében, közvetlenül a lenyűgöző maspalomasi homokdűnék mellett. Zöld oázisként ható kertjeiben két medence, napozóteraszok és balinéz ágyak várják a vendégeket, mellettük wellness részleg, esti műsorok és változatos gasztronómia. A dűnéken túl kiváló homokos strandok és óceánparti bárok, a másik irányban pedig szórakozási és vásárlási lehetőségek tucatjai találhatók.",
+        facts: [["Elhelyezkedés", "Gran Canaria déli csücske, közvetlenül a maspalomasi homokdűnék mellett"], ["Strand", "homokos strand és óceán kb. 1500 m-re, a dűnéken át"], ["Szálloda", "ötcsillagos, csak felnőtteknek, több mint 350 légkondicionált szoba"], ["Repülő", "közvetlen járat Budapestről, kb. 5 és fél óra"], ["Internet", "ingyenes wifi a szálloda egész területén"]],
+        sections: [
+          ["Szobák", "<p><strong>Kétágyas szoba</strong> (30 m², utcára vagy kertre néző): két különálló ágy (110×200 cm) vagy queen-size ágy (200×200 cm), kanapé, wifi, TV, légkondicionáló, vízforraló, erkély vagy terasz.</p><p><strong>Óceánra néző szoba</strong> (30 m²): a fenti felszereltséggel, erkélyről kilátás a homokdűnékre és az Atlanti-óceánra.</p><p><strong>Junior lakosztály</strong> (45 m²): queen-size ágy (200×200 cm), nappali kinyitható kanapéval, a fenti felszereltséggel, valamint saját balinéz ágy a szálloda kertjében.</p>"],
+          ["Ellátás: félpanzió", "<p><strong>Reggeli:</strong> változatos svédasztalos büféreggeli pezsgővel.</p><p><strong>Vacsora:</strong> hideg és meleg előételek, svédasztalos főételek széles választéka frissen készült fogásokkal, fúziós és spanyol konyhával, desszertbüfé. Hetente kétszer tematikus vacsora. Különleges igény esetén a recepción előre megrendelhető a kedvenc fogás.</p><p>Vacsoránál a férfi vendégektől hosszú nadrágot kérnek.</p>"],
+          ["Medence, wellness, szórakozás", "<p>2 medence (576 és 202 m²), télen mindkettő fűtött, napozóágyak, napernyők, strandtörölközők. Balinéz ágyak a junior és superior junior lakosztályok vendégeinek.</p><p>Ingyenes gőzfürdő és edzőterem; felár ellenében wellnessközpont kozmetikai kezelésekkel, masszázzsal és fodrásszal. Esti szórakoztató műsorok, üzletek és butikok.</p>"],
+          ["Az ár tartalmazza", "<ul><li>Repülőjegy (közvetlen járat), adók és illetékek</li><li>Repülőtéri transzfer a szállodába és vissza</li><li>Szállás a megadott éjszakákra, félpanziós ellátással</li><li>Magyar nyelvű telefonos asszisztencia</li></ul><p><strong>Nem tartalmazza:</strong> BBP- és sztornóbiztosítás, italok a vacsoránál, fizetős szolgáltatások, személyes kiadások, fakultatív kirándulások.</p>"],
+          ["Fontos tudnivalók", "<ul><li>A szálloda csak 18 év feletti vendégeket fogad.</li><li>A strand a dűnéken át, kb. 1,5 km-re érhető el.</li><li>A leírás tájékoztató jellegű.</li></ul>"]
+        ],
+        flights: {
+          a: { label: "Keddi indulás", short: "Közvetlen járat: Budapest 13:20 → Gran Canaria 18:50, vissza 19:40 → 00:55", out: ["Budapest", "13:20", "Gran Canaria", "18:50", "közvetlen, 5 ó 30 p"], back: ["Gran Canaria", "19:40", "Budapest", "00:55", "közvetlen, 5 ó 15 p"] },
+          b: { label: "Szombati indulás", short: "Közvetlen járat: Budapest 14:20 → Gran Canaria 19:50, vissza 20:40 → 01:55", out: ["Budapest", "14:20", "Gran Canaria", "19:50", "közvetlen, 5 ó 30 p"], back: ["Gran Canaria", "20:40", "Budapest", "01:55", "közvetlen, 5 ó 15 p"] },
+          c: { label: "Szerdai indulás", short: "Közvetlen járat: Budapest 10:30 → Gran Canaria 15:55, vissza 12:30 → 17:35", out: ["Budapest", "10:30", "Gran Canaria", "15:55", "közvetlen, 5 ó 25 p"], back: ["Gran Canaria", "12:30", "Budapest", "17:35", "közvetlen, 5 ó 5 p"] },
+          d: { label: "Hétfői indulás", short: "Közvetlen járat: Budapest 07:10 → Gran Canaria 12:35, vissza 16:35 → 21:40", out: ["Budapest", "07:10", "Gran Canaria", "12:35", "közvetlen, 5 ó 25 p"], back: ["Gran Canaria", "16:35", "Budapest", "21:40", "közvetlen, 5 ó 5 p"] }
+        },
+        dates: [
+          ["2026-11-03", "808 200 Ft", "1 616 400 Ft", 9, 7, "a"],
+          ["2026-11-07", "816 840 Ft", "1 633 680 Ft", 9, 7, "b"],
+          ["2026-11-10", "752 040 Ft", "1 504 080 Ft", 9, 7, "a"],
+          ["2026-11-21", "689 400 Ft", "1 378 800 Ft", 9, 7, "b"],
+          ["2026-11-24", "696 600 Ft", "1 393 200 Ft", 9, 7, "a"],
+          ["2026-11-28", "719 640 Ft", "1 439 280 Ft", 9, 7, "b"],
+          ["2026-12-01", "672 840 Ft", "1 345 680 Ft", 9, 7, "a"],
+          ["2026-12-02", "890 000 Ft", "1 780 000 Ft", 10, 9, "c"],
+          ["2026-12-09", "811 600 Ft", "1 623 200 Ft", 10, 9, "c"],
+          ["2026-12-12", "633 240 Ft", "1 266 480 Ft", 9, 7, "b"],
+          ["2026-12-14", "843 600 Ft", "1 687 200 Ft", 10, 9, "d"],
+          ["2026-12-15", "590 040 Ft", "1 180 080 Ft", 9, 7, "a"]
+        ],
+        boardName: "Félpanzió", fromCity: "Budapest"
+      }
+    },
+    {
+      id: "riu-palace-tenerife",
+      name: "Riu Palace Tenerife",
+      stars: 4,
+      location: "Costa Adeje, Tenerife",
+      heroIdx: [0, 1],
+      gallery: [["kepek/343d00ad08.webp", "A Riu Palace Tenerife medencéi, pálmás kertje és az óceánpart felülről"], ["kepek/ddb9dc0452.webp", "Infinity medence vízbe épített napozóágyakkal, háttérben az óceán"], ["kepek/561cd9284f.webp", "Kilátás a teraszról a kertre, a medencékre és az Atlanti-óceánra"], ["kepek/4ab66cf4c8.webp", "Esti terasz étterem kivilágított medencékkel és holdfényes óceánnal"], ["kepek/0333f62a3c.webp", "Balinéz ágyak az óceánparton"], ["kepek/76d01c940d.webp", "A főétterem svédasztalos kínálata"], ["kepek/91c5dedcff.webp", "Kétágyas szoba kanapéval és erkélyajtóval"]],
+      features: ["Közvetlenül az óceánparton", "Infinity medence, télen fűtve", "Az El Duque strand mellett", "Közvetlen járat Budapestről"],
+      nights: "5–6 nap", board: "félpanzió, repülővel", price: "450 000 Ft",
+      detail: {
+        intro: "A Riu Palace Tenerife elegáns pihenést kínál közvetlenül az Atlanti-óceán partján, Tenerife déli részének egyik legelegánsabb övezetében, Costa Adején, pár lépésre az impozáns El Duque strandtól. A modern, gyönyörűen berendezett szobák, a medencék, köztük egy végtelenített medence, a balinéz ágyak és a chill-out terület a felhőtlen kikapcsolódást szolgálják. Elegáns kávézók, éttermek és luxusmárkás bevásárlóközpont néhány perc sétára.",
+        facts: [["Elhelyezkedés", "Costa Adeje, Tenerife déli része, pár lépésre az El Duque strandtól"], ["Strand", "közvetlenül az óceánparton"], ["Környék", "kávézók, éttermek és bevásárlóközpont néhány perc sétára"], ["Repülő", "közvetlen járat Budapestről, kb. 5 és fél óra"], ["Internet", "wifi a szálloda területén és a szobákban"]],
+        sections: [
+          ["Szobák", "<p>Minden szobában wifi, műholdas síkképernyős TV, kád vagy zuhanykabin, hajszárító, széf, ventilátor, íróasztal, telefon, valamint erkély vagy terasz.</p><p><strong>Standard szoba</strong> (33 m², kertre vagy utcára néző): két különálló vagy dupla ágy, kanapé.</p><p><strong>Óceánra néző szoba</strong> és <strong>oldalról óceánra néző szoba</strong> (33 m²): a fenti felszereltséggel, teljes vagy részleges óceáni kilátással.</p><p><strong>Junior lakosztály</strong> (38 m², óceánra néző): két különálló vagy queen-size ágy, kanapé a nappaliban, hidromasszázs kád, saját balinéz ágy a kertben.</p>"],
+          ["Ellátás: félpanzió", "<p><strong>Reggeli:</strong> változatos büféreggeli frissen készült finomságokkal, pezsgővel, meleg italokkal és friss gyümölcslevekkel.</p><p><strong>Vacsora:</strong> svédasztalos hideg és meleg fogások, frissensültek, vegetáriánus ételek és desszertek. Hetente kétszer tematikus vacsora.</p><p>A Krystal Fusion étterem előzetes foglalással látogatható. A medencebárban, a lobbybárban és a társalgóban snackek, tapasok és italok (külön fizetendő).</p>"],
+          ["Medence, wellness, szórakozás", "<p>2 felnőtt medence (egy fűtött), infinity medence (télen fűtve), gyerekmedence és játszótér, napozóterasz, ingyenes napozóágyak, napernyők és strandtörölköző. Balinéz ágyak a junior lakosztályok vendégeinek, chill-out terület.</p><p>Edzőterem, gőzfürdő, élő zene és showműsorok. Felár ellenében „Body Love” wellnessközpont.</p>"],
+          ["Az ár tartalmazza", "<ul><li>Repülőjegy (közvetlen járat), adók és illetékek</li><li>Repülőtéri transzfer a szállodába és vissza</li><li>Szállás a megadott éjszakákra, félpanziós ellátással</li><li>Magyar nyelvű telefonos asszisztencia</li></ul><p><strong>Nem tartalmazza:</strong> BBP- és sztornóbiztosítás, italok és extra fogyasztás, fizetős szolgáltatások, személyes kiadások, fakultatív kirándulások.</p>"],
+          ["Fontos tudnivalók", "<ul><li>A szálloda bankkártyás garanciát kér az extra fogyasztások fizetéséhez.</li><li>A szálloda 2027. május 3. és szeptember 23. között teljes körű felújítás miatt zárva tart, és utána csak felnőtteket fogadó (Adults Only) szállodaként nyit újra.</li><li>A leírás tájékoztató jellegű.</li></ul>"]
+        ],
+        flights: {
+          a: { label: "Délutáni indulás (13:45)", short: "Közvetlen járat: Budapest 13:45 → Tenerife 19:30, vissza 20:10 → 01:20", out: ["Budapest", "13:45", "Tenerife", "19:30", "közvetlen, 5 ó 45 p"], back: ["Tenerife", "20:10", "Budapest", "01:20", "közvetlen, 5 ó 10 p"] },
+          e: { label: "Délutáni indulás (13:55, október)", short: "Közvetlen járat: Budapest 13:55 → Tenerife 19:40, vissza 20:20 → 01:30", out: ["Budapest", "13:55", "Tenerife", "19:40", "közvetlen, 5 ó 45 p"], back: ["Tenerife", "20:20", "Budapest", "01:30", "közvetlen, 5 ó 10 p"] },
+          d: { label: "Déli indulás (12:10)", short: "Közvetlen járat: Budapest 12:10 → Tenerife 17:45, vissza 12:55 → 18:05", out: ["Budapest", "12:10", "Tenerife", "17:45", "közvetlen, 5 ó 35 p"], back: ["Tenerife", "12:55", "Budapest", "18:05", "közvetlen, 5 ó 10 p"] },
+          b: { label: "Kora reggeli indulás (06:45)", short: "Közvetlen járat: Budapest 06:45 → Tenerife 12:20, vissza 14:00 → 19:10", out: ["Budapest", "06:45", "Tenerife", "12:20", "közvetlen, 5 ó 35 p"], back: ["Tenerife", "14:00", "Budapest", "19:10", "közvetlen, 5 ó 10 p"] },
+          c: { label: "Reggeli indulás (07:50)", short: "Közvetlen járat: Budapest 07:50 → Tenerife 13:25, vissza 18:45 → 23:55", out: ["Budapest", "07:50", "Tenerife", "13:25", "közvetlen, 5 ó 35 p"], back: ["Tenerife", "18:45", "Budapest", "23:55", "közvetlen, 5 ó 10 p"] }
+        },
+        dates: [
+          ["2026-10-09", "507 600 Ft", "1 015 200 Ft", 5, 3, "e"],
+          ["2026-10-11", "450 000 Ft", "900 000 Ft", 5, 3, "e"],
+          ["2026-10-16", "518 000 Ft", "1 036 000 Ft", 5, 3, "e"],
+          ["2026-11-21", "506 000 Ft", "1 012 000 Ft", 5, 4, "c"],
+          ["2026-11-22", "507 600 Ft", "1 015 200 Ft", 6, 4, "a"],
+          ["2026-11-24", "515 600 Ft", "1 031 200 Ft", 5, 4, "b"],
+          ["2026-12-01", "519 600 Ft", "1 039 200 Ft", 5, 4, "b"],
+          ["2026-12-06", "490 000 Ft", "980 000 Ft", 6, 4, "a"],
+          ["2026-12-09", "467 600 Ft", "935 200 Ft", 5, 4, "a"],
+          ["2026-12-10", "462 000 Ft", "924 000 Ft", 5, 4, "a"],
+          ["2026-12-11", "487 600 Ft", "975 200 Ft", 5, 4, "d"],
+          ["2026-12-13", "518 000 Ft", "1 036 000 Ft", 5, 4, "a"],
+          ["2026-12-14", "463 600 Ft", "927 200 Ft", 6, 4, "a"],
+          ["2026-12-15", "503 600 Ft", "1 007 200 Ft", 5, 4, "b"],
+          ["2027-01-12", "519 600 Ft", "1 039 200 Ft", 5, 4, "b"],
+          ["2027-01-23", "514 000 Ft", "1 028 000 Ft", 5, 4, "c"]
+        ],
+        boardName: "Félpanzió", fromCity: "Budapest"
+      }
+    },
+    {
+      id: "riu-palace-meloneras",
+      name: "Riu Palace Meloneras",
+      stars: 5,
+      location: "Meloneras, Gran Canaria",
+      heroIdx: [0, 1],
+      gallery: [["kepek/d671401337.webp", "A Riu Palace Meloneras pálmás kertje és medencéi, a háttérben az Atlanti-óceán"], ["kepek/a8defb1539.webp", "Infinity medence napozóágyakkal a szállodaépület mellett, kilátással az óceánra"], ["kepek/538eb204ca.webp", "Medenceterasz napernyőkkel, mögötte a parti sétány és az óceán"], ["kepek/22b2918ed7.webp", "Lounge terasz türkiz párnákkal és fehér napernyőkkel"], ["kepek/a574ffabba.webp", "Kétágyas szoba kanapéval és erkéllyel"], ["kepek/3f91fd287d.webp", "Fürdőszoba káddal, üvegfalas zuhanyzóval és dupla mosdóval"]],
+      features: ["Közvetlenül az óceánparton", "2 infinity medence felnőtteknek", "Body Love wellnessközpont", "2020-ban felújítva"],
+      nights: "5–6 nap", board: "félpanzió, repülővel", price: "422 000 Ft",
+      detail: {
+        intro: "A Riu Palace Meloneras a luxus, a kiváló szolgáltatások és a kényelem tökéletes kombinációja Gran Canarián. A 2020-ban felújított, 515 szobás szálloda közvetlenül az Atlanti-óceán partján fekszik, csak a parti sétány választja el a víztől. A közelben áll a maspalomasi világítótorony, a homokdűnék mindössze 800 méterre vannak, és a környéken számtalan étterem, bár és üzlet található. Családdal, kettesben vagy barátokkal egyaránt ideális választás.",
+        facts: [["Elhelyezkedés", "Meloneras, közvetlenül az óceánparton, a parti sétány mellett, a maspalomasi világítótorony közelében"], ["Strand", "kb. 700 m; a maspalomasi homokdűnék kb. 800 m"], ["Szálloda", "ötcsillagos, 515 szoba, 2020-ban felújítva"], ["Repülő", "közvetlen járat Budapestről, kb. 5 és fél óra"], ["Internet", "ingyenes wifi"]],
+        sections: [
+          ["Szobák", "<p>Minden szobában légkondicionáló, wifi, széf, minibár, műholdas TV, kanapé, valamint erkély vagy terasz; két 100×200 cm-es vagy egy 180×200 cm-es ágy.</p><p><strong>Kétágyas szoba</strong> (32 m², utcára néző) és <strong>nagy kétágyas szoba</strong> (39 m², utcára néző).</p><p><strong>Óceánra néző</strong> és <strong>oldalról óceánra néző kétágyas szoba</strong> (32 m²).</p><p><strong>Junior lakosztály pezsgőfürdővel</strong> (46 m², kertre vagy utcára néző): jakuzzi a teraszon.</p>"],
+          ["Ellátás: félpanzió", "<p><strong>Reggeli:</strong> mediterrán svédasztalos büfé.</p><p><strong>Vacsora:</strong> hideg és meleg elő- és főételek büfében, helyben készülő fogások, vegetáriánus ételek, desszertbüfé, látványkonyha. Hetente kétszer tematikus vacsora előzetes foglalással.</p><p><strong>Bárok:</strong> Rose Bar lobbibár, Le Baroque lounge bár terasszal, Blue de Mar medencebár (harapnivalók, snackek, tapasok külön díj ellenében).</p><p>Vacsoránál a férfiaknak kötelező a hosszú nadrág.</p>"],
+          ["Medence, wellness, szórakozás", "<p>3 fűtött medence, köztük 2 csak felnőtteknek szóló infinity medence (télen fűtve), gyerekmedence (télen fűtve), napozóágyak, napernyők, medencetörölköző, öltözőkabinok.</p><p>A sziget egyik legjobban felszerelt wellnessközpontja: Body Love kezelések (felár ellenében), jakuzzi, gőzfürdő, edzőterem, fodrászat.</p><p>Napközbeni programok 4–12 éves gyerekeknek, hetente többször élő zene vagy műsor.</p>"],
+          ["Az ár tartalmazza", "<ul><li>Repülőjegy (közvetlen járat), adók és illetékek</li><li>Repülőtéri transzfer a szállodába és vissza</li><li>Szállás a megadott éjszakákra, félpanziós ellátással</li><li>Magyar nyelvű telefonos asszisztencia</li></ul><p><strong>Nem tartalmazza:</strong> BBP- és sztornóbiztosítás, italok és extra fogyasztás, fizetős szolgáltatások, személyes kiadások, fakultatív kirándulások.</p>"],
+          ["Fontos tudnivalók", "<ul><li>Vacsoránál a férfi vendégeknek hosszú nadrág kötelező.</li><li>A tematikus vacsorákra előzetes foglalás szükséges.</li><li>A leírás tájékoztató jellegű.</li></ul>"]
+        ],
+        flights: {
+          a: { label: "Hétfői indulás", short: "Közvetlen járat: Budapest 07:10 → Gran Canaria 12:35, vissza 12:30 → 17:35", out: ["Budapest", "07:10", "Gran Canaria", "12:35", "közvetlen, 5 ó 25 p"], back: ["Gran Canaria", "12:30", "Budapest", "17:35", "közvetlen, 5 ó 5 p"] },
+          b: { label: "Keddi indulás", short: "Közvetlen járat: Budapest 13:20 → Gran Canaria 18:50, vissza 20:40 → 01:55", out: ["Budapest", "13:20", "Gran Canaria", "18:50", "közvetlen, 5 ó 30 p"], back: ["Gran Canaria", "20:40", "Budapest", "01:55", "közvetlen, 5 ó 15 p"] },
+          c: { label: "Szerdai indulás", short: "Közvetlen járat: Budapest 10:30 → Gran Canaria 15:55, vissza 13:10 → 18:15", out: ["Budapest", "10:30", "Gran Canaria", "15:55", "közvetlen, 5 ó 25 p"], back: ["Gran Canaria", "13:10", "Budapest", "18:15", "közvetlen, 5 ó 5 p"] },
+          d: { label: "Pénteki indulás", short: "Közvetlen járat: Budapest 06:30 → Gran Canaria 11:55, vissza 16:35 → 21:40", out: ["Budapest", "06:30", "Gran Canaria", "11:55", "közvetlen, 5 ó 25 p"], back: ["Gran Canaria", "16:35", "Budapest", "21:40", "közvetlen, 5 ó 5 p"] }
+        },
+        dates: [
+          ["2026-11-02", "527 600 Ft", "1 055 200 Ft", 5, 4, "a"],
+          ["2026-11-03", "526 000 Ft", "1 052 000 Ft", 6, 4, "b"],
+          ["2026-11-16", "534 000 Ft", "1 068 000 Ft", 5, 4, "a"],
+          ["2026-11-24", "490 000 Ft", "980 000 Ft", 6, 4, "b"],
+          ["2026-12-01", "526 000 Ft", "1 052 000 Ft", 6, 4, "b"],
+          ["2026-12-07", "454 000 Ft", "908 000 Ft", 5, 4, "a"],
+          ["2026-12-08", "455 600 Ft", "911 200 Ft", 5, 4, "b"],
+          ["2026-12-09", "499 600 Ft", "999 200 Ft", 6, 5, "c"],
+          ["2026-12-11", "506 000 Ft", "1 012 000 Ft", 6, 5, "d"],
+          ["2026-12-14", "430 000 Ft", "860 000 Ft", 5, 4, "a"],
+          ["2026-12-15", "422 000 Ft", "844 000 Ft", 6, 4, "b"],
+          ["2026-12-16", "507 600 Ft", "1 015 200 Ft", 6, 5, "c"],
+          ["2027-01-11", "515 600 Ft", "1 031 200 Ft", 5, 4, "a"],
+          ["2027-01-18", "527 600 Ft", "1 055 200 Ft", 5, 4, "a"],
+          ["2027-01-25", "507 600 Ft", "1 015 200 Ft", 5, 4, "a"],
+          ["2027-03-08", "518 000 Ft", "1 036 000 Ft", 5, 4, "a"],
+          ["2027-03-15", "506 000 Ft", "1 012 000 Ft", 5, 4, "a"]
+        ],
+        boardName: "Félpanzió", fromCity: "Budapest"
+      }
+    },
+    {
+      id: "riu-buena-vista",
+      name: "Riu Buena Vista",
+      stars: 4,
+      location: "Playa Paraíso, Tenerife",
+      heroIdx: [0, 1],
+      gallery: [["kepek/121e2821cb.webp", "A Riu Buena Vista medencéi és épületei, háttérben az óceán és La Gomera szigete"], ["kepek/4a3b92ee4e.webp", "Medencék napozóágyakkal és pálmafákkal az óceánpart felett"], ["kepek/bb00855570.webp", "Nagy medence napernyőkkel a fehér szállodaépületek előtt"], ["kepek/a14774ca39.webp", "Szoba franciaággyal, fotellel és óceánra néző erkéllyel"], ["kepek/5da80a2518.webp", "A Pepe's Food snackbár a medenceteraszon"], ["kepek/a4fa7d7187.webp", "Medencés kert pálmafákkal az óceánparton"]],
+      features: ["24 órás all inclusive", "Közvetlenül az óceánparton", "4 medence, vízicsúszda", "RiuLand gyerekklub"],
+      nights: "5–6 nap", board: "all inclusive, repülővel", price: "390 000 Ft",
+      detail: {
+        intro: "A négycsillagos Riu Buena Vista utasaink egyik kedvenc 24 órás all inclusive szállodája, közvetlenül Tenerife óceánpartján. Kiváló szolgáltatásairól ismert, ideális választás családoknak és nagyobb társaságoknak. A modern, 9 emeletes, 500 szobás szállodából csodálatos kilátás nyílik La Gomera szigetére; 4 medence, gyerekklub és esti műsorok várják a vendégeket, a szálloda mellett pedig bevásárlóközpont található.",
+        facts: [["Elhelyezkedés", "Playa Paraíso, Tenerife déli része; éttermek, boltok és bárok sétatávolságban"], ["Strand", "a szálloda közvetlenül az óceánparton áll, a strand kb. 380 m"], ["Közlekedés", "ingyenes buszjárat Playa de las Américasba (kb. 15–20 perc autóval)"], ["Szálloda", "négycsillagos, 9 emeletes, 500 légkondicionált szoba, kilátás La Gomerára"], ["Repülő", "közvetlen járat Budapestről, kb. 5 és fél óra"], ["Internet", "wifi"]],
+        sections: [
+          ["Szobák", "<p>Minden szobában műholdas TV, légkondicionáló, mini hűtőszekrény, erkély vagy terasz.</p><p><strong>Standard szoba</strong> (25 m², utcára vagy kertre néző): két ágy (100×200 cm).</p><p><strong>Családi szoba</strong> (40 m², utcára vagy kertre néző): két ágy, nappali kanapéval.</p><p><strong>Óceánra néző családi szoba</strong> (40 m²): a fenti felszereltséggel, kilátással az Atlanti-óceánra.</p>"],
+          ["Ellátás: 24 órás all inclusive", "<p>Változatos büféreggeli, büfé ebéd és vacsora látványkonyhával, frissensültekkel, desszertekkel és kávéval. Hetente kétszer tematikus est (télen olasz, kanári és ázsiai, nyáron olasz és kanári konyha). Helyi alkoholos és alkoholmentes italok korlátlanul a szálloda bárjaiban és éttermeiben.</p>"],
+          ["Medence, sport, szórakozás", "<p>4 felnőtt és 2 gyerekmedence, vízicsúszda, napozóterasz, játszótér.</p><p>RiuLand gyerekklub, RiuArt kézműves programok, napközbeni animáció és esti műsorok. Edzőterem, RiuFit program, teniszpálya. Szépségszalon, fodrászat, butikok; felár ellenében masszázs, mosoda és gyermekfelügyelet.</p>"],
+          ["Az ár tartalmazza", "<ul><li>Repülőjegy (közvetlen járat), adók és illetékek</li><li>Repülőtéri transzfer a szállodába és vissza</li><li>Szállás a megadott éjszakákra, 24 órás all inclusive ellátással</li><li>Magyar nyelvű telefonos asszisztencia</li></ul><p><strong>Nem tartalmazza:</strong> BBP- és sztornóbiztosítás, fizetős szolgáltatások, személyes kiadások, fakultatív kirándulások.</p>"],
+          ["Fontos tudnivalók", "<ul><li>A szálloda bankkártyás garanciát kér az extra fogyasztások fizetéséhez.</li><li>A leírás tájékoztató jellegű.</li></ul>"]
+        ],
+        flights: {
+          a: { label: "Délutáni indulás (13:45)", short: "Közvetlen járat: Budapest 13:45 → Tenerife 19:30, vissza 20:10 → 01:20", out: ["Budapest", "13:45", "Tenerife", "19:30", "közvetlen, 5 ó 45 p"], back: ["Tenerife", "20:10", "Budapest", "01:20", "közvetlen, 5 ó 10 p"] },
+          e: { label: "Délutáni indulás (13:55, október)", short: "Közvetlen járat: Budapest 13:55 → Tenerife 19:40, vissza 20:20 → 01:30", out: ["Budapest", "13:55", "Tenerife", "19:40", "közvetlen, 5 ó 45 p"], back: ["Tenerife", "20:20", "Budapest", "01:30", "közvetlen, 5 ó 10 p"] },
+          d: { label: "Déli indulás (12:10)", short: "Közvetlen járat: Budapest 12:10 → Tenerife 17:45, vissza 12:55 → 18:05", out: ["Budapest", "12:10", "Tenerife", "17:45", "közvetlen, 5 ó 35 p"], back: ["Tenerife", "12:55", "Budapest", "18:05", "közvetlen, 5 ó 10 p"] },
+          b: { label: "Kora reggeli indulás (06:45)", short: "Közvetlen járat: Budapest 06:45 → Tenerife 12:20, vissza 14:00 → 19:10", out: ["Budapest", "06:45", "Tenerife", "12:20", "közvetlen, 5 ó 35 p"], back: ["Tenerife", "14:00", "Budapest", "19:10", "közvetlen, 5 ó 10 p"] },
+          c: { label: "Reggeli indulás (07:50)", short: "Közvetlen járat: Budapest 07:50 → Tenerife 13:25, vissza 18:45 → 23:55", out: ["Budapest", "07:50", "Tenerife", "13:25", "közvetlen, 5 ó 35 p"], back: ["Tenerife", "18:45", "Budapest", "23:55", "közvetlen, 5 ó 10 p"] }
+        },
+        dates: [
+          ["2026-10-11", "398 000 Ft", "796 000 Ft", 5, 3, "e"],
+          ["2026-11-21", "402 000 Ft", "804 000 Ft", 5, 4, "c"],
+          ["2026-11-22", "411 600 Ft", "823 200 Ft", 6, 4, "a"],
+          ["2026-11-30", "403 600 Ft", "807 200 Ft", 6, 4, "a"],
+          ["2026-12-04", "414 000 Ft", "828 000 Ft", 5, 4, "d"],
+          ["2026-12-09", "406 000 Ft", "812 000 Ft", 5, 4, "a"],
+          ["2026-12-10", "399 600 Ft", "799 200 Ft", 5, 4, "a"],
+          ["2026-12-14", "390 000 Ft", "780 000 Ft", 6, 4, "a"],
+          ["2026-12-16", "403 600 Ft", "807 200 Ft", 6, 4, "a"],
+          ["2027-01-14", "410 000 Ft", "820 000 Ft", 5, 4, "a"],
+          ["2027-01-17", "414 000 Ft", "828 000 Ft", 5, 4, "a"],
+          ["2027-01-23", "406 000 Ft", "812 000 Ft", 5, 4, "c"],
+          ["2027-02-01", "414 000 Ft", "828 000 Ft", 5, 4, "a"],
+          ["2027-02-27", "403 600 Ft", "807 200 Ft", 5, 4, "c"],
+          ["2027-03-02", "395 600 Ft", "791 200 Ft", 5, 4, "b"],
+          ["2027-03-13", "398 000 Ft", "796 000 Ft", 5, 4, "c"],
+          ["2027-03-14", "406 000 Ft", "812 000 Ft", 5, 4, "a"],
+          ["2027-03-16", "415 600 Ft", "831 200 Ft", 5, 4, "b"]
+        ],
+        boardName: "All inclusive", fromCity: "Budapest"
+      }
+    },
+    {
+      id: "riu-arecas",
+      name: "Riu Arecas",
+      stars: 4,
+      location: "Costa Adeje, Tenerife",
+      heroIdx: [0, 2],
+      gallery: [["kepek/0d7b0d1250.webp", "A Riu Arecas medencéje napernyőkkel és pálmafákkal, a háttérben a szállodaépületek"], ["kepek/a1e8a8edbf.webp", "A szálloda pálmás kertje és medencéi, a háttérben az óceán"], ["kepek/cced020f3a.webp", "Infinity medence pálmafákkal, kilátással az óceánra"], ["kepek/24f899bfaf.webp", "Kétágyas szoba franciaággyal és medencére néző erkéllyel"]],
+      features: ["Csak felnőtteknek (18+)", "Infinity medence", "A Playa del Duque közelében", "Body Love wellness"],
+      nights: "5–6 nap", board: "félpanzió, repülővel", price: "386 000 Ft",
+      detail: {
+        intro: "A Riu Arecas felnőttszálloda Tenerife egyik legexkluzívabb részén, Costa Adejében, néhány száz méterre a festői Playa del Duque strandtól. Kizárólag 18 év feletti vendégeket fogad, így nyugodt, zavartalan pihenést kínál pároknak és baráti társaságoknak egyaránt. Az 5 emeletes, 371 szobás szálloda friss, az óceánt és a természetet idéző belső terekkel, infinity medencével és wellnessközponttal várja vendégeit, környékén elegáns éttermekkel és bárokkal.",
+        facts: [["Elhelyezkedés", "Costa Adeje, Tenerife déli része, néhány száz méterre a Playa del Duque strandtól"], ["Strand", "óceán és strand kb. 500 m"], ["Szálloda", "csak felnőtteknek, 5 emelet, 371 légkondicionált szoba erkéllyel vagy terasszal"], ["Repülő", "közvetlen járat Budapestről, kb. 5 és fél óra"], ["Internet", "ingyenes wifi a szálloda egész területén"]],
+        sections: [
+          ["Szobák", "<p><strong>Kétágyas szoba</strong> (26 m²): két egyszemélyes ágy vagy franciaágy, légkondicionáló, műholdas TV, erkély vagy terasz; minibár és széf díj ellenében.</p><p><strong>Medencére néző kétágyas szoba</strong> (26 m²): a fenti felszereltséggel, kilátással a medencére.</p>"],
+          ["Ellátás: félpanzió", "<p><strong>Reggeli:</strong> büfé, néhány fogás a vendégek szeme előtt készül, vegetáriánus ételekkel.</p><p><strong>Vacsora:</strong> hideg és meleg előételek, svédasztalos főételek, látványkonyha, vegetáriánus fogások. Hetente kétszer tematikus est. Előzetes foglalással a szálloda spanyol étterme is igénybe vehető.</p><p>Könnyű ebéd felár ellenében kérhető. Vacsoránál az uraknak hosszú nadrág szükséges.</p>"],
+          ["Medence, wellness", "<p>2 medence (az egyik télen fűtött) és egy infinity medence, ingyenes napágyak, napernyők és törölközők. Pezsgőfürdő, gőzfürdő, edzőterem, internetsarok. Felár ellenében Body Love wellnessközpont masszázsokkal és testkezelésekkel.</p>"],
+          ["Az ár tartalmazza", "<ul><li>Repülőjegy (közvetlen járat), adók és illetékek</li><li>Repülőtéri transzfer a szállodába és vissza</li><li>Szállás a megadott éjszakákra, félpanziós ellátással</li><li>Magyar nyelvű telefonos asszisztencia</li></ul><p><strong>Nem tartalmazza:</strong> BBP- és sztornóbiztosítás, italok és extra fogyasztás, ebéd, fizetős szolgáltatások, személyes kiadások, fakultatív kirándulások.</p>"],
+          ["Fontos tudnivalók", "<ul><li>A szálloda csak 18 év feletti vendégeket fogad.</li><li>A szálloda bankkártyás garanciát kér az extra fogyasztások fizetéséhez.</li><li>A leírás tájékoztató jellegű.</li></ul>"]
+        ],
+        flights: {
+          a: { label: "Délutáni indulás (13:45)", short: "Közvetlen járat: Budapest 13:45 → Tenerife 19:30, vissza 20:10 → 01:20", out: ["Budapest", "13:45", "Tenerife", "19:30", "közvetlen, 5 ó 45 p"], back: ["Tenerife", "20:10", "Budapest", "01:20", "közvetlen, 5 ó 10 p"] },
+          d: { label: "Déli indulás (12:10)", short: "Közvetlen járat: Budapest 12:10 → Tenerife 17:45, vissza 12:55 → 18:05", out: ["Budapest", "12:10", "Tenerife", "17:45", "közvetlen, 5 ó 35 p"], back: ["Tenerife", "12:55", "Budapest", "18:05", "közvetlen, 5 ó 10 p"] },
+          b: { label: "Kora reggeli indulás (06:45)", short: "Közvetlen járat: Budapest 06:45 → Tenerife 12:20, vissza 14:00 → 19:10", out: ["Budapest", "06:45", "Tenerife", "12:20", "közvetlen, 5 ó 35 p"], back: ["Tenerife", "14:00", "Budapest", "19:10", "közvetlen, 5 ó 10 p"] },
+          c: { label: "Reggeli indulás (07:50)", short: "Közvetlen járat: Budapest 07:50 → Tenerife 13:25, vissza 18:45 → 23:55", out: ["Budapest", "07:50", "Tenerife", "13:25", "közvetlen, 5 ó 35 p"], back: ["Tenerife", "18:45", "Budapest", "23:55", "közvetlen, 5 ó 10 p"] }
+        },
+        dates: [
+          ["2026-11-30", "386 000 Ft", "772 000 Ft", 6, 4, "a"],
+          ["2026-12-01", "407 600 Ft", "815 200 Ft", 5, 4, "b"],
+          ["2026-12-04", "398 000 Ft", "796 000 Ft", 5, 4, "d"],
+          ["2026-12-05", "402 000 Ft", "804 000 Ft", 5, 4, "c"],
+          ["2027-01-12", "402 000 Ft", "804 000 Ft", 5, 4, "b"],
+          ["2027-01-19", "410 000 Ft", "820 000 Ft", 5, 4, "b"],
+          ["2027-01-21", "414 000 Ft", "828 000 Ft", 5, 4, "a"],
+          ["2027-01-22", "414 000 Ft", "828 000 Ft", 5, 4, "d"],
+          ["2027-01-23", "395 600 Ft", "791 200 Ft", 5, 4, "c"],
+          ["2027-02-01", "418 000 Ft", "836 000 Ft", 5, 4, "a"],
+          ["2027-02-27", "407 600 Ft", "815 200 Ft", 5, 4, "c"],
+          ["2027-02-28", "406 000 Ft", "812 000 Ft", 5, 4, "a"],
+          ["2027-03-02", "399 600 Ft", "799 200 Ft", 5, 4, "b"],
+          ["2027-03-06", "406 000 Ft", "812 000 Ft", 5, 4, "c"],
+          ["2027-03-09", "394 000 Ft", "788 000 Ft", 5, 4, "b"],
+          ["2027-03-15", "406 000 Ft", "812 000 Ft", 5, 4, "a"],
+          ["2027-03-16", "414 000 Ft", "828 000 Ft", 5, 4, "b"],
+          ["2027-03-19", "411 600 Ft", "823 200 Ft", 5, 4, "d"]
+        ],
+        boardName: "Félpanzió", fromCity: "Budapest"
+      }
+    }
+  ] },
+  { id: "dubai",            name: "Dubai",            hotels: [
+    {
+      id: "riu-dubai",
+      name: "Riu Dubai",
+      stars: 4,
+      location: "Dubai Islands, Dubai",
+      heroIdx: [0, 1],
+      gallery: [["kepek/6d6ee7b58f.webp", "A Riu Dubai medencéi, pálmás kertje és a hosszú, fehér homokos strand felülről"], ["kepek/ffa9295e99.webp", "A szálloda főépülete a strand felől, napozóágyakkal és napernyőkkel"], ["kepek/1e87b610c8.webp", "Nagy medence a RIU felirattal díszített szállodaépület előtt"], ["kepek/7917b526e3.webp", "Medence napozóágyakkal és pálmafákkal a strand mellett, háttérben Dubai látképe"], ["kepek/f93094db3d.webp", "A Coral medencebár vízbe épített ülőkékkel"], ["kepek/ba9e4f9541.webp", "A Splash Water World aquapark színes csúszdái"], ["kepek/d42381b044.webp", "Fedett terasz bár a strand és a medence között"]],
+      features: ["Közvetlen járat Budapestről", "All inclusive", "Splash Water World aquapark", "Kb. 9 km a DXB repülőtértől"],
+      nights: "11 nap / 10 éj", board: "all inclusive, repülővel", price: "747 495 Ft",
+      detail: {
+        intro: "A modern Riu Dubai tengerparti üdülőhely a Dubai Islands szigetcsoporton, közvetlenül a hosszú homokos parton fekszik. All inclusive ellátás, több étterem és bár, tágas medencekomplexum és a Splash Water World vízi park várja a vendégeket. A gyerekmedence, az aquapark, az animációs programok és a gyerekklub miatt elsősorban családoknak ideális, de számos sportolási lehetőséget és nem motoros vízi sportot is kínál. Nagy előny, hogy a DXB nemzetközi repülőtér mindössze kb. 9 km-re van.",
+        facts: [["Elhelyezkedés", "Dubai Islands szigetcsoport, a Souk Al Marfa bevásárlóközpont közelében"], ["Transzfer", "kb. 9 km a DXB repülőtértől (a DWC repülőtér kb. 70 km)"], ["Strand", "hosszú homokos strand közvetlenül a szálloda előtt, ingyenes napágyak és napernyők"], ["Szálloda", "négycsillagos, 2020-ban nyílt, lift, pénzváltó, csomagmegőrző"], ["Közlekedés", "szállodai transzfer a Souk Al Marfa bevásárlóközpontba; Dubai belvárosába taxi javasolt"], ["Repülő", "közvetlen járat Budapestről, kb. 5 és fél óra"], ["Internet", "ingyenes wifi a szálloda egész területén és a szobákban"]],
+        sections: [
+          ["Szobák", "<p><strong>Kétágyas szoba</strong> (kb. 30 m²): erkély vagy terasz, klíma, TV, íróasztal, kanapé, széf, tea- és kávékészítő, vízforraló, hajszárító. Részleges tengeri kilátással vagy tengeri kilátással is kérhető.</p><p><strong>Junior lakosztály tengeri kilátással</strong> (kb. 56 m²).</p><p><strong>Családi junior lakosztály</strong>: tágas lakosztály külön hálószobával és nappalival, kihúzható kanapéval, elsősorban gyerekes családoknak.</p>"],
+          ["Ellátás: all inclusive", "<p>Reggeli, ebéd és vacsora svédasztalos formában a főétteremben, frissítők a főétkezések között, korlátlan válogatott alkoholmentes italok, válogatott alkoholos italok a szálloda által meghatározott időszakokban (alkohol csak 21 év felett).</p><p><strong>Tematikus éttermek</strong> előzetes foglalással: Al-Andalus (nemzetközi), Spices (ázsiai), The Palm (olasz), The Moon (közel-keleti), valamint snack bár.</p><p>Korai érkezésnél az all inclusive ebéddel kezdődhet; az elutazás napján ebéd már nem jár.</p>"],
+          ["Medence, sport, szórakozás", "<p>4 medence, gyerekmedence csúszdákkal, Splash Water World aquapark (heti 6 napon nyitva).</p><p>Napi és esti animáció gyerekeknek és felnőtteknek, gyerekklub, csoportos edzések, fitnesz, szauna, jakuzzi, vízibicikli, SUP, kajak. Felár ellenében kozmetika és masszázs.</p>"],
+          ["Az ár tartalmazza", "<ul><li>Turistaosztályú repülőjegy (közvetlen járat), adók és illetékek</li><li>Repülőtéri transzfer a szállodába és vissza</li><li>Szállás a megadott éjszakákra, all inclusive ellátással</li><li>Magyar nyelvű telefonos asszisztencia</li></ul><p><strong>Nem tartalmazza:</strong> helyszínen fizetendő kötelező idegenforgalmi adó (kb. 15–20 AED/szoba/éj, érkezéskor a szállodában), BBP- és sztornóbiztosítás, egyes díjköteles létesítmények és programok, személyes kiadások, fakultatív kirándulások.</p>"],
+          ["Fontos tudnivalók", "<ul><li>A szálloda feltételei szerint a fő utasnak legalább 18 évesnek kell lennie.</li><li>Alkoholos italt csak 21 év felettieknek szolgálnak fel.</li><li>Helyi ünnepek (például a ramadán) idején a szálloda és a desztináció szolgáltatásai korlátozottak lehetnek; ez kártérítésre nem jogosít.</li><li>Egyes szolgáltatások az évszaktól és az időjárástól függenek.</li><li>Az idegenforgalmi adó összege a helyi előírások szerint változhat. A leírás tájékoztató jellegű.</li></ul>"]
+        ],
+        flight: { out: ["Budapest", "16:05", "Dubai", "23:25", "közvetlen járat, 5 ó 20 p"], back: ["Dubai", "10:05", "Budapest", "13:55", "közvetlen járat, 5 ó 50 p"] },
+        dates: [
+          ["2027-05-28", "769 982 Ft", "1 539 964 Ft"],
+          ["2027-05-30", "752 777 Ft", "1 505 554 Ft"],
+          ["2027-05-31", "750 513 Ft", "1 501 026 Ft"],
+          ["2027-06-07", "747 495 Ft", "1 494 989 Ft"],
+          ["2027-06-09", "757 908 Ft", "1 515 816 Ft"],
+          ["2027-06-11", "757 908 Ft", "1 515 816 Ft"],
+          ["2027-06-14", "755 946 Ft", "1 511 893 Ft"],
+          ["2027-06-16", "766 511 Ft", "1 533 021 Ft"],
+          ["2027-06-18", "765 907 Ft", "1 531 814 Ft"],
+          ["2027-07-12", "789 752 Ft", "1 579 505 Ft"],
+          ["2027-07-18", "766 058 Ft", "1 532 116 Ft"],
+          ["2027-07-19", "771 642 Ft", "1 543 284 Ft"],
+          ["2027-08-02", "771 642 Ft", "1 543 284 Ft"],
+          ["2027-08-16", "766 058 Ft", "1 532 116 Ft"]
+        ],
+        days: 11, nightsN: 10, boardName: "All inclusive", fromCity: "Budapest"
+      }
+    }
+  ] },
+  { id: "szenegal",         name: "Szenegál",         hotels: [
+    {
+      id: "riu-baobab",
+      name: "Riu Baobab",
+      stars: 5,
+      location: "Pointe-Sarène, Szenegál",
+      heroIdx: [0, 1],
+      gallery: [["kepek/ecef33093c.webp", "A Riu Baobab felülről, a hosszú homokos part, a medencék és a napernyősorok"], ["kepek/9c68702fb2.webp", "Medencebár vízbe épített ülőkékkel, mögötte napernyők és az óceán"], ["kepek/f31e760445.webp", "A főétterem világos, terített asztalokkal és afrikai díszítéssel"], ["kepek/ce7063b513.webp", "Fedett relaxációs medencék napozóágyakkal, kilátással a kertre és a szállodára"]],
+      features: ["Ultra all inclusive", "Aquapark csúszdákkal", "Közvetlenül a homokos parton", "2022-ben nyílt"],
+      board: "all inclusive, repülővel", price: "571 975 Ft",
+      detail: {
+        intro: "A Riu Baobab ötcsillagos üdülőhely ultra all inclusive koncepcióval, az afrikai partvidék szívében, közvetlenül a tengerparton. A modern dizájn a helyi hagyományokkal ötvöződik; hatalmas aquapark, pihenőzóna és nyugodt környezet várja a vendégeket. Ideális választás a kényelmet, a szórakozást és az egzotikus hangulatot kedvelő családok és párok számára.",
+        facts: [["Elhelyezkedés", "Pointe-Sarène, közvetlenül a halászfalu mellett, hosszú homokos partszakasszal, hagyományos hajókkal és beach bárokkal"], ["Transzfer", "kb. 60 km a dakari Blaise Diagne repülőtértől (DSS)"], ["Strand", "nagy homokos part fokozatosan mélyülő vízzel, ingyenes napágyak és napernyők, beach bár"], ["Szálloda", "ötcsillagos, 2022-ben nyílt, 24 órás recepció, pénzváltó"], ["Közlekedés", "buszmegálló kb. 1 km-re, Pointe-Sarène faluban"], ["Internet", "ingyenes wifi a szálloda egész területén"]],
+        sections: [
+          ["Szobák", "<p>Minden szoba kb. 36 m²-es (a junior lakosztály 66 m²), klímával, minibárral, széffel, erkéllyel és fürdőszobával (zuhanyzó vagy kád).</p><ul><li><strong>Standard kétágyas szoba</strong>, kanapéval is kérhető</li><li><strong>Standard kétágyas szoba saját medencével</strong>: erkélyről közvetlen kijárat a medencéhez</li><li><strong>Standard kétágyas szoba tengeri kilátással</strong>: medencéhez vezető kijárattal</li><li><strong>Junior lakosztály saját medencével</strong> (66 m², csak felnőtteknek)</li></ul>"],
+          ["Medence, sport, szórakozás", "<p>4 kültéri medence (köztük felnőtt medence), gyerekmedence csúszdával, aquapark, fitneszközpont, vízi sportok, aerobik, biciklikölcsönzés.</p><p>Esti showműsor, éjszakai klub, miniklub. Felár ellenében masszázs és kozmetika.</p>"],
+          ["Kirándulási lehetőségek a környéken", "<ul><li>Somone-lagúna és természetvédelmi terület (kb. 10 km): madármegfigyelés, mangroveerdők</li><li>Fadiouth kagylósziget (kb. 30–35 km): kagylókból épült sziget, helyi kultúra</li><li>Bandia vadrezervátum (kb. 50 km): szafari zsiráfokkal, orrszarvúkkal</li><li>Lac Rose (Retba-tó, kb. 50–60 km): a magas sótartalmú rózsaszín tó</li><li>Gorée-sziget Dakar partjainál: UNESCO világörökségi helyszín</li></ul>"],
+          ["Az ár tartalmazza", "<ul><li>Turistaosztályú repülőjegy, adók és illetékek</li><li>Repülőtéri transzfer a szállodába és vissza</li><li>Szállás a megadott éjszakákra, all inclusive ellátással</li><li>Magyar nyelvű telefonos asszisztencia</li></ul><p><strong>Nem tartalmazza:</strong> BBP- és sztornóbiztosítás, személyes kiadások, fizetős szolgáltatások, fakultatív kirándulások.</p>"],
+          ["Mikor érdemes utazni?", "<p>Szenegálban egész évben meleg, trópusi az éghajlat. A fő szezon novembertől májusig tart: ilyenkor száraz, napos az idő, ideális a strandoláshoz, a kirándulásokhoz és a szafarihoz. Júliusban és augusztusban rövid, de heves záporok előfordulhatnak (délen gyakrabban, Dakar környékén ritkábban). Május és október nyugodtabb átmeneti időszak, főként napos napokkal.</p><p>A leírás tájékoztató jellegű.</p>"]
+        ],
+        dates: [],
+        boardName: "All inclusive", fromCity: "Budapest"
+      }
+    }
+  ] },
+  { id: "mauritius",        name: "Mauritius",        hotels: [
+    {
+      id: "riu-turquoise",
+      name: "Riu Turquoise",
+      stars: 4,
+      location: "Le Morne, Mauritius",
+      heroIdx: [0, 1],
+      gallery: [["kepek/38f3e0bf2b.webp", "A Le Morne-félsziget felülről, a hegy lábánál a szálloda és a fehér homokos part"], ["kepek/0634486d4b.webp", "A Riu Turquoise épületei pálmás kertben, a strand és a türkizkék lagúna felülről"], ["kepek/ccd9070f34.webp", "Medence vízbe süllyesztett napozóágyakkal és a Lagoon bárral"], ["kepek/b1b99dd677.webp", "Pálmafák a homokos parton, mögöttük az Indiai-óceán"], ["kepek/a0f20ae1c4.webp", "A RIU recepció fonott lámpákkal"], ["kepek/1913bfa455.webp", "Kétágyas szoba kanapéval, íróasztallal és trópusi mintás falpanellel"]],
+      features: ["Közvetlenül a Le Morne strandon", "All inclusive", "Medence bárral", "Programok gyerekeknek és felnőtteknek"],
+      nights: "10 nap / 7 éj", board: "all inclusive, repülővel", price: "821 748 Ft",
+      detail: {
+        intro: "A Riu Turquoise közvetlenül a gyönyörű Le Morne strandnál fekszik, és gondtalan all inclusive nyaralást kínál egy trópusi paradicsomban. A vendégeket kiváló gasztronómia, medencék bárral, valamint változatos programok várják gyerekeknek és felnőtteknek egyaránt. A vízi sportokhoz nyújtott háttér és a gyönyörű környezet ideális választássá teszi családok és aktív párok számára.",
+        facts: [["Elhelyezkedés", "Le Morne, kb. 5 km Le Morne központjától, kb. 52 km Port Louistól; üzletek, bárok, éttermek kb. 9 km-re"], ["Transzfer", "kb. 56 km a mauritiusi repülőtértől"], ["Strand", "homokos-kavicsos strand, ingyenes napozóágyak és napernyők; vízicipő használata javasolt"], ["Szálloda", "négycsillagos, lobby recepcióval, medence, étterem és bár"], ["Közlekedés", "buszmegálló kb. 3 km, autókölcsönzési lehetőség"], ["Internet", "wifi felár ellenében (all inclusive ellátással a szobákban)"]],
+        sections: [
+          ["Szobák", "<p><strong>Kétágyas szoba</strong>: modern szoba pótágy lehetőséggel (max. 3 fő), saját fürdőszoba zuhanyzóval vagy káddal, alapfelszereltség, légkondicionálás, terasz vagy erkély. Széf felár ellenében.</p><p><strong>Kétágyas szoba oldalsó tengeri kilátással</strong>: a fenti felszereltséggel, terasszal vagy erkéllyel oldalsó tengerre néző kilátással.</p><p><strong>Kétágyas szoba tengeri kilátással</strong>: a fenti felszereltséggel, terasszal vagy erkéllyel tengerre néző kilátással.</p>"],
+          ["Ellátás: all inclusive", "<p>Reggeli, ebéd és vacsora büfé formájában, alkoholos és alkoholmentes italok a szálloda által meghatározott helyeken és időpontokban, lehetőség vacsorára az à la carte étteremben, wifi a szobákban.</p>"],
+          ["Medence, sport, szórakozás", "<p>Medence ingyenes napozóágyakkal és napernyőkkel.</p><p><strong>Ingyenesen:</strong> biliárd, darts, asztalitenisz, strandröplabda. <strong>Felár ellenében:</strong> teniszpályák, masszázsok, golfórák.</p>"],
+          ["Az ár tartalmazza", "<ul><li>Turistaosztályú repülőjegy, adók és illetékek</li><li>Repülőtéri transzfer a szállodába és vissza</li><li>Szállás a megadott éjszakákra, all inclusive ellátással</li><li>Magyar nyelvű telefonos asszisztencia</li></ul><p><strong>Nem tartalmazza:</strong> turisztikai adó (3 €/fő/éj 12 év felett, készpénzben a szálloda recepcióján érkezéskor), BBP- és sztornóbiztosítás, személyes kiadások, fizetős szolgáltatások, fakultatív kirándulások.</p>"],
+          ["Fontos tudnivalók", "<ul><li>A strand homokos-kavicsos, ezért vízicipő használata javasolt.</li><li>A turisztikai adó mértékét a helyi rendelet a szezon során módosíthatja; a pontos összeg érkezéskor a szállodában érhető el.</li><li>A wifi a közös területeken és a széf felár ellenében vehető igénybe.</li><li>A leírás tájékoztató jellegű.</li></ul>"]
+        ],
+        flights: {
+          a: { label: "Szombati indulás", short: "Járat: Budapest 15:10 → Mauritius 09:10, vissza 22:30 → 13:25, 1 átszállással", out: ["Budapest", "15:10", "Mauritius", "09:10", "1 átszállás, 15 ó"], back: ["Mauritius", "22:30", "Budapest", "13:25", "1 átszállás, 17 ó 55 p"] },
+          b: { label: "Keddi és pénteki indulás", short: "Járat: Budapest 12:40 → Mauritius 06:35, vissza 22:35 → 11:50, 1 átszállással", out: ["Budapest", "12:40", "Mauritius", "06:35", "1 átszállás, 14 ó 55 p"], back: ["Mauritius", "22:35", "Budapest", "11:50", "1 átszállás, 16 ó 15 p"] }
+        },
+        dates: [
+          ["2026-10-31", "965 122 Ft", "1 930 244 Ft", 10, 7, "a"],
+          ["2026-12-01", "967 084 Ft", "1 934 168 Ft", 10, 7, "b"],
+          ["2026-12-15", "945 653 Ft", "1 891 307 Ft", 10, 7, "b"],
+          ["2027-01-08", "856 610 Ft", "1 713 221 Ft", 10, 7, "b"],
+          ["2027-01-15", "839 707 Ft", "1 679 414 Ft", 10, 7, "b"],
+          ["2027-01-19", "822 955 Ft", "1 645 910 Ft", 10, 7, "b"],
+          ["2027-01-22", "824 464 Ft", "1 648 928 Ft", 10, 7, "b"],
+          ["2027-01-29", "822 955 Ft", "1 645 910 Ft", 10, 7, "b"],
+          ["2027-02-02", "821 748 Ft", "1 643 495 Ft", 10, 7, "b"],
+          ["2027-02-05", "836 538 Ft", "1 673 076 Ft", 10, 7, "b"],
+          ["2027-02-09", "893 586 Ft", "1 787 172 Ft", 10, 7, "b"],
+          ["2027-02-16", "853 743 Ft", "1 707 486 Ft", 10, 7, "b"],
+          ["2027-02-19", "889 209 Ft", "1 778 418 Ft", 10, 7, "b"],
+          ["2027-02-23", "836 991 Ft", "1 673 981 Ft", 10, 7, "b"],
+          ["2027-02-26", "872 457 Ft", "1 744 914 Ft", 10, 7, "b"],
+          ["2027-03-05", "821 748 Ft", "1 643 495 Ft", 10, 7, "b"],
+          ["2027-03-12", "947 163 Ft", "1 894 325 Ft", 10, 7, "b"]
+        ],
+        boardName: "All inclusive", fromCity: "Budapest"
+      }
+    }
+  ] },
+  { id: "zanzibar",         name: "Zanzibár",         hotels: [
+    {
+      id: "riu-palace-swahili",
+      name: "Riu Palace Swahili",
+      stars: 5,
+      location: "Nungwi, Zanzibár",
+      heroIdx: [0, 2],
+      gallery: [["kepek/3f7eabf27f.webp","Infinity medencék napernyőkkel és a türkizkék óceánpart felülről"],["kepek/23cd89e1ed.webp","A Riu Palace Swahili medencés kertje pálmafákkal, mögötte az Indiai-óceán"],["kepek/079ff19d4d.webp","Saját merülőmedence napozóágyakkal, közvetlenül a tengerpart felett"],["kepek/2dbdf0081a.webp","Szoba nagy franciaággyal és óceánra néző erkéllyel"],["kepek/193d55057a.webp","Terasz étterem pálmafákra és a tengerre néző kilátással"],["kepek/a3c1ceabab.webp","Fürdőszoba dupla mosdóval és megvilágított tükrökkel"]],
+      features: ["Csak felnőtteknek", "24 órás all inclusive", "3 infinity medence", "Közvetlenül az óceánparton"],
+      nights: "7–9 nap", board: "all inclusive, repülővel", price: "839 179 Ft",
+      detail: {
+        intro: "Modern, elegáns ötcsillagos szálloda a RIU lánc prémium Palace kategóriájából, közvetlenül Zanzibár fehér homokos, trópusi óceánpartján. A szálloda csak felnőttek számára foglalható, így nyugodt, exkluzív környezetet kínál. 24 órás all inclusive ellátás, több étterem és bár, három látványos infinity medence, wellness központ, edzőterem, valamint esténként élő zene és szórakoztató műsorok várják a vendégeket.",
+        facts: [["Elhelyezkedés", "kb. 5 km Nungwi központjától, kb. 55 km Stone Towntól és a repülőtértől"], ["Transzfer", "kb. 60–65 perc a repülőtérről"], ["Strand", "fehér homokos, enyhén lejtős, a szálloda vendégeinek fenntartott partszakasz, ingyenes napernyők és napágyak"], ["Szálloda", "ötcsillagos Riu Palace, csak felnőtteknek"], ["Repülő", "közvetlen charterjárat Budapestről (Smartwings), kb. 50 perces technikai megállóval Hurghadán, 2 étkezés a fedélzeten"], ["Poggyász", "feladható max. 23 kg/fő, fedélzeti max. 8 kg/fő (55×40×23 cm)"], ["Internet", "ingyenes wifi a teljes területen"]],
+        sections: [
+          ["Szobák", "<p>Modern, tágas, világos és trópusi hangulatú szobák légkondicionálóval, műholdas TV-vel, vízforralóval, széffel, erkéllyel vagy terasszal. A lakosztályok különböző méretben, társalgó résszel is foglalhatók.</p>"],
+          ["Ellátás: 24 órás all inclusive", "<p>Főétkezések svédasztalos rendszerben, valamint tematikus éttermek nemzetközi és különleges konyhákkal (például mediterrán, olasz, ázsiai). Több bár várja a vendégeket napközben és este.</p>"],
+          ["Medence, sport, wellness", "<p>Több medence, köztük három látványos infinity medence. Edzőterem, csoportos sportprogramok (RIU Fit), vízi és szabadidős tevékenységek, esténként élőzenés programok és szórakoztató műsorok.</p><p><strong>Wellness:</strong> spa, gőzfürdő és relaxációs szolgáltatások.</p>"],
+          ["Az ár tartalmazza", "<ul><li>Repülőjegy, adók és illetékek</li><li>Repülőtéri transzfer a szállodába és vissza</li><li>Szállás a megadott éjszakákra, all inclusive ellátással</li><li>Helyi magyar nyelvű asszisztencia</li></ul><p><strong>Külön fizetendő:</strong> turistavízum (50 USD/fő), BBP- és sztornóbiztosítás, a kötelező zanzibári utasbiztosítás, idegenforgalmi adó (kb. 5–7 USD/fő/éj, a szállodában), személyes kiadások, fakultatív kirándulások.</p>"],
+          ["Fontos tudnivalók", "<ul><li>Kötelező zanzibári utasbiztosítás (ZIC): kb. 44 USD/felnőtt, 3–17 éveseknek 50% kedvezmény, 2 év alatt ingyenes. Kizárólag a hivatalos oldalon köthető (visitzanzibar.go.tz/insurance); a QR-kódot vidd magaddal, ne a feladott poggyászban.</li><li>Vízum szükséges: előre online (visa.immigration.go.tz) vagy érkezéskor is intézhető.</li><li>Az útlevélnek a hazatérést követően még legalább 6 hónapig érvényesnek kell lennie, és 2 üres oldalt kell tartalmaznia.</li><li>A légitársaságok és tranzitországok szabályai szigorúbbak is lehetnek; a leírás tájékoztató jellegű.</li></ul>"]
+        ],
+        flights: {
+          a: { label: "Átszállással, éjszakai indulás", short: "Járat: Budapest 22:20 → Zanzibár 14:40, vissza 08:00 → 21:20, 1 átszállással", out: ["Budapest", "22:20", "Zanzibár", "14:40", "1 átszállás, 14 ó 20 p"], back: ["Zanzibár", "08:00", "Budapest", "21:20", "1 átszállás, 15 ó 20 p"] },
+          b: { label: "Közvetlen charterjárat", short: "Közvetlen charter: Budapest 05:45 → Zanzibár 18:00, vissza 19:00 → 03:25", out: ["Budapest", "05:45", "Zanzibár", "18:00", "technikai megállóval, 10 ó 15 p"], back: ["Zanzibár", "19:00", "Budapest", "03:25", "technikai megállóval, 10 ó 25 p"] },
+          c: { hide: true, short: "Közvetlen charter: Budapest 06:45 → Zanzibár 18:00, vissza 19:00 → 04:25", out: ["Budapest", "06:45", "Zanzibár", "18:00", ""], back: ["Zanzibár", "19:00", "Budapest", "04:25", ""] }
+        },
+        dates: [
+          ["2027-01-23", "839 179 Ft", "1 678 358 Ft", 7, 5, "a"],
+          ["2027-01-24", "1 029 990 Ft", "2 059 980 Ft", 9, 7, "b"],
+          ["2027-01-31", "975 639 Ft", "1 951 278 Ft", 8, 6, "a"],
+          ["2027-01-31", "1 029 990 Ft", "2 059 980 Ft", 9, 7, "b"],
+          ["2027-02-01", "881 029 Ft", "1 762 058 Ft", 7, 5, "a"],
+          ["2027-02-04", "922 819 Ft", "1 845 638 Ft", 7, 5, "a"],
+          ["2027-02-06", "951 439 Ft", "1 902 878 Ft", 7, 5, "a"],
+          ["2027-02-08", "927 289 Ft", "1 854 578 Ft", 7, 5, "a"],
+          ["2027-02-18", "924 899 Ft", "1 849 798 Ft", 7, 5, "a"],
+          ["2027-02-20", "903 079 Ft", "1 806 158 Ft", 7, 5, "a"],
+          ["2027-02-21", "1 033 669 Ft", "2 067 338 Ft", 8, 6, "a"],
+          ["2027-02-21", "1 029 990 Ft", "2 059 980 Ft", 9, 7, "b"],
+          ["2027-02-22", "971 179 Ft", "1 942 358 Ft", 8, 6, "a"],
+          ["2027-02-25", "876 539 Ft", "1 753 078 Ft", 7, 5, "a"],
+          ["2027-02-28", "1 029 990 Ft", "2 059 980 Ft", 9, 7, "b"],
+          ["2027-03-03", "971 179 Ft", "1 942 358 Ft", 8, 6, "a"],
+          ["2027-03-08", "878 939 Ft", "1 757 878 Ft", 7, 5, "a"],
+          ["2027-03-28", "967 090 Ft", "1 934 180 Ft", 9, 7, "c"]
+        ],
+        boardName: "All inclusive", fromCity: "Budapest"
+      }
+    },
+    {
+      id: "riu-palace-zanzibar",
+      name: "Riu Palace Zanzibar",
+      stars: 5,
+      location: "Nungwi, Zanzibár",
+      heroIdx: [0],
+      gallery: [["kepek/0f330f08a4.webp","A Riu Palace Zanzibar teraszai, medencéje és a nádernyős, fehér homokos óceánpart"],["kepek/87a12becdb.webp","Infinity medence napernyőkkel, a háttérben az óceán"],["kepek/32c517b528.webp","A Makuti strandbár nádtetővel, a türkizkék óceán partján"],["kepek/bad33ccc4c.webp","Nagy medence napozóágyakkal a szállodaépület előtt"],["kepek/9c697f1725.webp","A Sunshine medencebár türkiz mennyezettel"],["kepek/3266f7ffcf.webp","Elegáns à la carte étterem terített asztalokkal"]],
+      features: ["100 lakosztályos luxus szálloda", "All inclusive", "Saját homokos strand", "Ingyenes kajak és sznorkel"],
+      nights: "7–9 nap", board: "all inclusive, repülővel", price: "817 379 Ft",
+      detail: {
+        intro: "Ötcsillagos, 100 lakosztályos luxus szálloda Nungwi közelében, közvetlenül a fehér, puha homokos óceánpart mellett. A tágas előcsarnokkal, főépülettel és pavilonokkal kialakított szállodában az Aqua étterem az óceán mellett várja a vendégeket svédasztalos és felszolgált fogásokkal, látványkonyhával. Három bár (a medence mellett, a Horizon teraszon és a strandon), óceánra néző terasz, kert, esti show és piano bár teszi teljessé a pihenést.",
+        facts: [["Elhelyezkedés", "kb. 5 km Nungwitól, kb. 55 km a zanzibári repülőtértől"], ["Strand", "a szálloda saját, fehér, puha homokos, enyhén lejtős strandja, lépcsőn közelíthető meg; ingyenes napernyők és nyugágyak"], ["Szálloda", "ötcsillagos, 2013-ban épült, 100 lakosztály, főépület és pavilonok"], ["Repülő", "közvetlen charter (Smartwings) technikai megállóval Hurghadán, vagy átszállásos járat"], ["Poggyász", "feladható max. 23 kg/fő, fedélzeti max. 8 kg/fő (55×40×23 cm)"], ["Internet", "ingyenes vezeték nélküli internet"]],
+        sections: [
+          ["Szobák", "<p><strong>Courtyard junior lakosztály</strong> (34 m²): king-size ágy (180×200 cm), kanapé, műholdas TV, légkondicionáló, vízforraló, széf, erkély vagy terasz.</p><p><strong>Junior suite</strong> (45 m², max. 3 fő): franciaágy (180×200 cm), kanapé a társalgóban, a fenti felszereltséggel.</p><p><strong>Suite</strong> (51 m², max. 4 fő): franciaágy (200×200 cm), kanapé vagy kanapéágy a társalgóban, a legjobb felszereltséggel.</p>"],
+          ["Ellátás: all inclusive", "<p>Reggeli (7:30–10:30), ebéd (12:30–15:00) és vacsora (19:00–22:00) svédasztalosan vagy háromfogásos menüből választva az Aqua étteremben, vegetáriánus ételekkel. Harapnivalók a Sunset és a Makuti bárban (11:00–12:00, 16:00–17:00), üdítők és helyi alkoholos italok a kijelölt bárokban 8:00–24:00 között.</p><p><strong>À la carte (fizetős):</strong> Carnivorous &amp; More (hal és tenger gyümölcsei, kb. 45 USD/fő), Ishi Teppanyaki (keleti konyha, kb. 35 USD/fő).</p><p>Az all inclusive a bejelentkezéstől a hivatalos kijelentkezésig érvényes; utána a fogyasztás külön fizetendő.</p>"],
+          ["Medence, sport, szórakozás", "<p>Édesvizű medence (kb. 300 m², 1,5 m mély, nyitva 10:00–19:00) ingyenes napernyőkkel, napozóágyakkal és törölközőkkel.</p><p>Teniszpálya felszereléskölcsönzéssel, asztalitenisz, kajak (napi 1 óra) és sznorkelfelszerelés (napi 2 óra) ingyen, esti show, piano bár. Felár ellenében: szörf, katamarán, szobaszerviz, fodrászat.</p><p>A szálloda területén a terep miatt enyhe szintkülönbségek vannak.</p>"],
+          ["Az ár tartalmazza", "<ul><li>Repülőjegy, adók és illetékek</li><li>Repülőtéri transzfer a szállodába és vissza</li><li>Szállás a megadott éjszakákra, all inclusive ellátással</li><li>Helyi magyar nyelvű asszisztencia</li></ul><p><strong>Külön fizetendő:</strong> turistavízum (50 USD/fő), BBP- és sztornóbiztosítás, a kötelező zanzibári utasbiztosítás, idegenforgalmi adó (kb. 5–7 USD/fő/éj, a szállodában), személyes kiadások, fakultatív kirándulások.</p>"],
+          ["Fontos tudnivalók", "<ul><li>Kötelező zanzibári utasbiztosítás (ZIC): kb. 44 USD/felnőtt, 3–17 éveseknek 50% kedvezmény, 2 év alatt ingyenes. Kizárólag a hivatalos oldalon köthető (visitzanzibar.go.tz/insurance); a QR-kódot vidd magaddal, ne a feladott poggyászban.</li><li>Vízum szükséges: előre online (visa.immigration.go.tz) vagy érkezéskor is intézhető.</li><li>Az útlevélnek a hazatérést követően még legalább 6 hónapig érvényesnek kell lennie, és 2 üres oldalt kell tartalmaznia.</li><li>A légitársaságok és tranzitországok szabályai szigorúbbak is lehetnek; a leírás tájékoztató jellegű.</li></ul>"]
+        ],
+        flights: {
+          a: { label: "Átszállással, éjszakai indulás", short: "Járat: Budapest 22:20 → Zanzibár 14:40, vissza 08:00 → 21:20, 1 átszállással", out: ["Budapest", "22:20", "Zanzibár", "14:40", "1 átszállás, 14 ó 20 p"], back: ["Zanzibár", "08:00", "Budapest", "21:20", "1 átszállás, 15 ó 20 p"] },
+          b: { label: "Közvetlen charterjárat", short: "Közvetlen charter: Budapest 05:45 → Zanzibár 18:00, vissza 19:00 → 03:25", out: ["Budapest", "05:45", "Zanzibár", "18:00", "technikai megállóval, 10 ó 15 p"], back: ["Zanzibár", "19:00", "Budapest", "03:25", "technikai megállóval, 10 ó 25 p"] },
+          d: { hide: true, short: "Közvetlen charter: Budapest 05:45 → Zanzibár 18:00, vissza 19:00 → 04:25", out: ["Budapest", "05:45", "Zanzibár", "18:00", ""], back: ["Zanzibár", "19:00", "Budapest", "04:25", ""] }
+        },
+        dates: [
+          ["2027-01-23", "817 379 Ft", "1 634 758 Ft", 7, 5, "a"],
+          ["2027-01-23", "1 006 539 Ft", "2 013 078 Ft", 9, 7, "a"],
+          ["2027-01-24", "965 490 Ft", "1 930 980 Ft", 9, 7, "b"],
+          ["2027-01-28", "1 041 879 Ft", "2 083 758 Ft", 9, 7, "a"],
+          ["2027-01-31", "965 490 Ft", "1 930 980 Ft", 9, 7, "b"],
+          ["2027-02-01", "859 229 Ft", "1 718 458 Ft", 7, 5, "a"],
+          ["2027-02-20", "978 249 Ft", "1 956 498 Ft", 7, 5, "a"],
+          ["2027-02-25", "900 919 Ft", "1 801 838 Ft", 7, 5, "a"],
+          ["2027-02-28", "965 490 Ft", "1 930 980 Ft", 9, 7, "b"],
+          ["2027-03-03", "945 019 Ft", "1 890 038 Ft", 8, 6, "a"],
+          ["2027-03-04", "1 037 369 Ft", "2 074 738 Ft", 9, 7, "a"],
+          ["2027-03-06", "1 046 299 Ft", "2 092 598 Ft", 9, 7, "a"],
+          ["2027-03-07", "965 490 Ft", "1 930 980 Ft", 9, 7, "b"],
+          ["2027-03-08", "857 139 Ft", "1 714 278 Ft", 7, 5, "a"],
+          ["2027-03-14", "965 490 Ft", "1 930 980 Ft", 9, 7, "b"],
+          ["2027-03-21", "965 490 Ft", "1 930 980 Ft", 9, 7, "d"]
+        ],
+        boardName: "All inclusive", fromCity: "Budapest"
+      }
+    },
+    {
+      id: "riu-jambo",
+      name: "Riu Jambo",
+      stars: 4,
+      location: "Nungwi, Zanzibár",
+      heroIdx: [0],
+      gallery: [["kepek/455388259e.webp","A Riu Jambo és a Nungwi Beach fehér homokos partja felülről, türkizkék vízzel"],["kepek/32e27b1e57.webp","A szálloda főépülete a RIU felirattal, mögötte az óceán"],["kepek/1092ad6176.webp","A Hakuna Matata swim-up bár a medencében"],["kepek/3af9bebd3a.webp","Fedett relaxációs medence a spában"],["kepek/12e2782219.webp","Standard szoba franciaággyal és erkélyre nyíló ablakkal"],["kepek/c724c62348.webp","Esküvői helyszín virágívvel a tengerparton"]],
+      features: ["Közvetlenül a Nungwi Beachen", "24 órás all inclusive", "4 medence, swim-up bár", "RiuLand gyerekklub"],
+      nights: "7–9 nap", board: "all inclusive, repülővel", price: "721 089 Ft",
+      detail: {
+        intro: "Négycsillagos, 2022-ben megnyílt, hagyományos építészeti stílusú szálloda Zanzibár, a „Fűszer-sziget” északi partján, Nungwi és Kendwa között, közvetlenül a Riu Palace Zanzibar mellett. A türkizkék vizű Nungwi Beachen fekszik, a sziget egyik legszebb pontján, ahonnan lenyűgöző naplementét lehet látni. Több mint 300 elegáns szoba, 4 étterem, 5 bár, 4 medence swim-up bárral, gyerekklub, spa és esti szórakoztató programok várják a vendégeket.",
+        facts: [["Elhelyezkedés", "Nungwi és Kendwa között, a Riu Palace Zanzibar mellett, kb. 66 km a repülőtértől"], ["Strand", "közvetlenül a Nungwi Beachen, gyönyörű naplementével"], ["Szálloda", "négycsillagos, 2022-ben nyílt, több mint 300 szoba"], ["Éttermek, bárok", "4 étterem (fő, ázsiai, gourmet és olasz à la carte), 5 bár"], ["Repülő", "közvetlen charter (Smartwings) technikai megállóval Hurghadán, vagy átszállásos járat"], ["Internet", "ingyenes wifi a szálloda egész területén"]],
+        sections: [
+          ["Szobák", "<p><strong>Standard kétágyas szoba</strong> (kb. 31 m², max. 2 felnőtt, pótágy nem kérhető): twin vagy franciaágy (180×200 cm), kis kanapé, terasz vagy erkély, légkondicionáló, wifi, műholdas TV, vízforraló, minibár, széf.</p><p><strong>Superior kétágyas szoba</strong> (kb. 33 m², kertre vagy medencére néző): franciaágy, kanapé, terasz vagy erkély, a fenti felszereltséggel.</p>"],
+          ["Ellátás: 24 órás all inclusive", "<p>Büfé reggeli, ebéd és vacsora látványkonyhával a főétteremben, kéthetente tematikus vacsoraestek; előzetes foglalással ázsiai étterem, valamint gourmet és olasz à la carte étterem. A bárokban egész nap előételek és snackek, helyi üdítők és alkoholos italok 0–24 órában. Vacsoránál alkalomhoz illő öltözet szükséges.</p><p>Az all inclusive a bejelentkezéstől a hivatalos kijelentkezésig érvényes; utána a fogyasztás külön fizetendő.</p>"],
+          ["Medence, sport, szórakozás", "<p>4 kültéri medence, felnőtt swim-up bárral, gyerekmedence, relaxáló medence (18+), fitneszterem (18+), napi RiuFit órák, gőzfürdő (18+). SUP, kajak és vízibicikli, egy alkalommal búvároktatás a medencében.</p><p>RiuLand gyerekklub (4–7 és 8–12 év), animáció napközben, esténként élő zene és show, RiuArt műhely. Fizetős: Renova Spa kezelések, vízi sportok, búváriskola.</p>"],
+          ["Az ár tartalmazza", "<ul><li>Repülőjegy, adók és illetékek</li><li>Repülőtéri transzfer a szállodába és vissza</li><li>Szállás a megadott éjszakákra, all inclusive ellátással</li><li>Helyi magyar nyelvű asszisztencia</li></ul><p><strong>Külön fizetendő:</strong> turistavízum (50 USD/fő), BBP- és sztornóbiztosítás, a kötelező zanzibári utasbiztosítás, idegenforgalmi adó (kb. 5–7 USD/fő/éj, a szállodában), személyes kiadások, fakultatív kirándulások.</p>"],
+          ["Fontos tudnivalók", "<ul><li>A szomszédban építkezés zajlik, amely esetenként zavaró lehet.</li><li>Kötelező zanzibári utasbiztosítás (ZIC): kb. 44 USD/felnőtt, 3–17 éveseknek 50% kedvezmény, 2 év alatt ingyenes. Kizárólag a hivatalos oldalon köthető (visitzanzibar.go.tz/insurance); a QR-kódot vidd magaddal, ne a feladott poggyászban.</li><li>Vízum szükséges: előre online (visa.immigration.go.tz) vagy érkezéskor is intézhető.</li><li>Az útlevélnek a hazatérést követően még legalább 6 hónapig érvényesnek kell lennie, és 2 üres oldalt kell tartalmaznia.</li><li>A leírás tájékoztató jellegű.</li></ul>"]
+        ],
+        flights: {
+          a: { label: "Átszállással, éjszakai indulás", short: "Járat: Budapest 22:20 → Zanzibár 14:40, vissza 08:00 → 21:20, 1 átszállással", out: ["Budapest", "22:20", "Zanzibár", "14:40", "1 átszállás, 14 ó 20 p"], back: ["Zanzibár", "08:00", "Budapest", "21:20", "1 átszállás, 15 ó 20 p"] },
+          b: { label: "Közvetlen charterjárat", short: "Közvetlen charter: Budapest 05:45 → Zanzibár 18:00, vissza 19:00 → 03:25", out: ["Budapest", "05:45", "Zanzibár", "18:00", "technikai megállóval, 10 ó 15 p"], back: ["Zanzibár", "19:00", "Budapest", "03:25", "technikai megállóval, 10 ó 25 p"] },
+          c: { hide: true, short: "Közvetlen charter: Budapest 06:45 → Zanzibár 18:00, vissza 19:00 → 04:25", out: ["Budapest", "06:45", "Zanzibár", "18:00", ""], back: ["Zanzibár", "19:00", "Budapest", "04:25", ""] },
+          d: { hide: true, short: "Közvetlen charter: Budapest 05:45 → Zanzibár 18:00, vissza 19:00 → 04:25", out: ["Budapest", "05:45", "Zanzibár", "18:00", ""], back: ["Zanzibár", "19:00", "Budapest", "04:25", ""] }
+        },
+        dates: [
+          ["2027-01-23", "784 189 Ft", "1 568 378 Ft", 7, 5, "a"],
+          ["2027-02-01", "826 049 Ft", "1 652 098 Ft", 7, 5, "a"],
+          ["2027-02-20", "848 089 Ft", "1 696 178 Ft", 7, 5, "a"],
+          ["2027-02-22", "905 189 Ft", "1 810 378 Ft", 8, 6, "a"],
+          ["2027-02-25", "821 549 Ft", "1 643 098 Ft", 7, 5, "a"],
+          ["2027-02-27", "909 009 Ft", "1 818 018 Ft", 9, 7, "a"],
+          ["2027-02-28", "879 990 Ft", "1 759 980 Ft", 9, 7, "b"],
+          ["2027-03-03", "781 769 Ft", "1 563 538 Ft", 8, 6, "a"],
+          ["2027-03-04", "846 909 Ft", "1 693 818 Ft", 9, 7, "a"],
+          ["2027-03-06", "855 839 Ft", "1 711 678 Ft", 9, 7, "a"],
+          ["2027-03-07", "846 909 Ft", "1 693 818 Ft", 9, 7, "a"],
+          ["2027-03-08", "721 089 Ft", "1 442 178 Ft", 7, 5, "a"],
+          ["2027-03-14", "879 990 Ft", "1 759 980 Ft", 9, 7, "b"],
+          ["2027-03-21", "879 990 Ft", "1 759 980 Ft", 9, 7, "d"],
+          ["2027-03-28", "840 390 Ft", "1 680 780 Ft", 9, 7, "c"]
+        ],
+        boardName: "All inclusive", fromCity: "Budapest"
+      }
+    }
+  ] },
+  { id: "maldiv-szigetek",  name: "Maldív-szigetek",  hotels: [
+    {
+      id: "riu-palace-maldives",
+      name: "Riu Palace Maldives",
+      stars: 5,
+      bookUrl: "https://www.atlasztravelgyor.hu/utazas-megtekintes/riu-palace-maldives/114322a?ht%5B0%5D=86215&ht%5B1%5D=112832&ht%5B2%5D=119944&ht%5B3%5D=70082&ht%5B4%5D=103366&ht%5B5%5D=114322&ht%5B6%5D=135754&ht%5B7%5D=134580&ht%5B8%5D=70083&ht%5B9%5D=115732&ht%5B10%5D=137073&ht%5B11%5D=97330&ht%5B12%5D=83369&ht%5B13%5D=83685&ht%5B14%5D=97329&ht%5B15%5D=99545&ht%5B16%5D=70508&ht%5B17%5D=83635&ht%5B18%5D=83754&ht%5B19%5D=137050&ht%5B20%5D=86217&ht%5B21%5D=89655&ht%5B22%5D=83752&df=2026-10-08&dt=2027-10-07&uf=1&ut=25&ac=2&cc=0&rooms%5B0%5D=18%2C18&ti=1&ai%5B0%5D=18&ai%5B1%5D=19&ai%5B2%5D=24&pt=15000000",
+      location: "Dhaalu-atoll, Kedhigandu-sziget",
+      heroIdx: [0, 4, 2],
+      whyIdx: 4, enqIdx: 3,
+      gallery: [["kepek/afdee8308a.webp","A Riu Palace Maldives és a Riu Atoll szigete felülről, türkiz lagúnával és vízi villákkal"],["kepek/202c509a29.webp","Junior lakosztály nagy franciaággyal, pálmalevél-mintás falpanellel"],["kepek/d4acbfd777.webp","Vízi villák íves mólója a lagúna felett, háttérben a sziget"],["kepek/3222b5b6f9.webp","A RIU recepció épülete a mólón, a víz felett"],["kepek/1da4c509d1.webp","Vízi villa saját medencével és napozóteraszokkal a türkizkék lagúnán"]],
+      features: ["24 órás all inclusive", "Infinity medence swim-up bárral", "Vízi repülős transzfer", "Travelers' Choice 2022"],
+      nights: "9 nap / 7 éj", board: "all inclusive, repülővel", price: "1 407 589 Ft",
+      detail: {
+        intro: "A Kedhigandu paradicsomi sziget finom, fehér homokjával és kristálytiszta óceánjával a Maldív-szigetek szívében tökéletes helyszín egy felejthetetlen pihenéshez. A világhírű Riu szállodalánc által üzemeltetett, Travelers' Choice 2022 díjjal kitüntetett hotel luxus, tengerre néző szobákat, kiváló konyhát, tematikus éttermeket és swim-up bárral kiegészített infinity medencét kínál. A mólón átsétálva a szomszédos szigeten, a testvérüdülő Riu Atoll szolgáltatásait is használhatod. A tökéletes pihenést a 24 órás all inclusive ellátás teszi teljessé.",
+        facts: [["Elhelyezkedés", "Dhaalu-atoll, Kedhigandu-sziget (kb. 630 × 130 m)"], ["Transzfer", "kb. 180 km Male repülőterétől, kb. 60 perc vízi repülővel"], ["Strand", "homokos szállodai strand, fokozatosan mélyülő víz, ingyenes napernyők és napozóágyak"], ["Szálloda", "ötcsillagos luxus, 2019-ben épült, 176 szoba"], ["Internet", "ingyenes vezeték nélküli internet"], ["Kártyák", "Visa, MasterCard, American Express"]],
+        sections: [
+          ["Szobák", "<p><strong>Junior lakosztály</strong> (kb. 40 m², 2 ágyas): légkondicionált, fürdőszoba zuhanyzóval, hajszárító, fürdőköpeny, wifi, műholdas TV, telefon, vízforraló, minibár, erkély asztallal és székekkel, tengerre néző kilátás. Felár ellenében széf.</p><p><strong>Junior Suite Beach</strong> (kb. 40 m², 2 ágyas): a fenti felszereltség mellett terasz közvetlen lejárattal a strandra.</p>"],
+          ["Ellátás: 24 órás all inclusive", "<p>Reggeli (7:30–10:30), ebéd (12:30–15:00) és vacsora (18:30–22:00) svédasztalos formában a főétteremben, harapnivalók délután (15:30–17:15), alkoholmentes és helyi alkoholos italok a kijelölt helyeken 24 órában, valamint egy ingyenes vacsora a Krystal étteremben (előzetes foglalással).</p><p><strong>Éttermek:</strong> főétterem Palm terasszal (nemzetközi büfé), Krystal (fusion) és Yu Hi (japán) à la carte éttermek, Paradise swim-up bár (18 év felett).</p>"],
+          ["Medence, sport, spa", "<p><strong>Infinity medence</strong> (kb. 200 m²) ingyenes napernyőkkel, nyugágyakkal, matracokkal és törölközőkkel.</p><p>A Riu Atoll területén: fitneszterem (18 év felett), strandröplabda, pancsoló, játszótér, miniklubok (4–7 és 8–12 év), DJ-estek és élő zene kiválasztott napokon. Fizetős: búvárkodás, vízi sportok.</p><p><strong>Spa</strong> (18 év felett): ingyenes gőzfürdő, fizetős masszázsok, arc- és testkezelések.</p>"],
+          ["Az ár tartalmazza", "<ul><li>Repülőjegy a hozzá kapcsolódó adókkal és illetékekkel</li><li>Repülőtér–szálloda–repülőtér transzfer</li><li>Szállás a megadott éjszakákra</li><li>All inclusive ellátás</li><li>Magyar nyelvű telefonos asszisztencia</li></ul><p><strong>Nem tartalmazza:</strong> személyes kiadások, fizetős szolgáltatások, fakultatív kirándulások, helyszínen fizetendő adók (pl. Green Tax).</p>"],
+          ["Fontos tudnivalók", "<ul><li>A beutazáshoz legalább 6 hónapig érvényes útlevél szükséges; legfeljebb 30 napos turistavízumot díjmentesen, érkezéskor adnak.</li><li>Indulás előtt 96 órán belül kötelező kitölteni az online Traveller Declaration (IMUGA) nyilatkozatot.</li><li>A helyszínen személyenként és éjszakánként 12 USD Green Tax (környezeti adó) fizetendő.</li><li>A szolgáltatások és nyitvatartások a szálloda döntése szerint változhatnak; a leírás tájékoztató jellegű.</li></ul>"]
+        ],
+        flight: { out: ["Budapest", "22:20", "Male", "15:25", "1 átszállás, 13 ó 5 p"], back: ["Male", "10:10", "Budapest", "21:20", "1 átszállás, 15 ó 10 p"] },
+        dates: [
+          ["2026-12-09", "1 407 589 Ft", "2 815 178 Ft"],
+          ["2026-12-11", "1 587 699 Ft", "3 175 398 Ft"],
+          ["2026-12-12", "1 528 109 Ft", "3 056 218 Ft"],
+          ["2026-12-13", "1 519 179 Ft", "3 038 358 Ft"],
+          ["2026-12-15", "1 519 179 Ft", "3 038 358 Ft"],
+          ["2026-12-16", "1 519 179 Ft", "3 038 358 Ft"],
+          ["2027-01-14", "1 553 419 Ft", "3 106 838 Ft"],
+          ["2027-01-17", "1 553 419 Ft", "3 106 838 Ft"],
+          ["2027-01-19", "1 625 099 Ft", "3 250 198 Ft"],
+          ["2027-02-23", "1 625 099 Ft", "3 250 198 Ft"]
+        ],
+        days: 9, nightsN: 7, boardName: "All inclusive", fromCity: "Budapest"
+      }
+    },
+    {
+      id: "riu-atoll",
+      name: "Riu Atoll",
+      stars: 4,
+      location: "Dhaalu-atoll, Maafushi-sziget",
+      heroIdx: [0],
+      gallery: [["kepek/f2d1acb751.webp","Vízi villák sora a sekély lagúnában, mellette a sziget fehér homokos partja"],["kepek/5bfde53131.webp","A Riu Atoll lobbija a négycsillagos felirattal"],["kepek/dd24e55760.webp","Tágas szoba franciaággyal, kanapéval és tengerre nyíló terasszal"],["kepek/dcb01e4dc4.webp","A közös RIU recepció épülete a mólón, a víz felett"],["kepek/fedb3ade59.webp","Masszázs a szálloda spájában"],["kepek/c2b18d2e9f.webp","Fürdőszoba szabadon álló káddal és zuhanyzóval"]],
+      features: ["24 órás all inclusive", "Swim-up bár", "Miniklub és animáció", "Vízi repülős vagy motorcsónakos transzfer"],
+      nights: "7 nap / 5 éj", board: "all inclusive, repülővel", price: "1 089 309 Ft",
+      detail: {
+        intro: "Finomhomokos strand, kristálytiszta, türkizkék óceán és békés pihenés a pálmafák árnyékában: itt érezheted az igazi, egzotikus nyaralás ízét. A trópusi növényzetbe simuló szálloda azoknak készült, akik valódi kikapcsolódásra vágynak. Három nemzetközi konyhát kínáló étterem és három bár, köztük egy swim-up bár várja a vendégeket, az aktív pihenés kedvelőit sportlehetőségek és medence, a nap végén pedig a spa. A stílusos, jól felszerelt szobák és a barátságos, profi személyzet gondoskodik a kényelemről.",
+        facts: [["Elhelyezkedés", "Dhaalu-atoll, Maafushi-sziget (kb. 1 km × 250 m)"], ["Transzfer", "kb. 180 km Male repülőterétől, kb. 30 perc vízi repülővel vagy motorcsónakkal"], ["Strand", "homokos szállodai strand, fokozatosan mélyülő víz, ingyenes napernyők és napozóágyak"], ["Szálloda", "négycsillagos, 2019-ben épült, 264 szoba"], ["Internet", "ingyenes vezeték nélküli internet"], ["Kártyák", "Visa, MasterCard"]],
+        sections: [
+          ["Szobák", "<p><strong>Standard szoba</strong> (kb. 31 m², 2 személyes): légkondicionált, fürdőszoba káddal vagy zuhanyzóval, wifi, televízió, széf, kávé- és teafőző, minibár, erkély asztallal és székekkel, tengerre néző kilátás.</p>"],
+          ["Ellátás: 24 órás all inclusive", "<p>Reggeli (7:30–10:30), ebéd (12:30–15:00) és vacsora (18:30–22:00) svédasztalos formában a főétteremben, nassolnivalók meghatározott időben, alkoholmentes italok, valamint helyi és válogatott importált alkoholos italok a kijelölt bárokban 24 órában.</p><p><strong>Éttermek és bárok:</strong> nemzetközi főétterem, olasz és steak à la carte étterem, 3 bár, köztük swim-up bár a medencénél.</p>"],
+          ["Medence, sport, spa", "<p>Medence és pancsoló ingyenes napernyőkkel, nyugágyakkal és törölközőkkel.</p><p>Fitneszterem, asztalitenisz, darts, tollaslabda, strandröplabda, biliárd, aerobik, játszótér, miniklubok (4–7 és 8–12 év), animáció felnőtteknek és gyerekeknek, élő zene. Vízi sportok a strandon (külső szolgáltató).</p><p><strong>Spa</strong> felár ellenében: gőzfürdő, masszázsok, arc- és testkezelések.</p>"],
+          ["Az ár tartalmazza", "<ul><li>Repülőjegy a hozzá kapcsolódó adókkal és illetékekkel</li><li>Repülőtér–szálloda–repülőtér transzfer</li><li>Szállás a megadott éjszakákra</li><li>All inclusive ellátás</li><li>Magyar nyelvű telefonos asszisztencia</li></ul><p><strong>Nem tartalmazza:</strong> személyes kiadások, fizetős szolgáltatások, fakultatív kirándulások, helyszínen fizetendő adók (pl. Green Tax).</p>"],
+          ["Fontos tudnivalók", "<ul><li>A beutazáshoz legalább 6 hónapig érvényes útlevél szükséges; legfeljebb 30 napos turistavízumot díjmentesen, érkezéskor adnak.</li><li>Indulás előtt 96 órán belül kötelező kitölteni az online Traveller Declaration (IMUGA) nyilatkozatot.</li><li>A helyszínen személyenként és éjszakánként 12 USD Green Tax (környezeti adó) fizetendő.</li><li>A szolgáltatások és nyitvatartások a szálloda döntése szerint változhatnak; a leírás tájékoztató jellegű.</li></ul>"]
+        ],
+        flight: { out: ["Budapest", "22:20", "Male", "15:25", "1 átszállás, 13 ó 5 p"], back: ["Male", "10:10", "Budapest", "21:20", "1 átszállás, 15 ó 10 p"] },
+        dates: [
+          ["2027-01-14", "1 089 309 Ft", "2 178 608 Ft"],
+          ["2027-01-23", "1 093 779 Ft", "2 187 548 Ft"],
+          ["2027-01-26", "1 089 309 Ft", "2 178 608 Ft"],
+          ["2027-01-30", "1 093 779 Ft", "2 187 548 Ft"],
+          ["2027-02-04", "1 089 309 Ft", "2 178 608 Ft"],
+          ["2027-02-06", "1 093 779 Ft", "2 187 548 Ft"],
+          ["2027-02-09", "1 089 309 Ft", "2 178 608 Ft"],
+          ["2027-02-13", "1 093 779 Ft", "2 187 548 Ft"],
+          ["2027-02-14", "1 093 779 Ft", "2 187 548 Ft"],
+          ["2027-02-16", "1 089 309 Ft", "2 178 608 Ft"],
+          ["2027-02-23", "1 089 309 Ft", "2 178 608 Ft"],
+          ["2027-02-25", "1 089 309 Ft", "2 178 608 Ft"]
+        ],
+        days: 7, nightsN: 5, boardName: "All inclusive", fromCity: "Budapest"
+      }
+    }
+  ] },
+  { id: "dominika",         name: "Dominika",         hotels: [
+    {
+      id: "riu-republica",
+      name: "Riu Republica",
+      stars: 5,
+      location: "Arena Gorda, Punta Cana",
+      gallery: [["kepek/0a4445bf4b.webp", "A Riu Republica felülről: medencék, pálmás kert és a széles homokos strand a tengerrel"], ["kepek/a13c52ab1f.webp", "Medence vízbe épített napozóágyakkal, mögötte pálmafák"], ["kepek/138bd74ae0.webp", "Homokos strand nádernyőkkel és pálmafákkal a tengerparton"], ["kepek/3f95b69168.webp", "Aquapark színes csúszdákkal"], ["kepek/864b19a442.webp", "Standard szoba franciaággyal, kilátással a tengerre"]],
+      features: ["Csak felnőtteknek (18+)", "All inclusive", "Közvetlenül a homokos parton", "5 medence, 3 swim-up bár", "Aquapark 4 csúszdával"],
+      nights: "9 nap / 7 éj", board: "all inclusive, repülővel", price: "2 259 €",
+      detail: {
+        intro: "A kiterjedt Riu Republica szállodakomplexum kizárólag felnőtteknek szól, és egy gyönyörű, széles homokos strand mellett fekszik. Bulis koncepciójának köszönhetően ideális fiataloknak és pároknak, akik pörgősebb nyaralásra, partikra és élményekre vágynak.",
+        facts: [["Elhelyezkedés", "Arena Gorda, Punta Cana; kb. 13 km a központtól, üzletek a helyszínen"], ["Transzfer", "kb. 28 km a Punta Cana-i repülőtértől (PUJ), kb. 92 km La Romanától (LRM)"], ["Strand", "közvetlenül a homokos parton, ingyenes napozóágyak és napernyők"], ["Szálloda", "ötcsillagos, csak 18 év felettieknek"], ["Repülő", "Pozsonyból (Bratislava), indulás 09:10-kor"], ["Internet", "ingyenes wifi az üdülő egész területén"]],
+        sections: [
+          ["Szobák", "<p><strong>Standard kétágyas szoba</strong>: légkondicionálás, fürdőszoba/WC hajszárítóval, 2 queen méretű (125 × 200 cm) vagy 1 king méretű (200 × 200 cm) ágy, telefon, műholdas TV, ingyenes wifi és széf, minibár, italadagoló, tea- és kávékészítő, vasaló és vasalódeszka, fürdőköpeny, papucs, erkély vagy terasz.</p><p>További szobatípusok a fenti felszereltséggel:</p><ul><li><strong>Kétágyas szoba, belső kilátással</strong>: kilátás az üdülő területére</li><li><strong>Kétágyas szoba, részleges tengeri kilátással</strong></li></ul>"],
+          ["Ellátás: all inclusive", "<ul><li>Reggeli, késői reggeli, ebéd és vacsora bőséges svédasztalos formában</li><li>Egész nap harapnivalók</li><li>Korlátlan csapolt alkoholmentes italok, helyi és válogatott import alkoholos italok</li><li>A szálloda által meghatározott helyeken és időpontokban vehető igénybe</li><li>Vacsorához elegáns öltözet szükséges</li></ul>"],
+          ["Szálloda és éttermek", "<p>Recepciós előcsarnok, 2 főétterem, 4 büféétterem (olasz, ázsiai, indiai, tematikus a medencénél), 3 à la carte étterem (2 gourmet, spanyol), snack bárok (3 a medencénél, 1 a strandon), 10 bár, diszkó, ajándékbolt, butik.</p><p>5 medence, ebből 3 swim-up bárral (napozóágyak, napernyők és strandtörölközők ingyen), aquapark 4 csúszdával. Ingyenes wifi, internet felár ellenében.</p>"],
+          ["Sport, szórakozás, wellness", "<p><strong>Ingyenesen:</strong> animációs és esti programok, strandröplabda, fitnesz, szörfözés, kajak, sznorkelezés, gőzfürdő, aquapark 4 csúszdával, bevezető búvárlecke a medencében.</p><p><strong>Felár ellenében:</strong> spa, vízi sportok a strandon, golf (2 km), masszázsok és kezelések.</p><p><strong>Szórakozás:</strong> animáció, élő zene, partik, tematikus esték.</p>"],
+          ["Az ár tartalmazza", "<ul><li>Repülőjegy Pozsonyból (Bratislava), adók és illetékek</li><li>Repülőtéri transzfer a szállodába és vissza</li><li>Szállás a megadott éjszakákra, all inclusive ellátással</li><li>Magyar nyelvű telefonos asszisztencia</li></ul><p><strong>Nem tartalmazza:</strong> BBP- és sztornóbiztosítás, személyes kiadások, fizetős szolgáltatások, fakultatív kirándulások.</p>"],
+          ["Fontos tudnivalók", "<ul><li>A szálloda kizárólag 18 év felettieknek foglalható.</li><li>Az árak tájékoztató jellegűek, foglalás előtt ellenőrizzük őket.</li><li>A szolgáltatások és nyitvatartások a szálloda döntése szerint változhatnak; a leírás tájékoztató jellegű.</li></ul>"]
+        ],
+        flight: { out: ["Pozsony", "09:10", "Punta Cana", "", "az 1. napon"], back: ["Punta Cana", "", "Pozsony", "17:00", "érkezés a 9., ill. a 16. napon"] },
+        dates: [
+          ["2026-12-15", "2 259 €", "4 518 €", 9, 7],
+          ["2026-12-22", "2 809 €", "5 618 €", 9, 7],
+          ["2026-12-29", "2 939 €", "5 878 €", 9, 7],
+          ["2027-01-05", "2 583 €", "5 166 €", 9, 7],
+          ["2027-01-12", "2 529 €", "5 058 €", 9, 7],
+          ["2027-01-19", "2 529 €", "5 058 €", 9, 7],
+          ["2027-01-26", "2 557 €", "5 114 €", 9, 7],
+          ["2027-02-02", "2 649 €", "5 298 €", 9, 7],
+          ["2027-02-09", "2 702 €", "5 404 €", 9, 7],
+          ["2027-02-16", "2 702 €", "5 404 €", 9, 7],
+          ["2027-02-23", "2 766 €", "5 532 €", 9, 7],
+          ["2027-03-02", "2 647 €", "5 294 €", 9, 7],
+          ["2027-03-09", "2 647 €", "5 294 €", 9, 7],
+          ["2027-03-16", "2 647 €", "5 294 €", 9, 7],
+          ["2027-03-23", "2 908 €", "5 816 €", 9, 7],
+          ["2026-12-15", "3 429 €", "6 858 €", 16, 14],
+          ["2027-01-05", "3 520 €", "7 040 €", 16, 14],
+          ["2027-01-12", "3 486 €", "6 972 €", 16, 14],
+          ["2027-01-19", "3 515 €", "7 030 €", 16, 14],
+          ["2027-01-26", "3 624 €", "7 248 €", 16, 14]
+        ],
+        groupNights: true,
+        days: 9, nightsN: 7, boardName: "All inclusive", fromCity: "Pozsony"
+      }
+    },
+    {
+      id: "riu-bambu",
+      name: "Riu Bambu",
+      stars: 5,
+      location: "Bávaro, Punta Cana",
+      gallery: [["kepek/68edb02a9e.webp", "A Riu Bambu felülről: pálmás kert, medencék és a homokos strand a tengerrel"], ["kepek/b1b73c50f1.webp", "Medencék pálmafákkal és napozóágyakkal, közvetlenül a tengerpart mellett"], ["kepek/d58f584b80.webp", "Swim-up bár a medencében, vízbe épített napozóágyakkal"], ["kepek/89fa3d4304.webp", "Strandbár fehér bútorokkal a pálmafák alatt, háttérben a tenger"], ["kepek/bec63e6e6c.webp", "Aquapark színes csúszdákkal és gyerekmedence"], ["kepek/4264c85006.webp", "Kétágyas szoba erkéllyel"]],
+      features: ["Családoknak és pároknak", "All inclusive", "Közvetlenül az Arena Gorda strandon", "RiuLand gyerekklub", "Aquapark csúszdákkal"],
+      nights: "9 nap / 7 éj", board: "all inclusive, repülővel", price: "2 288 €",
+      detail: {
+        intro: "Az ötcsillagos Riu Bambu a lenyűgöző Arena Gorda strand mellett fekszik, és minden kényelmet megad a felhőtlen nyaraláshoz. A családbarát, all inclusive szálloda ingyenes wifit, sokféle szabadidős lehetőséget és gazdag szórakoztató programot kínál. Gyerekeknek és felnőtteknek egyaránt saját tér jut az egész napos kikapcsolódáshoz: a RiuLand gyerekklubban rengeteg program, játszótér és medencék várják a kicsiket, egy rövid sétára pedig a szálloda csúszdás aquaparkja található. A felnőttek öt medencében hűsölhetnek, az amfiteátrumban élő zenét és műsorokat élvezhetnek, vagy ellátogathatnak a híres éjszakai életéről ismert Pacha diszkóba. Minden korosztályú családnak és párnak ajánljuk.",
+        facts: [["Elhelyezkedés", "Bávaro, Punta Cana; kb. 13 km a központtól, üzletek kb. 600 m-re"], ["Transzfer", "kb. 25,5 km a Punta Cana-i repülőtértől (PUJ), kb. 90 km La Romanától (LRM)"], ["Strand", "közvetlenül a homokos Arena Gorda strandon, ingyenes napozóágyak"], ["Szálloda", "ötcsillagos, családbarát"], ["Repülő", "Pozsonyból (Bratislava), indulás 09:10-kor"], ["Internet", "ingyenes wifi"]],
+        sections: [
+          ["Szobák", "<p><strong>Standard kétágyas szoba</strong>: légkondicionálás, fürdőszoba/WC hajszárítóval, 2 queen méretű (125 × 200 cm) vagy 1 king méretű (200 × 200 cm) ágy, telefon, műholdas TV, ingyenes wifi és széf, minibár, italadagoló, tea- és kávékészítő, vasaló és vasalódeszka, erkély vagy terasz.</p><p>További szobatípusok a fenti felszereltséggel:</p><ul><li><strong>Deluxe kétágyas szoba</strong>: tágasabb</li><li><strong>Deluxe családi szoba</strong>: tágasabb, hálószoba nappali résszel, 1 king méretű ágy (200 × 200 cm), kanapé</li></ul>"],
+          ["Ellátás: all inclusive", "<ul><li><strong>Főétterem:</strong> svédasztalos reggeli 7:00–10:00, ebéd 12:00–15:00, vacsora 18:30–22:00; reggelinél kávé, tea és csapolt üdítők, ebédnél és vacsoránál üdítők, sör, helyi bor (csapolt)</li><li><strong>Medence melletti étterem:</strong> késői reggeli 10:00–12:00, ebéd 12:00–15:00 (pl. gyümölcs, pizza, tészta, saláták, desszertek), könnyű harapnivalók 15:00–17:30</li><li><strong>Lounge bár:</strong> 18:00–24:00, <strong>bár:</strong> 10:00–24:00, <strong>medencebárok:</strong> 10:00–18:00: alkoholmentes és válogatott helyi, csapolt alkoholos italok</li><li><strong>Sportbár:</strong> 0–24 órában italok, meghatározott időben éjszakai harapnivalók</li><li>Minibár és italadagoló (naponta egyszer feltöltve)</li><li>Belépés a Pacha diszkóba (különleges események kivételével); a diszkóban az italok nem részei az all inclusive ellátásnak</li><li>A nyitvatartásokat és helyszíneket a szálloda határozza meg, ezek változhatnak.</li></ul>"],
+          ["Szálloda és éttermek", "<p>Recepciós előcsarnok, főétterem terasszal, tematikus éttermek (olasz, ázsiai, mexikói, spanyol, steakhouse), 6 bár (ebből 2 swim-up bár).</p><p>7 medence (ebből 2 gyerekmedence), ingyenes napozóágyak, napernyők és strandtörölközők. Edzőterem, diszkó (ingyenes belépés, italok felár ellenében), amfiteátrum, gyerekklub (4–17 éveseknek), játszótér, aquapark és gyerekmedence csúszdákkal (min. 120 cm magasság, a szállodától 900 m-re).</p>"],
+          ["Sport, szórakozás, wellness", "<p><strong>Ingyenesen:</strong> animációs és esti programok, edzőterem és gőzfürdő (18 év felett), röplabda, strandröplabda, szörfözés, kajak, kis katamarán (2 főre), sznorkelfelszerelés, tenisz (a szállodától 500 m-re).</p><p><strong>Felár ellenében:</strong> wellness (a Riu Palace Bavaro szállodában), masszázsok, szépségszalon, golf, búvárkodás.</p>"],
+          ["Az ár tartalmazza", "<ul><li>Repülőjegy Pozsonyból (Bratislava), adók és illetékek</li><li>Repülőtéri transzfer a szállodába és vissza</li><li>Szállás a megadott éjszakákra, all inclusive ellátással</li><li>Magyar nyelvű telefonos asszisztencia</li></ul><p><strong>Nem tartalmazza:</strong> BBP- és sztornóbiztosítás, személyes kiadások, fizetős szolgáltatások, fakultatív kirándulások.</p>"]
+        ],
+        flight: { out: ["Pozsony", "09:10", "Punta Cana", "", "az 1. napon"], back: ["Punta Cana", "", "Pozsony", "17:00", "érkezés a 9., ill. a 16. napon"] },
+        dates: [
+          ["2026-12-15", "2 288 €", "4 576 €", 9, 7],
+          ["2026-12-22", "2 798 €", "5 596 €", 9, 7],
+          ["2026-12-29", "2 898 €", "5 796 €", 9, 7],
+          ["2027-01-05", "2 473 €", "4 946 €", 9, 7],
+          ["2027-01-12", "2 426 €", "4 852 €", 9, 7],
+          ["2027-01-19", "2 426 €", "4 852 €", 9, 7],
+          ["2027-01-26", "2 458 €", "4 916 €", 9, 7],
+          ["2027-02-02", "2 554 €", "5 108 €", 9, 7],
+          ["2027-02-09", "2 608 €", "5 216 €", 9, 7],
+          ["2027-02-16", "2 608 €", "5 216 €", 9, 7],
+          ["2027-02-23", "2 671 €", "5 342 €", 9, 7],
+          ["2027-03-02", "2 552 €", "5 104 €", 9, 7],
+          ["2027-03-09", "2 552 €", "5 104 €", 9, 7],
+          ["2027-03-16", "2 552 €", "5 104 €", 9, 7],
+          ["2027-03-23", "2 805 €", "5 610 €", 9, 7],
+          ["2026-12-15", "3 458 €", "6 916 €", 16, 14],
+          ["2027-01-05", "3 307 €", "6 614 €", 16, 14],
+          ["2027-01-12", "3 280 €", "6 560 €", 16, 14],
+          ["2027-01-19", "3 312 €", "6 624 €", 16, 14],
+          ["2027-01-26", "3 430 €", "6 860 €", 16, 14],
+          ["2027-02-02", "3 540 €", "7 080 €", 16, 14],
+          ["2027-02-09", "3 584 €", "7 168 €", 16, 14],
+          ["2027-02-16", "3 627 €", "7 254 €", 16, 14],
+          ["2027-02-23", "3 659 €", "7 318 €", 16, 14],
+          ["2027-03-02", "3 504 €", "7 008 €", 16, 14],
+          ["2027-03-09", "3 504 €", "7 008 €", 16, 14]
+        ],
+        groupNights: true,
+        days: 9, nightsN: 7, boardName: "All inclusive", fromCity: "Pozsony"
+      }
+    }
+  ] }
+];
+// =========================================================
+DESTINATIONS.forEach(d => d.hotels.forEach(h => { if (!h.img && h.gallery && h.gallery.length) h.img = h.gallery[0][0]; }));
+
+function setHash(h) { try { history.replaceState(null, "", h); } catch (e) { /* előnézeti keretben nem engedélyezett */ } }
+const KULDO_CIM = "kuldes.php";
+const KEZDES = Date.now();
+const STAR = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 17l-6.1 3.4 1.5-6.8L2.2 9l6.9-.7z"/></svg>';
+const PIN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-5.7-7-11a7 7 0 0 1 14 0c0 5.3-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>';
+const SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="10" r="4"/><path d="M12 2v1.5M12 16.5V18M4 10H2.5M21.5 10H20M6.3 4.3l1 1M16.7 14.7l1 1M6.3 15.7l1-1M16.7 5.3l1-1M2 21c2.5-1.5 5-1.5 7.5 0s5 1.5 7.5 0 3.5-1 5-1"/></svg>';
+const KIS = src => (typeof src === "string" && src.startsWith("kepek/")) ? src.replace(/\.webp$/, "-kis.webp") : src;
+const PALM = '<img class="ph-logo" src="' + document.querySelector('img.riu').src + '" alt="">';
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+const tabs = document.getElementById("tabs");
+const panel = document.getElementById("panel");
+const destSel = document.getElementById("f-dest");
+const hotelSel = document.getElementById("f-hotel");
+
+DESTINATIONS.forEach(d => {
+  const t = document.createElement("button");
+  t.className = "tab"; t.role = "tab"; t.id = "tab-" + d.id; t.dataset.id = d.id;
+  t.setAttribute("aria-controls", "panel");
+  t.innerHTML = `${esc(d.name)}${d.hotels.length ? `<span class="count">${d.hotels.length}</span>` : ""}`;
+  t.addEventListener("click", () => select(d.id, true));
+  tabs.appendChild(t);
+
+
+  const o = document.createElement("option"); o.value = d.id; o.textContent = d.name; destSel.appendChild(o);
+});
+
+function fillHotels(id, preselect) {
+  const d = DESTINATIONS.find(x => x.id === id);
+  hotelSel.innerHTML = "";
+  const any = document.createElement("option"); any.value = ""; any.textContent = d.hotels.length ? "Bármelyik / még nem tudom" : "Kérem, ajánljatok szállodát"; hotelSel.appendChild(any);
+  d.hotels.forEach(h => { const o = document.createElement("option"); o.value = h.name; o.textContent = h.name; hotelSel.appendChild(o); });
+  if (preselect) hotelSel.value = preselect;
+}
+
+function renderPanel(d) {
+  const head = `
+    <div class="dest-head">
+      <div><span class="dest-kicker">RIU Hotels &amp; Resorts</span><h2 class="dest-name">${esc(d.name)}</h2></div>
+    </div>`;
+  if (!d.hotels.length) {
+    return head + `
+      <div class="empty">
+        <span class="ico">${PALM}</span>
+        <div><h3>Az ajánlatok feltöltése folyamatban</h3><p>A ${esc(d.name)} RIU szállodáit hamarosan itt találod. Addig is szívesen összeállítjuk neked a legjobb ajánlatot.</p></div>
+        <a class="btn btn-red" href="#ajanlat" data-dest="${d.id}">Ajánlatot kérek</a>
+      </div>`;
+  }
+  const solo = d.hotels.length === 1;
+  return head + `<div class="hotels n${Math.min(d.hotels.length, 3)}">` + d.hotels.map((h, i) => `
+    <article class="hotel rv" style="--d:${(i % 3) * 90}ms" ${h.detail ? `data-open="${d.id}|${h.id}" tabindex="0" role="button" aria-label="${esc(h.name)} részletei"` : ""}>
+      <div class="hotel-img">${h.img ? `<img src="${esc(KIS(h.img))}" alt="${esc(h.name)}" loading="lazy" decoding="async">` : `<div class="ph">${PALM}<span>Fotó hamarosan</span></div>`}<span class="badge">RIU</span></div>
+      <div class="hotel-body">
+        ${h.stars ? `<span class="stars" role="img" aria-label="${h.stars} csillagos">${STAR.repeat(h.stars)}</span>` : ""}
+        <h3>${esc(h.name)}</h3>
+        ${h.location ? `<span class="loc">${PIN}${esc(h.location)}</span>` : ""}
+        ${solo && h.detail && h.detail.intro ? `<p class="hotel-intro">${esc(h.detail.intro)}</p>` : ""}
+        ${solo && h.gallery && h.gallery.length > 3 ? `<div class="hotel-thumbs">${h.gallery.slice(1, 4).map(g => `<img src="${KIS(g[0])}" alt="${esc(g[1])}" loading="lazy" decoding="async">`).join("")}</div>` : ""}
+        ${h.features && h.features.length ? `<ul class="feat">${h.features.map(f => `<li>${esc(f)}</li>`).join("")}</ul>` : ""}
+        <div class="hotel-foot">
+          <div class="price">${h.price ? `<small>${esc([h.nights, h.board].filter(Boolean).join(", "))}</small><strong>${esc(h.price)}</strong> <span>/ fő-től</span>` : `<small>Ár kérésre</small>`}</div>
+          ${h.detail ? `<span class="btn btn-red">Részletek és időpontok</span>` : `<a class="btn btn-red" href="#ajanlat" data-dest="${d.id}" data-hotel="${esc(h.name)}">Ajánlatot kérek</a>`}
+        </div>
+      </div>
+    </article>`).join("") + `</div>`;
+}
+
+let current = null;
+function select(id, userAction) {
+  const d = DESTINATIONS.find(x => x.id === id) || DESTINATIONS[0];
+  current = d.id;
+  tabs.querySelectorAll(".tab").forEach(t => {
+    const on = t.dataset.id === d.id;
+    t.setAttribute("aria-selected", on ? "true" : "false");
+    t.tabIndex = on ? 0 : -1;
+    if (on && userAction) t.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+  });
+  panel.setAttribute("aria-labelledby", "tab-" + d.id);
+  panel.innerHTML = renderPanel(d);
+  panel.classList.remove("panel-enter"); void panel.offsetWidth; panel.classList.add("panel-enter");
+  panel.querySelectorAll(".rv").forEach(el => el.classList.add("in"));
+  destSel.value = d.id; fillHotels(d.id);
+  if (userAction) {
+    setHash("#" + d.id);
+    document.getElementById("kinalat").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  }
+}
+// Billentyűzettel is váltható fülek
+tabs.addEventListener("keydown", e => {
+  const list = [...tabs.querySelectorAll(".tab")];
+  const i = list.findIndex(t => t.dataset.id === current);
+  let n = null;
+  if (e.key === "ArrowRight") n = (i + 1) % list.length;
+  if (e.key === "ArrowLeft") n = (i - 1 + list.length) % list.length;
+  if (n !== null) { e.preventDefault(); select(list[n].dataset.id, true); list[n].focus(); }
+});
+// „Ajánlatot kérek” gombok kitöltik az űrlapot
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-dest]");
+  if (!b) return;
+  destSel.value = b.dataset.dest; fillHotels(b.dataset.dest, b.dataset.hotel || "");
+});
+destSel.addEventListener("change", () => fillHotels(destSel.value));
+// Közvetlen link egy úti célra: pl. .../#dubai
+const fromHash = location.hash.replace("#", "").split("/")[0];
+select(DESTINATIONS.some(d => d.id === fromHash) ? fromHash : (DESTINATIONS.find(d => d.hotels.length) || DESTINATIONS[0]).id, false);
+
+
+// ===== Szálloda részletek ablak =====
+const HONAP = ["jan.","febr.","márc.","ápr.","máj.","jún.","júl.","aug.","szept.","okt.","nov.","dec."];
+const NAP = ["vasárnap","hétfő","kedd","szerda","csütörtök","péntek","szombat"];
+function dparts(iso, add) { const [y,m,d] = iso.split("-").map(Number); const x = new Date(Date.UTC(y, m-1, d + (add||0))); return { y:x.getUTCFullYear(), m:x.getUTCMonth(), d:x.getUTCDate(), w:x.getUTCDay() }; }
+function dlabel(iso, days) { const a = dparts(iso), b = dparts(iso, days-1); return { range: `${a.y}. ${HONAP[a.m]} ${a.d}. – ${b.y!==a.y?b.y+". ":""}${HONAP[b.m]} ${b.d}.`, wd: `${NAP[a.w]} – ${NAP[b.w]}` }; }
+const dlg = document.getElementById("hotel-dlg"), dlgBody = document.getElementById("dlg-body");
+let lastFocus = null;
+function openHotel(destId, hotelId) {
+  const d = DESTINATIONS.find(x => x.id === destId); const h = d && d.hotels.find(x => x.id === hotelId); if (!h) return;
+  const D = h.detail;
+  const dates = [...D.dates].sort((a, b) => a[0].localeCompare(b[0]));
+  const fl = D.flight;
+  const flCard = (f, label) => `
+        <div>${label ? `<span class="fl-type">${esc(label)}</span>` : ""}
+          <p><span class="fl-lbl">Oda</span><strong>${f.out[0]} ${f.out[1]}</strong> → <strong>${f.out[2]}${f.out[3] ? " " + f.out[3] : ""}</strong><small>${f.out[4]}</small></p>
+          <p><span class="fl-lbl">Vissza</span><strong>${f.back[0]}${f.back[1] ? " " + f.back[1] : ""}</strong> → <strong>${f.back[2]} ${f.back[3]}</strong><small>${f.back[4]}</small></p>
+        </div>`;
+  const flightsHtml = fl ? `<div class="flight">${flCard(fl)}</div>`
+    : D.flights ? `<div class="flight multi">${Object.values(D.flights).filter(f => !f.hide).map(f => flCard(f, f.label)).join("")}</div>` : "";
+  const datesHtml = dates.length ? `
+      ${flightsHtml}
+      ${(() => { const rowHtml = ([iso, pp, trip, dd, nn, fk]) => {
+          const days = dd || D.days, nights = nn || D.nightsN, L = dlabel(iso, days);
+          const f = fk && D.flights ? D.flights[fk] : null;
+          return `
+          <div class="date-row" role="listitem">
+            <div class="dr-when"><strong>${L.range}</strong><small>${L.wd}, ${days} nap / ${nights} éj, ${esc(D.boardName)}</small>${f ? `<small class="dr-fl">${esc(f.short)}</small>` : ""}</div>
+            <div class="dr-price"><strong>${pp}</strong><small>/ fő</small></div>
+            <div class="dr-total"><span>${trip}</span><small>2 főre összesen</small></div>
+            <a class="btn btn-red" href="#ajanlat" data-pick="${d.id}|${esc(h.name)}|${L.range} (${days} nap / ${nights} éj), ${pp}/fő">Ajánlatot kérek</a>
+          </div>`; };
+        const nOf = r => r[4] || D.nightsN;
+        return D.groupNights
+          ? [...new Set(dates.map(nOf))].sort((a, b) => a - b).map(n => `<h4 class="dl-group">${n} éjszakás utak</h4><div class="date-list" role="list">${dates.filter(r => nOf(r) === n).map(rowHtml).join("")}</div>`).join("")
+          : `<div class="date-list" role="list">${dates.map(rowHtml).join("")}</div>`; })()}
+` : `<div class="no-dates"><p><strong>Az aktuális időpontokat és árakat kérésre küldjük.</strong> ${h.price ? `Ár: ${esc(h.price)}/fő-től, ${esc(D.boardName.toLowerCase())} ellátással, repülővel (${esc(D.fromCity)}).` : ""}</p><a class="btn btn-red" href="#ajanlat" data-pick="${d.id}|${esc(h.name)}|">Ajánlatot kérek</a></div>`;
+
+  dlgBody.innerHTML = `
+    ${(h.gallery && h.gallery.length) ? `
+    <div class="gal">
+      <div class="gal-main"><img id="gal-img" src="${h.gallery[0][0]}" alt="${esc(h.gallery[0][1])}">
+        <button class="gal-nav prev" type="button" aria-label="Előző kép"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="gal-nav next" type="button" aria-label="Következő kép"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+        <span class="gal-count" id="gal-count">1 / ${h.gallery.length}</span>
+      </div>
+      <div class="gal-thumbs">${h.gallery.map((g, i) => `<button type="button" class="gal-th${i===0?" on":""}" data-gi="${i}" aria-label="${i+1}. kép"><img src="${KIS(g[0])}" alt="" loading="lazy" decoding="async"></button>`).join("")}</div>
+    </div>` : `<div class="dlg-hero"><div class="ph big">${PALM}<span>Fotók hamarosan</span></div></div>`}
+    <div class="dlg-content">
+      <span class="dest-kicker">RIU Hotels &amp; Resorts, ${esc(d.name)}</span>
+      <h2 id="dlg-title" class="dlg-title">${esc(h.name)}</h2>
+      <div class="dlg-sub">${h.stars ? `<span class="stars" role="img" aria-label="${h.stars} csillagos">${STAR.repeat(h.stars)}</span>` : ""}<span class="loc">${PIN}${esc(h.location)}</span></div>
+      <ul class="feat">${h.features.map(f => `<li>${esc(f)}</li>`).join("")}</ul>
+      <p class="dlg-intro">${esc(D.intro)}</p>
+      <dl class="facts">${D.facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
+
+      <h3 class="dlg-h">Időpontok és árak</h3>
+      ${datesHtml}
+      ${h.bookUrl ? `<a class="btn btn-line ext" href="${esc(h.bookUrl)}" target="_blank" rel="noopener">További időpontok és foglalás az atlasztravelgyor.hu-n <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>` : ""}
+      ${dates.length ? `<p class="dlg-note">Az árak repülővel (${esc(D.fromCity)}), transzferrel és ${esc(D.boardName.toLowerCase())} ellátással értendők, tájékoztató jellegűek.</p>` : ""}
+
+      <h3 class="dlg-h">Tudnivalók</h3>
+      <div class="acc">${D.sections.map(([title, html], i) => `<details ${i===0?"open":""}><summary>${esc(title)}</summary><div class="acc-body">${html}</div></details>`).join("")}</div>
+    </div>`;
+  lastFocus = document.activeElement;
+  dlg.showModal(); document.body.style.overflow = "hidden";
+  if (h.gallery && h.gallery.length) {
+    let gi = 0; const G = h.gallery;
+    const show = n => { gi = (n + G.length) % G.length; const im = document.getElementById("gal-img"); im.src = G[gi][0]; im.alt = G[gi][1]; document.getElementById("gal-count").textContent = `${gi+1} / ${G.length}`; dlgBody.querySelectorAll(".gal-th").forEach((b, i) => b.classList.toggle("on", i === gi)); };
+    dlgBody.querySelector(".gal-nav.prev").onclick = () => show(gi - 1);
+    dlgBody.querySelector(".gal-nav.next").onclick = () => show(gi + 1);
+    dlgBody.querySelectorAll(".gal-th").forEach(b => b.onclick = () => show(+b.dataset.gi));
+    let sx = null; const main = dlgBody.querySelector(".gal-main");
+    main.addEventListener("touchstart", e => { sx = e.touches[0].clientX; }, { passive: true });
+    main.addEventListener("touchend", e => { if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) show(gi + (dx < 0 ? 1 : -1)); sx = null; });
+  }
+  dlg.querySelector(".dlg-inner").scrollTop = 0;
+  setHash("#" + d.id + "/" + h.id);
+}
+function closeHotel() { if (dlg.open) dlg.close(); }
+dlg.addEventListener("close", () => { document.body.style.overflow = ""; setHash("#" + current); if (lastFocus) lastFocus.focus(); });
+dlg.querySelector(".dlg-close").addEventListener("click", closeHotel);
+dlg.addEventListener("click", e => { if (e.target === dlg) closeHotel(); });
+document.addEventListener("click", e => {
+  const card = e.target.closest("[data-open]");
+  if (card) { const [dd, hh] = card.dataset.open.split("|"); openHotel(dd, hh); return; }
+  const pick = e.target.closest("[data-pick]");
+  if (pick) {
+    const [dd, hn, when] = pick.dataset.pick.split("|");
+    destSel.value = dd; fillHotels(dd, hn);
+    if (when) document.getElementById("f-when").value = when;
+    closeHotel();
+  }
+});
+document.addEventListener("keydown", e => {
+  const card = e.target.closest && e.target.closest("[data-open]");
+  if (card && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); const [dd, hh] = card.dataset.open.split("|"); openHotel(dd, hh); }
+});
+// Közvetlen link egy szállodára: pl. .../#maldiv-szigetek/riu-palace-maldives
+(() => { const [dd, hh] = location.hash.replace("#", "").split("/"); if (dd && hh) { select(dd, false); openHotel(dd, hh); } })();
+
+
+const HERO_SLIDES = [{"src": "kepek/32aca10119.webp", "label": "Riu Palace Maldives, Maldív-szigetek", "dest": "maldiv-szigetek", "hotel": "riu-palace-maldives"}, {"src": "kepek/e27e0434d1.webp", "label": "Riu Palace Maldives, Maldív-szigetek", "dest": "maldiv-szigetek", "hotel": "riu-palace-maldives"}, {"src": "kepek/55e14f1e08.webp", "label": "Riu Atoll, Maldív-szigetek", "dest": "maldiv-szigetek", "hotel": "riu-atoll"}, {"src": "kepek/a72373d50a.webp", "label": "Riu Palace Maldives, Maldív-szigetek", "dest": "maldiv-szigetek", "hotel": "riu-palace-maldives"}];
+// ===== Fotók a nyitóképen és a háttereken (a szállodák galériájából) =====
+(() => {
+  const picks = [], why = [], enq = [];
+  DESTINATIONS.forEach(d => d.hotels.forEach(h => {
+    if (!h.gallery) return;
+    (h.heroIdx || [0]).forEach(i => h.gallery[i] && picks.push({ src: h.gallery[i][0], label: `${h.name}, ${d.name}`, dest: d.id, hotel: h.id }));
+    if (h.whyIdx != null && h.gallery[h.whyIdx]) why.push(h.gallery[h.whyIdx][0]);
+    if (h.enqIdx != null && h.gallery[h.enqIdx]) enq.push(h.gallery[h.enqIdx][0]);
+  }));
+  if (typeof HERO_SLIDES !== "undefined" && HERO_SLIDES.length) { picks.length = 0; HERO_SLIDES.forEach(s => picks.push(s)); }
+  const box = document.getElementById("slides");
+  if (picks.length) {
+    picks.forEach((p, i) => { const im = document.createElement("img"); if (i === 0) { im.src = p.src; im.className = "on"; im.fetchPriority = "high"; } else { im.dataset.src = p.src; } im.alt = ""; im.decoding = "async"; box.appendChild(im); });
+    const ensure = j => { const im = box.querySelectorAll("img")[j]; if (im && !im.getAttribute("src") && im.dataset.src) im.src = im.dataset.src; };
+    setTimeout(() => ensure(1), 2500);
+    const cap = document.createElement("button"); cap.type = "button"; cap.className = "slide-cap"; box.parentElement.appendChild(cap);
+    let k = 0;
+    const setCap = () => { cap.innerHTML = `<span>Képen:</span> ${esc(picks[k].label)} <b>→</b>`; cap.onclick = () => { select(picks[k].dest, true); setTimeout(() => openHotel(picks[k].dest, picks[k].hotel), 350); }; };
+    setCap();
+    if (picks.length > 1 && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setInterval(() => { const imgs = box.querySelectorAll("img"); imgs[k].classList.remove("on"); k = (k + 1) % imgs.length; ensure(k); imgs[k].classList.add("on"); ensure((k + 1) % imgs.length); setCap(); }, 6000);
+    }
+  }
+  if (why.length) document.querySelector(".why").style.setProperty("--bg", `url("${why[0]}")`);
+  if (enq.length) document.querySelector(".enquire").style.setProperty("--bg", `url("${enq[0]}")`);
+})();
+
+// Űrlap
+const form = document.getElementById("form");
+function setErr(id, msg) {
+  const el = form.querySelector(`.err[data-for="${id}"]`); if (el) el.textContent = msg || "";
+  const input = document.getElementById(id); if (input) input.setAttribute("aria-invalid", msg ? "true" : "false");
+}
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  const v = id => document.getElementById(id).value.trim();
+  let ok = true, first = null;
+  const check = (id, cond, msg) => { if (!cond) { setErr(id, msg); ok = false; first = first || id; } else setErr(id, ""); };
+  check("f-name", v("f-name").length > 1, "Add meg a neved.");
+  check("f-phone", v("f-phone").replace(/\D/g, "").length >= 8, "Adj meg egy telefonszámot, amin elérünk.");
+  check("f-email", /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v("f-email")), "Az e-mail-cím formátuma nem megfelelő, pl. nev@pelda.hu");
+  check("f-gdpr", document.getElementById("f-gdpr").checked, "Az ajánlatkéréshez szükség van a hozzájárulásra.");
+  if (!ok) { document.getElementById(first).focus(); return; }
+  const fd = new FormData(form);
+  const destName = DESTINATIONS.find(d => d.id === destSel.value).name;
+  fd.set("uticel", destName);
+  fd.set("szalloda", "RIU " + destName + (hotelSel.value ? " – " + hotelSel.value : ""));
+  fd.append("kezdes", String(KEZDES));
+  const summary = `Ajánlatkérés: RIU, ${destName}
+Szálloda: ${hotelSel.value || "-"}
+Név: ${fd.get("nev")}
+Telefon: ${fd.get("telefon")}
+E-mail: ${fd.get("email")}
+Időpont: ${fd.get("idopont") || "-"}
+Utasok: ${fd.get("utasok") || "-"}
+Üzenet: ${fd.get("uzenet") || "-"}`;
+  const btn = document.getElementById("send-btn"), sendErr = document.getElementById("send-err");
+  sendErr.textContent = ""; btn.disabled = true; btn.textContent = "Küldés folyamatban…";
+  try {
+    const res = await fetch(KULDO_CIM, { method: "POST", body: fd });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.ok) { const se = new Error(data.uzenet || ""); se.fromServer = true; throw se; }
+  } catch (err) {
+    sendErr.textContent = (err && err.fromServer && err.message) || "Az ajánlatkérést most nem sikerült elküldeni. Próbáld újra, vagy hívj minket: 06 20 266 8144";
+    btn.disabled = false; btn.textContent = "Ajánlatkérés elküldése"; return;
+  }
+  form.innerHTML = "";
+  const done = document.createElement("div"); done.className = "done"; done.setAttribute("role", "status");
+  done.innerHTML = `<h3>Köszönjük, megkaptuk!</h3><p>Hamarosan jelentkezünk a részletes ajánlattal.</p><pre></pre><a class="btn btn-red" href="tel:+36202668144">Hívás most</a>`;
+  done.querySelector("pre").textContent = summary; form.appendChild(done);
+});
+
+// Finom megjelenés görgetéskor
+(() => {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  document.documentElement.classList.add("js-motion");
+  const els = document.querySelectorAll(".why-item, .enquire-grid > *");
+  els.forEach((el, i) => { el.classList.add("rv"); el.style.setProperty("--d", (i % 4) * 90 + "ms"); });
+  const io = new IntersectionObserver(en => en.forEach(x => { if (x.isIntersecting) { x.target.classList.add("in"); io.unobserve(x.target); } }), { threshold: .1 });
+  els.forEach(el => io.observe(el));
+  setTimeout(() => els.forEach(el => { if (el.getBoundingClientRect().top < innerHeight) el.classList.add("in"); }), 2000);
+})();
+</script>
+</body>
+</html>
