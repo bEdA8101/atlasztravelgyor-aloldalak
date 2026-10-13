@@ -261,14 +261,14 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="#" aria-label="Atlasz Travel – oldal teteje"><img src="img/logo.png" alt="Atlasz Travel" width="138" height="48"></a>
+    <a class="brand" href="#" aria-label="Atlasz Travel Győr – oldal teteje"><img src="img/atlasz-travel-gyor-logo.png" alt="Atlasz Travel Győr" width="537" height="268"></a>
     <nav>
       <span class="navlinks">
         <a href="#szallodak">Szállodák</a>
         <a href="#idopontok">Időpontok és árak</a>
         <a href="#ar">Az ár tartalma</a>
       </span>
-      <a class="tel" href="tel:+36202668144">06 20 266 8144</a>
+      <a class="tel" href="tel:+36202668144">+36 20 266 8144</a>
       <a class="btn" href="#foglalas">Ajánlatot kérek</a>
     </nav>
   </div>
@@ -663,10 +663,10 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
       <div class="arch"><img src="img/r4.jpg" alt="Salalah pálmafás tengerpartja"></div>
       <h2>Ajánlatkérés</h2>
       <p style="margin-top:16px">Töltse ki az űrlapot, és munkatársunk hamarosan személyre szabott ajánlattal jelentkezik. Ha inkább beszélne velünk, hívjon bátran:</p>
-      <a class="big" href="tel:+36202668144">06 20 266 8144</a>
+      <a class="big" href="tel:+36202668144">+36 20 266 8144</a>
       <p class="mails">E-mailben is elérhet minket:<br><a href="mailto:gyor@atlasztravel.hu">gyor@atlasztravel.hu</a></p>
       <p class="mails">Irodánk: 9021 Győr, Király u. 1.<br>Nyitva: hétfő–péntek 10:00–17:00</p>
-      <a href="https://www.atlasztravelgyor.hu" target="_blank" rel="noopener">atlasztravelgyor.hu</a>
+      <a href="https://www.atlasztravelgyor.hu" target="_blank" rel="noopener">www.atlasztravelgyor.hu</a>
     </div>
 
     <form id="form" novalidate>
@@ -731,8 +731,8 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 
 <footer>
   <div class="wrap">
-    <span><img class="flogo" src="img/logo.png" alt="Atlasz Travel"><br>© 2026 Atlasz Travel Győr · <a href="https://www.atlasztravelgyor.hu" target="_blank" rel="noopener">atlasztravelgyor.hu</a></span>
-    <span>Telefon: <a href="tel:+36202668144">06 20 266 8144</a><br>E-mail: <a href="mailto:gyor@atlasztravel.hu">gyor@atlasztravel.hu</a><br>Iroda: 9021 Győr, Király u. 1.</span>
+    <span><img class="flogo" src="img/atlasz-travel-gyor-logo.png" alt="Atlasz Travel Győr"><br>© 2026 Atlasz Travel Győr · <a href="https://www.atlasztravelgyor.hu" target="_blank" rel="noopener">www.atlasztravelgyor.hu</a></span>
+    <span>Telefon: <a href="tel:+36202668144">+36 20 266 8144</a><br>E-mail: <a href="mailto:gyor@atlasztravel.hu">gyor@atlasztravel.hu</a><br>Iroda: 9021 Győr, Király u. 1.</span>
   </div>
 </footer>
 
@@ -860,7 +860,7 @@ form.addEventListener("submit",async e=>{
   }catch(_){
     let body="";for(const[k,v]of fd.entries())body+=`${k}: ${v}\n`;
     location.href=`mailto:${RECIPIENTS}?subject=${encodeURIComponent("Ajánlatkérés – "+h.name+", Omán")}&body=${encodeURIComponent(body)}`;
-    fm.textContent="Megnyitottuk a levelezőprogramját a kitöltött adatokkal – kérjük, küldje el a levelet. Ha nem nyílt meg, hívjon minket: 06 20 266 8144.";fm.className="msg ok";
+    fm.textContent="Megnyitottuk a levelezőprogramját a kitöltött adatokkal – kérjük, küldje el a levelet. Ha nem nyílt meg, hívjon minket: +36 20 266 8144.";fm.className="msg ok";
   }finally{btn.disabled=false;btn.textContent="Ajánlatkérés elküldése"}
 });
 </script>

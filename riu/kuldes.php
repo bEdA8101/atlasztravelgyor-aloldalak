@@ -11,7 +11,7 @@ declare(strict_types=1);
 const CIMZETT = 'gyor@atlasztravel.hu';
 // A feladó a tárhely saját domainjén legyen, különben a levél spambe kerülhet.
 const FELADO = 'weboldal@atlasztravelgyor.hu';
-const HIBAUZENET = 'Az ajánlatkérést most nem sikerült elküldeni. Kérjük, hívjon minket: 06 20 266 8144';
+const HIBAUZENET = 'Az ajánlatkérést most nem sikerült elküldeni. Kérjük, hívjon minket: +36 20 266 8144';
 const MAX_MEZO = 60;
 const MAX_HOSSZ = 3000;
 
