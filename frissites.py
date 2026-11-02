@@ -391,9 +391,9 @@ small{{color:#5b6873;overflow-wrap:anywhere}}
 <body>
 <main>
 <h1>Atlasz Travel Győr – aloldalak előnézete</h1>
-<p>Ideiglenes előnézet a tárhely elkészültéig. Az oldalakat a keresők nem listázzák.
-Az ajánlatkérő űrlap itt nem küld e-mailt (ehhez PHP-s tárhely kell): a legtöbb oldal
-helyette a levelezőprogramot nyitja meg a kitöltött adatokkal.</p>
+<p>Ideiglenes előnézet, illetve tesztoldal. Az oldalakat a keresők nem listázzák.
+Az ajánlatkérő űrlap PHP-s tárhelyen (például a tesztoldalon) e-mailt küld a győri irodának;
+a GitHub-előnézetben ehelyett a legtöbb oldal a levelezőprogramot nyitja meg.</p>
 <ul>
 {chr(10).join(sorok)}
 </ul>
