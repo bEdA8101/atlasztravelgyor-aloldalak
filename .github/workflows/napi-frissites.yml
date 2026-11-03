@@ -1,0 +1,55 @@
+name: Napi frissítés a központi oldalakból
+
+# Minden reggel átveszi a központi aloldalak változásait (árak, időpontok, szövegek),
+# elmenti őket a tárolóba, és feltölti a tárhelyre. Kézzel is indítható.
+on:
+  schedule:
+    - cron: "17 3 * * *"   # minden nap 03:17 UTC (magyar idő szerint 04:17, nyáron 05:17)
+  workflow_dispatch:
+
+concurrency:
+  group: feltoltes
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  frissites:
+    name: Frissítés és feltöltés
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      FTP_SZERVER: ${{ secrets.FTP_SZERVER }}
+      FTP_FELHASZNALO: ${{ secrets.FTP_FELHASZNALO }}
+      FTP_JELSZO: ${{ secrets.FTP_JELSZO }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Szükséges csomag telepítése
+        run: pip install pillow
+      - name: Oldalak frissítése a központi oldalakból
+        id: frissites
+        continue-on-error: true
+        run: python frissites.py
+      - name: Változások mentése a tárolóba
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "Napi frissítés a központi oldalakból"
+            git push
+          else
+            echo "A központi oldalak nem változtak."
+          fi
+      - name: Feltöltés a tárhelyre
+        if: env.FTP_SZERVER != ''
+        run: python feltoltes.py
+      - name: Hibás frissítés jelzése
+        if: steps.frissites.outcome == 'failure'
+        run: |
+          echo "Egy vagy több oldal nem frissült (részletek a 'Oldalak frissítése' lépésnél); a többi feltöltése megtörtént."
+          exit 1

@@ -1,0 +1,10 @@
+{
+  "_leiras": "Mi hova kerüljön a tárhelyen. 'cel': a mappa a tárhelyen (az FTP-fiók gyökeréhez képest), 'forras': a helyi mappa, amelynek a tartalma oda kerül, 'csak': ha meg van adva, a forrásból csak ezek kerülnek fel.",
+  "celok": [
+    {
+      "cel": "tesztoldal.atlasztravelgyor.hu",
+      "forras": ".",
+      "csak": ["index.html", "oman", "riu", "mauritius", "maldiv", "vietnam"]
+    }
+  ]
+}

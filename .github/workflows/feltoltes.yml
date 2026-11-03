@@ -1,0 +1,37 @@
+name: Feltöltés a tárhelyre
+
+# Minden feltöltés (push) után a main ágra, és kézzel is indítható
+# az Actions fülön a "Run workflow" gombbal.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# egyszerre csak egy feltöltés fusson (a napi frissítéssel közösen)
+concurrency:
+  group: feltoltes
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  feltoltes:
+    name: Feltöltés FTP-n
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      FTP_SZERVER: ${{ secrets.FTP_SZERVER }}
+      FTP_FELHASZNALO: ${{ secrets.FTP_FELHASZNALO }}
+      FTP_JELSZO: ${{ secrets.FTP_JELSZO }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Nincsenek még megadva az FTP-adatok
+        if: env.FTP_SZERVER == ''
+        run: echo "Az FTP-adatok még nincsenek megadva (Settings → Secrets and variables → Actions), a feltöltés kimarad."
+      - name: Feltöltés
+        if: env.FTP_SZERVER != ''
+        run: python feltoltes.py
