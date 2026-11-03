@@ -408,13 +408,18 @@ def main(nevek):
     ismeretlen = [n for n in nevek if n not in OLDALAK]
     if ismeretlen:
         sys.exit(f"Ismeretlen oldal: {', '.join(ismeretlen)}. Választható: {', '.join(OLDALAK)}")
+    hibak = []
     for nev in nevek or list(OLDALAK):
+        # egy oldal hibája miatt a többi még frissülhet; a hibás oldal a régi változatában marad
         try:
             frissit(nev)
         except CsereHiba as hiba:
-            sys.exit(f"HIBA – {hiba}\nAz oldal nem frissült. A központi oldal valószínűleg megváltozott, "
-                     "a frissites.py cseréit igazítani kell.")
+            hibak.append(f"{hiba}\n  A központi oldal valószínűleg megváltozott, a frissites.py cseréit igazítani kell.")
+        except (urllib.error.URLError, ConnectionError, TimeoutError) as hiba:
+            hibak.append(f"{nev}: nem sikerült letölteni ({hiba}).")
     nyitolap()
+    if hibak:
+        sys.exit("HIBA – ezek az oldalak nem frissültek, a régi változatuk maradt:\n" + "\n".join(hibak))
 
 
 if __name__ == "__main__":
