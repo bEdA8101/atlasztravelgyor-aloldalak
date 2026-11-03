@@ -68,6 +68,36 @@ section{padding-block:clamp(70px,9vw,130px)}
 .shead p{margin:0}
 @media (max-width:860px){.shead{grid-template-columns:1fr}}
 
+
+/* aktuális ajánlatok */
+.deals{background:linear-gradient(180deg,var(--foam),var(--water))}
+.deals .facts{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 clamp(30px,4vw,46px);padding:0;list-style:none}
+.deals .facts li{display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;background:var(--foam);box-shadow:inset 0 0 0 1px var(--line);font-size:14.5px;font-weight:500}
+.deals .facts li.hl{background:var(--magenta);color:#fff;box-shadow:none;font-weight:600}
+.deals .facts li.no{color:var(--muted)}
+.dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,26px)}
+@media (max-width:980px){.dgrid{grid-template-columns:1fr;max-width:640px}}
+.deal{display:flex;flex-direction:column;background:var(--foam);border-radius:24px;box-shadow:0 1px 0 var(--line),0 18px 40px -26px rgba(13,61,74,.35);overflow:hidden;position:relative}
+.deal .dtop{padding:26px 26px 22px;background:linear-gradient(135deg,var(--shallow),#E4F7F6);position:relative}
+.deal .num{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--reef)}
+.deal h3{font-size:clamp(23px,2.2vw,28px);margin:10px 0 6px;letter-spacing:-.015em}
+.deal .stars{color:var(--magenta);letter-spacing:2px;font-size:15px}
+.deal .tagl{margin:6px 0 0;color:var(--deep);font-size:15.5px}
+.deal dl{margin:0;padding:22px 26px 6px;display:grid;gap:14px}
+.deal dt{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.deal dd{margin:0;font-size:15.5px;font-weight:500}
+.deal .inc{margin:8px 26px 0;padding:14px 16px;border-radius:14px;background:var(--water);font-size:14.5px;color:var(--deep)}
+.deal .inc b{display:block;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--reef);font-weight:500;margin-bottom:4px}
+.deal .prices{margin-top:auto;padding:20px 26px 26px;display:grid;gap:12px}
+.price{display:grid;grid-template-columns:1fr auto;align-items:center;gap:6px 14px;padding:14px 16px;border-radius:16px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.price .bd{font-size:14px;color:var(--muted)}
+.price .am{font-size:24px;font-weight:700;letter-spacing:-.01em;color:var(--deep);line-height:1.1}
+.price .am small{font-size:13px;font-weight:500;color:var(--muted)}
+.price .pp{font-family:var(--f-mono);font-size:12px;color:var(--reef)}
+.price .btn{grid-row:1 / span 3;grid-column:2;padding:12px 16px;font-size:13.5px}
+.deals .fine{margin-top:26px;font-size:14px;color:var(--muted);max-width:none}
+#f-ajanlat{font-weight:500}
+
 /* fejléc */
 .top{position:fixed;inset:0 0 auto;z-index:50;padding-top:env(safe-area-inset-top,0px);transition:background .3s,box-shadow .3s}
 .top .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;height:76px}
@@ -199,9 +229,12 @@ section{padding-block:clamp(70px,9vw,130px)}
 .tline{display:flex;align-items:center;gap:12px;margin-bottom:26px;flex-wrap:wrap;font-family:var(--f-mono);font-size:12.5px;letter-spacing:.05em;text-transform:uppercase}
 .tline .stop{padding:9px 14px;border-radius:999px;background:var(--foam);box-shadow:inset 0 0 0 1px var(--line)}
 .tline .stop.mle{background:var(--deep);color:#fff;box-shadow:none}
-.tline .stop.direct{background:var(--magenta);color:#fff;box-shadow:none;font-weight:700}
-.tline + .tline{margin-top:-12px}
 .tline .dash{flex:1;min-width:30px;height:2px;background:repeating-linear-gradient(90deg,var(--lagoon) 0 6px,transparent 6px 11px)}
+.tline .stop.direct{background:var(--magenta);color:#fff;box-shadow:none;font-weight:600}
+.tline .dash.solid{background:var(--magenta)}
+.tline+.tline{margin-top:-12px}
+.direct-badge{display:inline-flex;align-items:center;gap:8px;margin:-10px 0 22px;padding:8px 14px;border-radius:999px;background:var(--magenta);color:#fff;font-family:var(--f-mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;font-weight:600}
+.pills .tag{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:999px;background:var(--magenta);color:#fff;font-size:11px;font-weight:600;vertical-align:middle}
 .tphoto{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,70px);align-items:center;margin-top:clamp(40px,6vw,80px)}
 .tphoto img{border-radius:22px}
 @media (max-width:860px){.legs,.tphoto{grid-template-columns:1fr}}
@@ -365,6 +398,7 @@ footer .srcs{font-size:12.5px;line-height:1.75}
     <a class="logo" href="#" aria-label="Atlasz Travel Győr – oldal teteje"><img src="img/atlasz-travel-gyor-logo.png" alt="Atlasz Travel Győr" width="537" height="268"></a>
     <nav aria-label="Fő navigáció">
       <span class="navlinks">
+        <a href="#ajanlataink">Ajánlatok</a>
         <a href="#villa">Villák</a>
         <a href="#idoszak">Mikor?</a>
         <a href="#kerdesek">50 kérdés</a>
@@ -400,10 +434,11 @@ footer .srcs{font-size:12.5px;line-height:1.75}
     <div class="pass" aria-label="Az utazás röviden">
       <div class="pass-main">
         <div class="route">
-          <div class="iata">VIE<small>Bécsből közvetlen járat · Budapest, Kassa, Prága átszállással</small></div>
+          <div class="iata">BUD<small>Budapest · Bécs · Kassa · Prága</small></div>
           <div class="path" aria-hidden="true"></div>
           <div class="iata">MLE<small>Velana, Malé</small></div>
         </div>
+        <div class="direct-badge">✈ Bécsből közvetlen járat Maléba – átszállás nélkül</div>
         <div class="pfields">
           <div><small>Időeltolódás</small><b>+3 / +4 óra</b><span>nyári / téli időszámításkor</span></div>
           <div><small>Ajánlott</small><b>7–10 éj</b><span>első utazáskor</span></div>
@@ -417,6 +452,44 @@ footer .srcs{font-size:12.5px;line-height:1.75}
         <a class="btn" href="#ajanlat">Ajánlatot kérek</a>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="deals" id="ajanlataink" aria-labelledby="deal-cim">
+  <div class="wrap">
+    <div class="shead">
+      <div><span class="mono">Aktuális ajánlataink · 2026. november 2–10.</span><h2 id="deal-cim">Három sziget ajánlat <em>novemberre</em></h2></div>
+      <p class="lead">Bécsi indulással, 7 éjszaka a szigeten. Az árak 2 főre szólnak, és tartalmazzák a repülőjegyet, a poggyászt, a transzfert, a szállást és a választott ellátást.</p>
+    </div>
+    <ul class="facts">
+      <li class="hl">✈ Bécsi indulás</li>
+      <li>2026. november 2–10.</li>
+      <li>7 éjszaka a szigeten</li>
+      <li>Turkish Airlines, kényelmes átszállási időkkel</li>
+      <li>20 kg feladható poggyász / fő</li>
+      <li class="no">Ülőhelyválasztás nincs benne</li>
+    </ul>
+    <div class="dgrid">
+      <article class="deal">
+        <div class="dtop"><span class="num">01 / 03</span><h3>Embudu Village</h3><span class="stars" aria-label="3 csillag">★★★</span><p class="tagl">Pici, egyszerűbb sziget</p></div>
+        <dl><div><dt>Szobatípus</dt><dd>Superior Bungalow</dd></div><div><dt>Transzfer</dt><dd>Retúr gyorshajó, kb. 20–25 perc</dd></div></dl>
+        <div class="inc"><b>Az árban benne van</b>repülőjegy, poggyász, transzfer, 7 éjszaka szállás és a választott ellátás</div>
+        <div class="prices"><div class="price"><span class="bd">Teljes panzióval</span><span class="am">3 824 € <small>/ 2 fő</small></span><span class="pp">1 912 € / fő</span><a class="btn" href="#ajanlat" data-ajanlat="Embudu Village 3* – Teljes panzióval – 3 824 EUR / 2 fő" data-ellatas="Teljes panzió">Ajánlatot kérek</a></div><div class="price"><span class="bd">All inclusive ellátással</span><span class="am">4 582 € <small>/ 2 fő</small></span><span class="pp">2 291 € / fő</span><a class="btn" href="#ajanlat" data-ajanlat="Embudu Village 3* – All inclusive ellátással – 4 582 EUR / 2 fő" data-ellatas="All Inclusive">Ajánlatot kérek</a></div></div>
+      </article>
+      <article class="deal">
+        <div class="dtop"><span class="num">02 / 03</span><h3>Cinnamon Dhonveli Maldives</h3><span class="stars" aria-label="4 csillag">★★★★</span><p class="tagl">Kisebb sziget, szörfösöknek is szuper</p></div>
+        <dl><div><dt>Szobatípus</dt><dd>Superior Room – Ocean View</dd></div><div><dt>Transzfer</dt><dd>Retúr gyorshajó, kb. 20–25 perc</dd></div></dl>
+        <div class="inc"><b>Az árban benne van</b>repülőjegy, poggyász, transzfer, 7 éjszaka szállás és a választott ellátás</div>
+        <div class="prices"><div class="price"><span class="bd">Teljes panzióval</span><span class="am">4 196 € <small>/ 2 fő</small></span><span class="pp">2 098 € / fő</span><a class="btn" href="#ajanlat" data-ajanlat="Cinnamon Dhonveli Maldives 4* – Teljes panzióval – 4 196 EUR / 2 fő" data-ellatas="Teljes panzió">Ajánlatot kérek</a></div><div class="price"><span class="bd">All inclusive ellátással</span><span class="am">4 786 € <small>/ 2 fő</small></span><span class="pp">2 393 € / fő</span><a class="btn" href="#ajanlat" data-ajanlat="Cinnamon Dhonveli Maldives 4* – All inclusive ellátással – 4 786 EUR / 2 fő" data-ellatas="All Inclusive">Ajánlatot kérek</a></div></div>
+      </article>
+      <article class="deal">
+        <div class="dtop"><span class="num">03 / 03</span><h3>Royal Island Resort &amp; Spa</h3><p class="tagl">Kombinált transzferrel: belföldi járat + gyorshajó</p></div>
+        <dl><div><dt>Szobatípus</dt><dd>Beach Villa</dd></div><div><dt>Transzfer</dt><dd>Belföldi repülőjárat kb. 25 perc + gyorshajó kb. 10 perc</dd></div></dl>
+        <div class="inc"><b>Az árban benne van</b>repülőjegy, poggyász, retúr kombinált transzfer, 7 éjszaka szállás és a választott ellátás</div>
+        <div class="prices"><div class="price"><span class="bd">Teljes panzióval</span><span class="am">4 346 € <small>/ 2 fő</small></span><span class="pp">2 173 € / fő</span><a class="btn" href="#ajanlat" data-ajanlat="Royal Island Resort & Spa – Teljes panzióval – 4 346 EUR / 2 fő" data-ellatas="Teljes panzió">Ajánlatot kérek</a></div><div class="price"><span class="bd">All inclusive ellátással</span><span class="am">5 188 € <small>/ 2 fő</small></span><span class="pp">2 594 € / fő</span><a class="btn" href="#ajanlat" data-ajanlat="Royal Island Resort & Spa – All inclusive ellátással – 5 188 EUR / 2 fő" data-ellatas="All Inclusive">Ajánlatot kérek</a></div></div>
+      </article>
+    </div>
+    <p class="fine">Az árak a megadott időpontra és szobatípusra érvényesek, a helyek függvényében változhatnak. Más időpontra, szobára vagy resortra is szívesen készítünk ajánlatot.</p>
   </div>
 </section>
 
@@ -507,10 +580,10 @@ footer .srcs{font-size:12.5px;line-height:1.75}
   <div class="wrap">
     <div class="shead">
       <div><span class="mono">Az utazás része</span><h2 id="tr-cim">Malé után kezdődik <em>az igazi kaland</em></h2></div>
-      <p class="lead">A transzfert jellemzően maga a resort szervezi, és általában benne van az árban. A repülőjáratot ehhez időzítjük.</p>
+      <p class="lead">A transzfert jellemzően maga a resort szervezi, és általában benne van az árban. A repülőjáratot ehhez időzítjük. Bécsből közvetlen, átszállás nélküli járattal is repülhet Maléba.</p>
     </div>
-    <div class="tline"><span class="stop">Bécs</span><span class="dash"></span><span class="stop direct">✈ Közvetlen járat</span><span class="dash"></span><span class="stop mle">MLE · Malé</span><span class="dash"></span><span class="stop">Resortsziget</span></div>
-    <div class="tline"><span class="stop">Budapest / Kassa / Prága</span><span class="dash"></span><span class="stop">átszállással</span><span class="dash"></span><span class="stop mle">MLE · Malé</span><span class="dash"></span><span class="stop">Resortsziget</span></div>
+    <div class="tline" aria-label="Bécsből közvetlen járat Maléba, átszállás nélkül"><span class="stop">Bécs</span><span class="dash solid"></span><span class="stop direct">közvetlen járat · átszállás nélkül</span><span class="dash solid"></span><span class="stop mle">MLE · Malé</span><span class="dash"></span><span class="stop">Resortsziget</span></div>
+    <div class="tline" aria-label="Budapestről, Kassáról és Prágából átszállással"><span class="stop">Budapest / Kassa / Prága</span><span class="dash"></span><span class="stop">átszállás</span><span class="dash"></span><span class="stop mle">MLE · Malé</span><span class="dash"></span><span class="stop">Resortsziget</span></div>
     <div class="legs">
       <div class="leg">
         <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 26h28l4-6H10l-3 6"/><path d="M14 20l3-6h9l2 6"/><path d="M3 32c3 0 3-2 6-2s3 2 6 2 3-2 6-2 3 2 6 2 3-2 6-2"/></svg>
@@ -638,7 +711,7 @@ footer .srcs{font-size:12.5px;line-height:1.75}
     <div class="psteps">
       <div><span class="n">1</span><h3>Az utazás stílusa</h3><p>Pihenés kettesben, családi nyaralás, búvárkodás vagy teljes csend? Elmondja, mire vágyik – ebből indulunk.</p></div>
       <div><span class="n">2</span><h3>Sziget és villa</h3><p>Resortot, villatípust és tájolást, lagúnát, house reefet és ellátást választunk az időponthoz.</p></div>
-      <div><span class="n">3</span><h3>Repülés</h3><p>A nemzetközi járatot a resort transzferéhez időzítjük – egyetlen, átlátható ajánlatban.</p></div>
+      <div><span class="n">3</span><h3>Repülés</h3><p>A nemzetközi járatot a resort transzferéhez időzítjük – egyetlen, átlátható ajánlatban. Bécsből közvetlen, átszállás nélküli járat is van Maléba.</p></div>
     </div>
   </div>
 </section>
@@ -671,7 +744,7 @@ footer .srcs{font-size:12.5px;line-height:1.75}
     <div class="aside">
       <span class="mono">Ajánlatkérés</span>
       <h2 id="form-cim">Találkozunk <em>a túloldalon</em></h2>
-      <p>Csak a név, a telefonszám és az e-mail kötelező – minden további információ segít, hogy elsőre pontos ajánlatot küldhessünk. Repülőjegyet is intézünk, a resort transzfere pedig általában benne van az árban.</p>
+      <p>Csak a név, a telefonszám és az e-mail kötelező – minden további információ segít, hogy elsőre pontos ajánlatot küldhessünk. Repülőjegyet is intézünk (Bécsből közvetlen, átszállás nélküli járattal is), a resort transzfere pedig általában benne van az árban.</p>
       <div class="contact">
         <span class="mono">Az Ön Maldív-tanácsadója</span>
         <div class="nm">Atlasz Travel Győr</div>
@@ -691,6 +764,22 @@ footer .srcs{font-size:12.5px;line-height:1.75}
       </fieldset>
 
       <fieldset>
+        <legend>Kiválasztott ajánlat</legend>
+        <label for="f-ajanlat">Melyik ajánlat érdekli?</label>
+        <select id="f-ajanlat" name="ajanlat">
+          <option value="">Egyéni ajánlatot kérek</option>
+          <optgroup label="2026. november 2–10. · Bécsi indulás">
+            <option>Embudu Village 3* – Teljes panzióval – 3 824 EUR / 2 fő</option>
+            <option>Embudu Village 3* – All inclusive ellátással – 4 582 EUR / 2 fő</option>
+            <option>Cinnamon Dhonveli Maldives 4* – Teljes panzióval – 4 196 EUR / 2 fő</option>
+            <option>Cinnamon Dhonveli Maldives 4* – All inclusive ellátással – 4 786 EUR / 2 fő</option>
+            <option>Royal Island Resort &amp; Spa – Teljes panzióval – 4 346 EUR / 2 fő</option>
+            <option>Royal Island Resort &amp; Spa – All inclusive ellátással – 5 188 EUR / 2 fő</option>
+          </optgroup>
+        </select>
+      </fieldset>
+
+      <fieldset>
         <legend>Utasok</legend>
         <div class="g3">
           <div><label for="f-felnott">Felnőttek</label><div class="stepper"><button type="button" data-step="-1" aria-label="Kevesebb felnőtt">−</button><input id="f-felnott" name="felnottek" type="number" min="0" max="20" value="2" inputmode="numeric"><button type="button" data-step="1" aria-label="Több felnőtt">+</button></div></div>
@@ -705,7 +794,7 @@ footer .srcs{font-size:12.5px;line-height:1.75}
         <label style="margin-bottom:12px">Melyik repülőtérről indulna?</label>
         <div class="pills" role="group" aria-label="Indulási repülőtér">
           <label><input type="radio" name="repuloter" value="Budapest"> Budapest</label>
-          <label><input type="radio" name="repuloter" value="Bécs"> Bécs (közvetlen járat)</label>
+          <label><input type="radio" name="repuloter" value="Bécs"> Bécs <span class="tag">közvetlen járat</span></label>
           <label><input type="radio" name="repuloter" value="Kassa"> Kassa</label>
           <label><input type="radio" name="repuloter" value="Prága"> Prága</label>
           <label><input type="radio" name="repuloter" value="Mindegy, a kedvezőbb"> Mindegy, a kedvezőbb</label>
@@ -907,8 +996,16 @@ const gy=document.getElementById("f-gyerek"),ages=document.getElementById("ages"
 gy.addEventListener("input",()=>ages.classList.toggle("on",+gy.value>0));
 
 const RECIPIENTS="gyor@atlasztravel.hu";
-const LABELS={nev:"Név",telefon:"Telefon",email:"E-mail",felnottek:"Felnőttek",gyerekek:"Gyerekek (2–17 év)",ket_ev_alatti:"2 év alatti",gyerekek_kora:"Gyerekek életkora",repuloter:"Indulási repülőtér",legitarsasag:"Preferált légitársaság",indulas:"Indulás",rugalmassag:"Rugalmasság",idoszak:"Időszak",utazas_ejszaka:"Utazás hossza (éj)",maldiv_ejszaka:"Ebből a Maldívon (éj)",jelleg:"Utazás jellege",villa:"Villa",ellatas:"Ellátás",resort:"Resort",keret:"Keret",megjegyzes:"Megjegyzés"};
+const LABELS={ajanlat:"Kiválasztott ajánlat",nev:"Név",telefon:"Telefon",email:"E-mail",felnottek:"Felnőttek",gyerekek:"Gyerekek (2–17 év)",ket_ev_alatti:"2 év alatti",gyerekek_kora:"Gyerekek életkora",repuloter:"Indulási repülőtér",legitarsasag:"Preferált légitársaság",indulas:"Indulás",rugalmassag:"Rugalmasság",idoszak:"Időszak",utazas_ejszaka:"Utazás hossza (éj)",maldiv_ejszaka:"Ebből a Maldívon (éj)",jelleg:"Utazás jellege",villa:"Villa",ellatas:"Ellátás",resort:"Resort",keret:"Keret",megjegyzes:"Megjegyzés"};
 const form=document.getElementById("form"),fm=document.getElementById("formmsg");
+document.querySelectorAll("[data-ajanlat]").forEach(b=>b.addEventListener("click",()=>{
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v};
+  const sel=document.getElementById("f-ajanlat");
+  for(const o of sel.options){if(o.value===b.dataset.ajanlat){sel.value=o.value;break}}
+  set("f-ellatas",b.dataset.ellatas);set("f-mikor","2026-11-02");set("f-rug","Pontos dátum");
+  set("f-ej","8");set("f-ejmal","7");set("f-legi","Turkish Airlines");
+  const r=document.querySelector('input[name="repuloter"][value="Bécs"]');if(r)r.checked=true;
+}));
 form.addEventListener("submit",async e=>{
   e.preventDefault();fm.className="msg";form.querySelectorAll(".bad").forEach(x=>x.classList.remove("bad"));
   const chk=[["f-nev",v=>v.trim().length>1,"Kérjük, adja meg a nevét."],["f-tel",v=>v.replace(/\D/g,"").length>=8,"Kérjük, adja meg a telefonszámát."],["f-email",v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),"Kérjük, adjon meg érvényes e-mail címet."]];
