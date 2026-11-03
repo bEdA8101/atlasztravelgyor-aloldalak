@@ -71,7 +71,7 @@ class CsereHiba(Exception):
     pass
 
 
-def letolt(url, probalkozas=4):
+def letolt(url, probalkozas=6):
     kerest = urllib.request.Request(url, headers={"User-Agent": "AtlaszTravelGyor-frissites/1.0"})
     for i in range(probalkozas):
         try:
