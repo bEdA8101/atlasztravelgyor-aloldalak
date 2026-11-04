@@ -68,7 +68,8 @@ OLDALAK = {
 # (oldal: {fájlnév az oldal mellett: forrás az elo/ mappában}).
 ELO_FAJLOK = {
     "bahari": {"proxy.php": "elo/bahari_proxy.php", "cesys.php": "elo/cesys.php"},
-    "zanzibar": {"api.php": "elo/zanzibar_api.php", "cesys.php": "elo/cesys.php", "regiok.json": "elo/zanzibar_regiok.json"},
+    "zanzibar": {"api.php": "elo/zanzibar_api.php", "motor.php": "elo/kereso_motor.php", "cesys.php": "elo/cesys.php",
+                 "regiok.json": "elo/zanzibar_regiok.json"},
 }
 
 # Előnézet: amíg nincs saját tárhely, az oldalak a GitHub Pages-en láthatók. Ilyenkor
