@@ -43,6 +43,42 @@ function cesys_get(string $url): ?array
     return is_array($adat) ? $adat : null;
 }
 
+/** Több JSON-GET párhuzamosan (pl. a találati lista több oldala). Kulcs szerint adja vissza a válaszokat. */
+function cesys_get_tobb(array $cimek, int $egyszerre = 4): array
+{
+    $eredmeny = [];
+    foreach (array_chunk($cimek, $egyszerre, true) as $csomag) {
+        $multi = curl_multi_init();
+        $kezelok = [];
+        foreach ($csomag as $kulcs => $cim) {
+            $ch = curl_init($cim);
+            curl_setopt_array($ch, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_TIMEOUT => CESYS_IDOKORLAT,
+                CURLOPT_USERAGENT => CESYS_UA,
+                CURLOPT_ENCODING => '',
+                CURLOPT_HTTPHEADER => ['Accept: application/json', 'X-Requested-With: XMLHttpRequest'],
+            ]);
+            curl_multi_add_handle($multi, $ch);
+            $kezelok[$kulcs] = $ch;
+        }
+        do {
+            $allapot = curl_multi_exec($multi, $fut);
+            if ($fut) {
+                curl_multi_select($multi, 1.0);
+            }
+        } while ($fut && $allapot === CURLM_OK);
+        foreach ($kezelok as $kulcs => $ch) {
+            $adat = curl_getinfo($ch, CURLINFO_RESPONSE_CODE) === 200 ? json_decode((string)curl_multi_getcontent($ch), true) : null;
+            $eredmeny[$kulcs] = is_array($adat) ? $adat : null;
+            curl_multi_remove_handle($multi, $ch);
+            curl_close($ch);
+        }
+        curl_multi_close($multi);
+    }
+    return $eredmeny;
+}
+
 /** Több JSON-POST párhuzamosan (a CeSYS árszolgáltatásához). Kulcs szerint adja vissza a válaszokat. */
 function cesys_post_tobb(string $url, array $torzsek, int $egyszerre = 10): array
 {
