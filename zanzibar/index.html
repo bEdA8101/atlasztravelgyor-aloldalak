@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Zanzibár utak – Atlasz Travel – Győr</title>
+<meta name="description" content="Fehér homok, türkiz lagúna és fűszerillatú sikátorok az Indiai-óceánon. Keressen a teljes zanzibári kínálatunkban: szállodák, időpontok, szobatípusok és ellátások egy helyen.">
+<meta property="og:title" content="Zanzibár utak – Atlasz Travel">
+<meta property="og:description" content="Fehér homok, türkiz lagúna és fűszerillatú sikátorok az Indiai-óceánon. Keressen a teljes zanzibári kínálatunkban: szállodák, időpontok, szobatípusok és ellátások egy helyen.">
+<meta property="og:image" content="img/og.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ocean:#0A4D5C; --lagoon:#2FBFB5; --foam:#EAF7F5; --clove:#5A3324;
+  --brass:#C9973B; --magenta:#D6197A; --magenta-dark:#B01264;
+  --bg:#F6FBFA; --surface:#FFFFFF; --text:#16343B; --muted:#4F6B71; --line:#CFE5E2;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B2A31; --surface:#10363F; --text:#E6F3F1; --muted:#A6C3C0; --line:#1F4D57; --foam:#123C45;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{ --bg:#0B2A31; --surface:#10363F; --text:#E6F3F1; --muted:#A6C3C0; --line:#1F4D57; --foam:#123C45; color-scheme:dark; }
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth; scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto} *{animation:none!important;transition:none!important}}
+body{margin:0; background:var(--bg); color:var(--text); font:400 1.0625rem/1.6 "Figtree",system-ui,-apple-system,"Segoe UI",sans-serif}
+img{max-width:100%; display:block}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--brass); outline-offset:3px}
+.wrap{width:min(1180px,100% - 2.5rem); margin-inline:auto}
+h1,h2,h3{font-family:"Unbounded","Arial Black",system-ui,sans-serif; line-height:1.15; margin:0}
+
+/* top bar */
+.top{position:absolute; inset:0 0 auto; z-index:5; padding-top:env(safe-area-inset-top,0px)}
+.top .wrap{display:flex; align-items:center; justify-content:space-between; padding:1.1rem 0}
+.logo{display:inline-flex; align-items:center; background:#fff; border-radius:14px; padding:.45rem .9rem; box-shadow:0 8px 20px -10px rgba(2,20,25,.6)}
+.logo img{height:44px; width:auto}
+@media (max-width:520px){.logo{padding:.35rem .65rem}.logo img{height:34px}}
+.logo .logo-text{display:none; color:#fff; font:700 1.1rem "Unbounded",sans-serif}
+.top-phone{color:#fff; text-decoration:none; font-weight:600; background:rgba(10,77,92,.55); padding:.5rem 1rem; border-radius:999px; backdrop-filter:blur(6px)}
+
+/* hero */
+.hero{position:relative; color:#fff; background:linear-gradient(160deg,#0A4D5C 0%,#127A82 45%,#2FBFB5 100%); overflow:hidden}
+.hero-photo{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+.hero::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(6,45,54,.62) 0%,rgba(6,45,54,.25) 45%,rgba(6,45,54,0) 70%),linear-gradient(0deg,rgba(6,45,54,.45) 0%,rgba(6,45,54,0) 40%)}
+.hero h1,.hero .intro{text-shadow:0 2px 18px rgba(4,30,36,.55)}
+.hero-photo{object-position:62% 50%}
+.hero .wrap{position:relative; z-index:2; display:grid; grid-template-columns:1.1fr .9fr; gap:3rem; align-items:end; padding:8.5rem 0 5rem}
+.hero h1{font-size:clamp(3rem,9vw,7.2rem); font-weight:700; letter-spacing:-.02em}
+.hero .intro{max-width:34rem; font-size:1.2rem; margin:1.25rem 0 0; color:#E3F5F3}
+
+/* the door panel */
+.door{position:relative; background:var(--surface); color:var(--text); padding:3.6rem 2rem 2rem;
+  border-radius:50% 50% 22px 22px / 110px 110px 22px 22px; box-shadow:0 30px 60px -20px rgba(4,30,36,.55)}
+.door::before{content:""; position:absolute; inset:10px; border:3px dotted var(--brass); pointer-events:none;
+  border-radius:50% 50% 14px 14px / 100px 100px 14px 14px; opacity:.85}
+.door h2{font-size:1.25rem; text-align:center; color:var(--clove); margin-bottom:1.4rem}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .door h2{color:var(--brass)}}
+.grid2{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:.9rem}
+.hero .wrap > *{min-width:0}
+.field{display:flex; flex-direction:column; gap:.3rem; margin-bottom:.9rem}
+.field label,.field .lbl{font-size:.88rem; font-weight:600; color:var(--muted)}
+.field input,.field select{font:inherit; font-size:1rem; color:var(--text); background:var(--bg); border:1.5px solid var(--line); border-radius:10px; padding:.65rem .75rem; width:100%; min-height:46px; min-width:0}
+.field input:focus,.field select:focus{border-color:var(--lagoon); outline:none; box-shadow:0 0 0 3px rgba(47,191,181,.25)}
+.btn{display:block; width:100%; font:700 1.05rem "Figtree",sans-serif; color:#fff; background:var(--magenta); border:0; border-radius:12px; padding:1rem; cursor:pointer; margin-top:.4rem}
+.btn:hover{background:var(--magenta-dark)}
+.src{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; background:var(--foam); border-radius:12px; padding:5px; margin-bottom:1.1rem}
+.src button{font:600 .9rem/1.25 "Figtree",sans-serif; color:var(--muted); background:transparent; border:0; border-radius:9px; padding:.6rem .4rem; cursor:pointer}
+.src button[aria-pressed="true"]{background:var(--surface); color:var(--ocean); box-shadow:0 2px 6px rgba(10,77,92,.18)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .src button[aria-pressed="true"]{color:var(--text)}}
+.ages{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:.9rem}
+.ages:empty{display:none}
+.note{font-size:.85rem; color:var(--muted); text-align:center; margin:.8rem 0 0}
+.err{color:#C0233B; font-size:.9rem; font-weight:600; margin:.2rem 0 .4rem; min-height:1.2em}
+.door.flash{animation:flash 1s ease}
+@keyframes flash{0%{box-shadow:0 0 0 0 rgba(201,151,59,.9)}100%{box-shadow:0 0 0 22px rgba(201,151,59,0)}}
+
+/* presets */
+.presets{padding:2.2rem 0 0}
+.presets h2{font-size:1.1rem; margin-bottom:1rem}
+.chips{display:flex; flex-wrap:wrap; gap:.7rem}
+.chip{font:600 1rem "Figtree",sans-serif; color:var(--ocean); background:var(--foam); border:1.5px solid var(--line); border-radius:999px; padding:.65rem 1.15rem; cursor:pointer}
+.chip:hover{border-color:var(--lagoon); background:var(--surface)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .chip{color:var(--text)}}
+
+/* seasons */
+section.block{padding:4.5rem 0 0}
+.block h2{font-size:clamp(1.6rem,3.4vw,2.3rem); color:var(--ocean); max-width:24ch}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .block h2{color:var(--lagoon)}}
+.lead{max-width:62ch; color:var(--muted); margin:1rem 0 1.8rem}
+.months{display:grid; grid-template-columns:repeat(12,1fr); gap:6px}
+.month{font:600 .95rem "Figtree",sans-serif; border:0; border-radius:10px; padding:1.4rem .2rem .9rem; cursor:pointer; color:var(--ocean); position:relative}
+.month small{display:block; font-weight:500; font-size:.72rem; margin-top:.25rem; opacity:.8}
+.month.dry{background:#BDEDE7}
+.month.mixed{background:#F1DEB5}
+.month.wet{background:#D9DEE0; color:#4E5D61}
+.month:hover{outline:2px solid var(--ocean)}
+.legend{display:flex; flex-wrap:wrap; gap:1.2rem; margin-top:1rem; font-size:.9rem; color:var(--muted)}
+.legend span::before{content:""; display:inline-block; width:14px; height:14px; border-radius:4px; margin-right:.45rem; vertical-align:-2px}
+.legend .l-dry::before{background:#BDEDE7}.legend .l-mixed::before{background:#F1DEB5}.legend .l-wet::before{background:#D9DEE0}
+
+/* areas */
+.areas{display:grid; grid-template-columns:repeat(2,1fr); gap:1.6rem; margin-top:2rem}
+.area{display:grid; grid-template-columns:44% 1fr; background:var(--surface); border-radius:6px 70px 6px 6px; overflow:hidden; border:1px solid var(--line)}
+.area .ph{background:linear-gradient(135deg,var(--lagoon),var(--ocean)); min-height:210px}
+.area .ph img{width:100%; height:100%; object-fit:cover}
+.area .tx{padding:1.4rem 1.5rem}
+.area h3{font-size:1.1rem; color:var(--clove); margin-bottom:.5rem}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .area h3{color:var(--brass)}}
+.area p{margin:0; font-size:.98rem; color:var(--muted)}
+
+/* contact */
+.contact{margin:5rem 0 0; background:var(--clove); color:#FBEFE6}
+.contact .wrap{display:flex; flex-wrap:wrap; gap:2rem; align-items:center; justify-content:space-between; padding:3rem 0}
+.contact h2{font-size:1.6rem; color:#fff}
+.contact p{margin:.6rem 0 0; max-width:44ch}
+.cbtns{display:flex; flex-wrap:wrap; gap:.8rem}
+.cbtn{text-decoration:none; font-weight:700; padding:.9rem 1.4rem; border-radius:12px; background:var(--magenta); color:#fff}
+.cbtn.alt{background:transparent; border:2px solid var(--brass); color:#fff}
+footer{background:var(--clove); color:#D9C3B5; font-size:.88rem; border-top:1px solid rgba(255,255,255,.12)}
+footer .wrap{padding:1.3rem 0}
+footer a{color:#fff}
+
+
+/* live results */
+.results{padding:3.5rem 0 0}
+.results h2{font-size:clamp(1.6rem,3.4vw,2.3rem); color:var(--ocean)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .results h2{color:var(--lagoon)}}
+.r-status{color:var(--muted); margin:.6rem 0 1.4rem; min-height:1.6em}
+.filters{display:flex; flex-wrap:wrap; gap:.8rem 1rem; align-items:end; padding:1rem 1.1rem; background:var(--foam); border-radius:14px; margin-bottom:1.6rem}
+.filters[hidden]{display:none}
+.filters .field{margin:0; min-width:150px; flex:1 1 150px}
+.filters .chk{display:flex; align-items:center; gap:.5rem; font-weight:600; color:var(--muted); min-height:46px; flex:0 0 auto}
+.filters .chk input{width:20px; height:20px; accent-color:var(--magenta)}
+.hgrid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.5rem}
+.hcard{display:flex; flex-direction:column; background:var(--surface); border:1px solid var(--line); border-radius:8px; overflow:hidden}
+.hc-img{position:relative; aspect-ratio:4/3; background:linear-gradient(135deg,var(--lagoon),var(--ocean)); border-radius:0 0 50% 50% / 0 0 18px 18px; overflow:hidden}
+.hc-img img{width:100%; height:100%; object-fit:cover}
+.hc-rate{position:absolute; left:.8rem; bottom:.8rem; background:var(--surface); color:var(--ocean); font-weight:700; border-radius:10px; padding:.3rem .6rem; font-size:.95rem}
+.hc-rate small{font-weight:500; color:var(--muted)}
+.hc-body{display:flex; flex-direction:column; flex:1; padding:1.1rem 1.2rem 1.2rem}
+.hc-stars{color:var(--brass); letter-spacing:2px; font-size:.95rem; min-height:1.3em}
+.hcard h3{font-size:1.08rem; color:var(--clove); margin:.25rem 0 .5rem}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .hcard h3{color:var(--brass)}}
+.hc-meta{margin:0; font-size:.95rem; color:var(--muted)}
+.hc-tags{display:flex; flex-wrap:wrap; gap:.4rem; margin:.7rem 0 0}
+.hc-tags span{font-size:.8rem; font-weight:600; color:var(--ocean); background:var(--foam); border-radius:999px; padding:.2rem .6rem}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .hc-tags span{color:var(--text)}}
+.hc-live{margin:.9rem 0 0; padding:.7rem .8rem; border-left:3px solid var(--lagoon); background:var(--bg); font-size:.9rem; color:var(--text); min-height:3.6em}
+.hc-live.wait{color:var(--muted)}
+.hc-live.sold{border-color:#C0233B}
+.hc-foot{display:flex; flex-wrap:wrap; align-items:end; justify-content:space-between; gap:.8rem; margin-top:auto; padding-top:1rem}
+.hc-price b{display:block; font:700 1.3rem "Unbounded",sans-serif; color:var(--magenta)}
+.hc-price span{font-size:.85rem; color:var(--muted)}
+.hc-btns{display:flex; flex-direction:column; gap:.4rem; align-items:stretch}
+.hc-btn{text-decoration:none; font-weight:700; font-size:.92rem; text-align:center; padding:.6rem .9rem; border-radius:10px; background:var(--magenta); color:#fff}
+.hc-btn:hover{background:var(--magenta-dark)}
+.hc-btn.alt{background:transparent; color:var(--ocean); border:1.5px solid var(--line)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .hc-btn.alt{color:var(--text)}}
+.r-msg{padding:2rem; text-align:center; background:var(--foam); border-radius:14px; color:var(--muted)}
+.r-msg a{color:var(--magenta); font-weight:700}
+.r-more{text-align:center; margin:1.8rem 0 0}
+.r-more a{color:var(--magenta); font-weight:700}
+.skel{height:420px; border-radius:8px; background:linear-gradient(100deg,var(--foam) 30%,var(--surface) 50%,var(--foam) 70%); background-size:300% 100%; animation:sk 1.4s linear infinite}
+@keyframes sk{to{background-position:-150% 0}}
+
+/* hotel dialog */
+dialog#hotel{padding:0; border:0; border-radius:16px; width:min(760px,100% - 1.5rem); max-height:calc(100% - 2rem); background:var(--surface); color:var(--text); box-shadow:0 30px 80px -20px rgba(4,30,36,.6)}
+dialog#hotel::backdrop{background:rgba(6,45,54,.65)}
+.d-body{max-height:calc(100vh - 2rem); overflow:auto}
+.d-img{position:relative; aspect-ratio:16/9; background:linear-gradient(135deg,var(--lagoon),var(--ocean)); border-radius:0 0 50% 50% / 0 0 26px 26px; overflow:hidden}
+.d-img img{width:100%; height:100%; object-fit:cover}
+.d-close{position:absolute; top:.7rem; right:.7rem; z-index:3; width:44px; height:44px; border-radius:50%; border:0; background:var(--surface); color:var(--ocean); font-size:1.5rem; line-height:1; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.d-in{padding:1.4rem 1.8rem 1.8rem}
+.d-in h2{font-size:1.5rem; color:var(--clove); margin:.2rem 0 .8rem}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .d-in h2{color:var(--brass)}}
+.d-meta{list-style:none; padding:0; margin:0 0 .8rem; display:grid; gap:.3rem; color:var(--muted)}
+.d-meta strong{color:var(--text); font-weight:600}
+.d-row{display:flex; flex-wrap:wrap; gap:1rem 2rem; align-items:end; justify-content:space-between; margin:1rem 0 0}
+.d-row .hc-live{flex:1 1 280px; margin:0}
+.d-form{margin-top:1.8rem; padding-top:1.4rem; border-top:2px dotted var(--brass)}
+.d-form h3{font-size:1.15rem; color:var(--ocean); margin-bottom:1rem}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .d-form h3{color:var(--lagoon)}}
+.d-form textarea{font:inherit; color:var(--text); background:var(--bg); border:1.5px solid var(--line); border-radius:10px; padding:.65rem .75rem; width:100%; min-height:90px; resize:vertical}
+.d-form .hp{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
+.d-ok{margin-top:1.6rem; padding:1.4rem; border-radius:12px; background:var(--foam); font-weight:600; color:var(--ocean)}
+.d-dates-wrap{margin-top:1.8rem}
+.d-dates-wrap h3{font-size:1.15rem; color:var(--ocean); margin-bottom:.3rem}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .d-dates-wrap h3{color:var(--lagoon)}}
+.d-note{color:var(--muted); font-size:.92rem; margin:.2rem 0 .8rem}
+.dl{list-style:none; margin:0 0 1rem; padding:0; display:grid; gap:.5rem}
+.dl-item{border:1.5px solid var(--line); border-radius:12px; overflow:hidden}
+.dl-row{display:flex; width:100%; gap:1rem; justify-content:space-between; align-items:center; text-align:left; font:inherit; color:var(--text); background:var(--surface); border:0; padding:.8rem 1rem; cursor:pointer}
+.dl-row:hover{background:var(--foam)}
+.dl-row[aria-expanded="true"]{background:var(--foam)}
+.dl-date small,.dl-price small{display:block; color:var(--muted); font-size:.84rem; font-weight:400}
+.dl-price{text-align:right; font-weight:700; color:var(--magenta); white-space:nowrap}
+.dl-price em{display:block; font-style:normal; font-size:.75rem; color:var(--ocean); background:#BDEDE7; border-radius:6px; padding:.05rem .4rem; margin-bottom:.2rem; text-align:center}
+.dl-rooms{padding:.4rem 1rem 1rem; background:var(--bg)}
+.dl-flight{font-size:.88rem; color:var(--muted); margin:.4rem 0 .8rem}
+.rl{list-style:none; margin:0; padding:0; display:grid; gap:.5rem}
+.rl li{display:grid; grid-template-columns:1fr auto auto; gap:.8rem; align-items:center; background:var(--surface); border-radius:10px; padding:.6rem .8rem}
+.rl-name em{font-style:normal; font-size:.8rem; font-weight:700; color:#fff; background:var(--magenta); border-radius:6px; padding:.05rem .35rem; margin-left:.3rem}
+.rl-price{font-weight:700; white-space:nowrap}
+.rl-price small{color:var(--muted); font-weight:400}
+.rl .hc-btn{padding:.45rem .8rem; font-size:.85rem; border:0; cursor:pointer}
+.d-sel{margin:0 0 1.1rem; padding:.9rem 1rem; border-radius:12px; background:var(--foam); border-left:4px solid var(--magenta); font-size:.95rem}
+.dl-more{width:100%; cursor:pointer}
+@media (max-width:520px){.d-in{padding:1.2rem 1.1rem 1.4rem} .rl li{grid-template-columns:1fr auto} .rl .hc-btn{grid-column:1/-1}}
+/* last minute */
+.lm{padding:3rem 0 0}
+.lm h2{font-size:clamp(1.5rem,3vw,2.1rem); color:var(--magenta)}
+.lm-cols{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.2rem}
+.lm-col{background:var(--surface); border:1px solid var(--line); border-top:4px solid var(--magenta); border-radius:10px; padding:1rem}
+.lm-col h3{font-size:1rem; color:var(--ocean); margin:0 0 .7rem}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .lm-col h3{color:var(--lagoon)}}
+.lm-list{list-style:none; margin:0; padding:0; display:grid; gap:.5rem}
+.lm-item{display:grid; grid-template-columns:64px 1fr auto; gap:.7rem; align-items:center; width:100%; text-align:left; font:inherit; color:var(--text); background:var(--bg); border:1px solid transparent; border-radius:10px; padding:.5rem; cursor:pointer}
+.lm-item:hover{border-color:var(--lagoon)}
+.lm-thumb{width:64px; height:52px; border-radius:8px; overflow:hidden; background:linear-gradient(135deg,var(--lagoon),var(--ocean))}
+.lm-thumb img{width:100%; height:100%; object-fit:cover}
+.lm-txt strong{display:block; font-size:.95rem; line-height:1.25}
+.lm-txt small{display:block; font-size:.8rem; color:var(--muted)}
+.lm-price{text-align:right; font-weight:700; color:var(--magenta); white-space:nowrap; font-size:.95rem}
+.lm-price small{display:block; font-weight:400; color:var(--muted); font-size:.75rem}
+.lm-skel{height:260px}
+.rl-sub{display:block; font-size:.8rem; color:var(--muted)}
+@media (max-width:1000px){.lm-cols{grid-template-columns:1fr}}
+@media (max-width:1000px){.hgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.hgrid{grid-template-columns:1fr}}
+
+@media (max-width:900px){
+  .hero .wrap{grid-template-columns:1fr; padding-top:7rem; gap:2rem}
+  .areas{grid-template-columns:1fr}
+  .months{grid-template-columns:repeat(6,1fr)}
+}
+@media (max-width:520px){
+  .area{grid-template-columns:1fr}
+  .area .ph{min-height:170px}
+  .door{padding:3.2rem 1.2rem 1.5rem}
+  .top-phone{font-size:.9rem; padding:.45rem .8rem}
+  .months{grid-template-columns:repeat(4,1fr)}
+}
+
+/* foglalási űrlap */
+.book{padding:5rem 0 0}
+.book-card{position:relative; background:var(--surface); border-radius:26px; padding:2.6rem 2.4rem 2.4rem; margin-top:1.8rem; box-shadow:0 30px 60px -34px rgba(4,30,36,.45); border:1px solid var(--line)}
+.book-card::before{content:""; position:absolute; inset:10px; border:2px dotted var(--brass); border-radius:18px; pointer-events:none; opacity:.75}
+.book-grid{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:0 1.6rem}
+.book fieldset{border:0; margin:0 0 1.4rem; padding:0; min-width:0}
+.book legend{font:700 1.05rem "Unbounded","Arial Black",sans-serif; color:var(--ocean); margin-bottom:1rem; padding:0}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .book legend{color:var(--lagoon)}}
+.book .grid3{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.9rem}
+.book textarea{font:inherit; color:var(--text); background:var(--bg); border:1.5px solid var(--line); border-radius:10px; padding:.65rem .75rem; width:100%; min-height:96px; resize:vertical}
+.book textarea:focus{border-color:var(--lagoon); outline:none; box-shadow:0 0 0 3px rgba(47,191,181,.25)}
+.trav{display:grid; gap:.7rem}
+.trav-row{display:grid; grid-template-columns:auto minmax(0,1.6fr) minmax(0,1fr); gap:.8rem; align-items:end; background:var(--foam); border-radius:14px; padding:.8rem .9rem}
+.trav-row .field{margin:0}
+.trav-n{font:700 .85rem "Figtree",sans-serif; color:var(--ocean); background:var(--surface); border-radius:999px; padding:.35rem .7rem; white-space:nowrap; align-self:center}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .trav-n{color:var(--text)}}
+.book-sum{margin:0 0 1.4rem; padding:1rem 1.1rem; border-radius:14px; background:var(--foam); border-left:4px solid var(--magenta); font-size:.98rem}
+.book-sum[hidden]{display:none}
+.consent{display:flex; gap:.7rem; align-items:flex-start; font-size:.93rem; color:var(--muted); margin:.4rem 0 1rem}
+.consent input{width:20px; height:20px; margin-top:.15rem; accent-color:var(--magenta); flex:none}
+.book .btn{max-width:420px}
+.book-ok{margin-top:1.8rem; padding:1.6rem; border-radius:16px; background:var(--foam); font-weight:600; color:var(--ocean)}
+.book-ok strong{display:block; font:700 1.15rem "Unbounded",sans-serif; margin-bottom:.4rem}
+.d-book{margin-top:.8rem; width:auto; display:inline-block; padding:.75rem 1.2rem}
+@media (max-width:820px){.book-grid{grid-template-columns:1fr}}
+@media (max-width:620px){.book .grid3{grid-template-columns:1fr 1fr}.trav-row{grid-template-columns:1fr}.trav-n{justify-self:start}.book-card{padding:2rem 1.2rem 1.6rem}}
+/* boltíves fotó a kereső mellett: ugyanaz a fehér „kapu” sárgaréz pontsorral, mint a keresőé */
+.hero{background:radial-gradient(1200px 500px at 85% 110%,rgba(47,191,181,.55),transparent 60%),linear-gradient(160deg,#083F4B 0%,#0D5F6A 55%,#127A82 100%)}
+.hero::after{display:none}
+.hero .wrap{grid-template-columns:minmax(0,1fr) minmax(0,440px); gap:4rem; align-items:center; padding:7.5rem 0 4.5rem}
+.hero-visual{position:relative; max-width:560px}
+.arch-wrap{position:relative; padding:14px; background:#fff; border-radius:50% 50% 22px 22px / 150px 150px 22px 22px; box-shadow:0 30px 60px -20px rgba(2,20,25,.6)}
+.arch-wrap::before{content:""; position:absolute; inset:6px; border:2px dotted var(--brass); border-radius:50% 50% 17px 17px / 142px 142px 17px 17px; pointer-events:none; opacity:.9}
+.arch{position:relative; aspect-ratio:5/4; overflow:hidden; border-radius:50% 50% 10px 10px / 136px 136px 10px 10px; background:linear-gradient(135deg,var(--lagoon),var(--ocean))}
+.arch img{display:block; width:100%; height:100%; object-fit:cover; object-position:58% 60%}
+.hero h1{margin:1.6rem 0 0; font-size:clamp(3rem,7vw,5.6rem); text-shadow:none}
+.hero .intro{margin-top:.9rem}
+.door .grid2{align-items:end}
+@media (max-width:900px){
+  .hero .wrap{grid-template-columns:1fr; gap:2.5rem; padding-top:6.5rem}
+  .hero-visual{max-width:520px; margin:0 auto; width:100%}
+}
+@media (max-width:520px){
+  .src{grid-template-columns:1fr}
+  .arch-wrap{padding:10px; border-radius:50% 50% 18px 18px / 100px 100px 18px 18px}
+  .arch-wrap::before{inset:4px; border-radius:50% 50% 14px 14px / 95px 95px 14px 14px}
+  .arch{border-radius:50% 50% 8px 8px / 90px 90px 8px 8px}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#"><img src="img/atlasz-travel-gyor-logo.png" alt="Atlasz Travel Győr" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="logo-text">Atlasz Travel Győr</span></a>
+    <a class="top-phone" href="tel:+36202668144">+36 20 266 8144</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-visual">
+      <div class="arch-wrap"><div class="arch"><img src="img/hero.jpg" alt="Függőágy a zanzibári tengerparton"></div></div>
+      <h1>Zanzibár</h1>
+      <p class="intro">Fehér homok, türkiz lagúna és fűszerillatú sikátorok az Indiai-óceánon. Keressen a teljes zanzibári kínálatunkban: szállodák, időpontok, szobatípusok és ellátások egy helyen.</p>
+    </div>
+
+    <form class="door" id="door" novalidate>
+      <h2>Keresés a kínálatban</h2>
+      <div class="src" id="src" role="group" aria-label="Melyik kínálatban keressen?"></div>
+      <div class="field"><label for="ai">Indulási repülőtér</label><select id="ai"></select></div>
+      <div class="grid2">
+        <div class="field"><label for="df">Legkorábbi indulás</label><input type="date" id="df" required></div>
+        <div class="field"><label for="dt">Legkésőbbi hazaérkezés</label><input type="date" id="dt" required></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label for="ac">Felnőttek</label><select id="ac"></select></div>
+        <div class="field" id="cc-field"><label for="cc">Gyerekek</label><select id="cc"></select></div>
+      </div>
+      <div class="ages" id="ages"></div>
+      <div class="field" role="group" aria-labelledby="nl">
+        <span class="lbl" id="nl">Éjszakák száma</span>
+        <div class="grid2">
+          <select id="uf" aria-label="Legalább ennyi éjszaka"></select>
+          <select id="ut" aria-label="Legfeljebb ennyi éjszaka"></select>
+        </div>
+      </div>
+      <div class="field" id="pt-field"><label for="pt">Árkeret</label><select id="pt"></select></div>
+      <p class="err" id="err" role="alert"></p>
+      <button class="btn" type="submit">Ajánlatok keresése</button>
+      <p class="note">Az árak és a szabad helyek élőben frissülnek.</p>
+    </form>
+  </div>
+</section>
+
+
+<section class="lm wrap" id="lastminute">
+  <h2>Last minute: indulás a következő 14 napban</h2>
+  <p class="r-status" id="lm-range">Legjobb árak betöltése…</p>
+  <div class="lm-cols" id="lm-cols"><div class="skel lm-skel"></div><div class="skel lm-skel"></div><div class="skel lm-skel"></div></div>
+</section>
+<div class="wrap presets">
+  <h2>Gyors keresések</h2>
+  <div class="chips" id="chips"></div>
+</div>
+
+
+<section class="results wrap" id="talalatok" aria-live="polite">
+  <h2>Zanzibári ajánlatok élő árakkal</h2>
+  <p class="r-status" id="rstatus"></p>
+  <div class="filters" id="filters" hidden>
+    <div class="field"><label for="f-region">Partszakasz</label><select id="f-region"></select></div>
+    <div class="field"><label for="f-board">Ellátás</label><select id="f-board"></select></div>
+    <div class="field"><label for="f-stars">Kategória</label><select id="f-stars"><option value="0">Bármelyik</option><option value="4">Legalább 4*</option><option value="5">5*</option></select></div>
+    <div class="field"><label for="f-sort">Sorrend</label><select id="f-sort"><option value="price">Ár szerint növekvő</option><option value="price-desc">Ár szerint csökkenő</option><option value="rating">Értékelés szerint</option></select></div>
+    <label class="chk"><input type="checkbox" id="f-direct"> Csak közvetlen járat</label>
+  </div>
+  <div class="hgrid" id="hgrid"></div>
+  <p class="r-more" id="rmore"></p>
+</section>
+
+<dialog id="hotel" aria-labelledby="d-title">
+  <div class="d-body" id="d-body">
+    <button type="button" class="d-close" id="d-close" aria-label="Bezárás">×</button>
+    <div class="d-img" id="d-img"></div>
+    <div class="d-in">
+      <div class="hc-stars" id="d-stars"></div>
+      <h2 id="d-title"></h2>
+      <ul class="d-meta" id="d-meta"></ul>
+      <div class="hc-tags" id="d-tags"></div>
+      <div class="d-row">
+        <div class="hc-live" id="d-live"></div>
+        <div class="hc-price" id="d-price"></div>
+      </div>
+      <section class="d-dates-wrap">
+        <h3>Időpontok és szobák</h3>
+        <p class="d-note">Kattintson egy időpontra a szobák és a pontos árak megtekintéséhez.</p>
+        <div id="d-dates"></div>
+      </section>
+      <form class="d-form" id="d-form" novalidate>
+        <h3>Ajánlatkérés erre a szállodára</h3>
+        <div class="d-sel" id="d-sel" hidden></div>
+        <div class="grid2">
+          <div class="field"><label for="d-name">Név *</label><input id="d-name" name="name" required autocomplete="name"></div>
+          <div class="field"><label for="d-phone">Telefon *</label><input id="d-phone" name="phone" type="tel" required autocomplete="tel"></div>
+        </div>
+        <div class="field"><label for="d-email">E-mail *</label><input id="d-email" name="email" type="email" required autocomplete="email"></div>
+        <div class="grid2">
+          <div class="field"><label for="d-trav">Utasok</label><input id="d-trav" name="travellers"></div>
+          <div class="field"><label for="d-term">Kívánt időpont</label><input id="d-term" name="term"></div>
+        </div>
+        <div class="field"><label for="d-room">Szoba és ellátás</label><input id="d-room" name="room" placeholder="Válasszon fent egy szobát, vagy írja be"></div>
+        <div class="field"><label for="d-msg">Megjegyzés</label><textarea id="d-msg" name="message" placeholder="Például szobatípus, más időpont, reptéri igény"></textarea></div>
+        <div class="hp" aria-hidden="true"><label>Weboldal <input name="website" tabindex="-1" autocomplete="off"></label></div>
+        <p class="err" id="d-err" role="alert"></p>
+        <button class="btn" type="submit">Ajánlatot kérek</button>
+      </form>
+      <div class="d-ok" id="d-ok" tabindex="-1" hidden>Köszönjük, megkaptuk az ajánlatkérését. Kollégánk hamarosan felveszi Önnel a kapcsolatot.</div>
+    </div>
+  </div>
+</dialog>
+
+<section class="block wrap" id="evszak">
+  <h2>Mikor érdemes menni?</h2>
+  <p class="lead">Zanzibáron két száraz évszak van: júniustól októberig és decembertől februárig. Márciusban és novemberben rövid esők jöhetnek, áprilisban és májusban tart a nagy esős évszak. Kattintson egy hónapra, és a kereső arra az időszakra áll be.</p>
+  <div class="months" id="months"></div>
+  <div class="legend"><span class="l-dry">Száraz, napos</span><span class="l-mixed">Változékony</span><span class="l-wet">Esős évszak</span></div>
+</section>
+
+<section class="block wrap">
+  <h2>Melyik partszakasz illik Önhöz?</h2>
+  <div class="areas">
+    <article class="area"><div class="ph"><img src="img/nungwi.jpg" alt="Nungwi" onerror="this.remove();if(window.zFillAreas)window.zFillAreas()"></div><div class="tx"><h3>Nungwi, Kendwa</h3><p>A sziget északi csücske. Itt a legkisebb az apály, így egész nap lehet fürödni, a naplementék pedig híresek.</p></div></article>
+    <article class="area"><div class="ph"><img src="img/paje.jpg" alt="Paje" onerror="this.remove();if(window.zFillAreas)window.zFillAreas()"></div><div class="tx"><h3>Paje, Jambiani</h3><p>Széles, hófehér part a keleti oldalon, a kitesörfösök kedvence. Apálykor messzire húzódik a víz, a lagúna sekély és türkiz.</p></div></article>
+    <article class="area"><div class="ph"><img src="img/matemwe.jpg" alt="Matemwe" onerror="this.remove();if(window.zFillAreas)window.zFillAreas()"></div><div class="tx"><h3>Matemwe, Mnemba</h3><p>Csendesebb partszakasz a Mnemba-atoll közelében, ahol a sziget legjobb sznorkelezése és búvárkodása várja.</p></div></article>
+    <article class="area"><div class="ph"><img src="img/stonetown.jpg" alt="Stone Town" onerror="this.remove();if(window.zFillAreas)window.zFillAreas()"></div><div class="tx"><h3>Stone Town</h3><p>Az UNESCO-világörökség része: faragott kapuk, fűszerpiac és esti street food a Forodhani-kertben. Jó egy-két éjszakára a tengerparti napok előtt vagy után.</p></div></article>
+  </div>
+</section>
+
+<section class="block book wrap" id="foglalas">
+  <h2>Foglalás</h2>
+  <p class="lead">Adja meg az utasok adatait, és kollégáink hamarosan visszaigazolják a szabad helyet, a pontos árat és a további teendőket. A szállodát és az időpontot fent, a kínálatban is kiválaszthatja – az adatok automatikusan ide kerülnek.</p>
+  <form class="book-card" id="book" novalidate>
+    <div class="book-sum" id="book-sum" hidden></div>
+    <fieldset>
+      <legend>Utazás</legend>
+      <div class="book-grid">
+        <div class="field"><label for="b-hotel">Szálloda *</label><input id="b-hotel" name="hotel" required placeholder="Például Melia Zanzibar"></div>
+        <div class="field"><label for="b-term">Időpont *</label><input id="b-term" name="term" required placeholder="Például 2026. nov. 14. – nov. 22."></div>
+        <div class="field"><label for="b-room">Szoba és ellátás</label><input id="b-room" name="room" placeholder="Például kétágyas szoba, all inclusive"></div>
+        <div class="field"><label for="b-from">Indulási repülőtér</label><select id="b-from" name="from"><option>Budapest</option><option>Bécs</option><option>Pozsony</option></select></div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Megrendelő</legend>
+      <div class="book-grid">
+        <div class="field"><label for="b-name">Név *</label><input id="b-name" name="name" required autocomplete="name"></div>
+        <div class="field"><label for="b-phone">Telefon *</label><input id="b-phone" name="phone" type="tel" required autocomplete="tel" placeholder="06 20 123 4567"></div>
+        <div class="field"><label for="b-email">E-mail *</label><input id="b-email" name="email" type="email" required autocomplete="email"></div>
+        <div class="field"><label for="b-addr">Lakcím (irányítószám, település, utca) *</label><input id="b-addr" name="address" required autocomplete="street-address"></div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Utasok</legend>
+      <div class="grid2" style="max-width:520px">
+        <div class="field"><label for="b-ac">Felnőttek</label><select id="b-ac"></select></div>
+        <div class="field"><label for="b-cc">Gyerekek (18 év alatt)</label><select id="b-cc"></select></div>
+      </div>
+      <p class="d-note">A neveket pontosan úgy adja meg, ahogy az útlevélben szerepelnek.</p>
+      <div class="trav" id="b-trav"></div>
+    </fieldset>
+    <div class="field"><label for="b-msg">Megjegyzés</label><textarea id="b-msg" name="message" placeholder="Például szobaigény, reptéri parkolás, utasbiztosítás"></textarea></div>
+    <div class="hp" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label>Weboldal <input name="website" tabindex="-1" autocomplete="off"></label></div>
+    <label class="consent"><input type="checkbox" id="b-ok" required> <span>Hozzájárulok, hogy az Atlasz Travel a megadott adataimat a foglalás intézéséhez kezelje. *</span></label>
+    <p class="err" id="b-err" role="alert"></p>
+    <button class="btn" type="submit">Foglalás elküldése</button>
+  </form>
+  <div class="book-ok" id="book-ok" tabindex="-1" hidden><strong>Köszönjük, megkaptuk a foglalását.</strong>Kollégánk hamarosan felveszi Önnel a kapcsolatot, és visszaigazolja a szabad helyet és a pontos árat.</div>
+</section>
+
+<section class="contact">
+  <div class="wrap">
+    <div><h2>Inkább személyesen tervezne?</h2><p>Kollégáink segítenek kiválasztani a szállodát, a szobatípust és a legjobb időpontot.</p></div>
+    <div class="cbtns">
+      <a class="cbtn" href="tel:+36202668144">+36 20 266 8144</a>
+      <a class="cbtn alt" href="mailto:gyor@atlasztravel.hu?subject=Zanzib%C3%A1ri%20aj%C3%A1nlatk%C3%A9r%C3%A9s">gyor@atlasztravel.hu</a>
+      <a class="cbtn alt" href="https://www.google.com/maps/search/?api=1&amp;query=Atlasz+Travel+Gy%C5%91r+9021+Gy%C5%91r+Kir%C3%A1ly+u.+1." target="_blank" rel="noopener">9021 Győr, Király u. 1.</a>
+    </div>
+  </div>
+</section>
+<footer><div class="wrap">© <span id="yr"></span> Atlasz Travel Győr · 9021 Győr, Király u. 1. · <a href="tel:+36202668144">+36 20 266 8144</a> · <a href="mailto:gyor@atlasztravel.hu">gyor@atlasztravel.hu</a> · <a href="https://www.atlasztravelgyor.hu" target="_blank" rel="noopener">www.atlasztravelgyor.hu</a></div></footer>
+
+<script>
+// Keresési beállítások. Az élő árakat az api.php kéri le (győri CeSYS-oldal, atlastravel.sk).
+const CONFIG = {"style": "hu", "children": true, "sources": [{"label": "Budapesti indulás", "di": 685, "ai": [18, 19, 24], "key": "hu", "airports": [{"label": "Budapest", "ai": ""}]}, {"label": "Bécsi indulás", "di": 454, "ai": [18, 6], "key": "at", "airports": [{"label": "Bécs", "ai": "6"}]}, {"label": "Pozsonyi indulás", "key": "sk", "di": 685, "ai": [7], "airports": [{"label": "Pozsony", "ai": ""}]}], "priceOptions": [{"label": "500 000 Ft", "value": 500000}, {"label": "800 000 Ft", "value": 800000}, {"label": "1 200 000 Ft", "value": 1200000}, {"label": "2 000 000 Ft", "value": 2000000}, {"label": "3 000 000 Ft", "value": 3000000}, {"label": "Nincs felső határ", "value": 15000000}], "priceDefault": 15000000, "ufDefault": 5, "utDefault": 21, "months": ["jan.", "febr.", "márc.", "ápr.", "máj.", "jún.", "júl.", "aug.", "szept.", "okt.", "nov.", "dec."], "season": ["dry", "dry", "mixed", "wet", "wet", "dry", "dry", "dry", "dry", "dry", "mixed", "dry"], "presets": [{"label": "Karácsony és szilveszter", "kind": "xmas", "uf": 7, "ut": 12}, {"label": "Januári napsütés", "kind": "month", "month": 0, "uf": 7, "ut": 14}, {"label": "Február a tél helyett", "kind": "month", "month": 1, "uf": 7, "ut": 14}, {"label": "Nyár Zanzibáron", "kind": "month", "month": 6, "uf": 7, "ut": 14}, {"label": "Két hét a parton", "kind": "season", "uf": 13, "ut": 15}], "t": {"min": "legalább", "max": "legfeljebb", "nights": "éj", "dry": "száraz", "mixed": "változó", "wet": "esős", "childAge": "{n}. gyerek kora", "age": "{n} éves", "setSearch": "A kereső erre a hónapra áll be.", "errEmpty": "Adja meg a legkorábbi indulás és a legkésőbbi hazaérkezés dátumát.", "errOrder": "A hazaérkezés nem lehet korábbi az indulásnál."}, "email": "gyor@atlasztravel.hu", "phone": "+36 20 266 8144", "phoneTel": "+36202668144"};
+const API = 'api.php';
+// Ha a saját tárhely nem tudja kiszolgálni a fotót, közvetlenül a képszerverről töltjük be.
+window.zImgErr = function(el){
+  if(!el.dataset.cdn && el.dataset.h){ el.dataset.cdn = '1'; el.src = 'https://i.ccdn.hu/acm/' + el.dataset.h + '.webp'; }
+  else if(!el.dataset.cdn && el.dataset.u){ el.dataset.cdn = '1'; el.src = el.dataset.u; }
+  else el.remove();
+};
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const pad = n => String(n).padStart(2,'0');
+  const iso = d => d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+  const addDays = (d,n) => { const x=new Date(d); x.setDate(x.getDate()+n); return x; };
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const huf = n => Math.round(n).toLocaleString('hu-HU') + '\u00a0Ft';
+  const eur = n => Math.round(n).toLocaleString('hu-HU') + '\u00a0€';
+  const day = (s, withYear) => new Date(s+'T12:00:00').toLocaleDateString('hu-HU', withYear ? {year:'numeric',month:'short',day:'numeric'} : {month:'short',day:'numeric'});
+  const today = new Date(); today.setHours(0,0,0,0);
+  const tomorrow = addDays(today,1);
+  $('yr').textContent = today.getFullYear();
+
+  /* ---------- kereső mezők ---------- */
+  for(let i=1;i<=8;i++) $('ac').add(new Option(i, i, i===2, i===2));
+  for(let i=0;i<=4;i++) $('cc').add(new Option(i, i, i===0, i===0));
+  $('cc').addEventListener('change', () => {
+    const n=+$('cc').value, box=$('ages'), cur=[...box.querySelectorAll('select')].map(s=>s.value);
+    box.innerHTML='';
+    for(let k=0;k<n;k++){
+      const id='age'+k, f=document.createElement('div'); f.className='field';
+      const l=document.createElement('label'); l.htmlFor=id; l.textContent=CONFIG.t.childAge.replace('{n}',k+1);
+      const s=document.createElement('select'); s.id=id;
+      for(let a=0;a<=17;a++) s.add(new Option(CONFIG.t.age.replace('{n}',a), a));
+      s.value = cur[k] ?? 6;
+      f.append(l,s); box.appendChild(f);
+    }
+  });
+  let srcIdx = 0;
+  CONFIG.sources.forEach((s,i) => {
+    const b=document.createElement('button'); b.type='button'; b.textContent=s.label;
+    b.setAttribute('aria-pressed', i===0 ? 'true':'false');
+    b.addEventListener('click', () => {
+      if(srcIdx===i) return;
+      srcIdx=i; [...$('src').children].forEach((x,j)=>x.setAttribute('aria-pressed', j===i?'true':'false'));
+      fillAirports();
+      search(true);
+    });
+    $('src').appendChild(b);
+  });
+  // indulási repülőtér a választott kínálathoz
+  function fillAirports(){
+    const sel = $('ai'), cur = sel.value; sel.innerHTML = '';
+    CONFIG.sources[srcIdx].airports.forEach(a => sel.add(new Option(a.label, a.ai)));
+    if([...sel.options].some(o => o.value === cur)) sel.value = cur;
+    sel.closest('.field').style.display = sel.options.length < 2 ? 'none' : '';
+  }
+  fillAirports();
+  $('ai').addEventListener('change', () => search(true));
+  for(let n=3;n<=21;n++){
+    $('uf').add(new Option(CONFIG.t.min+' '+n+' '+CONFIG.t.nights, n, n===CONFIG.ufDefault, n===CONFIG.ufDefault));
+    $('ut').add(new Option(CONFIG.t.max+' '+n+' '+CONFIG.t.nights, n, n===CONFIG.utDefault, n===CONFIG.utDefault));
+  }
+  CONFIG.priceOptions.forEach(o => $('pt').add(new Option(o.label, o.value, o.value===CONFIG.priceDefault, o.value===CONFIG.priceDefault)));
+
+  const df=$('df'), dt=$('dt');
+  df.min = dt.min = iso(tomorrow);
+  df.value = iso(tomorrow); dt.value = iso(addDays(tomorrow,185));
+  df.addEventListener('change',()=>{ if(dt.value < df.value) dt.value = df.value; dt.min = df.value; });
+  $('uf').addEventListener('change',()=>{ if(+$('ut').value < +$('uf').value) $('ut').value = $('uf').value; });
+  $('ut').addEventListener('change',()=>{ if(+$('ut').value < +$('uf').value) $('uf').value = $('ut').value; });
+
+  // a fotó azonosítója (régebbi gyorsítótárban teljes címként is szerepelhet)
+  const imgHash = h => { const m = String(h || '').match(/([a-f0-9]{32})/); return m ? m[1] : ''; };
+  const imgUrl = h => API + '?action=img&h=' + imgHash(h);
+  // szállodafotó: CeSYS-azonosító vagy teljes képcím (a pozsonyi kínálatnál)
+  const imgTag = (h, alt, lazy) => {
+    const hh = h.img ? imgHash(h.img) : '';
+    if(!hh && !h.imgSrc && !h.url) return '';
+    const q = new URLSearchParams({action:'img'});
+    if(hh) q.set('h', hh);
+    if(h.imgSrc) q.set('u', h.imgSrc);
+    if(h.url && /^https:\/\/(www\.)?(atlasztravel\.hu|atlastravel\.sk)\//.test(h.url)) q.set('p', h.url);
+    return '<img'+(lazy ? ' loading="lazy"' : '')+' src="'+API+'?'+q.toString()+'"'+(hh ? ' data-h="'+hh+'"' : '')+' alt="'+esc(alt)+'" onerror="zImgErr(this)">';
+  };
+  // ár nélküli ajánlat (0 Ft) helyett „Ár kérésre”
+  const priceBox = (v, alt) => v > 0 ? '<b>'+huf(v)+'</b><span>/fő-től'+(alt || '')+'</span>' : '<b>Ár kérésre</b><span>kollégáink pontosítják</span>';
+  // pozsonyi (atlastravel.sk) szobanevek és ellátások magyarul
+  const SK_HU = [[/Dvojlôžková izba/gi,'Kétágyas szoba'],[/Jednolôžková izba/gi,'Egyágyas szoba'],[/Trojlôžková izba/gi,'Háromágyas szoba'],
+    [/Rodinná izba/gi,'Családi szoba'],[/Rodinný apartmán/gi,'Családi apartman'],[/Apartmán/gi,'Apartman'],[/Bungalov/gi,'Bungaló'],
+    [/s bočným výhľadom na more/gi,'oldalról tengerre néző'],[/s výhľadom na more/gi,'tengerre néző'],[/s výhľadom do záhrady/gi,'kertre néző'],
+    [/s výhľadom na bazén/gi,'medencére néző'],[/s výhľadom na oceán/gi,'óceánra néző'],[/s priamym prístupom k bazénu/gi,'közvetlen medencehozzáféréssel'],
+    [/s terasou/gi,'terasszal'],[/s balkónom/gi,'erkéllyel'],[/izba/gi,'szoba'],[/štandard/gi,'standard'],
+    [/Polpenzia/gi,'Félpanzió'],[/Plná penzia/gi,'Teljes ellátás'],[/Raňajky/gi,'Reggeli'],[/Bez stravy/gi,'Ellátás nélkül']];
+  const huText = t => SK_HU.reduce((x,[re,to]) => x.replace(re,to), String(t || '').replace(/\u00a0/g,' '));
+  const skToHu = h => { h.board = huText(h.board); if(h.from === 'Bratislava') h.from = 'Pozsony'; };
+  const ages = () => [...document.querySelectorAll('#ages select')].map(s => +s.value);
+
+  // a CeSYS találati oldalának címe (tartalék link, ha az élő lekérés nem sikerül)
+  function buildUrl(){
+    const src = CONFIG.sources[srcIdx], p = new URLSearchParams(), ac = +$('ac').value, a = ages();
+    p.set('di[0]', src.di); p.set('df', df.value); p.set('dt', dt.value);
+    p.set('uf', $('uf').value); p.set('ut', $('ut').value);
+    p.set('ac', ac); p.set('cc', a.length);
+    p.set('rooms[0]', Array(ac).fill(18).concat(a).join(','));
+    p.set('ti', 1);
+    src.ai.forEach((x,i) => p.set('ai['+i+']', x));
+    p.set('pt', $('pt').value); p.set('page', 1);
+    return src.base + '?' + p.toString();
+  }
+  function validate(){
+    if(!df.value || !dt.value){ $('err').textContent = CONFIG.t.errEmpty; return false; }
+    if(dt.value < df.value){ $('err').textContent = CONFIG.t.errOrder; return false; }
+    $('err').textContent=''; return true;
+  }
+
+  /* ---------- élő keresés ---------- */
+  const state = { hotels: [], comp: {ac:2, ages:[]}, searchUrl: '', seq: 0 };
+  const priceCache = new Map();
+
+  function compLabel(c){
+    let s = c.ac + ' felnőtt';
+    if(c.ages.length) s += ' és ' + c.ages.length + ' gyerek';
+    return s;
+  }
+
+  function skeleton(){
+    $('filters').hidden = true; $('rmore').innerHTML = '';
+    $('rstatus').textContent = 'Élő árak lekérése…';
+    $('hgrid').innerHTML = '<div class="skel"></div><div class="skel"></div><div class="skel"></div>';
+  }
+
+  function search(scroll){
+    if(!validate()) return;
+    const seq = ++state.seq, a = ages(), ac = +$('ac').value;
+    const q = new URLSearchParams({action:'search', src: CONFIG.sources[srcIdx].key, df: df.value, dt: dt.value,
+      uf: $('uf').value, ut: $('ut').value, ac: ac, pt: $('pt').value});
+    if(a.length) q.set('ages', a.join(','));
+    if($('ai').value) q.set('ai', $('ai').value);
+    state.comp = {ac, ages: a};
+    state.params = {src: CONFIG.sources[srcIdx].key, df: df.value, dt: dt.value, uf: $('uf').value, ut: $('ut').value, pt: $('pt').value};
+    if($('ai').value) state.params.ai = $('ai').value;
+    skeleton();
+    if(scroll) $('talalatok').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+    fetch(API + '?' + q.toString())
+      .then(r => r.json())
+      .then(d => {
+        if(seq !== state.seq) return;
+        if(!d.ok && d.error === 'range'){
+          $('rstatus').textContent = ''; $('filters').hidden = true;
+          $('hgrid').innerHTML = '<div class="r-msg" style="grid-column:1/-1">A megadott időszakba nem fér bele ennyi éjszaka. Válasszon későbbi hazaérkezést vagy kevesebb éjszakát.</div>';
+          return;
+        }
+        if(!d.ok) throw new Error(d.message || '');
+        if(state.params.src === 'sk') d.hotels.forEach(skToHu);
+        state.hotels = d.hotels; state.searchUrl = d.searchUrl || state.fallback;
+        fillFilters(); render(); fillAreas(d.hotels);
+      })
+      .catch(err => {
+        if(seq !== state.seq) return;
+        $('rstatus').textContent = '';
+        $('hgrid').innerHTML = '<div class="r-msg" style="grid-column:1/-1">'+(err && err.message ? esc(err.message)+'<br>' : '')+'Az élő árak most nem érhetők el. Próbálja újra pár perc múlva, vagy hívjon minket: <a href="tel:'+CONFIG.phoneTel+'">'+esc(CONFIG.phone)+'</a>.<br><button type="button" class="hc-btn" id="retry" style="margin-top:1rem">Újrapróbálom</button></div>';
+        const rb = $('retry'); if(rb) rb.addEventListener('click', () => search(false));
+      });
+  }
+
+  function fillFilters(){
+    const regions = [...new Set(state.hotels.map(h => h.region).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'hu'));
+    const boards = [...new Set(state.hotels.flatMap(h => h.board.split(',').map(s => s.trim())).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'hu'));
+    const keep = (sel, list, all) => {
+      const cur = sel.value; sel.innerHTML = '';
+      sel.add(new Option(all, ''));
+      list.forEach(v => sel.add(new Option(v, v)));
+      sel.value = list.includes(cur) ? cur : '';
+    };
+    keep($('f-region'), regions, 'Minden partszakasz');
+    keep($('f-board'), boards, 'Bármelyik');
+    $('filters').hidden = state.hotels.length === 0;
+  }
+
+  function filtered(){
+    const r=$('f-region').value, b=$('f-board').value, st=+$('f-stars').value, dir=$('f-direct').checked, so=$('f-sort').value;
+    let list = state.hotels.filter(h => !h.noFit &&
+      (!r || h.region === r) &&
+      (!b || h.board.split(',').map(s=>s.trim()).includes(b)) &&
+      (!st || h.stars >= st) &&
+      (!dir || h.features.includes('Közvetlen járat')));
+    const pv = h => (h.bestPrice || h.priceHuf) || Infinity; // ár nélküliek a végére
+    if(so === 'price') list.sort((a,b)=>pv(a)-pv(b));
+    if(so === 'price-desc') list.sort((a,b)=>(b.bestPrice || b.priceHuf || 0)-(a.bestPrice || a.priceHuf || 0));
+    if(so === 'rating') list.sort((a,b)=>(b.rating||0)-(a.rating||0));
+    return list;
+  }
+
+  function card(h){
+    const stars = h.stars ? '★'.repeat(h.stars) : '';
+    const rate = h.rating ? '<span class="hc-rate">'+h.rating+'% <small>'+esc(h.ratingText)+'</small></span>' : '';
+    const tags = h.features.length ? '<div class="hc-tags">'+h.features.map(f=>'<span>'+esc(f)+'</span>').join('')+'</div>' : '';
+    const key = h.dateId && h.roomId ? h.dateId+'-'+h.roomId : '';
+    return '<article class="hcard">'+
+      '<div class="hc-img">'+imgTag(h, h.name, true)+rate+'</div>'+
+      '<div class="hc-body">'+
+        '<div class="hc-stars"'+(h.stars ? ' aria-label="'+h.stars+' csillagos"' : '')+'>'+stars+'</div>'+
+        '<h3>'+esc(h.name)+'</h3>'+
+        '<p class="hc-meta">'+esc(h.region || 'Zanzibár')+', '+esc(h.board.toLowerCase())+'</p>'+
+        (h.from ? '<p class="hc-meta">Indulás: '+esc(h.from)+'</p>' : '')+
+        tags+
+        (h.hotelId ? '<div class="hc-live wait" data-idx="'+state.hotels.indexOf(h)+'">Legjobb időpont keresése…</div>' : '')+
+        '<div class="hc-foot">'+
+          '<div class="hc-price">'+priceBox(h.bestPrice || h.priceHuf, !h.bestPrice && h.priceEur ? ', '+eur(h.priceEur) : '')+'</div>'+
+          '<div class="hc-btns"><button type="button" class="hc-btn" data-open="'+state.hotels.indexOf(h)+'">Részletek</button>'+
+          '<button type="button" class="hc-btn alt" data-open="'+state.hotels.indexOf(h)+'" data-form="1">Ajánlatot kérek</button></div>'+
+        '</div>'+
+      '</div></article>';
+  }
+
+  function render(){
+    const list = filtered();
+    if(state.hotels.length === 0){
+      $('rstatus').textContent = '';
+      $('hgrid').innerHTML = '<div class="r-msg" style="grid-column:1/-1">Erre az időszakra nem találtunk szabad ajánlatot. Válasszon tágabb időszakot vagy más éjszakaszámot, vagy próbálja újra.<br><button type="button" class="hc-btn" id="retry2" style="margin-top:1rem">Újrakeresés</button></div>';
+      const rb2 = $('retry2'); if(rb2) rb2.addEventListener('click', () => search(false));
+      $('rmore').innerHTML = '';
+      return;
+    }
+    if(list.length) updateStatus(); else $('rstatus').textContent = '';
+    $('hgrid').innerHTML = list.length ? list.map(card).join('')
+      : '<div class="r-msg" style="grid-column:1/-1">Ezekkel a szűrőkkel nincs találat. Kapcsoljon ki egy szűrőt, vagy válasszon másik partszakaszt.</div>';
+    $('rmore').innerHTML = '';
+    document.querySelectorAll('.hcard .hc-live').forEach(el => {
+      const h = state.hotels[+el.dataset.idx];
+      if(h.bestRes) showBest(el, h.bestRes, state.comp); else io.observe(el);
+    });
+  }
+  ['f-region','f-board','f-stars','f-sort','f-direct'].forEach(id => $(id).addEventListener('change', render));
+
+  /* ---------- pontos ár és időpont kártyánként ---------- */
+  const queue = []; let running = 0;
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if(e.isIntersecting){ io.unobserve(e.target); queue.push(e.target); pump(); }
+  }), {rootMargin:'200px'});
+
+  function pump(){
+    while(running < 3 && queue.length){
+      const el = queue.shift(), h = state.hotels[+el.dataset.idx], seq = state.seq; running++;
+      getBest(h, {comp: state.comp, params: state.params}).then(res => {
+        if(seq !== state.seq) return;
+        h.bestRes = res;
+        if(!res.best){
+          h.noFit = true;
+          const c = el.closest('.hcard'); if(c) c.remove();
+          updateStatus();
+          return;
+        }
+        h.bestPrice = res.best.priceHuf;
+        const c = el.closest('.hcard');
+        if(c) c.querySelector('.hc-price').innerHTML = '<b>'+huf(res.best.priceHuf)+'</b><span>/fő-től</span>';
+        showBest(el, res, state.comp);
+        updateStatus();
+      }).catch(err => { el.textContent = err.message || 'Az időpontok most nem tölthetők be.'; el.classList.remove('wait'); })
+        .finally(() => { running--; pump(); });
+    }
+  }
+
+  function updateStatus(){
+    const list = filtered();
+    if(!list.length){ $('rstatus').textContent = ''; if(!document.querySelector('.hcard')) $('hgrid').innerHTML = '<div class="r-msg" style="grid-column:1/-1">A megadott időszakba nem fér bele utazás. Válasszon későbbi hazaérkezést vagy kevesebb éjszakát.</div>'; return; }
+    const prices = list.map(h=>h.bestPrice || h.priceHuf).filter(v => v > 0);
+    const min = prices.length ? Math.min(...prices) : 0;
+    $('rstatus').textContent = list.length+' szálloda, '+compLabel(state.comp)+' részére. Indulás legkorábban: '+day(state.params.df,true)+', hazaérkezés legkésőbb: '+day(state.params.dt,true)+(min ? ' Ár/fő '+huf(min)+'-tól.' : '');
+  }
+
+  /* egy szálloda időpontjai (a megadott indulás és hazaérkezés közé eső utak) */
+  const datesCache = new Map();
+  function getDates(h, ctx){
+    const k = h.hotelId + '|' + JSON.stringify(ctx.params) + '|' + JSON.stringify(ctx.comp);
+    if(!datesCache.has(k)){
+      const q = new URLSearchParams(Object.assign({action:'dates', hotel: h.hotelId}, ctx.params));
+      q.set('ac', ctx.comp.ac); if(ctx.comp.ages.length) q.set('ages', ctx.comp.ages.join(','));
+      datesCache.set(k, fetch(API + '?' + q.toString()).then(r => r.json()).then(d => { if(!d.ok) { datesCache.delete(k); throw new Error(d.message || ''); } return d; }));
+    }
+    return datesCache.get(k);
+  }
+  /* a legjobb árú beleférő időpont és a teljes ára */
+  function getBest(h, ctx){
+    return getDates(h, ctx).then(d => {
+      if(!d.dates.length) return {best: null};
+      const best = d.dates.reduce((a,b) => (b.priceHuf < a.priceHuf ? b : a));
+      if(ctx.params.src === 'sk'){
+        // atlastravel.sk: ár/fő euróban; felnőtteknél a teljes ár = ár/fő × felnőttek
+        const tot = ctx.comp.ages.length ? null : best.priceHuf * ctx.comp.ac;
+        return {best, count: d.dates.length, price: {ok:true, available:true, totalHuf: tot, totalEur: tot ? best.priceEur * ctx.comp.ac : null,
+                airline: best.flight ? best.flight.airline : null, stops: best.flight ? best.flight.stops : null}};
+      }
+      const q = new URLSearchParams(ctx.params.src === 'at' ? {action:'price_at', code: best.room} : {action:'price', date: best.id, room: best.room});
+      q.set('ac', ctx.comp.ac); if(ctx.comp.ages.length) q.set('ages', ctx.comp.ages.join(','));
+      return fetch(API + '?' + q.toString()).then(r => r.json()).catch(() => null)
+        .then(p => ({best, count: d.dates.length, price: (p && p.ok) ? p : null}));
+    });
+  }
+  function bestTerm(b){ return day(b.from,true)+' – '+day(b.to,false)+' ('+b.nights+' éj)'; }
+  function showBest(el, res, comp){
+    el.classList.remove('wait');
+    if(!res.best){ el.textContent = 'A megadott időszakba nem fér bele utazás ebben a szállodában.'; return; }
+    const p = res.price;
+    if(p && p.available === false){ el.classList.add('sold'); }
+    let html = '<strong>Legjobb ár:</strong> '+esc(bestTerm(res.best));
+    if(p && p.available && p.totalHuf) html += '<br>Összesen '+esc(compLabel(comp))+' részére: <strong>'+huf(p.totalHuf)+'</strong>'+(p.totalEur ? ' ('+eur(p.totalEur)+')' : '');
+    if(p && p.airline) html += '<br>'+esc(p.airline)+(p.stops === 0 ? ', közvetlen járat' : p.stops > 0 ? ', '+p.stops+' átszállással' : '');
+    if(res.count > 1) html += '<br>'+res.count+' időpont a megadott időszakban';
+    el.innerHTML = html;
+  }
+
+  function showPrice(el, d, comp){
+    comp = comp || state.comp;
+    el.classList.remove('wait');
+    if(!d || !d.ok){ el.textContent = 'Az időpont most nem tölthető be.'; return; }
+    if(!d.available){ el.classList.add('sold'); el.textContent = 'A legolcsóbb időpont betelt. A többi időpontot a szálloda oldalán találja.'; return; }
+    let html = '';
+    if(d.start) html += '<strong>Legolcsóbb időpont:</strong> '+esc(day(d.start,true))+(d.end ? ' – '+esc(day(d.end,false)) : '')+'<br>';
+    if(d.totalHuf) html += 'Összesen '+esc(compLabel(comp))+' részére: <strong>'+huf(d.totalHuf)+'</strong>';
+    if(d.airline || d.stops !== null){
+      const fl = [];
+      if(d.airline) fl.push(esc(d.airline));
+      if(d.stops === 0) fl.push('közvetlen járat'); else if(d.stops > 0) fl.push(d.stops+' átszállással');
+      if(fl.length) html += '<br>'+fl.join(', ');
+    }
+    el.innerHTML = html || 'Az időpontokat a szálloda oldalán találja.';
+  }
+
+
+  /* ---------- részletek és ajánlatkérés az oldalon belül ---------- */
+  const dlg = $('hotel'), dBody = $('d-body');
+  let current = null, dctx = null;
+
+  $('hgrid').addEventListener('click', e => {
+    const b = e.target.closest('[data-open]'); if(!b) return;
+    openHotel(state.hotels[+b.dataset.open], !!b.dataset.form);
+  });
+
+  function priceText(d){
+    if(!d || !d.ok) return '';
+    if(!d.available) return 'A legolcsóbb időpont betelt, kollégáink másik időpontot ajánlanak.';
+    let t = '';
+    if(d.start) t += day(d.start,true) + (d.end ? ' – ' + day(d.end,false) : '');
+    return t;
+  }
+
+  function openHotel(h, toForm){
+    current = h;
+    dctx = h.ctx || {comp: state.comp, params: state.params, srcLabel: CONFIG.sources[srcIdx].label};
+    $('d-img').innerHTML = imgTag(h, h.name, false);
+    $('d-stars').textContent = h.stars ? '★'.repeat(h.stars) : '';
+    $('d-title').textContent = h.name;
+    $('d-meta').innerHTML =
+      '<li><strong>Partszakasz:</strong> '+esc(h.region || 'Zanzibár')+'</li>'+
+      '<li><strong>Ellátás:</strong> '+esc(h.board)+'</li>'+
+      (h.from ? '<li><strong>Indulás:</strong> '+esc(h.from)+', repülővel</li>' : '')+
+      '<li><strong>Kínálat:</strong> '+esc(dctx.srcLabel)+'</li>'+
+      (h.rating ? '<li><strong>Vendégértékelés:</strong> '+h.rating+'% ('+esc(h.ratingText)+')</li>' : '');
+    $('d-tags').innerHTML = h.features.map(f=>'<span>'+esc(f)+'</span>').join('');
+    $('d-price').innerHTML = priceBox(h.bestPrice || h.priceHuf, h.priceEur ? ', '+eur(h.priceEur) : '');
+    const live = $('d-live'), myCtx = dctx;
+    live.className='hc-live wait'; live.textContent='Legjobb időpont keresése…';
+    getBest(h, myCtx).then(res => {
+      if(current !== h) return;
+      showBest(live, res, myCtx.comp);
+      if(res.best){
+        $('d-price').innerHTML = '<b>'+huf(res.best.priceHuf)+'</b><span>/fő-től</span>';
+        const fe = $('d-form').elements.term; if(!fe.dataset.touched) fe.value = bestTerm(res.best);
+      }
+    }).catch(() => { if(current === h){ live.className='hc-live'; live.textContent = 'Az időpontok most nem tölthetők be.'; } });
+    // űrlap előtöltése
+    const f = $('d-form');
+    f.reset(); $('d-ok').hidden = true; f.hidden = false; $('d-err').textContent = '';
+    f.elements.travellers.value = compLabel(dctx.comp) + (dctx.comp.ages.length ? ' (gyerekek kora: ' + dctx.comp.ages.join(', ') + ')' : '');
+    delete f.elements.term.dataset.touched;
+    f.elements.term.value = dctx.params.dm === 'dep' ? 'Indulás '+day(dctx.params.df,false)+' és '+day(dctx.params.dt,false)+' között' : 'Indulás legkorábban: '+day(dctx.params.df,true)+', hazaérkezés legkésőbb: '+day(dctx.params.dt,true);
+    state.sel = null; $('d-sel').hidden = true; f.elements.room.value = '';
+    loadDates(h);
+    dlg.showModal();
+    dBody.scrollTop = 0;
+    if(toForm) setTimeout(() => { f.scrollIntoView({block:'start'}); f.elements.name.focus(); }, 50);
+  }
+
+  /* ---------- időpontok és szobák a szálloda ablakában ---------- */
+  const tm = s => s ? s.slice(11,16) : '';
+  function compQuery(q){ q.set('ac', dctx.comp.ac); if(dctx.comp.ages.length) q.set('ages', dctx.comp.ages.join(',')); return q; }
+
+  function loadDates(h){
+    const box = $('d-dates');
+    box.innerHTML = '<p class="d-note">Időpontok betöltése…</p>';
+    if(!h.hotelId){ box.innerHTML = '<p class="d-note">Az időpontokért kérjen ajánlatot, kollégáink összeállítják.</p>'; return; }
+    getDates(h, dctx).then(d => {
+      if(current !== h) return;
+      if(!d.dates.length){ box.innerHTML = '<p class="d-note">A megadott időszakba nem fér bele utazás. Válasszon későbbi hazaérkezést vagy kevesebb éjszakát, vagy kérjen ajánlatot.</p>'; return; }
+      renderDates(h, d.dates, 10);
+      if(dctx.params.src === 'sk') box.insertAdjacentHTML('afterbegin', '<p class="d-note">A pozsonyi utak árai euróban érkeznek, a forint árat 370 Ft/€ árfolyammal számoljuk.</p>');
+    }).catch(err => { if(current === h) box.innerHTML = '<p class="d-note">'+esc(err.message || 'Az időpontok most nem tölthetők be. Kérjen ajánlatot, és kollégáink elküldik.')+'</p>'; });
+  }
+
+  function renderDates(h, dates, limit){
+    const box = $('d-dates');
+    const min = Math.min(...dates.map(x => x.priceHuf || Infinity));
+    const varied = dates.some(x => x.priceHuf !== min), best = varied ? dates.findIndex(x => x.priceHuf === min) : -1;
+    box.innerHTML = '<ul class="dl">' + dates.slice(0, limit).map((x,i) =>
+      '<li class="dl-item">'+
+        '<button type="button" class="dl-row" aria-expanded="false" data-i="'+i+'">'+
+          '<span class="dl-date"><strong>'+esc(day(x.from,true))+' – '+esc(day(x.to,false))+'</strong>'+
+            '<small>'+x.nights+' éj, '+esc(huText(x.board).toLowerCase())+', indulás: '+esc(x.airport === 'Bratislava' ? 'Pozsony' : x.airport)+(x.direct ? ', közvetlen járat' : '')+'</small></span>'+
+          '<span class="dl-price">'+(i === best ? '<em>Legjobb ár</em>' : '')+huf(x.priceHuf)+'<small>/fő-től'+(x.eur ? ', '+eur(x.priceEur) : '')+'</small></span>'+
+        '</button>'+
+        '<div class="dl-rooms" hidden></div>'+
+      '</li>').join('') + '</ul>' +
+      (dates.length > limit ? '<button type="button" class="hc-btn alt dl-more">További időpontok ('+(dates.length-limit)+')</button>' : '');
+    box.querySelectorAll('.dl-row').forEach(b => b.addEventListener('click', () => toggleRooms(h, dates[+b.dataset.i], b)));
+    const more = box.querySelector('.dl-more');
+    if(more) more.addEventListener('click', () => renderDates(h, dates, limit + 10));
+  }
+
+  function toggleRooms(h, x, btn){
+    const panel = btn.nextElementSibling, open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', open ? 'false' : 'true'); panel.hidden = open;
+    if(open || panel.dataset.loaded) return;
+    if(x.rooms){ panel.dataset.loaded = '1'; renderRooms(h, x, panel, {ok:true, rooms:x.rooms, flight:x.flight || null}); return; }
+    panel.innerHTML = '<p class="d-note">Szobák betöltése…</p>';
+    const q = compQuery(new URLSearchParams({action:'rooms', date: x.id, hotel: h.hotelId}));
+    fetch(API + '?' + q.toString()).then(r => r.json()).then(d => {
+      if(!d.ok) throw new Error(d.message || '');
+      panel.dataset.loaded = '1';
+      renderRooms(h, x, panel, d);
+    }).catch(err => { panel.innerHTML = '<p class="d-note">'+esc(err.message || 'A szobák most nem tölthetők be.')+'</p>'; });
+  }
+
+  function renderRooms(h, x, panel, d){
+    {
+      const f = d.flight;
+      let html = '';
+      if(f && f.out){
+        html += '<p class="dl-flight">Odaút: '+esc(day(f.out.slice(0,10),false))+' '+tm(f.out)+(f.outArr ? ', érkezés '+esc(day(f.outArr.slice(0,10),false))+' '+tm(f.outArr) : '')+
+                (f.back ? '<br>Visszaút: '+esc(day(f.back.slice(0,10),false))+' '+tm(f.back)+(f.backArr ? ', érkezés '+esc(day(f.backArr.slice(0,10),false))+' '+tm(f.backArr) : '') : '')+
+                (f.airline ? '<br>'+esc(f.airline)+(f.stops === 0 ? ', közvetlen járat' : f.stops > 0 ? ', '+f.stops+' átszállással' : '') : '')+'</p>';
+      }
+      html += '<ul class="rl">' + d.rooms.map((r,i) =>
+        '<li><span class="rl-name">'+esc(huText(r.name))+(r.discPct ? ' <em>−'+Math.round(r.discPct)+'%</em>' : '')+(x.rooms ? '<small class="rl-sub">'+esc(huText(r.board))+(r.transfer ? ', transzferrel' : '')+'</small>' : '')+'</span>'+
+        '<span class="rl-price">'+huf(r.priceHuf)+'<small>/fő'+(x.eur ? ', '+eur(r.priceEur) : '')+'</small></span>'+
+        '<button type="button" class="hc-btn rl-pick" data-i="'+i+'">Ezt választom</button></li>').join('') + '</ul>';
+      panel.innerHTML = html;
+      panel.querySelectorAll('.rl-pick').forEach(b => b.addEventListener('click', () => pick(h, x, d.rooms[+b.dataset.i])));
+    }
+  }
+
+  function pick(h, x, r){
+    const f = $('d-form'), sel = $('d-sel');
+    const term = day(x.from,true)+' – '+day(x.to,false)+' ('+x.nights+' éj)';
+    state.sel = {date: x, room: r, total: null};
+    f.elements.term.value = term; f.elements.term.dataset.touched = '1';
+    f.elements.room.value = huText(r.name) + ', ' + huText(r.board);
+    sel.hidden = false;
+    sel.innerHTML = '<strong>Kiválasztva:</strong> '+esc(huText(r.name))+', '+esc(huText(r.board).toLowerCase())+'<br>'+esc(term)+'<br><span id="d-total">Teljes ár számítása…</span><br><button type="button" class="btn d-book" id="d-book">Ezt foglalom</button>';
+    $('d-book').addEventListener('click', () => toBooking(h, term, huText(r.name) + ', ' + huText(r.board)));
+    if(dctx.params.src === 'sk'){
+      const t = $('d-total');
+      if(dctx.comp.ages.length) t.textContent = 'Ár/fő: '+huf(r.priceHuf)+' ('+eur(r.priceEur)+'). A gyerekes teljes árat kollégáink pontosítják.';
+      else { state.sel.total = r.priceHuf * dctx.comp.ac; t.innerHTML = 'Összesen '+esc(compLabel(dctx.comp))+' részére: <strong>'+huf(state.sel.total)+'</strong> ('+eur(r.priceEur * dctx.comp.ac)+')'; }
+      f.scrollIntoView({block:'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+      return;
+    }
+    const q = compQuery(new URLSearchParams(dctx.params.src === 'at' ? {action:'price_at', code: r.id} : {action:'price', date: x.id, room: r.id}));
+    fetch(API + '?' + q.toString()).then(res => res.json()).then(p => {
+      const t = $('d-total'); if(!t || state.sel.room !== r) return;
+      if(p.ok && p.available && p.totalHuf){ state.sel.total = p.totalHuf; t.innerHTML = 'Összesen '+esc(compLabel(dctx.comp))+' részére: <strong>'+huf(p.totalHuf)+'</strong>'; }
+      else if(p.ok && !p.available){ t.textContent = 'Ez a szoba erre az időpontra betelt, válasszon másikat.'; }
+      else t.textContent = 'A teljes árat kollégáink pontosítják.';
+    }).catch(() => { const t = $('d-total'); if(t) t.textContent = 'A teljes árat kollégáink pontosítják.'; });
+    f.scrollIntoView({block:'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+  }
+
+  $('d-close').addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', e => { if(e.target === dlg) dlg.close(); });
+  $('d-form').elements.term.addEventListener('input', e => { e.target.dataset.touched = '1'; });
+
+  $('d-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const f = e.target, h = current, btn = f.querySelector('button[type=submit]');
+    if(!f.reportValidity()) return;
+    const br = h.bestRes, p = br && br.price;
+    const data = {
+      hotel: h.name + (h.stars ? ' ' + h.stars + '*' : ''), source: dctx.srcLabel, board: h.board,
+      term: f.elements.term.value, room: f.elements.room.value, travellers: f.elements.travellers.value,
+      price: state.sel ? huf(state.sel.room.priceHuf) + '/fő' + (state.sel.total ? ', összesen ' + huf(state.sel.total) : '') : huf(h.bestPrice || h.priceHuf) + '/fő-től' + (p && p.totalHuf ? ', összesen ' + huf(p.totalHuf) : ''),
+      name: f.elements.name.value, phone: f.elements.phone.value, email: f.elements.email.value,
+      message: f.elements.message.value, website: f.elements.website.value
+    };
+    btn.disabled = true; btn.textContent = 'Küldés…'; $('d-err').textContent = '';
+    fetch(API + '?action=send', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)})
+      .then(r => r.json()).then(d => {
+        if(!d.ok) throw new Error(d.error);
+        f.hidden = true; $('d-ok').hidden = false; $('d-ok').focus();
+      })
+      .catch(() => { $('d-err').innerHTML = 'Az ajánlatkérés nem ment el. Próbálja újra, vagy hívjon minket: <a href="tel:'+CONFIG.phoneTel+'">'+esc(CONFIG.phone)+'</a>.'; })
+      .finally(() => { btn.disabled = false; btn.textContent = 'Ajánlatot kérek'; });
+  });
+
+
+  /* ---------- foglalási űrlap ---------- */
+  const bAc = $('b-ac'), bCc = $('b-cc'), bTrav = $('b-trav');
+  for(let i=1;i<=8;i++) bAc.add(new Option(i, i, i===2, i===2));
+  for(let i=0;i<=4;i++) bCc.add(new Option(i, i, i===0, i===0));
+  function travRows(){
+    const keep = [...bTrav.querySelectorAll('.trav-row')].map(r => [r.querySelector('[data-k="n"]').value, r.querySelector('[data-k="d"]').value]);
+    const ac = +bAc.value, cc = +bCc.value; let html = '', k = 0;
+    for(let i=0;i<ac+cc;i++){
+      const lbl = i >= ac ? (i-ac+1)+'. gyerek' : (i+1)+'. felnőtt';
+      const v = keep[k++] || ['',''];
+      html += '<div class="trav-row"><span class="trav-n">'+lbl+'</span>'+
+        '<div class="field"><label for="t-n'+i+'">Név *</label><input id="t-n'+i+'" data-k="n" data-l="'+lbl+'" required value="'+esc(v[0])+'"></div>'+
+        '<div class="field"><label for="t-d'+i+'">Születési dátum *</label><input id="t-d'+i+'" data-k="d" type="date" required max="'+iso(today)+'" value="'+esc(v[1])+'"></div></div>';
+    }
+    bTrav.innerHTML = html;
+    const first = bTrav.querySelector('[data-k="n"]'), nm = $('b-name');
+    if(first && !first.value && nm.value) first.value = nm.value;
+  }
+  bAc.addEventListener('change', travRows); bCc.addEventListener('change', travRows);
+  $('b-name').addEventListener('change', () => { const f = bTrav.querySelector('[data-k="n"]'); if(f && !f.value) f.value = $('b-name').value; });
+  travRows();
+  let bookPrice = '';
+  function toBooking(h, term, room){
+    const f = $('book');
+    f.elements.hotel.value = h.name + (h.stars ? ' ' + h.stars + '*' : '');
+    f.elements.term.value = term || '';
+    f.elements.room.value = room || '';
+    const cx = h.ctx || dctx || {}, src = cx.params ? cx.params.src : '';
+    f.elements.from.value = src === 'at' ? 'Bécs' : src === 'sk' ? 'Pozsony' : 'Budapest';
+    const c = (dctx && dctx.comp) || {ac:2, ages:[]};
+    bAc.value = c.ac; bCc.value = c.ages.length; travRows();
+    bookPrice = state.sel ? huf(state.sel.room.priceHuf) + '/fő' + (state.sel.total ? ', összesen ' + huf(state.sel.total) : '') : '';
+    const sum = $('book-sum');
+    sum.hidden = false;
+    sum.innerHTML = '<strong>'+esc(f.elements.hotel.value)+'</strong><br>'+esc(term || '')+(room ? '<br>'+esc(room) : '')+(bookPrice ? '<br>Ár az oldalon: '+esc(bookPrice) : '');
+    $('book-ok').hidden = true; f.hidden = false;
+    if(dlg.open) dlg.close();
+    $('foglalas').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+    setTimeout(() => $('b-name').focus({preventScroll:true}), 400);
+  }
+  $('book').addEventListener('submit', e => {
+    e.preventDefault();
+    const f = e.target, btn = f.querySelector('button[type=submit]');
+    if(!f.reportValidity()) return;
+    const travellers = [...bTrav.querySelectorAll('.trav-row')].map(r => {
+      const n = r.querySelector('[data-k="n"]'), d = r.querySelector('[data-k="d"]');
+      return n.dataset.l + ': ' + n.value.trim() + ', szül. ' + (d.value ? day(d.value, true) : '');
+    });
+    const data = {
+      hotel: f.elements.hotel.value, term: f.elements.term.value, room: f.elements.room.value, from: f.elements.from.value,
+      price: bookPrice, name: f.elements.name.value, phone: f.elements.phone.value, email: f.elements.email.value,
+      address: f.elements.address.value, adults: bAc.value, children: bCc.value, travellers: travellers.join('\n'),
+      message: f.elements.message.value, website: f.elements.website.value
+    };
+    btn.disabled = true; btn.textContent = 'Küldés…'; $('b-err').textContent = '';
+    fetch(API + '?action=book', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)})
+      .then(r => r.json()).then(d => {
+        if(!d.ok) throw new Error(d.error);
+        f.hidden = true; $('book-sum').hidden = true; $('book-ok').hidden = false; $('book-ok').focus();
+      })
+      .catch(() => { $('b-err').innerHTML = 'A foglalás nem ment el. Próbálja újra, vagy hívjon minket: <a href="tel:'+CONFIG.phoneTel+'">'+esc(CONFIG.phone)+'</a>.'; })
+      .finally(() => { btn.disabled = false; btn.textContent = 'Foglalás elküldése'; });
+  });
+
+  $('door').addEventListener('submit', e => { e.preventDefault(); search(true); });
+
+  /* ---------- gyors keresések és hónapok ---------- */
+  function setRange(a,b){
+    const from = a < tomorrow ? tomorrow : a;
+    df.value = iso(from); dt.min = df.value; dt.value = iso(b < from ? from : b);
+  }
+  function monthRange(m){
+    let y = today.getFullYear();
+    if(m < today.getMonth()) y++;
+    return [new Date(y,m,1), new Date(y,m+1,0)];
+  }
+  CONFIG.presets.forEach(pr => {
+    const b = document.createElement('button'); b.type='button'; b.className='chip'; b.textContent = pr.label;
+    b.addEventListener('click', () => {
+      let a,z;
+      if(pr.kind==='xmas'){ let y=today.getFullYear(); if(today.getMonth()===11 && today.getDate()>28) y++; a=new Date(y,11,18); z=new Date(y,11,30); }
+      else if(pr.kind==='month'){ [a,z]=monthRange(pr.month); }
+      else { a=tomorrow; z=addDays(tomorrow,185); }
+      setRange(a,z);
+      $('uf').value = pr.uf; $('ut').value = pr.ut;
+      search(true);
+    });
+    $('chips').appendChild(b);
+  });
+  CONFIG.months.forEach((name,m) => {
+    const b=document.createElement('button'); b.type='button';
+    const s = CONFIG.season[m]; b.className = 'month '+s;
+    b.innerHTML = name + '<small>'+CONFIG.t[s]+'</small>';
+    b.setAttribute('aria-label', name+': '+CONFIG.t[s]+'. Ajánlatok erre a hónapra.');
+    b.addEventListener('click', ()=>{ const [a,z]=monthRange(m); setRange(a,z); search(true); });
+    $('months').appendChild(b);
+  });
+
+
+  /* ---------- last minute: TOP 3 ár indulási repülőterenként, a következő 14 napban ---------- */
+  function loadLastMinute(){
+    const box = $('lm-cols');
+    fetch(API + '?action=lastminute').then(r => r.json()).then(d => {
+      if(!d.ok) throw new Error(d.message || '');
+      const comp = {ac: 2, ages: []};
+      d.groups.forEach(g => { if(g.src === 'sk') g.hotels.forEach(skToHu); });
+      $('lm-range').textContent = 'Indulás '+day(d.df,false)+' és '+day(d.dt,false)+' között, 2 felnőtt részére.';
+      box.innerHTML = d.groups.map((g,gi) =>
+        '<div class="lm-col"><h3>Indulás: '+esc(g.label)+'</h3>'+
+        (g.hotels.length ? '<ol class="lm-list">'+g.hotels.map((h,hi) =>
+          '<li><button type="button" class="lm-item" data-g="'+gi+'" data-h="'+hi+'">'+
+            '<span class="lm-thumb">'+imgTag(h, '', true)+'</span>'+
+            '<span class="lm-txt"><strong>'+esc(h.name)+'</strong>'+
+              '<small>'+(h.stars ? '★'.repeat(h.stars)+' ' : '')+esc(h.board.toLowerCase())+'</small>'+
+              '<small class="lm-date" data-g="'+gi+'" data-h="'+hi+'"></small></span>'+
+            '<span class="lm-price" data-g="'+gi+'" data-h="'+hi+'">'+(h.priceHuf > 0 ? huf(h.priceHuf) : '…')+'<small>/fő-től</small></span>'+
+          '</button></li>').join('')+'</ol>'
+        : '<p class="d-note">A következő 14 napban most nincs szabad last minute ajánlat innen.</p>')+
+        '</div>').join('');
+      d.groups.forEach((g,gi) => g.hotels.forEach((h,hi) => {
+        h.ctx = {comp, params: {src: g.src, df: d.df, dt: d.dt, uf: d.uf, ut: d.ut, pt: 15000000, dm: 'dep', ai: g.ai.join(',')},
+                 srcLabel: (g.src === 'at' ? 'Bécsi indulás' : g.src === 'sk' ? 'Pozsonyi indulás' : 'Budapesti indulás') + ', last minute'};
+        // a legolcsóbb szabad időpont dátuma és pontos ára (akkor is, ha a kereső nem küldött árat)
+        if(h.hotelId){
+          getDates(h, h.ctx).then(dd => {
+            const ds = (dd.dates || []).filter(x => x.priceHuf > 0);
+            if(!ds.length) return;
+            const x = ds.reduce((m,y) => y.priceHuf < m.priceHuf ? y : m);
+            h.bestPrice = x.priceHuf;
+            const de = box.querySelector('.lm-date[data-g="'+gi+'"][data-h="'+hi+'"]');
+            if(de) de.textContent = day(x.from,false)+' – '+day(x.to,false);
+            const pr = box.querySelector('.lm-price[data-g="'+gi+'"][data-h="'+hi+'"]');
+            if(pr) pr.innerHTML = huf(x.priceHuf)+'<small>/fő-től</small>';
+          }).catch(() => {});
+        }
+      }));
+      box.querySelectorAll('.lm-item').forEach(b => b.addEventListener('click', () => openHotel(d.groups[+b.dataset.g].hotels[+b.dataset.h], false)));
+    }).catch(err => { $('lm-range').textContent = ''; box.innerHTML = '<p class="d-note">'+esc(err.message || 'A last minute ajánlatok most nem tölthetők be.')+'</p>'; });
+  }
+  loadLastMinute();
+
+  /* ---------- partszakaszok fotói: ha egy kép hiányzik, a környék egyik szállodájának fotóját tesszük be ---------- */
+  const AREA_RE = [/nungwi|kendwa/i, /paje|jambiani|bwejuu|michamvi|dongwe/i, /matemwe|mnemba|kiwengwa|pongwe|pwani|uroa/i, /stone ?town|zanzibar (city|town|város)|mji mkongwe/i];
+  const areaPool = [];
+  window.zFillAreas = () => fillAreas([]);
+  function fillAreas(hotels){
+    (hotels || []).forEach(h => { if((h.img || h.imgSrc) && !areaPool.includes(h)) areaPool.push(h); });
+    document.querySelectorAll('.areas .area').forEach((a, i) => {
+      const ph = a.querySelector('.ph'); if(!ph || ph.dataset.filled) return;
+      const im = ph.querySelector('img');
+      if(im && !(im.complete && im.naturalWidth === 0)) return;
+      const h = areaPool.find(x => AREA_RE[i] && AREA_RE[i].test((x.region || '') + ' ' + x.name));
+      if(!h) return;
+      ph.dataset.filled = '1';
+      ph.innerHTML = imgTag(h, a.querySelector('h3') ? a.querySelector('h3').textContent : '', true);
+    });
+  }
+
+  // az oldal megnyitásakor azonnal betöltjük az ajánlatokat
+  search(false);
+})();
+
+</script>
+</body>
+</html>
