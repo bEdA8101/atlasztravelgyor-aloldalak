@@ -315,6 +315,11 @@ def zanzibar_cserek(html):
                             "[/Trojlôžkov[ýáé]/gi,'Háromágyas'],[/Štvorlôžkov[ýáé]/gi,'Négyágyas'],[/rodinn[ýáé]/gi,'családi'],"
                             "[/štúdio/gi,'stúdió'],[/bungalov/g,'bungaló'],[/s (\\d+) prístelkami/gi,'$1 pótággyal'],[/s prístelkou/gi,'pótággyal'],"),
                  "szobanév-fordítás", pontosan=1)
+    # bécsi ár: az időpontot is elküldjük (a program időpontonként tárolja az ajánlatok ellenőrző adatait)
+    html = csere(html, re.escape("{action:'price_at', code: best.room}"), lambda m: "{action:'price_at', code: best.room, date: best.id}",
+                 "bécsi ár (legjobb)", pontosan=1)
+    html = csere(html, re.escape("{action:'price_at', code: r.id}"), lambda m: "{action:'price_at', code: r.id, date: x.id}",
+                 "bécsi ár (szoba)", pontosan=1)
     # a győri program nem küld másolatot az ügyfélnek (nyilvános űrlapról visszaélésre adna módot)
     return csere(html, r'\s*A foglalás másolatát elküldtük az Ön e-mail-címére is\.', '', "másolat-ígéret", pontosan=1)
 

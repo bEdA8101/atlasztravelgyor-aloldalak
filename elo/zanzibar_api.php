@@ -15,6 +15,8 @@
 
 declare(strict_types=1);
 require __DIR__ . '/cesys.php';
+gyorsitotar_takaritas(['tanult-partszakaszok' => 400 * 86400, 'hibanaplo' => 400 * 86400, 'hely-' => 31 * 86400,
+    'partszakaszok' => 8 * 86400, 'pozsonyi-partszakaszok' => 8 * 86400]);
 
 const GYOR = 'https://www.atlasztravelgyor.hu';
 const SK = 'https://www.atlastravel.sk';
@@ -36,6 +38,10 @@ const IDOPONT_CSOMAG = 200;    // ennyi időpont-sort kérünk egyszerre (a CeSY
 const MAX_IDOPONT_OLDAL = 2;   // legfeljebb ennyi időpont-csomag
 const REGIO_OLDAL = GYOR . '/tanzania/zanzibar';   // a győri oldal partszakasz-aloldalai (Kendwa, Kiwengwa, …)
 const REGIO_ERVENYES = 86400;                        // a partszakaszok listáját naponta frissítjük
+const LM_EJ_MIN = 6;             // last minute: 6–21 éjszakás utak (rövidebbet nem ajánlunk)
+const LM_EJ_MAX = 21;
+const LM_ELLENORZOTT = 8;
+const LM_TARTALEK = 3 * 3600;   // last minute: ha a lista fél óránál régebbi, de 3 óránál frissebb, azonnal ezt adjuk, és utána frissítjük        // last minute: forrásonként legfeljebb ennyi szálloda időpontjait nézzük meg
 const HELY_ERVENYES = 30 * 86400;   // egy szálloda térképes helyét (a győri adatlapjáról) 30 napig jegyezzük meg
 const HELY_EGYSZERRE = 3;           // ennyi adatlapot kérünk egyszerre …
 const HELY_MAX_UJ = 9;              // … és egy válaszhoz legfeljebb ennyit (a többi a következő látogatáskor jön)
@@ -105,7 +111,20 @@ function keresesi_adatok(): array
         'src' => $src, 'df' => $df, 'dt' => $dt, 'uf' => $uf, 'ut' => $ut,
         'ai' => $ai ?: FORRASOK[$src]['ai'], 'pt' => egesz($_GET['pt'] ?? 15000000, 0, 99000000, 15000000),
         'ac' => $felnott, 'ages' => $korok,
-    ];
+    ] + (($_GET['dm'] ?? '') === 'dep' ? ['dm' => 'dep'] : []);
+}
+
+/**
+ * A CeSYS a df–dt időszakba az egész utat érti (dt-ig haza is kell érni). Ha csak az indulásnak kell
+ * az időszakba esnie (dm=dep, pl. a last minute dobozban), a lekérdezés végét a leghosszabb út
+ * hosszával kitoljuk, az időpontoknál pedig a később indulókat kiszűrjük.
+ */
+function kereso_dt(array $k): string
+{
+    if (($k['dm'] ?? '') !== 'dep') {
+        return $k['dt'];
+    }
+    return (new DateTimeImmutable($k['dt']))->modify('+' . napok($k['uf'], $k['ut'])[1] . ' days')->format('Y-m-d');
 }
 
 function kulcs(string $elotag, array $adat): string
@@ -142,10 +161,10 @@ function kereso_cim(array $k, int $oldal, bool $ajax): string
     $utasok = implode(',', array_merge(array_fill(0, $k['ac'], 18), $k['ages']));
     $p = [];
     if ($k['src'] === 'sk') {
-        $p = [['di', $f['di']], ['df', $k['df']], ['dt', $k['dt']], ['ac', $k['ac']], ['ti', 1], ['uf', $napMin], ['ut', $napMax],
+        $p = [['di', $f['di']], ['df', $k['df']], ['dt', kereso_dt($k)], ['ac', $k['ac']], ['ti', 1], ['uf', $napMin], ['ut', $napMax],
               ['pt', (int)ceil($k['pt'] / ARFOLYAM)], ['ai', implode(',', $k['ai'])], ['es', 0], ['cc', count($k['ages'])], ['rooms[0]', $utasok]];
     } else {
-        $p = [['di[0]', $f['di']], ['df', $k['df']], ['dt', $k['dt']], ['uf', $napMin], ['ut', $napMax], ['ac', $k['ac']],
+        $p = [['di[0]', $f['di']], ['df', $k['df']], ['dt', kereso_dt($k)], ['uf', $napMin], ['ut', $napMax], ['ac', $k['ac']],
               ['cc', count($k['ages'])], ['rooms[0]', $utasok], ['ti', 1]];
         foreach ($k['ai'] as $i => $x) {
             $p[] = ["ai[$i]", $x];
@@ -234,24 +253,25 @@ function kartya(string $c, string $src): ?array
     ];
 }
 
-/** A keresés találatai, a hiányzó partszakaszok pótlásával. */
-function szallodak(array $k): ?array
+/** A keresés találatai, a hiányzó partszakaszok pótlásával ($maxOldal: legfeljebb ennyi találati oldal). */
+function szallodak(array $k, int $maxOldal = MAX_KERESO_OLDAL): ?array
 {
-    $e = szallodak_nyers($k);
+    $e = szallodak_nyers($k, $maxOldal);
     return $e === null ? null : regiok_potlasa($e, $k['src'] === 'sk');
 }
 
 /** A keresés találatai úgy, ahogy a forrás adja (fél óráig tárolva). */
-function szallodak_nyers(array $k): ?array
+function szallodak_nyers(array $k, int $maxOldal = MAX_KERESO_OLDAL): ?array
 {
-    $kulcs = kulcs('kereses', $k);
+    $maxOldal = max(1, min($maxOldal, MAX_KERESO_OLDAL));
+    $kulcs = kulcs($maxOldal < MAX_KERESO_OLDAL ? "kereses-$maxOldal" : 'kereses', $k);
     $tarolt = gyorsitotar_olvas($kulcs, ERVENYES);
     if ($tarolt !== null && !(!empty($tarolt['_reszleges']) && time() - (int)($tarolt['_ido'] ?? 0) > RESZLEGES_ERVENYES)) {
         unset($tarolt['_reszleges'], $tarolt['_ido']);
         return $tarolt;
     }
     $cimek = [];
-    for ($o = 1; $o <= MAX_KERESO_OLDAL; $o++) {
+    for ($o = 1; $o <= $maxOldal; $o++) {
         $cimek[$o] = kereso_cim($k, $o, true);
     }
     $elso = cesys_get($cimek[1]);
@@ -268,7 +288,7 @@ function szallodak_nyers(array $k): ?array
     $oldalak = [1 => $elso];
     $kovetkezo = 2;
     $tovabb = $vanTobb($elso);
-    while ($tovabb && $kovetkezo <= MAX_KERESO_OLDAL) {
+    while ($tovabb && $kovetkezo <= $maxOldal) {
         $csomag = array_slice($cimek, $kovetkezo - 1, EGYSZERRE[$k['src']], true);
         $valaszok = cesys_get_tobb($csomag, EGYSZERRE[$k['src']]);
         foreach (array_keys($csomag) as $o) {
@@ -589,7 +609,7 @@ function idopont_cim(array $k, int $szalloda, int $oldal): string
 {
     $f = FORRASOK[$k['src']];
     [$napMin, $napMax] = napok($k['uf'], $k['ut']);
-    $p = [['di[]', $f['di']], ['df', $k['df']], ['dt', $k['dt']], ['ac', $k['ac']], ['cc', count($k['ages'])]];
+    $p = [['di[]', $f['di']], ['df', $k['df']], ['dt', kereso_dt($k)], ['ac', $k['ac']], ['cc', count($k['ages'])]];
     foreach (array_values($k['ages']) as $i => $kor) {
         $p[] = ['ca' . ($i + 1), $kor];
     }
@@ -602,7 +622,9 @@ function idopont_cim(array $k, int $szalloda, int $oldal): string
         $p[] = ['ai_f[]', $x];
     }
     $p = array_merge($p, [['uf_f', $napMin], ['ut_f', $napMax], ['ns_f', 'false'], ['sp_f', 'false'], ['rop', IDOPONT_CSOMAG],
-        ['hotel', $szalloda], ['skip', 0], ['source', $f['source']], ['sm', $f['sm']], ['sort', 'price'], ['direction', 'asc'],
+        ['hotel', $szalloda], ['skip', 0], ['source', $f['source']], ['sm', $f['sm']],
+        // indulási időszaknál (dm=dep) indulás szerint rendezve: az időszak útjai az első oldal(ak)on vannak
+        ['sort', ($k['dm'] ?? '') === 'dep' ? 'date_from' : 'price'], ['direction', 'asc'],
         ['pg', $oldal], ['currency', $k['src'] === 'sk' ? 'EUR' : 'HUF']]);
     return $f['oldal'] . '/searchmasks/generation_dates_terms?' . cesys_lekerdezes($p);
 }
@@ -649,7 +671,24 @@ function ar_par(array $x, string $src): array
 }
 
 /** Egy szálloda időpontjai: időpontonként a legolcsóbb szoba, és a szobák listája (a rooms kérdéshez eltárolva). */
-function idopontok(array $k, int $szalloda): ?array
+/** Tárolt időpontok (ha még érvényesek), különben null. */
+function idopontok_tarolt(array $k, int $szalloda): ?array
+{
+    return gyorsitotar_olvas(kulcs('idopontok-' . $szalloda, $k), ERVENYES);
+}
+
+/** Kell-e az időpontlista következő oldala (van még, és indulási időszaknál még nem értünk az időszak végére)? */
+function kell_tovabbi_idopont(array $k, array $oldal): bool
+{
+    if (empty($oldal['more_exists']) || empty($oldal['dates'])) {
+        return false;
+    }
+    $utolso = end($oldal['dates']);
+    return ($k['dm'] ?? '') !== 'dep' || substr((string)($utolso['date_from'] ?? ''), 0, 10) <= $k['dt'];
+}
+
+/** Egy szálloda időpontjai; $elore: előre (párhuzamosan) lekért oldalak, oldalszám szerint. */
+function idopontok(array $k, int $szalloda, array $elore = []): ?array
 {
     $kulcs = kulcs('idopontok-' . $szalloda, $k);
     $tarolt = gyorsitotar_olvas($kulcs, ERVENYES);
@@ -660,14 +699,18 @@ function idopontok(array $k, int $szalloda): ?array
     for ($o = 1; $o <= MAX_IDOPONT_OLDAL; $o++) {
         $cimek[$o] = idopont_cim($k, $szalloda, $o);
     }
-    $elso = cesys_get($cimek[1]);
+    $elso = $elore[1] ?? cesys_get($cimek[1]);
     if ($elso === null || !isset($elso['dates'])) {
         $regi = gyorsitotar_olvas($kulcs, GYORSITOTAR_TARTALEK);
         return $regi === null ? null : $regi + ['elavult' => true];
     }
     $sorok = $elso['dates'];
-    if (!empty($elso['more_exists'])) {
-        foreach (cesys_get_tobb(array_slice($cimek, 1, null, true), EGYSZERRE[$k['src']]) as $adat) {
+    if (kell_tovabbi_idopont($k, $elso)) {
+        $tovabbi = array_diff_key(array_slice($cimek, 1, null, true), $elore);
+        $tovabbi = ($tovabbi ? cesys_get_tobb($tovabbi, EGYSZERRE[$k['src']]) : []) + $elore;
+        ksort($tovabbi);
+        unset($tovabbi[1]);
+        foreach ($tovabbi as $adat) {
             if (!is_array($adat) || empty($adat['dates'])) {
                 break;
             }
@@ -680,6 +723,9 @@ function idopontok(array $k, int $szalloda): ?array
         $ej = (int)($x['duration_night'] ?? 0);
         if ($ej < $k['uf'] || $ej > $k['ut'] || empty($x['date_from']) || empty($x['date_to'])) {
             continue;
+        }
+        if (($k['dm'] ?? '') === 'dep' && substr((string)$x['date_from'], 0, 10) > $k['dt']) {
+            continue;   // nem az időszakban indul
         }
         [$huf, $eur] = ar_par($x, $k['src']);
         if ($huf <= 0) {
@@ -724,10 +770,14 @@ function idopontok(array $k, int $szalloda): ?array
         $szobaKulcs = 'szobak-' . $szalloda . '-' . $cs['id'] . '-' . $k['ac'] . '-' . implode('_', $k['ages']);
         $nyilvanos = array_map(fn($s) => array_diff_key($s, ['_cid' => 1, '_hash' => 1]), $cs['_szobak']);
         gyorsitotar_ir($szobaKulcs, ['ok' => true, 'rooms' => $nyilvanos, 'flight' => $cs['_jarat'], 'from' => $cs['from'], 'to' => $cs['to']]);
+        $ajanlatok = [];   // bécsi (Amadeus) ajánlatok ellenőrző adatai: időpontonként egy fájlban
         foreach ($cs['_szobak'] as $s) {
             if (isset($s['_cid'])) {
-                gyorsitotar_ir('amadeus-' . substr(sha1($s['id']), 0, 20), ['cid' => $s['_cid'], 'hash' => $s['_hash'], 'from' => $cs['from'], 'to' => $cs['to']]);
+                $ajanlatok[substr(sha1($s['id']), 0, 20)] = [$s['_cid'], $s['_hash']];
             }
+        }
+        if ($ajanlatok) {
+            gyorsitotar_ir('amadeus-' . substr(sha1((string)$cs['id']), 0, 20), ['from' => $cs['from'], 'to' => $cs['to'], 'ajanlatok' => $ajanlatok]);
         }
         unset($cs['_jarat'], $cs['_szobak']);
         $lista[] = $cs;
@@ -764,9 +814,11 @@ function cesys_ar(string $src, int $datum, int $szoba, int $felnott, array $koro
     ];
 }
 
-function amadeus_ar(string $kod): array
+function amadeus_ar(string $kod, string $idopont): array
 {
-    $adat = gyorsitotar_olvas('amadeus-' . substr(sha1($kod), 0, 20), 86400);
+    $csoport = $idopont !== '' ? gyorsitotar_olvas('amadeus-' . substr(sha1($idopont), 0, 20), 86400) : null;
+    $ajanlat = $csoport['ajanlatok'][substr(sha1($kod), 0, 20)] ?? null;
+    $adat = $ajanlat ? ['cid' => $ajanlat[0], 'hash' => $ajanlat[1], 'from' => $csoport['from'], 'to' => $csoport['to']] : null;
     if (!$adat) {
         return ['ok' => false, 'message' => 'Az ajánlat lejárt, kérjük, keressen újra.'];
     }
@@ -785,6 +837,64 @@ function amadeus_ar(string $kod): array
         'airline' => $jarat['airline'] ?? null, 'stops' => $jarat['stops'] ?? null,
         'start' => $adat['from'], 'end' => $adat['to'],
     ];
+}
+
+/** A last minute doboz: forrásonként a 3 legolcsóbb szálloda, amelynek van útja a df–dt időszakban induló. */
+function last_minute(string $df, string $dt): array
+{
+    $csoportok = [];
+    foreach (['sk', 'hu', 'at'] as $src) {
+        // ugyanazok az adatok, mint amelyekkel az oldal később az időpontokat kéri (így a tárolt válasz közös)
+        $k = ['src' => $src, 'df' => $df, 'dt' => $dt, 'uf' => LM_EJ_MIN, 'ut' => LM_EJ_MAX, 'ai' => FORRASOK[$src]['ai'],
+              'pt' => 15000000, 'ac' => 2, 'ages' => [], 'dm' => 'dep'];
+        $e = szallodak($k, 1);   // ár szerint rendezve: az első találati oldalon vannak a legolcsóbbak
+        $lista = array_values(array_filter($e['hotels'] ?? [], fn($h) => $h['priceHuf'] > 0));
+        usort($lista, fn($a, $b) => $a['priceHuf'] <=> $b['priceHuf']);
+        // a kártya ára egy későbbi indulásé is lehet: a legolcsóbbaknál megnézzük az időszakban induló időpontokat
+        // (a még nem tárolt időpontlistákat egyszerre, párhuzamosan kérjük le)
+        $jeloltek = array_values(array_filter(array_slice($lista, 0, LM_ELLENORZOTT), fn($h) => $h['hotelId']));
+        $cimek = [];
+        foreach ($jeloltek as $h) {
+            if (idopontok_tarolt($k, (int)$h['hotelId']) === null) {
+                $cimek[(int)$h['hotelId']] = idopont_cim($k, (int)$h['hotelId'], 1);
+            }
+        }
+        $elore = [];   // szálloda -> [oldalszám -> válasz]
+        foreach ($cimek ? cesys_get_tobb($cimek, EGYSZERRE[$src]) : [] as $id => $adat) {
+            if (is_array($adat) && isset($adat['dates'])) {
+                $elore[$id][1] = $adat;
+            }
+        }
+        $masodik = [];   // a második oldalak is egyszerre, ahol kellenek
+        foreach ($elore as $id => $oldalak) {
+            if (kell_tovabbi_idopont($k, $oldalak[1])) {
+                $masodik[$id] = idopont_cim($k, $id, 2);
+            }
+        }
+        foreach ($masodik ? cesys_get_tobb($masodik, EGYSZERRE[$src]) : [] as $id => $adat) {
+            if (is_array($adat)) {
+                $elore[$id][2] = $adat;
+            }
+        }
+        $talalt = [];
+        foreach ($jeloltek as $h) {
+            $d = idopontok($k, (int)$h['hotelId'], $elore[(int)$h['hotelId']] ?? []);
+            $ok = array_values(array_filter($d['dates'] ?? [], fn($x) => $x['priceHuf'] > 0));
+            if (!$ok) {
+                continue;
+            }
+            usort($ok, fn($a, $b) => $a['priceHuf'] <=> $b['priceHuf']);
+            $h['priceHuf'] = $ok[0]['priceHuf'];
+            $h['priceEur'] = $ok[0]['priceEur'];
+            $talalt[] = $h;
+        }
+        usort($talalt, fn($a, $b) => $a['priceHuf'] <=> $b['priceHuf']);
+        $talalt = array_slice($talalt, 0, 3);
+        $csoportok[] = ['label' => FORRASOK[$src]['cimke'], 'src' => $src, 'ai' => FORRASOK[$src]['ai'],
+            'hotels' => $talalt, 'error' => $e === null ? 'nem elérhető' : null,
+            'found' => count($e['hotels'] ?? []), 'url' => $e['searchUrl'] ?? null];
+    }
+    return ['ok' => true, 'df' => $df, 'dt' => $dt, 'uf' => LM_EJ_MIN, 'ut' => LM_EJ_MAX, 'groups' => $csoportok, 'frissitve' => date('c')];
 }
 
 // ---------------------------------------------------------------- levél (ajánlatkérés, foglalás)
@@ -866,7 +976,7 @@ switch ($muvelet) {
         break;
 
     case 'price_at':
-        json_valasz(amadeus_ar(substr((string)($_GET['code'] ?? ''), 0, 400)));
+        json_valasz(amadeus_ar(substr((string)($_GET['code'] ?? ''), 0, 400), substr((string)($_GET['date'] ?? ''), 0, 100)));
         break;
 
     case 'allapot':
@@ -893,18 +1003,30 @@ switch ($muvelet) {
         $ma = new DateTimeImmutable('tomorrow', new DateTimeZone('Europe/Budapest'));
         $df = $ma->format('Y-m-d');
         $dt = $ma->modify('+13 days')->format('Y-m-d');
-        $csoportok = [];
-        foreach (['sk', 'hu', 'at'] as $src) {
-            $k = ['src' => $src, 'df' => $df, 'dt' => $dt, 'uf' => 3, 'ut' => 21, 'ai' => FORRASOK[$src]['ai'],
-                  'pt' => 15000000, 'ac' => 2, 'ages' => []];
-            $e = szallodak($k);
-            $lista = array_values(array_filter($e['hotels'] ?? [], fn($h) => $h['priceHuf'] > 0));
-            usort($lista, fn($a, $b) => $a['priceHuf'] <=> $b['priceHuf']);
-            $csoportok[] = ['label' => FORRASOK[$src]['cimke'], 'src' => $src, 'ai' => FORRASOK[$src]['ai'],
-                'hotels' => array_slice($lista, 0, 3), 'error' => $e === null ? 'nem elérhető' : null,
-                'found' => count($e['hotels'] ?? []), 'url' => $e['searchUrl'] ?? null];
+        $kulcs = 'lastminute-' . $df;
+        $tarolt = gyorsitotar_olvas($kulcs, LM_TARTALEK);
+        $kor = $tarolt ? time() - (int)($tarolt['_ido'] ?? 0) : PHP_INT_MAX;
+        if ($kor >= LM_TARTALEK) {
+            $tarolt = null;   // 3 óránál régebbi listát nem mutatunk
         }
-        json_valasz(['ok' => true, 'df' => $df, 'dt' => $dt, 'uf' => 3, 'ut' => 21, 'groups' => $csoportok]);
+        if ($tarolt !== null && $kor < ERVENYES) {
+            json_valasz(array_diff_key($tarolt, ['_ido' => 1, '_frissul' => 1]));
+        }
+        if ($tarolt !== null && valasz_utan_folytathato()) {
+            // a látogató azonnal a legutóbbi (legfeljebb 3 órás) listát kapja; a frissítés a válasz után fut le
+            $frissul = time() - (int)($tarolt['_frissul'] ?? 0) < 300;
+            if (!$frissul) {
+                gyorsitotar_ir($kulcs, ['_frissul' => time()] + $tarolt);
+            }
+            valasz_es_folytatas(array_diff_key($tarolt, ['_ido' => 1, '_frissul' => 1]));
+            if (!$frissul) {
+                gyorsitotar_ir($kulcs, last_minute($df, $dt) + ['_ido' => time()]);
+            }
+            exit;
+        }
+        $e = last_minute($df, $dt);
+        gyorsitotar_ir($kulcs, $e + ['_ido' => time()]);
+        json_valasz($e);
         break;
 
     case 'send':
