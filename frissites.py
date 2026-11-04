@@ -43,6 +43,16 @@ GYOR = {
     "terkep": "https://www.google.com/maps/search/?api=1&query=Atlasz+Travel+Gy%C5%91r+9021+Gy%C5%91r+Kir%C3%A1ly+u.+1.",
 }
 
+# Általános tájékoztató minden aloldal láblécének aljára (kis, halvány betűvel).
+LABLEC_TAJEKOZTATO = (
+    "A weboldalon megjelenített ajánlatok, árak és információk tájékoztató jellegűek, nem minősülnek kötelező "
+    "érvényű ajánlattételnek. Az árak, a foglalhatóság és a szolgáltatások feltételei változhatnak; az esetleges "
+    "elírások és megjelenítési hibák javításának jogát fenntartjuk. A foglalás minden esetben az aktuális árak és "
+    "feltételek visszaigazolásától függ. A feltüntetett árak – eltérő kifejezett tájékoztatás hiányában – nem "
+    "tartalmazzák a külön fizetendő vízumok, beutazási engedélyek, biztosítások, helyi adók, illetékek és egyéb "
+    "járulékos költségek díjait. A pontos, aktuális árakról és feltételekről foglalás előtt tájékoztatást adunk."
+)
+
 # A klónozott aloldalak: név -> a központi aloldal címe.
 OLDALAK = {
     "oman": "https://oman.atlasztravel.hu/",
@@ -173,6 +183,7 @@ def kozos_cserek(html, nev):
     html = re.sub(r"(©\s*\d{4}\s*Atlasz Travel)(?! Győr)", r"\1 Győr", html)
     html = csere(html, r"(<title>[^<]*?(?:\||–) Atlasz [^<]*?)</title>", r"\1 – Győr</title>", "oldalcím", pontosan=1)
     html = re.sub(r'(<meta property="og:site_name" content="[^"]*?)"', r'\1 – Győr"', html)
+
     return html
 
 
@@ -335,6 +346,14 @@ OLDAL_CSEREK = {
 }
 
 
+def tajekoztato_be(html):
+    """Az általános tájékoztató a lábléc aljára (a lábléc színeit örökli, ezért világos és sötét láblécen is olvasható)."""
+    tajekoztato = ('<div class="gy-tajekoztato" style="max-width:1100px;margin:24px auto 0;padding:14px 20px 16px;'
+                   'border-top:1px solid rgba(127,127,127,.25);font-size:12px;line-height:1.6;text-align:center;opacity:.8">'
+                   f'<p style="margin:0 auto;max-width:none">{html_lib.escape(LABLEC_TAJEKOZTATO, quote=False)}</p></div>\n')
+    return csere(html, r"</footer>", lambda m: tajekoztato + "</footer>", "lábléc-tájékoztató", pontosan=1)
+
+
 def logo_csere(html):
     """Az Atlasz Travel (és Atlasz Prémium) logók helyére a győri logó kerül."""
     g = GYOR
@@ -438,6 +457,7 @@ def frissit(nev):
         html = kozos_cserek(html, nev)
         for fuggveny in OLDAL_CSEREK.get(nev, []):
             html = fuggveny(html)
+        html = tajekoztato_be(html)
         html = logo_csere(html)
         ellenoriz(html, nev)
 
