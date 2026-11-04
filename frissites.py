@@ -309,6 +309,12 @@ def zanzibar_cserek(html):
                  "partszakasz-lista", pontosan=1)
     html = csere(html, re.escape("(!r || h.region === r) &&"),
                  lambda m: "(!r || (h.region || '').split(' / ').includes(r)) &&", "partszakasz-szűrő", pontosan=1)
+    # pozsonyi szobanevek: a melléknévi alakok (Dvojlôžkový suite, Trojlôžkové štúdio …) és a pótágy is magyarul
+    html = csere(html, re.escape("[/Rodinná izba/gi,'Családi szoba'],"),
+                 lambda m: ("[/Rodinná izba/gi,'Családi szoba'],[/Jednolôžkov[ýáé]/gi,'Egyágyas'],[/Dvojlôžkov[ýáé]/gi,'Kétágyas'],"
+                            "[/Trojlôžkov[ýáé]/gi,'Háromágyas'],[/Štvorlôžkov[ýáé]/gi,'Négyágyas'],[/rodinn[ýáé]/gi,'családi'],"
+                            "[/štúdio/gi,'stúdió'],[/bungalov/g,'bungaló'],[/s (\\d+) prístelkami/gi,'$1 pótággyal'],[/s prístelkou/gi,'pótággyal'],"),
+                 "szobanév-fordítás", pontosan=1)
     # a győri program nem küld másolatot az ügyfélnek (nyilvános űrlapról visszaélésre adna módot)
     return csere(html, r'\s*A foglalás másolatát elküldtük az Ön e-mail-címére is\.', '', "másolat-ígéret", pontosan=1)
 
