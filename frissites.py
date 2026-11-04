@@ -295,6 +295,14 @@ def zanzibar_cserek(html):
     # programmegjegyzés: az árak forrása
     html = csere(html, r'Az élő árakat az api\.php kéri le[^\n]*',
                  'Az élő árakat az api.php kéri le (győri CeSYS-oldal, atlastravel.sk).', "forrás-megjegyzés", pontosan=1)
+    # a szállodafotók közvetlenül a CeSYS képszerveréről jönnek, nem a tárhelyen keresztül: gyorsabb, és a tárhely
+    # robotszűrője sem tarthatja vissza őket (az oldal a meg nem jött képet eltávolítaná)
+    regi_src = """' src="'+API+'?'+q.toString()+'"'+(hh ? ' data-h="'+hh+'"' : '')"""
+    uj_src = ("""' src="'+esc(h.imgSrc || (hh ? 'https://i.ccdn.hu/acm/t/'+hh+'.webp' : API+'?'+q.toString()))+'"'"""
+              """+(hh ? ' data-h="'+hh+'"' : '')""")
+    html = csere(html, re.escape(regi_src), lambda m: uj_src, "képcímek", pontosan=1)
+    html = csere(html, re.escape("const imgUrl = h => API + '?action=img&h=' + imgHash(h);"),
+                 lambda m: "const imgUrl = h => 'https://i.ccdn.hu/acm/t/' + imgHash(h) + '.webp';", "képcím-segéd", pontosan=1)
     # a győri program nem küld másolatot az ügyfélnek (nyilvános űrlapról visszaélésre adna módot)
     return csere(html, r'\s*A foglalás másolatát elküldtük az Ön e-mail-címére is\.', '', "másolat-ígéret", pontosan=1)
 
