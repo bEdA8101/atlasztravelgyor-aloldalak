@@ -593,6 +593,17 @@ function idopont_cim(array $k, int $szalloda, int $oldal): string
     return $f['oldal'] . '/searchmasks/generation_dates_terms?' . cesys_lekerdezes($p);
 }
 
+/** A szoba neve; a pótágyas változatot külön jelöljük (különben két azonos nevű szoba látszana). */
+function szobanev(array $x): string
+{
+    $nev = html_entity_decode((string)($x['room_name'] ?? 'Szoba'), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $potagy = (int)($x['extra_beds'] ?? 0);
+    if ($potagy > 0 && !preg_match('/pótágy|prístel/iu', $nev)) {
+        $nev .= $potagy > 1 ? ", $potagy pótággyal" : ', pótággyal';
+    }
+    return $nev;
+}
+
 function jarat(array $x): ?array
 {
     $fi = $x['flight_info'] ?? null;
@@ -667,7 +678,7 @@ function idopontok(array $k, int $szalloda): ?array
                'board' => (string)($x['boarding'] ?? ''), 'transfer' => ($x['transfer'] ?? '0') === '1',
                'priceHuf' => $huf, 'priceEur' => $eur, 'discPct' => 0,
                '_cid' => (string)$x['id'], '_hash' => (string)($x['verify_hash'] ?? '')]
-            : ['id' => (int)$x['room_id'], 'name' => html_entity_decode((string)($x['room_name'] ?? 'Szoba'), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+            : ['id' => (int)$x['room_id'], 'name' => szobanev($x),
                'board' => (string)($x['boarding'] ?? ''), 'transfer' => false,
                'priceHuf' => $huf, 'priceEur' => $eur, 'discPct' => (float)($x['discount_percent'] ?? 0)];
         if (!isset($csoportok[$csoportKulcs])) {

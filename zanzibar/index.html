@@ -572,7 +572,7 @@ window.zImgErr = function(el){
   const priceBox = (v, alt) => v > 0 ? '<b>'+huf(v)+'</b><span>/fő-től'+(alt || '')+'</span>' : '<b>Ár kérésre</b><span>kollégáink pontosítják</span>';
   // pozsonyi (atlastravel.sk) szobanevek és ellátások magyarul
   const SK_HU = [[/Dvojlôžková izba/gi,'Kétágyas szoba'],[/Jednolôžková izba/gi,'Egyágyas szoba'],[/Trojlôžková izba/gi,'Háromágyas szoba'],
-    [/Rodinná izba/gi,'Családi szoba'],[/Rodinný apartmán/gi,'Családi apartman'],[/Apartmán/gi,'Apartman'],[/Bungalov/gi,'Bungaló'],
+    [/Rodinná izba/gi,'Családi szoba'],[/Jednolôžkov[ýáé]/gi,'Egyágyas'],[/Dvojlôžkov[ýáé]/gi,'Kétágyas'],[/Trojlôžkov[ýáé]/gi,'Háromágyas'],[/Štvorlôžkov[ýáé]/gi,'Négyágyas'],[/rodinn[ýáé]/gi,'családi'],[/štúdio/gi,'stúdió'],[/bungalov/g,'bungaló'],[/s (\d+) prístelkami/gi,'$1 pótággyal'],[/s prístelkou/gi,'pótággyal'],[/Rodinný apartmán/gi,'Családi apartman'],[/Apartmán/gi,'Apartman'],[/Bungalov/gi,'Bungaló'],
     [/s bočným výhľadom na more/gi,'oldalról tengerre néző'],[/s výhľadom na more/gi,'tengerre néző'],[/s výhľadom do záhrady/gi,'kertre néző'],
     [/s výhľadom na bazén/gi,'medencére néző'],[/s výhľadom na oceán/gi,'óceánra néző'],[/s priamym prístupom k bazénu/gi,'közvetlen medencehozzáféréssel'],
     [/s terasou/gi,'terasszal'],[/s balkónom/gi,'erkéllyel'],[/izba/gi,'szoba'],[/štandard/gi,'standard'],
