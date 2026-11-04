@@ -284,6 +284,9 @@ def bahari_cserek(html):
     html = csere(html, r'<h4>Irodáink</h4><p>[^<]*</p>', f'<h4>Győri irodánk</h4><p>{g["cim"]}<br>{g["nyitvatartas"]}</p>',
                  "irodák a láblécben", pontosan=1)
     html = csere(html, r'<h4>Atlasz Travel</h4>', f'<h4>{g["nev"]}</h4>', "cégnév a láblécben", pontosan=1)
+    # a régi rövid ármegjegyzés helyett az általános lábléc-tájékoztató áll (LABLEC_TAJEKOZTATO)
+    html = csere(html, r'(<div class="copy">[^<]*?)\s*Az árak tájékoztató jellegűek, a végleges árat foglaláskor erősítjük meg\.',
+                 r'\1', "régi ármegjegyzés", pontosan=1)
     # a beépített tartalék árak (ha az élő adat nem jön meg) közül az elmúlt időpontok ne látszódjanak
     return csere(html, r'(const STATIC = \[.*?\n\];)',
                  r'\1\nSTATIC.splice(0, STATIC.length, ...STATIC.filter(d => d.f >= new Date().toISOString().slice(0, 10)));',
