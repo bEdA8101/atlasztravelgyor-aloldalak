@@ -60,6 +60,20 @@ function idopontok_lekerdezese(int $felnott, array $korok): ?array
     return $osszes;
 }
 
+/** A pozsonyi (szlovák) szobanév magyarul; az oldal ezt mutatja, ha a szobát nem ismeri fel a saját típusai között. */
+function szobanev_magyarul(string $nev): string
+{
+    $csere = [
+        '/Jednolôžkov[áéý]/iu' => 'Egyágyas', '/Dvojlôžkov[áéý]/iu' => 'Kétágyas', '/Trojlôžkov[áéý]/iu' => 'Háromágyas',
+        '/Štvorlôžkov[áéý]/iu' => 'Négyágyas', '/Rodinn[áéý]/iu' => 'Családi', '/\bizba\b/iu' => 'szoba', '/štandard/iu' => 'standard',
+        '/apartmán/iu' => 'apartman', '/štúdio/iu' => 'stúdió', '/bungalov/iu' => 'bungaló',
+        '/s bočným výhľadom na more/iu' => 'oldalról tengerre néző', '/s výhľadom na more/iu' => 'tengerre néző',
+        '/s výhľadom do záhrady/iu' => 'kertre néző', '/s výhľadom na bazén/iu' => 'medencére néző',
+        '/s (\d+) prístelkami/iu' => '$1 pótággyal', '/s prístelkou/iu' => 'pótággyal',
+    ];
+    return (string)preg_replace(array_keys($csere), array_values($csere), str_replace("\u{a0}", ' ', $nev));
+}
+
 function sorra_alakit(array $x): ?array
 {
     $ar = $x['price_from']['EUR'] ?? null;
@@ -78,7 +92,7 @@ function sorra_alakit(array $x): ?array
         'arr' => ido_resz($jarat['arrival_to_destination'] ?? null),
         'back' => ido_resz($jarat['arrival_from_destination'] ?? null),
         'room' => html_entity_decode((string)($x['room_original_name'] ?? $x['room_name'] ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
-        'room_sk' => html_entity_decode((string)($x['room_name'] ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+        'room_sk' => szobanev_magyarul(html_entity_decode((string)($x['room_name'] ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8')),
         'price' => (int)round((float)$ar),
         'orig' => (int)round((float)$ar + (is_numeric($kedvezmeny) && $kedvezmeny > 0 ? (float)$kedvezmeny : 0)),
         'total' => null,
