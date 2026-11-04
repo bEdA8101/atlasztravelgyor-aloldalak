@@ -38,7 +38,7 @@ if (count($_POST) === 0 || count($_POST) > MAX_MEZO) {
     valasz(false, HIBAUZENET, 400);
 }
 // Rejtett csapdamező: ember nem tölti ki, a spamrobotok igen.
-if (trim((string)($_POST['weboldal'] ?? '')) !== '') {
+if (trim((string)($_POST['weboldal'] ?? '')) !== '' || trim((string)($_POST['website'] ?? '')) !== '') {
     valasz(true);
 }
 
@@ -49,7 +49,7 @@ if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
 
 $sorok = [];
 foreach ($_POST as $mezo => $ertek) {
-    if (!is_string($mezo) || !preg_match('/^[a-z0-9_\-]{1,40}$/i', $mezo) || $mezo === 'weboldal') {
+    if (!is_string($mezo) || !preg_match('/^[a-z0-9_\-]{1,40}$/i', $mezo) || in_array($mezo, ['weboldal', 'website'], true)) {
         continue;
     }
     if (is_array($ertek)) {
@@ -61,7 +61,12 @@ foreach ($_POST as $mezo => $ertek) {
     }
 }
 
-$targyResz = (string)($_POST['szalloda'] ?? $_POST['uticel'] ?? $_POST['oldal'] ?? 'weboldal');
+// a tárgyban az oldal (vagy a szálloda) neve és, ha van, az időpont
+$oldalMappa = basename(dirname((string)($_SERVER['SCRIPT_NAME'] ?? '')));
+$targyResz = (string)($_POST['szalloda'] ?? $_POST['uticel'] ?? $_POST['oldal'] ?? ($oldalMappa !== '' && $oldalMappa !== '.' ? $oldalMappa : 'weboldal'));
+if (isset($_POST['idopont']) && is_string($_POST['idopont']) && trim($_POST['idopont']) !== '') {
+    $targyResz .= ', ' . trim($_POST['idopont']);
+}
 $targy = 'Ajánlatkérés – ' . rovidit(preg_replace('/[\r\n\t]+/', ' ', $targyResz) ?? '', 120);
 $oldal = preg_replace('/[^a-z0-9.:\-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? ''));
 
