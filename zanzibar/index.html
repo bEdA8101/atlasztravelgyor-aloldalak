@@ -557,7 +557,7 @@ window.zImgErr = function(el){
 
   // a fotó azonosítója (régebbi gyorsítótárban teljes címként is szerepelhet)
   const imgHash = h => { const m = String(h || '').match(/([a-f0-9]{32})/); return m ? m[1] : ''; };
-  const imgUrl = h => API + '?action=img&h=' + imgHash(h);
+  const imgUrl = h => 'https://i.ccdn.hu/acm/t/' + imgHash(h) + '.webp';
   // szállodafotó: CeSYS-azonosító vagy teljes képcím (a pozsonyi kínálatnál)
   const imgTag = (h, alt, lazy) => {
     const hh = h.img ? imgHash(h.img) : '';
@@ -566,7 +566,7 @@ window.zImgErr = function(el){
     if(hh) q.set('h', hh);
     if(h.imgSrc) q.set('u', h.imgSrc);
     if(h.url && /^https:\/\/(www\.)?(atlasztravel\.hu|atlastravel\.sk)\//.test(h.url)) q.set('p', h.url);
-    return '<img'+(lazy ? ' loading="lazy"' : '')+' src="'+API+'?'+q.toString()+'"'+(hh ? ' data-h="'+hh+'"' : '')+' alt="'+esc(alt)+'" onerror="zImgErr(this)">';
+    return '<img'+(lazy ? ' loading="lazy"' : '')+' src="'+esc(h.imgSrc || (hh ? 'https://i.ccdn.hu/acm/t/'+hh+'.webp' : API+'?'+q.toString()))+'"'+(hh ? ' data-h="'+hh+'"' : '')+' alt="'+esc(alt)+'" onerror="zImgErr(this)">';
   };
   // ár nélküli ajánlat (0 Ft) helyett „Ár kérésre”
   const priceBox = (v, alt) => v > 0 ? '<b>'+huf(v)+'</b><span>/fő-től'+(alt || '')+'</span>' : '<b>Ár kérésre</b><span>kollégáink pontosítják</span>';
@@ -650,7 +650,7 @@ window.zImgErr = function(el){
   }
 
   function fillFilters(){
-    const regions = [...new Set(state.hotels.map(h => h.region).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'hu'));
+    const regions = [...new Set(state.hotels.flatMap(h => (h.region || '').split(' / ')).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'hu'));
     const boards = [...new Set(state.hotels.flatMap(h => h.board.split(',').map(s => s.trim())).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'hu'));
     const keep = (sel, list, all) => {
       const cur = sel.value; sel.innerHTML = '';
@@ -666,7 +666,7 @@ window.zImgErr = function(el){
   function filtered(){
     const r=$('f-region').value, b=$('f-board').value, st=+$('f-stars').value, dir=$('f-direct').checked, so=$('f-sort').value;
     let list = state.hotels.filter(h => !h.noFit &&
-      (!r || h.region === r) &&
+      (!r || (h.region || '').split(' / ').includes(r)) &&
       (!b || h.board.split(',').map(s=>s.trim()).includes(b)) &&
       (!st || h.stars >= st) &&
       (!dir || h.features.includes('Közvetlen járat')));

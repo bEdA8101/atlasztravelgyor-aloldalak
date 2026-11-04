@@ -68,6 +68,61 @@ function cesys_valasz($ch, string $url, $valasz): ?array
     return $adat;
 }
 
+/** Egy HTML-oldal letöltése (nem JSON), egy újrapróbálással; hiba esetén null. */
+function cesys_html(string $url): ?string
+{
+    for ($proba = 0; $proba < 2; $proba++) {
+        if ($proba) {
+            usleep(800000);
+        }
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => CESYS_IDOKORLAT,
+            CURLOPT_USERAGENT => CESYS_UA, CURLOPT_ENCODING => '']);
+        $valasz = curl_exec($ch);
+        $kod = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+        curl_close($ch);
+        if ($valasz !== false && $kod === 200) {
+            return (string)$valasz;
+        }
+        naplo($url, $kod ? "HTTP $kod" : 'a kapcsolat megszakadt vagy túl lassú');
+    }
+    return null;
+}
+
+/** Több weboldal (HTML) párhuzamosan, kulcs szerint; ami nem jött meg, az null (újrapróbálás nélkül). */
+function cesys_html_tobb(array $cimek, int $egyszerre = 3): array
+{
+    $eredmeny = [];
+    foreach (array_chunk($cimek, $egyszerre, true) as $csomag) {
+        $multi = curl_multi_init();
+        $kezelok = [];
+        foreach ($csomag as $kulcs => $cim) {
+            $ch = curl_init($cim);
+            curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => CESYS_IDOKORLAT,
+                CURLOPT_USERAGENT => CESYS_UA, CURLOPT_ENCODING => '']);
+            curl_multi_add_handle($multi, $ch);
+            $kezelok[$kulcs] = $ch;
+        }
+        do {
+            $allapot = curl_multi_exec($multi, $fut);
+            if ($fut) {
+                curl_multi_select($multi, 1.0);
+            }
+        } while ($fut && $allapot === CURLM_OK);
+        foreach ($kezelok as $kulcs => $ch) {
+            $kod = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+            $eredmeny[$kulcs] = $kod === 200 ? (string)curl_multi_getcontent($ch) : null;
+            if ($kod !== 200) {
+                naplo($csomag[$kulcs], $kod ? "HTTP $kod" : 'a kapcsolat megszakadt vagy túl lassú');
+            }
+            curl_multi_remove_handle($multi, $ch);
+            curl_close($ch);
+        }
+        curl_multi_close($multi);
+    }
+    return $eredmeny;
+}
+
 /** Egy JSON-GET; ha nem sikerül, egyszer újrapróbálja. */
 function cesys_get(string $url): ?array
 {

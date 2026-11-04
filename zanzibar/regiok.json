@@ -1,0 +1,79 @@
+{
+  "_leiras": [
+    "A zanzibári szállodák partszakasza ott, ahol a forrás csak 'Zanzibar'-t ad meg.",
+    "szallodak: \"Szálloda neve\": \"Partszakasz\". A névnek nem kell betűre egyeznie (kis- és nagybetű, ékezet, 'Hotel', 'Resort', 'Spa' nem számít). Ez mindennél előbbre való.",
+    "helyek: \"Partszakasz\": [szélesség, hosszúság]. A program a szálloda győri adatlapján levő térképes helyhez a legközelebbi partszakaszt választja (legfeljebb 6 km-re). A győri oldal partszakasz-aloldalain szereplő helyeket (Kendwa, Kiwengwa, Kizimkazi, Matemwe, Nungwi, Pingwe, Pongwe, Uroa) magától ismeri, ide csak a többi kell."
+  ],
+  "szallodak": {
+    "Amaan Bungalows": "Nungwi",
+    "Baraka Beach Bungalows": "Nungwi",
+    "Bella Vista Resort Zanzibar": "Kizimkazi",
+    "Bianco Azzurro Hotel": "Pwani Mchangani",
+    "Canary Golden Hotel": "Nungwi",
+    "Canary Hotel & SPA": "Nungwi",
+    "Kena Beach Hotel": "Matemwe",
+    "Kigwedeni Villas": "Nungwi",
+    "Mandarin Resort Zanzibar": "Kizimkazi",
+    "Mbuyuni Beach Village": "Jambiani",
+    "Protels La Plage": "Bwejuu",
+    "Tamu Tamu Zanzibar": "Pwani Mchangani",
+    "The One Resort Zanzibar": "Makunduchi",
+    "Z-Lodge Zanzibar": "Kiwengwa",
+    "Zanoceanique Hotel": "Matemwe",
+    "Zanzibar Bahari Villas": "Matemwe"
+  },
+  "helyek": {
+    "Stone Town": [
+      -6.163,
+      39.19
+    ],
+    "Chuini": [
+      -6.077,
+      39.212
+    ],
+    "Mbweni": [
+      -6.218,
+      39.205
+    ],
+    "Fumba": [
+      -6.305,
+      39.29
+    ],
+    "Mnemba": [
+      -5.82,
+      39.38
+    ],
+    "Pwani Mchangani": [
+      -5.93,
+      39.357
+    ],
+    "Marumbi": [
+      -6.13,
+      39.43
+    ],
+    "Chwaka": [
+      -6.162,
+      39.437
+    ],
+    "Dongwe": [
+      -6.19,
+      39.532
+    ],
+    "Bwejuu": [
+      -6.233,
+      39.535
+    ],
+    "Paje": [
+      -6.268,
+      39.535
+    ],
+    "Jambiani": [
+      -6.318,
+      39.548
+    ],
+    "Makunduchi": [
+      -6.415,
+      39.555
+    ]
+  }
+}

@@ -34,6 +34,15 @@ const EGYSZERRE = ['hu' => 3, 'at' => 3, 'sk' => 2];   // egyszerre legfeljebb e
 const RESZLEGES_ERVENYES = 300;   // ha egy keresés csak részben sikerült, csak 5 percig jegyezzük meg
 const IDOPONT_CSOMAG = 200;    // ennyi időpont-sort kérünk egyszerre (a CeSYS ennyit kiad; így szállodánként általában 1 kérés elég)
 const MAX_IDOPONT_OLDAL = 2;   // legfeljebb ennyi időpont-csomag
+const REGIO_OLDAL = GYOR . '/tanzania/zanzibar';   // a győri oldal partszakasz-aloldalai (Kendwa, Kiwengwa, …)
+const REGIO_ERVENYES = 86400;                        // a partszakaszok listáját naponta frissítjük
+const HELY_ERVENYES = 30 * 86400;   // egy szálloda térképes helyét (a győri adatlapjáról) 30 napig jegyezzük meg
+const HELY_EGYSZERRE = 3;           // ennyi adatlapot kérünk egyszerre …
+const HELY_MAX_UJ = 9;              // … és egy válaszhoz legfeljebb ennyit (a többi a következő látogatáskor jön)
+const HELY_TAVOLSAG = 6.0;          // km: ennél messzebb levő partszakaszhoz nem soroljuk a szállodát
+// ha egy szállodát nem találunk a partszakasz-oldalakon, a nevében szereplő helynév dönt
+const HELYNEVEK = ['Stone Town', 'Nungwi', 'Kendwa', 'Kiwengwa', 'Pongwe', 'Pingwe', 'Uroa', 'Matemwe', 'Mnemba', 'Paje',
+    'Jambiani', 'Bwejuu', 'Michamvi', 'Dongwe', 'Kizimkazi', 'Makunduchi', 'Chwaka', 'Mbweni', 'Marumbi', 'Kilindi', 'Mchangani'];
 const CIMZETT = 'gyor@atlasztravel.hu';
 const FELADO = 'weboldal@atlasztravelgyor.hu';
 const SK_JELLEMZOK = ['Priamy let' => 'Közvetlen járat', 'Wifi' => 'WiFi', 'WiFi' => 'WiFi', 'Klimatizácia' => 'Légkondicionáló',
@@ -225,7 +234,15 @@ function kartya(string $c, string $src): ?array
     ];
 }
 
+/** A keresés találatai, a hiányzó partszakaszok pótlásával. */
 function szallodak(array $k): ?array
+{
+    $e = szallodak_nyers($k);
+    return $e === null ? null : regiok_potlasa($e, $k['src'] === 'sk');
+}
+
+/** A keresés találatai úgy, ahogy a forrás adja (fél óráig tárolva). */
+function szallodak_nyers(array $k): ?array
 {
     $kulcs = kulcs('kereses', $k);
     $tarolt = gyorsitotar_olvas($kulcs, ERVENYES);
@@ -286,6 +303,270 @@ function szallodak(array $k): ?array
     $eredmeny = ['hotels' => $szallodak, 'searchUrl' => kereso_cim($k, 1, false), 'frissitve' => date('c')];
     gyorsitotar_ir($kulcs, $eredmeny + ['_reszleges' => $reszleges, '_ido' => time()]);
     return $eredmeny;
+}
+
+/**
+ * Ahol a forrás csak „Zanzibar”-t ad meg partszakasznak, ott pótoljuk (a tárolt keresési adat változatlan
+ * marad). Sorrend: a kézi táblázat, a győri partszakasz-oldalak, (pozsonyi utaknál) a győri oldal pozsonyi
+ * kínálata, a más forrásokban már látott azonos nevű szálloda, a névben szereplő helynév, végül a szálloda
+ * győri adatlapján levő térképes hely.
+ */
+function regiok_potlasa(array $eredmeny, bool $pozsonyi = false): array
+{
+    $kezi = regio_tablazat();
+    $gyor = regio_terkep();
+    $tanult = gyorsitotar_olvas('tanult-partszakaszok', 365 * 86400) ?? [];
+    $ujTanult = false;
+    $altalanos = fn($r) => $r === '' || strcasecmp($r, 'Zanzibar') === 0;
+    // amit a forrás pontosan megad, azt megjegyezzük a többi forrás azonos nevű szállodáihoz
+    foreach ($eredmeny['hotels'] as $h) {
+        $szavak = nev_szavak($h['name']);
+        if ($szavak && !$altalanos($h['region']) && !kombinacio($h['name']) && !isset($tanult[implode(' ', $szavak)])) {
+            $tanult[implode(' ', $szavak)] = $h['region'];
+            $ujTanult = true;
+        }
+    }
+    $terkep = $kezi['szallodak'] + $gyor['szallodak'];   // a kézi táblázat elsőbbséget élvez
+    if ($pozsonyi) {
+        $terkep += pozsonyi_gyori_terkep();
+    }
+    $terkep += $tanult;
+    $keresd = function (string $nev) use ($terkep): ?string {
+        $reszek = kombinacio($nev);
+        if (!$reszek) {
+            return regio_nevbol($nev, $terkep);
+        }
+        $regiok = [];   // két szállodás út: mindkét rész partszakasza (ha mindkettő ismert)
+        foreach ($reszek as $resz) {
+            $r = regio_nevbol($resz, $terkep);
+            if ($r === null) {
+                return null;
+            }
+            $regiok[$r] = true;
+        }
+        return implode(' / ', array_keys($regiok));
+    };
+    $hianyzik = [];
+    foreach ($eredmeny['hotels'] as $i => $h) {
+        if ($altalanos($h['region'])) {
+            $r = $keresd($h['name']);
+            if ($r !== null) {
+                $eredmeny['hotels'][$i]['region'] = $r;
+            } elseif (!kombinacio($h['name']) && strpos((string)$h['url'], GYOR . '/') === 0 && $h['hotelId']) {
+                $hianyzik[$i] = $h;
+            }
+        }
+    }
+    // a még ismeretlenekhez: a győri adatlap térképes helye, és a legközelebbi partszakasz
+    if ($hianyzik) {
+        $helyek = $kezi['helyek'] + $gyor['helyek'];
+        foreach (szalloda_helyek($hianyzik) as $i => $k) {
+            $r = $k ? legkozelebbi_hely($k, $helyek) : null;
+            if ($r !== null) {
+                $eredmeny['hotels'][$i]['region'] = $r;
+                $tanult[implode(' ', nev_szavak($hianyzik[$i]['name']))] = $r;
+                $ujTanult = true;
+            }
+        }
+    }
+    if ($ujTanult) {
+        gyorsitotar_ir('tanult-partszakaszok', $tanult);
+    }
+    return $eredmeny;
+}
+
+/**
+ * A győri oldal pozsonyi indulású zanzibári kínálata (névszavak -> partszakasz). Az atlastravel.sk
+ * kártyáin sokszor csak „Zanzibar” áll, a győri oldal ugyanezeknél a szállodáknál megadja a partszakaszt.
+ * Naponta egyszer kérjük le (alapbeállítású keresés pozsonyi indulással).
+ */
+function pozsonyi_gyori_terkep(): array
+{
+    $tarolt = gyorsitotar_olvas('pozsonyi-partszakaszok', REGIO_ERVENYES);
+    if ($tarolt !== null) {
+        return $tarolt;
+    }
+    $holnap = new DateTimeImmutable('tomorrow', new DateTimeZone('Europe/Budapest'));
+    $e = szallodak_nyers(['src' => 'hu', 'df' => $holnap->format('Y-m-d'), 'dt' => $holnap->modify('+185 days')->format('Y-m-d'),
+        'uf' => 5, 'ut' => 21, 'ai' => FORRASOK['sk']['ai'], 'pt' => 15000000, 'ac' => 2, 'ages' => []]);
+    if ($e === null) {
+        return gyorsitotar_olvas('pozsonyi-partszakaszok', 7 * 86400) ?? [];
+    }
+    $terkep = [];
+    foreach (regiok_potlasa($e)['hotels'] as $h) {
+        $szavak = nev_szavak($h['name']);
+        if ($szavak && $h['region'] !== '' && strcasecmp($h['region'], 'Zanzibar') !== 0) {
+            $terkep[implode(' ', $szavak)] = $h['region'];
+        }
+    }
+    gyorsitotar_ir('pozsonyi-partszakaszok', $terkep);
+    return $terkep;
+}
+
+/** „Hotel A & Hotel B” (két szállodás út) -> ['Hotel A', 'B'], egyébként null. */
+function kombinacio(string $nev): ?array
+{
+    $reszek = preg_split('/\s+&\s+(?=Hotel\s)/u', $nev);
+    return count($reszek) > 1 ? $reszek : null;
+}
+
+/**
+ * A szállodák térképes helye a győri adatlapjukról: index -> [szélesség, hosszúság] vagy null.
+ * Szállodánként 30 napig tároljuk; egy válaszhoz legfeljebb HELY_MAX_UJ új adatlapot kérünk, egyszerre HELY_EGYSZERRE-t.
+ */
+function szalloda_helyek(array $szallodak): array
+{
+    $eredmeny = [];
+    $kell = [];
+    foreach ($szallodak as $i => $h) {
+        $tarolt = gyorsitotar_olvas('hely-' . $h['hotelId'], HELY_ERVENYES);
+        if ($tarolt !== null && (empty($tarolt['hiba']) || time() - (int)$tarolt['ido'] < 3600)) {
+            $eredmeny[$i] = isset($tarolt['lat']) ? [$tarolt['lat'], $tarolt['lon']] : null;
+        } elseif (count($kell) < HELY_MAX_UJ) {
+            $kell[$i] = strtok((string)$h['url'], '?');
+        }
+    }
+    foreach (cesys_html_tobb($kell, HELY_EGYSZERRE) as $i => $oldal) {
+        $id = $szallodak[$i]['hotelId'];
+        if ($oldal === null) {
+            gyorsitotar_ir('hely-' . $id, ['hiba' => true, 'ido' => time()]);   // egy óra múlva újra megpróbáljuk
+            $eredmeny[$i] = null;
+        } elseif (preg_match('/"latitude":\s*(-?[0-9.]+),\s*"longitude":\s*(-?[0-9.]+)/', $oldal, $k)) {
+            gyorsitotar_ir('hely-' . $id, ['lat' => (float)$k[1], 'lon' => (float)$k[2]]);
+            $eredmeny[$i] = [(float)$k[1], (float)$k[2]];
+        } else {
+            gyorsitotar_ir('hely-' . $id, ['nincs' => true]);
+            $eredmeny[$i] = null;
+        }
+    }
+    return $eredmeny;
+}
+
+/** A legközelebbi ismert partszakasz (legfeljebb HELY_TAVOLSAG km-re), különben null. */
+function legkozelebbi_hely(array $k, array $helyek): ?string
+{
+    $legjobb = null;
+    $tav = HELY_TAVOLSAG;
+    foreach ($helyek as $nev => [$sz, $h]) {
+        $d = 6371 * sqrt((deg2rad($sz - $k[0])) ** 2 + (cos(deg2rad(($sz + $k[0]) / 2)) * deg2rad($h - $k[1])) ** 2);
+        if ($d < $tav) {
+            $tav = $d;
+            $legjobb = $nev;
+        }
+    }
+    return $legjobb;
+}
+
+// ---------------------------------------------------------------- partszakaszok
+
+/** A szállodanév „szavai”, ékezet és általános szavak (hotel, resort, spa, …) nélkül, sorba rendezve. */
+function nev_szavak(string $nev): array
+{
+    $n = mb_strtolower(html_entity_decode($nev, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+    $n = strtr($n, ['á' => 'a', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ö' => 'o', 'ő' => 'o', 'ú' => 'u', 'ü' => 'u', 'ű' => 'u',
+        'ô' => 'o', 'ä' => 'a', 'ľ' => 'l', 'š' => 's', 'č' => 'c', 'ť' => 't', 'ž' => 'z', 'ý' => 'y', 'ň' => 'n', 'ŕ' => 'r', '&' => ' ']);
+    $szavak = array_filter(explode(' ', preg_replace('/[^a-z0-9]+/', ' ', $n)));
+    $szavak = array_values(array_unique(array_diff($szavak, ['hotel', 'resort', 'resorts', 'spa', 'and', 'the', 'zanzibar', 'by', 'a'])));
+    sort($szavak);
+    return $szavak;
+}
+
+/**
+ * A győri oldal partszakasz-aloldalaiból: szállodák (névszavak -> partszakasz) és a partszakaszok
+ * térképes középpontja (név -> [szélesség, hosszúság]). Naponta frissül.
+ */
+function regio_terkep(): array
+{
+    $tarolt = gyorsitotar_olvas('partszakaszok', REGIO_ERVENYES);
+    if ($tarolt !== null) {
+        return $tarolt;
+    }
+    $fo = cesys_html(REGIO_OLDAL);
+    if ($fo === null) {
+        return gyorsitotar_olvas('partszakaszok', 7 * 86400) ?? ['szallodak' => [], 'helyek' => []];
+    }
+    preg_match_all('#href="/tanzania/zanzibar/([a-z0-9-]+)"[^>]*>([^<]+)<#', $fo, $m, PREG_SET_ORDER);
+    $reszek = [];
+    foreach ($m as [, $utvonal, $nev]) {
+        $reszek[$utvonal] = szoveg($nev);
+    }
+    $szallodak = [];
+    $helyek = [];
+    foreach (array_slice($reszek, 0, 20, true) as $utvonal => $regio) {
+        $oldal = cesys_html(REGIO_OLDAL . '/' . $utvonal);
+        if ($oldal === null) {
+            continue;
+        }
+        preg_match_all('/<h2 class="hotel[^"]*">\s*<a [^>]*>(.*?)<\/a>/s', $oldal, $nevek);
+        foreach ($nevek[1] as $nev) {
+            $szavak = nev_szavak(szoveg($nev));
+            if ($szavak) {
+                $szallodak[implode(' ', $szavak)] = $regio;
+            }
+        }
+        if (preg_match('/id="map-destination".*?data-latitude="(-?[0-9.]+)"\s*data-longitude="(-?[0-9.]+)"/s', $oldal, $k)) {
+            $helyek[$regio] = [(float)$k[1], (float)$k[2]];
+        }
+    }
+    $terkep = ['szallodak' => $szallodak, 'helyek' => $helyek];
+    gyorsitotar_ir('partszakaszok', $terkep);
+    return $terkep;
+}
+
+/**
+ * A kézzel szerkeszthető táblázat (regiok.json): „szallodak” (szállodanév -> partszakasz, névszavak
+ * szerint) és „helyek” (partszakasz -> [szélesség, hosszúság], a győri oldalon nem szereplő helyekhez).
+ */
+function regio_tablazat(): array
+{
+    static $tabla = null;
+    if ($tabla === null) {
+        $tabla = ['szallodak' => [], 'helyek' => []];
+        $adat = is_file(__DIR__ . '/regiok.json') ? json_decode((string)file_get_contents(__DIR__ . '/regiok.json'), true) : null;
+        foreach (($adat['szallodak'] ?? []) as $nev => $regio) {
+            $szavak = nev_szavak((string)$nev);
+            if ($szavak && is_string($regio) && $regio !== '') {
+                $tabla['szallodak'][implode(' ', $szavak)] = $regio;
+            }
+        }
+        foreach (($adat['helyek'] ?? []) as $nev => $k) {
+            if (is_array($k) && count($k) === 2 && is_numeric($k[0]) && is_numeric($k[1])) {
+                $tabla['helyek'][(string)$nev] = [(float)$k[0], (float)$k[1]];
+            }
+        }
+    }
+    return $tabla;
+}
+
+/** Partszakasz egy szállodanévhez a megadott táblázatból (névszavak szerint), végül a névben szereplő helynévből. */
+function regio_nevbol(string $nev, array $terkep): ?string
+{
+    $szavak = nev_szavak($nev);
+    if ($szavak) {
+        $kulcs = implode(' ', $szavak);
+        if (isset($terkep[$kulcs])) {
+            return $terkep[$kulcs];
+        }
+        $osszevont = implode('', $szavak);   // „Myblue” = „My Blue”
+        foreach ($terkep as $k => $regio) {
+            if (str_replace(' ', '', $k) === $osszevont) {
+                return $regio;
+            }
+        }
+        foreach ($terkep as $k => $regio) {   // részleges egyezés: legalább 2 közös szó, és az egyik név a másik része
+            $m = explode(' ', $k);
+            $kozos = count(array_intersect($szavak, $m));
+            if ($kozos >= 2 && ($kozos === count($szavak) || $kozos === count($m))) {
+                return $regio;
+            }
+        }
+    }
+    foreach (HELYNEVEK as $hely) {
+        if (stripos($nev, $hely) !== false) {
+            return $hely;
+        }
+    }
+    return null;
 }
 
 // ---------------------------------------------------------------- időpontok és szobák
