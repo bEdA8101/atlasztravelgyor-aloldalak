@@ -68,6 +68,61 @@ function cesys_valasz($ch, string $url, $valasz): ?array
     return $adat;
 }
 
+/** Egy HTML-oldal letöltése (nem JSON), egy újrapróbálással; hiba esetén null. */
+function cesys_html(string $url): ?string
+{
+    for ($proba = 0; $proba < 2; $proba++) {
+        if ($proba) {
+            usleep(800000);
+        }
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => CESYS_IDOKORLAT,
+            CURLOPT_USERAGENT => CESYS_UA, CURLOPT_ENCODING => '']);
+        $valasz = curl_exec($ch);
+        $kod = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+        curl_close($ch);
+        if ($valasz !== false && $kod === 200) {
+            return (string)$valasz;
+        }
+        naplo($url, $kod ? "HTTP $kod" : 'a kapcsolat megszakadt vagy túl lassú');
+    }
+    return null;
+}
+
+/** Több weboldal (HTML) párhuzamosan, kulcs szerint; ami nem jött meg, az null (újrapróbálás nélkül). */
+function cesys_html_tobb(array $cimek, int $egyszerre = 3): array
+{
+    $eredmeny = [];
+    foreach (array_chunk($cimek, $egyszerre, true) as $csomag) {
+        $multi = curl_multi_init();
+        $kezelok = [];
+        foreach ($csomag as $kulcs => $cim) {
+            $ch = curl_init($cim);
+            curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => CESYS_IDOKORLAT,
+                CURLOPT_USERAGENT => CESYS_UA, CURLOPT_ENCODING => '']);
+            curl_multi_add_handle($multi, $ch);
+            $kezelok[$kulcs] = $ch;
+        }
+        do {
+            $allapot = curl_multi_exec($multi, $fut);
+            if ($fut) {
+                curl_multi_select($multi, 1.0);
+            }
+        } while ($fut && $allapot === CURLM_OK);
+        foreach ($kezelok as $kulcs => $ch) {
+            $kod = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+            $eredmeny[$kulcs] = $kod === 200 ? (string)curl_multi_getcontent($ch) : null;
+            if ($kod !== 200) {
+                naplo($csomag[$kulcs], $kod ? "HTTP $kod" : 'a kapcsolat megszakadt vagy túl lassú');
+            }
+            curl_multi_remove_handle($multi, $ch);
+            curl_close($ch);
+        }
+        curl_multi_close($multi);
+    }
+    return $eredmeny;
+}
+
 /** Egy JSON-GET; ha nem sikerül, egyszer újrapróbálja. */
 function cesys_get(string $url): ?array
 {
@@ -188,6 +243,33 @@ function gyorsitotar_ir(string $kulcs, array $adat): void
     }
 }
 
+/**
+ * A tárolt válaszok közül törli a régieket (alapból a 2 napnál régebbieket; $kivetelek: kulcs-eleje -> másodperc),
+ * hogy a tárhelyen ne gyűljenek a fájlok. Óránként legfeljebb egyszer fut.
+ */
+function gyorsitotar_takaritas(array $kivetelek = [], int $alap = 2 * 86400): void
+{
+    $mappa = __DIR__ . '/.gyorsitotar';
+    $jel = $mappa . '/.takaritas';
+    if (!is_dir($mappa) || (is_file($jel) && time() - (int)filemtime($jel) < 3600)) {
+        return;
+    }
+    @touch($jel);
+    foreach (glob($mappa . '/*.json') ?: [] as $fajl) {
+        $nev = basename($fajl);
+        $maxKor = $alap;
+        foreach ($kivetelek as $eleje => $kor) {
+            if (strncmp($nev, $eleje, strlen($eleje)) === 0) {
+                $maxKor = $kor;
+                break;
+            }
+        }
+        if (time() - (int)@filemtime($fajl) > $maxKor) {
+            @unlink($fajl);
+        }
+    }
+}
+
 function json_valasz(array $adat, int $kod = 200): void
 {
     http_response_code($kod);
@@ -196,6 +278,28 @@ function json_valasz(array $adat, int $kod = 200): void
     header('Cache-Control: no-store');
     echo json_encode($adat, JSON_UNESCAPED_UNICODE);
     exit;
+}
+
+/** Igaz, ha a tárhely engedi, hogy a program a válasz elküldése után tovább dolgozzon (PHP-FPM vagy LiteSpeed). */
+function valasz_utan_folytathato(): bool
+{
+    return function_exists('fastcgi_finish_request') || function_exists('litespeed_finish_request');
+}
+
+/** Elküldi a választ, lezárja a kapcsolatot, és a program tovább fut (pl. a tárolt adat frissítésére). */
+function valasz_es_folytatas(array $adat): void
+{
+    ignore_user_abort(true);
+    @set_time_limit(180);
+    header('Content-Type: application/json; charset=utf-8');
+    header('X-Content-Type-Options: nosniff');
+    header('Cache-Control: no-store');
+    echo json_encode($adat, JSON_UNESCAPED_UNICODE);
+    if (function_exists('fastcgi_finish_request')) {
+        fastcgi_finish_request();
+    } elseif (function_exists('litespeed_finish_request')) {
+        litespeed_finish_request();
+    }
 }
 
 /** Felnőttek száma és gyerekek életkora a kérésből, ellenőrizve. */
