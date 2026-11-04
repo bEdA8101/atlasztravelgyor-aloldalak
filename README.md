@@ -12,6 +12,7 @@ A központ engedélyezte a tartalmak átvételét.
 | `vietnam/` | vietnam.atlasztravelgyor.hu | https://vietnam.atlasztravel.hu/ |
 | `bahari/` | bahari.atlasztravelgyor.hu | https://bahari.atlasztravel.hu/ (élő árakkal) |
 | `zanzibar/` | zanzibar.atlasztravelgyor.hu | https://zanzibar.atlasztravel.hu/ (teljes kereső élő adatokkal) |
+| `dominika/` | dominika.atlasztravelgyor.hu | saját oldal (`sajat/dominika/`), élő árakkal és foglalási igénnyel |
 
 **Előnézet** (a tárhely elkészültéig): https://beda8101.github.io/atlasztravelgyor-aloldalak/
 
@@ -24,6 +25,7 @@ feltoltes.json      mi hova kerüljön a tárhelyen (melyik mappa melyik aldomai
 .github/workflows/  automatikus feltöltés és napi frissítés a GitHubon
 urlap_kuldes.php    az ajánlatkérő űrlap e-mail-küldője (a program másolja az oldalak mellé)
 elo/                az élő adatos oldalak saját adatlekérői (PHP), lásd lent
+sajat/              a saját (nem a központtól átvett) oldalak forrása, pl. sajat/dominika/index.html
 eszkozok/           a győri logó (átlátszó hátterű PNG), a program minden oldal mellé másolja
 index.html          az előnézet nyitólapja (a program készíti)
 oman/, riu/, …      a KÉSZ oldalak – a program készíti, kézzel ne szerkeszd őket
@@ -55,6 +57,9 @@ szerverén futó kis programtól kéri. A győri változatban ezt a saját progr
 frissites.py az oldal mellé másol az `elo/` mappából:
 
 - `elo/cesys.php` – közös rész: lekérdezés a CeSYS-oldalakról, rövid tárolás, válasz.
+- `elo/kereso_motor.php` – közös keresőmotor (az oldal mellett `motor.php` néven): szállodák,
+  időpontok, szobák, pontos ár, last minute, levél. A zanzibar- és a dominika-oldal használja,
+  mindkettő a saját beállításaival (indulási helyek, célterület, szűrések).
 - `elo/bahari_proxy.php` – a bahari-oldal adatai (az oldal mellett `proxy.php` néven): a
   TUI BLUE Bahari pozsonyi, 7 éjszakás, all inclusive útjai az atlastravel.sk kínálatából.
   Gyerekes utazásnál a pontos végösszeget a CeSYS árszolgáltatása adja.
@@ -86,6 +91,22 @@ válasz után frissíti (ha a tárhely ezt engedi). A tárolt fájlokat a progra
 A két szállodás utaknál mindkét partszakasz látszik („Jambiani / Kiwengwa”), és a szűrő
 mindkettőnél megtalálja. Ha egy szállodánál rossz vagy hiányzó partszakaszt látsz, írd be a
 táblázat „szallodak” részébe (`"Szálloda neve": "Partszakasz"`), vagy kérd Claude-tól.
+
+**A dominika-oldal** (`elo/dominika_api.php`, az oldal mellett `api.php`): pozsonyi indulás közvetlen
+járattal (atlastravel.sk) és bécsi indulás átszállással (a győri oldal Amadeus-kínálata), csak 4 és
+5 csillagos szállodák, alapból all inclusive ellátással, és csak Punta Cana, Bávaro és Bayahibe
+területén. A területet a program a győri oldal területoldalaiból, a szálloda térképes helyéből és a
+forrás besorolásából állapítja meg; ha rosszul sorol be egy szállodát, írd be az
+`elo/dominika_regiok.json` táblázatba (`"Szálloda neve": "Bávaro"`).
+- **Ajánlatkérés:** név, e-mail, (telefon), az utasok száma, a gyerekek életkora, időszak, kérés.
+- **Foglalási igény:** szobánként (több szoba is lehet) minden utas teljes neve, ahogy az úti
+  okmányában szerepel, állampolgársága és születési dátuma; a fő (szerződő) utas lakcíme, e-mail-címe
+  és telefonszáma; az adatkezelési tájékoztató elfogadása. Ezeket az oldal és a program is ellenőrzi.
+  A levél a gyor@atlasztravel.hu címre megy, a program sehol nem tárolja az utasadatokat.
+
+A dominika-oldal saját oldal: a forrása a `sajat/dominika/index.html`. Ebben a `{{telefon}}`,
+`{{email}}`, `{{cim}}` stb. helyére a `frissites.py` a `GYOR` rész adatait írja, és ugyanúgy
+hozzáteszi a lábléc-tájékoztatót, mint a többi oldalhoz. Szöveget, képet itt kell módosítani.
 
 A források: az atlasztravelgyor.hu és az atlastravel.sk nyilvános adatszolgáltató címei
 (ugyanazok, amelyeket a böngésző is használ), valamint a CeSYS árszolgáltatása. A lekérdezések

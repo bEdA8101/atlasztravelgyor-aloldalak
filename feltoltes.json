@@ -4,7 +4,17 @@
     {
       "cel": "tesztoldal.atlasztravelgyor.hu",
       "forras": ".",
-      "csak": ["index.html", "oman", "riu", "mauritius", "maldiv", "vietnam", "bahari", "zanzibar"]
+      "csak": [
+        "index.html",
+        "oman",
+        "riu",
+        "mauritius",
+        "maldiv",
+        "vietnam",
+        "bahari",
+        "zanzibar",
+        "dominika"
+      ]
     }
   ]
 }
