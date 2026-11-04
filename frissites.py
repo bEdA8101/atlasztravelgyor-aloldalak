@@ -415,6 +415,12 @@ def frissit(nev):
         for i, utvonal in enumerate(fajlok, 1):
             hely = uj / utvonal
             hely.parent.mkdir(parents=True, exist_ok=True)
+            # a tartalom alapján elnevezett fájl (pl. kepek/0333f62a3c.webp) nem változik: a meglévőt használjuk újra
+            regi_fajl = cel / utvonal
+            if regi_fajl.is_file() and re.search(r"(?:^|/)[0-9a-f]{8,}(?:-kis)?\.[a-z0-9]+$", utvonal):
+                shutil.copyfile(regi_fajl, hely)
+                print(f"\r  képek: {i}/{len(fajlok)}", end="", flush=True)
+                continue
             try:
                 hely.write_bytes(letolt(forras + utvonal))
             except urllib.error.HTTPError as hiba:
