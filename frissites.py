@@ -51,12 +51,14 @@ OLDALAK = {
     "maldiv": "https://maldiv.atlasztravel.hu/",
     "vietnam": "https://vietnam.atlasztravel.hu/",
     "bahari": "https://bahari.atlasztravel.hu/",
+    "zanzibar": "https://zanzibar.atlasztravel.hu/",
 }
 
 # Élő adatos oldalak: a központ szerverén futó adatlekérő helyett a sajátunk kerül melléjük
 # (oldal: {fájlnév az oldal mellett: forrás az elo/ mappában}).
 ELO_FAJLOK = {
     "bahari": {"proxy.php": "elo/bahari_proxy.php", "cesys.php": "elo/cesys.php"},
+    "zanzibar": {"api.php": "elo/zanzibar_api.php", "cesys.php": "elo/cesys.php"},
 }
 
 # Előnézet: amíg nincs saját tárhely, az oldalak a GitHub Pages-en láthatók. Ilyenkor
@@ -155,6 +157,7 @@ def kozos_cserek(html, nev):
 
     # telefonszámok
     html = re.sub(r"tel:\+36\d{8,9}", "tel:" + g["telefon_link"], html)
+    html = re.sub(r"(?<![\d:])\+36\d{8,9}(?!\d)", g["telefon_link"], html)
     html = re.sub(MINTA_VAGY_TEL, lambda m: m.group(1) or g["telefon"], html)
     tel_a = r'<a [^>]*href="tel:' + re.escape(g["telefon_link"]) + r'"[^>]*>' + re.escape(g["telefon"]) + r"</a>"
     html = re.sub(rf"({tel_a})(?:\s*(?:,|·|<br>|vagy|és)?\s*{tel_a})+", r"\1", html)
@@ -168,7 +171,7 @@ def kozos_cserek(html, nev):
 
     # cégnév a láblécben, a címben és a megosztási adatokban
     html = re.sub(r"(©\s*\d{4}\s*Atlasz Travel)(?! Győr)", r"\1 Győr", html)
-    html = csere(html, r"(<title>[^<]*\| Atlasz [^<]*?)</title>", r"\1 – Győr</title>", "oldalcím", pontosan=1)
+    html = csere(html, r"(<title>[^<]*?(?:\||–) Atlasz [^<]*?)</title>", r"\1 – Győr</title>", "oldalcím", pontosan=1)
     html = re.sub(r'(<meta property="og:site_name" content="[^"]*?)"', r'\1 – Győr"', html)
     return html
 
@@ -276,6 +279,26 @@ def bahari_cserek(html):
                  "tartalék árak szűrése", pontosan=1, flags=re.S)
 
 
+def zanzibar_cserek(html):
+    g = GYOR
+    # a kapcsolati gombok mellé az iroda címe
+    html = csere(html, r'(<div class="cbtns">.*?<a class="cbtn alt" href="mailto:[^"]*">[^<]*</a>)',
+                 lambda m: f'{m.group(1)}\n      <a class="cbtn alt" {TERKEP_LINK}>{g["cim"]}</a>',
+                 "iroda címe a kapcsolatoknál", pontosan=1, flags=re.S)
+    html = csere(html, r'(<footer><div class="wrap">© <span id="yr"></span>) Atlasz Travel(</div></footer>)',
+                 lambda m: (f'{m.group(1)} {g["nev"]} · {g["cim"]} · <a href="tel:{g["telefon_link"]}">{g["telefon"]}</a>'
+                            f' · <a href="mailto:{g["email"]}">{g["email"]}</a>'
+                            f' · <a href="{g["weboldal"]}" target="_blank" rel="noopener">{g["weboldal_felirat"]}</a>{m.group(2)}'),
+                 "lábléc", pontosan=1)
+    html = csere(html, r'<span class="logo-text">Atlasz Travel</span>', f'<span class="logo-text">{g["nev"]}</span>',
+                 "szöveges logó", pontosan=1)
+    # programmegjegyzés: az árak forrása
+    html = csere(html, r'Az élő árakat az api\.php kéri le[^\n]*',
+                 'Az élő árakat az api.php kéri le (győri CeSYS-oldal, atlastravel.sk).', "forrás-megjegyzés", pontosan=1)
+    # a győri program nem küld másolatot az ügyfélnek (nyilvános űrlapról visszaélésre adna módot)
+    return csere(html, r'\s*A foglalás másolatát elküldtük az Ön e-mail-címére is\.', '', "másolat-ígéret", pontosan=1)
+
+
 OLDAL_CSEREK = {
     "oman": [oman_cserek],
     "riu": [riu_cserek],
@@ -283,6 +306,7 @@ OLDAL_CSEREK = {
     "maldiv": [premium_cserek],
     "vietnam": [vietnam_cserek],
     "bahari": [bahari_cserek],
+    "zanzibar": [zanzibar_cserek],
 }
 
 
@@ -310,8 +334,11 @@ def felesleges_torlese(html, mappa, megtart):
         if not fajl.is_file():
             continue
         utvonal = fajl.relative_to(mappa).as_posix()
-        hasznalt = (utvonal in html or utvonal in megtart
-                    or (utvonal.endswith("-kis.webp") and utvonal[:-len("-kis.webp")] + ".webp" in html))
+        def szerepel(ut):
+            # csak önálló hivatkozásként számít (a „logo.png” ne egyezzen az „…-gyor-logo.png”-vel)
+            return re.search(r"(?<![\w.-])" + re.escape(ut), html) is not None
+        hasznalt = (szerepel(utvonal) or utvonal in megtart
+                    or (utvonal.endswith("-kis.webp") and szerepel(utvonal[:-len("-kis.webp")] + ".webp")))
         if not hasznalt:
             fajl.unlink()
 
@@ -323,6 +350,8 @@ def ellenoriz(html, nev):
     for tel in set(re.findall(r"tel:\+\d+", html)) - {"tel:" + g["telefon_link"]}:
         hibak.append(f"idegen telefonlink: {tel}")
     for tel in {m.group(0) for m in re.finditer(MINTA_VAGY_TEL, html) if not m.group(1)} - {g["telefon"]}:
+        hibak.append(f"idegen telefonszám: {tel}")
+    for tel in set(re.findall(r"(?<![\d:])\+36\d{8,9}(?!\d)", html)) - {g["telefon_link"]}:
         hibak.append(f"idegen telefonszám: {tel}")
     for mail in set(re.findall(r"[\w.+\-]+@atlasztravel\.hu", html)) - {g["email"]}:
         hibak.append(f"idegen e-mail: {mail}")
