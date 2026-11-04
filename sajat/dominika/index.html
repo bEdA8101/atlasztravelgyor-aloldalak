@@ -127,6 +127,11 @@ section{padding:72px 0}
 .cfoot{margin-top:auto;display:flex;align-items:end;justify-content:space-between;gap:10px}
 .price small{display:block;font-size:12.5px;color:var(--muted);font-weight:600}
 .price b{font:800 24px/1.15 var(--display);color:var(--ink)}
+.best{margin:0 0 14px;padding:10px 12px;border-radius:14px;background:var(--sand);font-size:14px;color:var(--muted);min-height:44px}
+.best strong{color:var(--ink)}
+.best.wait{background:linear-gradient(100deg,var(--sand) 30%,#fff 50%,var(--sand) 70%);background-size:300% 100%;animation:sk 1.4s infinite}
+.stale{display:flex;flex-wrap:wrap;align-items:center;gap:12px;background:var(--sun);color:var(--ink);border-radius:16px;padding:12px 16px;margin:0 0 18px;font-weight:600}
+.stale[hidden]{display:none}
 .empty,.err{background:#fff;border:2px dashed var(--line);border-radius:var(--radius);padding:26px;text-align:center;color:var(--muted);grid-column:1/-1}
 .skel{height:390px;border-radius:var(--radius);background:linear-gradient(100deg,#fff 30%,var(--foam) 50%,#fff 70%);background-size:300% 100%;animation:sk 1.4s infinite}
 @keyframes sk{to{background-position:-150% 0}}
@@ -304,6 +309,7 @@ footer a{color:#fff}
       </div>
       <p id="status" role="status" aria-live="polite">Ajánlatok betöltése…</p>
     </div>
+    <div class="stale" id="stale" hidden role="status">A keresési feltételek megváltoztak.<button class="btn small" type="button" id="staleGo">Ajánlatok frissítése</button></div>
     <div class="filters" id="filters" hidden>
       <div role="group" aria-label="Terület" id="areaChips"></div>
       <span class="sp"></span>
@@ -332,8 +338,8 @@ footer a{color:#fff}
         <figure><img loading="lazy" src="https://i.ccdn.hu/acm/t/2dae1f3fe1b5cb153ff67304d5d5c806.webp" alt="Tengerparti szállodakomplexum Punta Canában, légi felvétel"><span class="tag pc">Punta Cana</span></figure>
         <div class="ab">
           <h3>Punta Cana</h3>
-          <p>A sziget keleti csücske, közel a Punta Cana-i nemzetközi repülőtérhez, így a transzfer rövid.</p>
-          <ul><li>hosszú, fehér homokos strandok</li><li>golfpályák, Cap Cana jachtkikötője</li><li>nagy, all inclusive üdülőhelyek</li></ul>
+          <p>A sziget keleti csücske, hosszú, fehér homokos strandokkal és nagy üdülőhelyekkel.</p>
+          <ul><li>rövid transzferidő a repülőtértől</li><li>golfpályák, Cap Cana jachtkikötője</li><li>nagy, all inclusive üdülőhelyek</li></ul>
           <button class="btn small" type="button" data-area="Punta Cana">Szállodák Punta Canában</button>
         </div>
       </article>
@@ -342,7 +348,7 @@ footer a{color:#fff}
         <div class="ab">
           <h3>Bávaro</h3>
           <p>A Punta Cana-i térség leghíresebb, kilométereken át húzódó partszakasza, a legtöbb szállodával.</p>
-          <ul><li>pálmafás, púderfinom homok</li><li>éttermek, bevásárlás, esti programok</li><li>családoknak és pároknak is</li></ul>
+          <ul><li>pálmafás, púderfinom homok</li><li>rövid transzferidő a repülőtértől</li><li>éttermek, bevásárlás, esti programok</li></ul>
           <button class="btn small" type="button" data-area="Bávaro">Szállodák Bávaróban</button>
         </div>
       </article>
@@ -351,7 +357,7 @@ footer a{color:#fff}
         <div class="ab">
           <h3>Bayahibe</h3>
           <p>A déli part nyugodtabb üdülőhelye La Romana közelében, Dominicus strandjával.</p>
-          <ul><li>kiindulópont a Saona-sziget felé</li><li>búvárkodás, sznorkelezés</li><li>a Punta Cana-i repülőtérről kb. 1,5 óra</li></ul>
+          <ul><li>kiindulópont a Saona-sziget felé</li><li>búvárkodás, sznorkelezés</li><li>rövid transzferidő a repülőtértől</li></ul>
           <button class="btn small" type="button" data-area="Bayahibe">Szállodák Bayahibében</button>
         </div>
       </article>
@@ -386,7 +392,7 @@ footer a{color:#fff}
       <div class="fact">
         <div class="ic" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-6-3-3-6 2-6-6-2 1 4 7-5 2-3-2-1 1z"/></svg></div>
         <h3>Repülés</h3>
-        <p>Pozsonyból közvetlen járattal kb. 10–11 óra a Punta Cana-i repülőtérig. Bécsből egy átszállással, jellemzően egy európai vagy észak-amerikai csomóponton át.</p>
+        <p>Pozsonyból közvetlen járattal kb. 10–11 óra. Bécsből egy átszállással, jellemzően egy európai vagy észak-amerikai csomóponton át. A repülőtérről a szállodába rövid transzfer visz.</p>
       </div>
       <div class="fact">
         <div class="ic" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/></svg></div>
@@ -586,6 +592,10 @@ async function search() {
   const q = readQ();
   if (!q.df || !q.dt || q.dt <= q.df) { $('status').textContent = 'Kérjük, adjon meg érvényes időszakot (a hazaérkezés az indulás utánra essen).'; return; }
   state.q = q; state.src = q.src; state.shown = PAGE;
+  bestGen++;
+  bestQueue.forEach(j => bestCache.delete(j.k));   // a még el sem kezdett árszámítások újra sorra kerülhetnek
+  bestQueue = [];
+  $('stale').hidden = true;
   $('status').textContent = 'Élő árak lekérdezése: ' + SRC[q.src].long + '…';
   $('cards').innerHTML = '<div class="skel"></div><div class="skel"></div><div class="skel"></div>';
   $('filters').hidden = true; $('moreBox').hidden = true;
@@ -603,6 +613,11 @@ async function search() {
   }
 }
 $('kereso').addEventListener('submit', e => { e.preventDefault(); search(); document.getElementById('ajanlatok').scrollIntoView(); });
+// ha a látogató a keresés után módosítja a feltételeket, jelezzük, hogy frissíteni kell
+const markStale = () => { if (state.q && qKey(readQ()) !== qKey(state.q)) $('stale').hidden = false; else $('stale').hidden = true; };
+['df', 'dt', 'nights', 'ac', 'cc', 'bi'].forEach(id => $(id).addEventListener('change', markStale));
+$('ages').addEventListener('change', markStale);
+$('staleGo').addEventListener('click', () => search());
 document.querySelectorAll('input[name=src]').forEach(r => r.addEventListener('change', () => search()));
 
 /* ---------- találatok ---------- */
@@ -620,24 +635,105 @@ function render() {
     `<button type="button" class="chip" data-a="${esc(a)}" aria-pressed="${state.area === a}">${a || 'Minden terület'}<span class="n">${cnt(a)}</span></button>`).join(' ');
   $('filters').hidden = state.hotels.length === 0;
   const l = filtered();
-  $('status').textContent = state.hotels.length ? `${l.length} szálloda – ${SRC[state.src].long}, ${compText(state.q.ac, state.q.ages)}` : '';
+  $('status').textContent = state.hotels.length ? `${l.length} szálloda – ${SRC[state.src].long}; árak ${compText(state.q.ac, state.q.ages)} részére, indulás ${dayY(state.q.df)} és hazaérkezés ${dayY(state.q.dt)} között, ${state.q.uf === state.q.ut ? state.q.uf : state.q.uf + '–' + state.q.ut} éjszaka` : '';
   if (!l.length) {
     $('cards').innerHTML = `<div class="empty">${state.hotels.length ? 'Ezzel a szűréssel nincs találat.' : 'Erre az időszakra most nincs szabad hely ' + (state.src === 'sk' ? 'Pozsonyból' : 'Bécsből') + '. Próbáljon más dátumot vagy a másik indulási helyet, vagy kérjen ajánlatot.'}</div>`;
     $('moreBox').hidden = true;
     return;
   }
-  $('cards').innerHTML = l.slice(0, state.shown).map((h, i) => card(h, i)).join('');
+  const shown = l.slice(0, state.shown);
+  $('cards').innerHTML = shown.map(h => card(h)).join('');
+  shown.forEach(h => paintBest(h.hotelId));
   $('moreBox').hidden = l.length <= state.shown;
+  needBest(shown);
+}
+/* ---------- teljes ár a megadott utasokra (a legolcsóbb indulás a megadott időszakban) ---------- */
+const bestCache = new Map();
+let bestQueue = [], bestRunning = 0, bestGen = 0;
+const qKey = q => qParams(q, {});
+function bestHTML(h) {
+  const r = bestCache.get(qKey(state.q) + '#' + h.hotelId);
+  const who = compText(state.q.ac, state.q.ages);
+  if (!r) return `<span>Ár számítása ${esc(who)} részére…</span>`;
+  if (r.none) return `<span>A megadott időszakban most nincs szabad hely ${esc(who)} részére.</span>`;
+  if (r.err) return `<span>Az ár most nem számítható ki – nyissa meg az időpontokat.</span>`;
+  if (r.notavail) return `<span>A megadott utasokkal ez a szálloda nem foglalható (pl. csak felnőtteknek szól). Kérjen ajánlatot, és keresünk mást.</span>`;
+  return `<span>Legolcsóbb indulás: <strong>${day(r.date.from)} – ${day(r.date.to)}</strong> (${r.date.nights} éj)</span>`
+    + (r.total ? '' : `<br><span>A pontos árat a szoba kiválasztásakor adjuk meg.</span>`);
+}
+// a kártya árrésze: ha már megvan, a megadott utasokra számolt teljes ár a fő ár, a fejenkénti ár csak kicsiben
+function priceHTML(h) {
+  const r = bestCache.get(qKey(state.q) + '#' + h.hotelId);
+  const perPerson = h.priceHuf > 0 ? huf(h.priceHuf) : '';
+  if (r && r.total) {
+    return `<small>összesen, ${esc(compText(state.q.ac, state.q.ages))}</small><b>${huf(r.total)}</b>`
+      + `<small>${r.totalEur ? eur(r.totalEur) + ' · ' : ''}${perPerson ? perPerson + '/fő-től' : ''}</small>`;
+  }
+  return `<small>ár/fő-től</small><b>${perPerson || 'Ár kérésre'}</b>${state.src === 'sk' && h.priceEur ? `<small>${eur(h.priceEur)}/fő</small>` : ''}`;
+}
+function paintBest(id) {
+  const el = document.querySelector('[data-best="' + id + '"]');
+  const pr = document.querySelector('[data-price="' + id + '"]');
+  const h = state.hotels.find(x => String(x.hotelId) === String(id));
+  if (!h) return;
+  if (el) { el.innerHTML = bestHTML(h); el.classList.toggle('wait', !bestCache.get(qKey(state.q) + '#' + id)); }
+  if (pr) pr.innerHTML = priceHTML(h);
+}
+function needBest(list) {
+  const key = qKey(state.q);
+  list.forEach(h => {
+    const k = key + '#' + h.hotelId;
+    if (bestCache.has(k)) return;
+    bestCache.set(k, null);
+    bestQueue.push({h, k, q: state.q, src: state.src, gen: bestGen});
+  });
+  pumpBest();
+}
+function pumpBest() {
+  while (bestRunning < 3 && bestQueue.length) {
+    const job = bestQueue.shift();
+    if (job.gen !== bestGen) { bestCache.delete(job.k); continue; }
+    bestRunning++;
+    computeBest(job).finally(() => { bestRunning--; pumpBest(); });
+  }
+}
+async function computeBest(job) {
+  const {h, k, q, src} = job;
+  try {
+    const j = await getJSON(API + '?' + qParams(q, {action: 'dates', hotel: h.hotelId}));
+    const ds = (j.dates || []).filter(x => x.priceHuf > 0);
+    if (!ds.length) { bestCache.set(k, {none: true}); }
+    else {
+      const sorted = ds.slice().sort((a, b) => a.priceHuf - b.priceHuf);
+      let x = sorted[0], total = null, totalEur = null;
+      if (!q.ages.length) { total = x.priceHuf * q.ac; totalEur = x.priceEur ? x.priceEur * q.ac : null; }
+      else {
+        // gyerekkel a végösszeget a forrás számolja; ha a legolcsóbb napra nem ad árat, a következőt is megnézzük
+        let nemFoglalhato = 0;
+        const probak = sorted.slice(0, 2);
+        for (const y of probak) {
+          const p = src === 'at' ? new URLSearchParams({action: 'price_at', code: y.room, date: y.id})
+            : new URLSearchParams({action: 'price', src: 'sk', date: y.id, room: y.room, ac: q.ac, ages: q.ages.join(',')});
+          const pr = await getJSON(API + '?' + p).catch(() => null);
+          if (pr && pr.ok && pr.available !== false && pr.totalHuf) { x = y; total = pr.totalHuf; totalEur = pr.totalEur || null; break; }
+          if (pr && pr.ok && pr.available === false) nemFoglalhato++;
+        }
+        if (!total && nemFoglalhato === probak.length) { bestCache.set(k, {notavail: true}); if (state.q && k === qKey(state.q) + '#' + h.hotelId) paintBest(h.hotelId); return; }
+      }
+      bestCache.set(k, {date: x, total, totalEur});
+    }
+  } catch (e) { bestCache.set(k, {err: true}); }
+  if (state.q && k === qKey(state.q) + '#' + h.hotelId) paintBest(h.hotelId);   // ha közben nem kerestek mást
 }
 function card(h) {
   const img = imgOf(h);
   const feat = (h.features || []).filter(f => f && f !== h.board).slice(0, 3);
-  const eurTxt = state.src === 'sk' && h.priceEur ? `<small>${eur(h.priceEur)}/fő</small>` : '';
   return `<article class="card"><div class="cimg">${img ? `<img loading="lazy" src="${esc(img)}" alt="" onerror="this.remove()">` : ''}<span class="tag ${AREA_CLS[h.region] || ''}">${esc(h.region)}</span></div>
     <div class="cbody"><div class="stars" aria-label="${h.stars ? h.stars + ' csillag' : ''}">${stars(h.stars)}</div><h3>${esc(h.name)}</h3>
     <p class="meta">${esc(h.board || 'Ellátás a szobától függ')} · ${esc(SRC[state.src].long)}</p>
     ${feat.length ? `<ul class="feat">${feat.map(f => `<li>${esc(f)}</li>`).join('')}</ul>` : ''}
-    <div class="cfoot"><div class="price"><small>ár/fő-től</small><b>${h.priceHuf > 0 ? huf(h.priceHuf) : 'Ár kérésre'}</b>${eurTxt}</div>
+    <div class="best" data-best="${h.hotelId}">${bestHTML(h)}</div>
+    <div class="cfoot"><div class="price" data-price="${h.hotelId}">${priceHTML(h)}</div>
     <button class="btn small" type="button" data-h="${h.hotelId}">Időpontok és árak</button></div></div></article>`;
 }
 $('areaChips').addEventListener('click', e => { const b = e.target.closest('[data-a]'); if (b) { state.area = b.dataset.a; state.shown = PAGE; render(); } });
