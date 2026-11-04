@@ -75,6 +75,12 @@ csak „Zanzibar”-t ír. Ilyenkor a program így pótolja a partszakaszt, ebbe
 5. a szálloda győri adatlapján levő térképes hely: a legközelebbi partszakasz, legfeljebb 6 km-re.
    A partszakaszok középpontját a győri aloldalakról veszi, a többit a táblázat „helyek” részéből.
 
+**Last minute doboz a zanzibar-oldalon.** Indulási helyenként a 3 legolcsóbb, a következő
+14 napban **induló** 6–21 éjszakás út (a hazaérkezés lehet később is). A lista fél óráig
+érvényes; ha ennél régebbi, de 3 óránál frissebb, a látogató azonnal ezt kapja, és a program a
+válasz után frissíti (ha a tárhely ezt engedi). A tárolt fájlokat a program magától törli
+(a legtöbbet 2 nap után).
+
 A két szállodás utaknál mindkét partszakasz látszik („Jambiani / Kiwengwa”), és a szűrő
 mindkettőnél megtalálja. Ha egy szállodánál rossz vagy hiányzó partszakaszt látsz, írd be a
 táblázat „szallodak” részébe (`"Szálloda neve": "Partszakasz"`), vagy kérd Claude-tól.
