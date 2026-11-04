@@ -23,7 +23,23 @@ function cesys_lekerdezes(array $parok): string
     return implode('&', $reszek);
 }
 
-function cesys_get(string $url): ?array
+/** Hibanapló: a forrásoldalak kimaradásai (idő, cím lekérdezés nélkül, ok), az utolsó ~100 bejegyzés. */
+function naplo(string $url, string $ok): void
+{
+    $fajl = gyorsitotar_fajl('hibanaplo');
+    $sorok = is_file($fajl) ? (json_decode((string)file_get_contents($fajl), true) ?: []) : [];
+    $sorok[] = ['ido' => date('c'), 'cim' => strtok($url, '?'), 'ok' => mb_substr($ok, 0, 120)];
+    gyorsitotar_ir('hibanaplo', array_slice($sorok, -100));
+}
+
+function hibanaplo(int $db = 30): array
+{
+    $fajl = gyorsitotar_fajl('hibanaplo');
+    $sorok = is_file($fajl) ? (json_decode((string)file_get_contents($fajl), true) ?: []) : [];
+    return array_slice($sorok, -$db);
+}
+
+function cesys_kezelo(string $url)
 {
     $ch = curl_init($url);
     curl_setopt_array($ch, [
@@ -33,14 +49,40 @@ function cesys_get(string $url): ?array
         CURLOPT_ENCODING => '',
         CURLOPT_HTTPHEADER => ['Accept: application/json', 'X-Requested-With: XMLHttpRequest'],
     ]);
-    $valasz = curl_exec($ch);
-    $kod = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
-    curl_close($ch);
-    if ($valasz === false || $kod !== 200) {
+    return $ch;
+}
+
+/** A válasz feldolgozása; ha nem jó, bekerül a hibanaplóba. */
+function cesys_valasz($ch, string $url, $valasz): ?array
+{
+    $kod = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+    if ($valasz === false || $valasz === null || $kod !== 200) {
+        naplo($url, $kod ? "HTTP $kod" : ('a kapcsolat megszakadt vagy túl lassú' . (curl_error($ch) ? ': ' . curl_error($ch) : '')));
         return null;
     }
-    $adat = json_decode($valasz, true);
-    return is_array($adat) ? $adat : null;
+    $adat = json_decode((string)$valasz, true);
+    if (!is_array($adat)) {
+        naplo($url, 'nem JSON válasz: ' . substr(preg_replace('/\s+/', ' ', strip_tags((string)$valasz)), 0, 60));
+        return null;
+    }
+    return $adat;
+}
+
+/** Egy JSON-GET; ha nem sikerül, egyszer újrapróbálja. */
+function cesys_get(string $url): ?array
+{
+    for ($proba = 0; $proba < 2; $proba++) {
+        if ($proba) {
+            usleep(800000);
+        }
+        $ch = cesys_kezelo($url);
+        $adat = cesys_valasz($ch, $url, curl_exec($ch));
+        curl_close($ch);
+        if ($adat !== null) {
+            return $adat;
+        }
+    }
+    return null;
 }
 
 /** Több JSON-GET párhuzamosan (pl. a találati lista több oldala). Kulcs szerint adja vissza a válaszokat. */
@@ -51,14 +93,7 @@ function cesys_get_tobb(array $cimek, int $egyszerre = 4): array
         $multi = curl_multi_init();
         $kezelok = [];
         foreach ($csomag as $kulcs => $cim) {
-            $ch = curl_init($cim);
-            curl_setopt_array($ch, [
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_TIMEOUT => CESYS_IDOKORLAT,
-                CURLOPT_USERAGENT => CESYS_UA,
-                CURLOPT_ENCODING => '',
-                CURLOPT_HTTPHEADER => ['Accept: application/json', 'X-Requested-With: XMLHttpRequest'],
-            ]);
+            $ch = cesys_kezelo($cim);
             curl_multi_add_handle($multi, $ch);
             $kezelok[$kulcs] = $ch;
         }
@@ -69,12 +104,20 @@ function cesys_get_tobb(array $cimek, int $egyszerre = 4): array
             }
         } while ($fut && $allapot === CURLM_OK);
         foreach ($kezelok as $kulcs => $ch) {
-            $adat = curl_getinfo($ch, CURLINFO_RESPONSE_CODE) === 200 ? json_decode((string)curl_multi_getcontent($ch), true) : null;
-            $eredmeny[$kulcs] = is_array($adat) ? $adat : null;
+            $eredmeny[$kulcs] = cesys_valasz($ch, $csomag[$kulcs], curl_multi_getcontent($ch));
             curl_multi_remove_handle($multi, $ch);
             curl_close($ch);
         }
         curl_multi_close($multi);
+    }
+    // ami nem jött meg, azt egyenként, kis szünettel még egyszer megpróbáljuk
+    foreach ($eredmeny as $kulcs => $adat) {
+        if ($adat === null) {
+            usleep(800000);
+            $ch = cesys_kezelo($cimek[$kulcs]);
+            $eredmeny[$kulcs] = cesys_valasz($ch, $cimek[$kulcs], curl_exec($ch));
+            curl_close($ch);
+        }
     }
     return $eredmeny;
 }
