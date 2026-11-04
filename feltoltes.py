@@ -176,7 +176,9 @@ def cel_feltoltese(tarhely, cel, proba):
     if not tarhely.letezik_mappa(celmappa):
         tartalom = ", ".join(sorted(tarhely.lista(tarhely.gyoker))) or "(üres)"
         raise FeltoltesHiba(f"A tárhelyen nincs '{nev}' mappa. Az FTP-fiók gyökerében ezek vannak: {tartalom}. "
-                            "Hozd létre az aldomaint a tárhely felületén, vagy javítsd a feltoltes.json-t.")
+                            "Ha itt nem az aldomainek mappái látszanak, az FTP-fiók mappáját a tárhely felületén "
+                            "(FTP Accounts) a fő mappára (/home/<felhasználónév>) kell állítani. Ha a mappa hiányzik, "
+                            "hozd létre az aldomaint a tárhely felületén, vagy javítsd a feltoltes.json-t.")
 
     regi_nyers = tarhely.letolt(posixpath.join(celmappa, ALLAPOTFAJL))
     regi = json.loads(regi_nyers) if regi_nyers else {}
