@@ -10,6 +10,7 @@ A központ engedélyezte a tartalmak átvételét.
 | `mauritius/` | mauritius.atlasztravelgyor.hu | https://mauritius.atlasztravel.hu/ |
 | `maldiv/` | maldiv.atlasztravelgyor.hu | https://maldiv.atlasztravel.hu/ |
 | `vietnam/` | vietnam.atlasztravelgyor.hu | https://vietnam.atlasztravel.hu/ |
+| `bahari/` | bahari.atlasztravelgyor.hu | https://bahari.atlasztravel.hu/ (élő árakkal) |
 
 **Előnézet** (a tárhely elkészültéig): https://beda8101.github.io/atlasztravelgyor-aloldalak/
 
@@ -21,6 +22,7 @@ feltoltes.py        feltölti a kész oldalakat a tárhelyre (FTP), csak a vált
 feltoltes.json      mi hova kerüljön a tárhelyen (melyik mappa melyik aldomainhez)
 .github/workflows/  automatikus feltöltés és napi frissítés a GitHubon
 urlap_kuldes.php    az ajánlatkérő űrlap e-mail-küldője (a program másolja az oldalak mellé)
+elo/                az élő adatos oldalak saját adatlekérői (PHP), lásd lent
 eszkozok/           a győri logó (átlátszó hátterű PNG), a program minden oldal mellé másolja
 index.html          az előnézet nyitólapja (a program készíti)
 oman/, riu/, …      a KÉSZ oldalak – a program készíti, kézzel ne szerkeszd őket
@@ -42,6 +44,24 @@ oman/, riu/, …      a KÉSZ oldalak – a program készíti, kézzel ne szerke
 
 A győri adatok a `frissites.py` elején, a `GYOR` részben vannak. A program futtatásához a
 Python mellett a Pillow csomag kell (`pip install pillow`).
+
+## Élő adatok (árak, időpontok, szobák)
+
+Néhány központi aloldal (bahari, zanzibar, mscutak) az árakat és időpontokat a központ
+szerverén futó kis programtól kéri. A győri változatban ezt a saját programunk végzi, amely a
+frissites.py az oldal mellé másol az `elo/` mappából:
+
+- `elo/cesys.php` – közös rész: lekérdezés a CeSYS-oldalakról, rövid tárolás, válasz.
+- `elo/bahari_proxy.php` – a bahari-oldal adatai (az oldal mellett `proxy.php` néven): a
+  TUI BLUE Bahari pozsonyi, 7 éjszakás, all inclusive útjai az atlastravel.sk kínálatából.
+  Gyerekes utazásnál a pontos végösszeget a CeSYS árszolgáltatása adja.
+
+A források: az atlasztravelgyor.hu és az atlastravel.sk nyilvános adatszolgáltató címei
+(ugyanazok, amelyeket a böngésző is használ), valamint a CeSYS árszolgáltatása. A lekérdezések
+nyíltan megnevezik magukat („AtlaszTravelGyor-arfrissito”), és egy keresés eredményét a program
+fél óráig megjegyzi (a tárhelyen az oldal melletti `.gyorsitotar` mappában), így a forrásokat
+nem terheli. Ha a forrás épp nem elérhető, a legutóbbi (legfeljebb egynapos) adatot adja, vagy az
+oldal a saját tartalék áraira vált.
 
 ## Módosítás
 

@@ -24,6 +24,10 @@ Ez a tároló az atlasztravelgyor.hu aloldalait tartalmazza: a központi Atlasz 
 - Feltöltés: a `feltoltes.py` és a `.github/workflows/` munkafolyamatai végzik (minden push után
   és naponta). Az FTP-adatok csak GitHub-titkokban lehetnek, soha ne kerüljenek fájlba vagy naplóba.
   Új aldomain: a felhasználó létrehozza a tárhelyen, utána vedd fel a `feltoltes.json`-ba.
+- Élő adatok: az `elo/` mappa PHP-programjai (a frissites.py `ELO_FAJLOK` szerint másolja őket).
+  A forrás a CeSYS nyilvános adatszolgáltató címei (atlasztravelgyor.hu, atlastravel.sk,
+  api-ng.cesys.eu). A lekérdezés mindig nevezze meg magát (CESYS_UA), használja a gyorsítótárat,
+  és soha ne próbálja megkerülni a robotszűrőket (álcázott böngésző, ellenőrzés kijátszása).
 - `ELONEZET = True`, amíg az oldalak csak a GitHub Pages előnézetben futnak; élesítéskor `False`.
 - Külön, kis commitokat készíts, érthető magyar leírással.
 - Soha ne commitolj jelszót, API-kulcsot vagy ügyféladatot (például tesztűrlapból származó adatot).
