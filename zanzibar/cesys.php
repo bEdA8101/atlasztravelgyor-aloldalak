@@ -243,6 +243,33 @@ function gyorsitotar_ir(string $kulcs, array $adat): void
     }
 }
 
+/**
+ * A tárolt válaszok közül törli a régieket (alapból a 2 napnál régebbieket; $kivetelek: kulcs-eleje -> másodperc),
+ * hogy a tárhelyen ne gyűljenek a fájlok. Óránként legfeljebb egyszer fut.
+ */
+function gyorsitotar_takaritas(array $kivetelek = [], int $alap = 2 * 86400): void
+{
+    $mappa = __DIR__ . '/.gyorsitotar';
+    $jel = $mappa . '/.takaritas';
+    if (!is_dir($mappa) || (is_file($jel) && time() - (int)filemtime($jel) < 3600)) {
+        return;
+    }
+    @touch($jel);
+    foreach (glob($mappa . '/*.json') ?: [] as $fajl) {
+        $nev = basename($fajl);
+        $maxKor = $alap;
+        foreach ($kivetelek as $eleje => $kor) {
+            if (strncmp($nev, $eleje, strlen($eleje)) === 0) {
+                $maxKor = $kor;
+                break;
+            }
+        }
+        if (time() - (int)@filemtime($fajl) > $maxKor) {
+            @unlink($fajl);
+        }
+    }
+}
+
 function json_valasz(array $adat, int $kod = 200): void
 {
     http_response_code($kod);
@@ -251,6 +278,28 @@ function json_valasz(array $adat, int $kod = 200): void
     header('Cache-Control: no-store');
     echo json_encode($adat, JSON_UNESCAPED_UNICODE);
     exit;
+}
+
+/** Igaz, ha a tárhely engedi, hogy a program a válasz elküldése után tovább dolgozzon (PHP-FPM vagy LiteSpeed). */
+function valasz_utan_folytathato(): bool
+{
+    return function_exists('fastcgi_finish_request') || function_exists('litespeed_finish_request');
+}
+
+/** Elküldi a választ, lezárja a kapcsolatot, és a program tovább fut (pl. a tárolt adat frissítésére). */
+function valasz_es_folytatas(array $adat): void
+{
+    ignore_user_abort(true);
+    @set_time_limit(180);
+    header('Content-Type: application/json; charset=utf-8');
+    header('X-Content-Type-Options: nosniff');
+    header('Cache-Control: no-store');
+    echo json_encode($adat, JSON_UNESCAPED_UNICODE);
+    if (function_exists('fastcgi_finish_request')) {
+        fastcgi_finish_request();
+    } elseif (function_exists('litespeed_finish_request')) {
+        litespeed_finish_request();
+    }
 }
 
 /** Felnőttek száma és gyerekek életkora a kérésből, ellenőrizve. */

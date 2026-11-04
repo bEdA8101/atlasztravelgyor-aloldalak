@@ -777,7 +777,7 @@ window.zImgErr = function(el){
         return {best, count: d.dates.length, price: {ok:true, available:true, totalHuf: tot, totalEur: tot ? best.priceEur * ctx.comp.ac : null,
                 airline: best.flight ? best.flight.airline : null, stops: best.flight ? best.flight.stops : null}};
       }
-      const q = new URLSearchParams(ctx.params.src === 'at' ? {action:'price_at', code: best.room} : {action:'price', date: best.id, room: best.room});
+      const q = new URLSearchParams(ctx.params.src === 'at' ? {action:'price_at', code: best.room, date: best.id} : {action:'price', date: best.id, room: best.room});
       q.set('ac', ctx.comp.ac); if(ctx.comp.ages.length) q.set('ages', ctx.comp.ages.join(','));
       return fetch(API + '?' + q.toString()).then(r => r.json()).catch(() => null)
         .then(p => ({best, count: d.dates.length, price: (p && p.ok) ? p : null}));
@@ -951,7 +951,7 @@ window.zImgErr = function(el){
       f.scrollIntoView({block:'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
       return;
     }
-    const q = compQuery(new URLSearchParams(dctx.params.src === 'at' ? {action:'price_at', code: r.id} : {action:'price', date: x.id, room: r.id}));
+    const q = compQuery(new URLSearchParams(dctx.params.src === 'at' ? {action:'price_at', code: r.id, date: x.id} : {action:'price', date: x.id, room: r.id}));
     fetch(API + '?' + q.toString()).then(res => res.json()).then(p => {
       const t = $('d-total'); if(!t || state.sel.room !== r) return;
       if(p.ok && p.available && p.totalHuf){ state.sel.total = p.totalHuf; t.innerHTML = 'Összesen '+esc(compLabel(dctx.comp))+' részére: <strong>'+huf(p.totalHuf)+'</strong>'; }
