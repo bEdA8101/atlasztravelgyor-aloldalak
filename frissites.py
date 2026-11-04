@@ -58,7 +58,7 @@ OLDALAK = {
 # (oldal: {fájlnév az oldal mellett: forrás az elo/ mappában}).
 ELO_FAJLOK = {
     "bahari": {"proxy.php": "elo/bahari_proxy.php", "cesys.php": "elo/cesys.php"},
-    "zanzibar": {"api.php": "elo/zanzibar_api.php", "cesys.php": "elo/cesys.php"},
+    "zanzibar": {"api.php": "elo/zanzibar_api.php", "cesys.php": "elo/cesys.php", "regiok.json": "elo/zanzibar_regiok.json"},
 }
 
 # Előnézet: amíg nincs saját tárhely, az oldalak a GitHub Pages-en láthatók. Ilyenkor
@@ -303,6 +303,12 @@ def zanzibar_cserek(html):
     html = csere(html, re.escape(regi_src), lambda m: uj_src, "képcímek", pontosan=1)
     html = csere(html, re.escape("const imgUrl = h => API + '?action=img&h=' + imgHash(h);"),
                  lambda m: "const imgUrl = h => 'https://i.ccdn.hu/acm/t/' + imgHash(h) + '.webp';", "képcím-segéd", pontosan=1)
+    # két szállodás utak: a partszakasz „A / B”; a szűrő mindkét partszakasznál mutassa
+    html = csere(html, re.escape("const regions = [...new Set(state.hotels.map(h => h.region).filter(Boolean))]"),
+                 lambda m: "const regions = [...new Set(state.hotels.flatMap(h => (h.region || '').split(' / ')).filter(Boolean))]",
+                 "partszakasz-lista", pontosan=1)
+    html = csere(html, re.escape("(!r || h.region === r) &&"),
+                 lambda m: "(!r || (h.region || '').split(' / ').includes(r)) &&", "partszakasz-szűrő", pontosan=1)
     # a győri program nem küld másolatot az ügyfélnek (nyilvános űrlapról visszaélésre adna módot)
     return csere(html, r'\s*A foglalás másolatát elküldtük az Ön e-mail-címére is\.', '', "másolat-ígéret", pontosan=1)
 
