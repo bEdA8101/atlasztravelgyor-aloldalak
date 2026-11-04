@@ -62,6 +62,23 @@ frissites.py az oldal mellé másol az `elo/` mappából:
   atlastravel.sk-ról. Az ajánlatkérést és a foglalást levélben küldi a gyor@atlasztravel.hu címre
   (az ügyfélnek nem küld másolatot). Forrásonként egyszerre legfeljebb 2–3 kérést küld.
 
+A zanzibar-oldal szállodafotói közvetlenül a CeSYS képtárából (i.ccdn.hu, i.ccdn.sk, f.ccdn.hu)
+töltődnek, nem a tárhelyen keresztül.
+
+**Partszakaszok (régiók) a zanzibar-oldalon.** A bécsi és a pozsonyi kínálatban a forrás sokszor
+csak „Zanzibar”-t ír. Ilyenkor a program így pótolja a partszakaszt, ebben a sorrendben:
+
+1. a kézzel szerkeszthető táblázat: `elo/zanzibar_regiok.json`, „szallodak” rész;
+2. a győri oldal partszakasz-aloldalai (www.atlasztravelgyor.hu/tanzania/zanzibar/…);
+3. pozsonyi utaknál a győri oldal pozsonyi indulású kínálata, ahol a partszakasz szerepel;
+4. ugyanaz a szálloda egy másik forrásban, illetve a névben szereplő helynév;
+5. a szálloda győri adatlapján levő térképes hely: a legközelebbi partszakasz, legfeljebb 6 km-re.
+   A partszakaszok középpontját a győri aloldalakról veszi, a többit a táblázat „helyek” részéből.
+
+A két szállodás utaknál mindkét partszakasz látszik („Jambiani / Kiwengwa”), és a szűrő
+mindkettőnél megtalálja. Ha egy szállodánál rossz vagy hiányzó partszakaszt látsz, írd be a
+táblázat „szallodak” részébe (`"Szálloda neve": "Partszakasz"`), vagy kérd Claude-tól.
+
 A források: az atlasztravelgyor.hu és az atlastravel.sk nyilvános adatszolgáltató címei
 (ugyanazok, amelyeket a böngésző is használ), valamint a CeSYS árszolgáltatása. A lekérdezések
 nyíltan megnevezik magukat („AtlaszTravelGyor-arfrissito”), és egy keresés eredményét a program
