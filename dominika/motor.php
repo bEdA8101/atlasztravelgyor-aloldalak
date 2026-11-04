@@ -644,6 +644,11 @@ function idopontok(array $k, int $szalloda, array $elore = []): ?array
 
 function cesys_ar(string $src, int $datum, int $szoba, int $felnott, array $korok): array
 {
+    $kulcs = kulcs('ar', [$src, $datum, $szoba, $felnott, $korok]);   // fél óráig megjegyezzük (a kártyák is kérik)
+    $tarolt = gyorsitotar_olvas($kulcs, ERVENYES);
+    if ($tarolt !== null) {
+        return $tarolt;
+    }
     $sz = AR_SZOLGALTATAS[$src];
     $valasz = cesys_post_tobb($sz['url'], [0 => [
         'client_id' => $sz['client_id'], 'customer_id' => $sz['customer_id'],
@@ -655,7 +660,7 @@ function cesys_ar(string $src, int $datum, int $szoba, int $felnott, array $koro
     }
     $elerheto = in_array($d['availability'] ?? '', ['OK', 'RQ'], true);
     $ti = $d['travel_info'] ?? [];
-    return [
+    $eredmeny = [
         'ok' => true, 'available' => $elerheto,
         'totalHuf' => isset($d['total_price']['HUF']) ? (int)round((float)$d['total_price']['HUF'])
             : (isset($d['total_price']['EUR']) ? (int)round((float)$d['total_price']['EUR'] * ARFOLYAM) : null),
@@ -664,10 +669,17 @@ function cesys_ar(string $src, int $datum, int $szoba, int $felnott, array $koro
         'airline' => null, 'stops' => null,
         'start' => $ti['outbound_arrival_date'] ?? null, 'end' => $ti['inbound_departure_date'] ?? null,
     ];
+    gyorsitotar_ir($kulcs, $eredmeny);
+    return $eredmeny;
 }
 
 function amadeus_ar(string $kod, string $idopont): array
 {
+    $kulcs = kulcs('arat', [$kod]);
+    $tarolt = gyorsitotar_olvas($kulcs, ERVENYES);
+    if ($tarolt !== null) {
+        return $tarolt;
+    }
     $csoport = $idopont !== '' ? gyorsitotar_olvas('amadeus-' . substr(sha1($idopont), 0, 20), 86400) : null;
     $ajanlat = $csoport['ajanlatok'][substr(sha1($kod), 0, 20)] ?? null;
     $adat = $ajanlat ? ['cid' => $ajanlat[0], 'hash' => $ajanlat[1], 'from' => $csoport['from'], 'to' => $csoport['to']] : null;
@@ -682,13 +694,15 @@ function amadeus_ar(string $kod, string $idopont): array
         return ['ok' => false, 'message' => 'Az ár most nem kérdezhető le.'];
     }
     $jarat = is_array($d['flight_info'] ?? null) ? jarat(['flight_info' => $d['flight_info']]) : null;
-    return [
+    $eredmeny = [
         'ok' => true, 'available' => in_array($d['availability'] ?? '', ['OK', 'RQ'], true),
         'totalHuf' => isset($d['total_price']['HUF']) ? (int)round((float)$d['total_price']['HUF']) : null,
         'totalEur' => isset($d['total_price']['EUR']) ? round((float)$d['total_price']['EUR'], 2) : null,
         'airline' => $jarat['airline'] ?? null, 'stops' => $jarat['stops'] ?? null,
         'start' => $adat['from'], 'end' => $adat['to'],
     ];
+    gyorsitotar_ir($kulcs, $eredmeny);
+    return $eredmeny;
 }
 
 /** A last minute doboz: forrásonként a 3 legolcsóbb szálloda, amelynek van útja a df–dt időszakban induló. */
