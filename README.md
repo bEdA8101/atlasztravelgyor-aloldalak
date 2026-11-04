@@ -66,8 +66,10 @@ A források: az atlasztravelgyor.hu és az atlastravel.sk nyilvános adatszolgá
 (ugyanazok, amelyeket a böngésző is használ), valamint a CeSYS árszolgáltatása. A lekérdezések
 nyíltan megnevezik magukat („AtlaszTravelGyor-arfrissito”), és egy keresés eredményét a program
 fél óráig megjegyzi (a tárhelyen az oldal melletti `.gyorsitotar` mappában), így a forrásokat
-nem terheli. Ha a forrás épp nem elérhető, a legutóbbi (legfeljebb egynapos) adatot adja, vagy az
-oldal a saját tartalék áraira vált.
+nem terheli. Ha a forrás épp nem elérhető, a legutóbbi (legfeljebb egynapos) adatot adja (a válaszban
+`"elavult": true`), vagy az oldal a saját tartalék áraira vált. A meg nem jött kéréseket egyszer
+újrapróbálja, a kimaradásokat hibanaplóba írja; a zanzibar-oldalon ez így nézhető meg:
+`https://<aloldal>/zanzibar/api.php?action=allapot` (az utolsó 30 kimaradás ideje, címe és oka).
 
 ## Módosítás
 
