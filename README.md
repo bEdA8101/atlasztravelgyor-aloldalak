@@ -42,6 +42,8 @@ oman/, riu/, …      a KÉSZ oldalak – a program készíti, kézzel ne szerke
 - Az oldalcímbe és a megosztási adatokba bekerül a „Győr” szó, a saját cím pedig az
   `<aldomain>.atlasztravelgyor.hu` lesz.
 - Az oldalba ágyazott képeket külön fájlba teszi, így az oldalak gyorsabban töltődnek.
+- Minden oldal láblécének aljára kis, halvány betűvel bekerül az általános tájékoztató (az árak
+  tájékoztató jellegűek stb.). A szövege a `frissites.py` elején, a `LABLEC_TAJEKOZTATO` részben van.
 
 A győri adatok a `frissites.py` elején, a `GYOR` részben vannak. A program futtatásához a
 Python mellett a Pillow csomag kell (`pip install pillow`).
