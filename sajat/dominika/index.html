@@ -596,7 +596,7 @@ async function search() {
   bestQueue.forEach(j => bestCache.delete(j.k));   // a még el sem kezdett árszámítások újra sorra kerülhetnek
   bestQueue = [];
   $('stale').hidden = true;
-  $('status').textContent = 'Élő árak lekérdezése: ' + SRC[q.src].long + '…';
+  $('status').textContent = 'Ajánlatok betöltése…';
   $('cards').innerHTML = '<div class="skel"></div><div class="skel"></div><div class="skel"></div>';
   $('filters').hidden = true; $('moreBox').hidden = true;
   try {
@@ -635,7 +635,7 @@ function render() {
     `<button type="button" class="chip" data-a="${esc(a)}" aria-pressed="${state.area === a}">${a || 'Minden terület'}<span class="n">${cnt(a)}</span></button>`).join(' ');
   $('filters').hidden = state.hotels.length === 0;
   const l = filtered();
-  $('status').textContent = state.hotels.length ? `${l.length} szálloda – ${SRC[state.src].long}; árak ${compText(state.q.ac, state.q.ages)} részére, indulás ${dayY(state.q.df)} és hazaérkezés ${dayY(state.q.dt)} között, ${state.q.uf === state.q.ut ? state.q.uf : state.q.uf + '–' + state.q.ut} éjszaka` : '';
+  $('status').textContent = '';   // a keresési feltételek csak a keresőben látszanak
   if (!l.length) {
     $('cards').innerHTML = `<div class="empty">${state.hotels.length ? 'Ezzel a szűréssel nincs találat.' : 'Erre az időszakra most nincs szabad hely ' + (state.src === 'sk' ? 'Pozsonyból' : 'Bécsből') + '. Próbáljon más dátumot vagy a másik indulási helyet, vagy kérjen ajánlatot.'}</div>`;
     $('moreBox').hidden = true;
@@ -653,9 +653,8 @@ let bestQueue = [], bestRunning = 0, bestGen = 0;
 const qKey = q => qParams(q, {});
 function bestHTML(h) {
   const r = bestCache.get(qKey(state.q) + '#' + h.hotelId);
-  const who = compText(state.q.ac, state.q.ages);
-  if (!r) return `<span>Ár számítása ${esc(who)} részére…</span>`;
-  if (r.none) return `<span>A megadott időszakban most nincs szabad hely ${esc(who)} részére.</span>`;
+  if (!r) return `<span>Ár számítása…</span>`;
+  if (r.none) return `<span>A megadott időszakban most nincs szabad hely.</span>`;
   if (r.err) return `<span>Az ár most nem számítható ki – nyissa meg az időpontokat.</span>`;
   if (r.notavail) return `<span>A megadott utasokkal ez a szálloda nem foglalható (pl. csak felnőtteknek szól). Kérjen ajánlatot, és keresünk mást.</span>`;
   return `<span>Legolcsóbb indulás: <strong>${day(r.date.from)} – ${day(r.date.to)}</strong> (${r.date.nights} éj)</span>`
@@ -666,7 +665,7 @@ function priceHTML(h) {
   const r = bestCache.get(qKey(state.q) + '#' + h.hotelId);
   const perPerson = h.priceHuf > 0 ? huf(h.priceHuf) : '';
   if (r && r.total) {
-    return `<small>összesen, ${esc(compText(state.q.ac, state.q.ages))}</small><b>${huf(r.total)}</b>`
+    return `<small>összesen</small><b>${huf(r.total)}</b>`
       + `<small>${r.totalEur ? eur(r.totalEur) + ' · ' : ''}${perPerson ? perPerson + '/fő-től' : ''}</small>`;
   }
   return `<small>ár/fő-től</small><b>${perPerson || 'Ár kérésre'}</b>${state.src === 'sk' && h.priceEur ? `<small>${eur(h.priceEur)}/fő</small>` : ''}`;
@@ -842,7 +841,7 @@ $('dRooms').addEventListener('click', async e => {
     <p>${dayY(state.date.from)} – ${dayY(state.date.to)} · ${state.date.nights} éjszaka · ${esc(huRoom(state.room.name))}, ${esc(state.room.board)}</p>
     <p>Járat: ${esc(SRC[state.src].long)} (${esc(fl)})</p>
     <p class="tot">${tot ? huf(tot) : 'Az árat visszaigazoláskor adjuk meg'}${state.price.totalEur ? ' <small style="font-size:15px">(' + eur(state.price.totalEur) + ')</small>' : ''}</p>
-    <p class="note">${compText(state.q.ac, state.q.ages)} részére, összesen${pr.ok && pr.available === false ? ' – <strong>a helyet kollégánk ellenőrzi</strong>' : ''}. Tájékoztató ár, a foglaláskor visszaigazoljuk.</p>`;
+    <p class="note">Teljes ár${pr.ok && pr.available === false ? ' – <strong>a helyet kollégánk ellenőrzi</strong>' : ''}. Tájékoztató ár, a foglaláskor visszaigazoljuk.</p>`;
   $('dSumStep').scrollIntoView({block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
 });
 $('dBook').addEventListener('click', () => { dlg.close(); startBooking(); });
