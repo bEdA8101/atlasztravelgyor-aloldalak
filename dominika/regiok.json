@@ -1,0 +1,8 @@
+{
+  "_leiras": [
+    "A dominikai szállodák területe ott, ahol a program magától rosszul vagy nem sorolja be őket.",
+    "szallodak: \"Szálloda neve\": \"Punta Cana\" | \"Bávaro\" | \"Bayahibe\". A névnek nem kell betűre egyeznie (kis- és nagybetű, ékezet, 'Hotel', 'Resort', 'Spa' nem számít). Ez mindennél előbbre való.",
+    "Az oldalon csak e három terület szállodái jelennek meg."
+  ],
+  "szallodak": {}
+}

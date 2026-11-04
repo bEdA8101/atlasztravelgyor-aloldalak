@@ -114,7 +114,7 @@ function keresesi_adatok(): array
         'src' => $src, 'df' => $df, 'dt' => $dt, 'uf' => $uf, 'ut' => $ut,
         'ai' => $ai ?: FORRASOK[$src]['ai'], 'pt' => egesz($_GET['pt'] ?? 15000000, 0, 99000000, 15000000),
         'ac' => $felnott, 'ages' => $korok,
-    ] + (($_GET['dm'] ?? '') === 'dep' ? ['dm' => 'dep'] : []);
+    ] + (($_GET['dm'] ?? '') === 'dep' ? ['dm' => 'dep'] : []) + (($_GET['bi'] ?? '') === 'ai' ? ['bi' => 'ai'] : []);
 }
 
 /**
@@ -178,6 +178,9 @@ function kereso_cim(array $k, int $oldal, bool $ajax): string
         $p[] = ['ca' . ($i + 1), $kor];
     }
     foreach ($f['extra'] ?? [] as $x) {   // pl. ['ar', 4]: csak 4 csillagos vagy jobb szállodák
+        $p[] = $x;
+    }
+    foreach (isset($k['bi']) ? ($f['ellatas'][$k['bi']] ?? []) : [] as $x) {   // pl. ['bi', 8]: csak all inclusive
         $p[] = $x;
     }
     $p[] = ['sort', 'price'];
@@ -466,15 +469,22 @@ function idopont_cim(array $k, int $szalloda, int $oldal): string
         // indulási időszaknál (dm=dep) indulás szerint rendezve: az időszak útjai az első oldal(ak)on vannak
         ['sort', ($k['dm'] ?? '') === 'dep' ? 'date_from' : 'price'], ['direction', 'asc'],
         ['pg', $oldal], ['currency', $k['src'] === 'sk' ? 'EUR' : 'HUF']]);
+    foreach (isset($k['bi']) ? ($f['ellatas_idopont'][$k['bi']] ?? []) : [] as $x) {
+        $p[] = $x;
+    }
     return $f['oldal'] . '/searchmasks/generation_dates_terms?' . cesys_lekerdezes($p);
 }
 
-/** A szoba neve; a pótágyas változatot külön jelöljük (különben két azonos nevű szoba látszana). */
-function szobanev(array $x): string
+/**
+ * A szoba neve. Ha az utasok ($fo) nem férnek el a rendes ágyakon, a pótágyat is jelöljük (különben két
+ * azonos nevű szoba látszana); a forrás a pótágy-lehetőséget akkor is megadja, ha nincs rá szükség.
+ */
+function szobanev(array $x, int $fo): string
 {
     $nev = html_entity_decode((string)($x['room_name'] ?? 'Szoba'), ENT_QUOTES | ENT_HTML5, 'UTF-8');
-    $potagy = (int)($x['extra_beds'] ?? 0);
-    if ($potagy > 0 && !preg_match('/pótágy|prístel/iu', $nev)) {
+    $agy = (int)($x['beds'] ?? 0);
+    $potagy = min((int)($x['extra_beds'] ?? 0), $fo - $agy);
+    if ($agy > 0 && $potagy > 0 && !preg_match('/pótágy|prístel/iu', $nev)) {
         $nev .= $potagy > 1 ? ", $potagy pótággyal" : ', pótággyal';
     }
     return $nev;
@@ -566,6 +576,9 @@ function idopontok(array $k, int $szalloda, array $elore = []): ?array
         if (($k['dm'] ?? '') === 'dep' && substr((string)$x['date_from'], 0, 10) > $k['dt']) {
             continue;   // nem az időszakban indul
         }
+        if (($k['bi'] ?? '') === 'ai' && stripos((string)($x['boarding'] ?? ''), 'all inclusive') === false) {
+            continue;   // csak all inclusive kérték
+        }
         [$huf, $eur] = ar_par($x, $k['src']);
         if ($huf <= 0) {
             continue;
@@ -577,7 +590,7 @@ function idopontok(array $k, int $szalloda, array $elore = []): ?array
                'board' => (string)($x['boarding'] ?? ''), 'transfer' => ($x['transfer'] ?? '0') === '1',
                'priceHuf' => $huf, 'priceEur' => $eur, 'discPct' => 0,
                '_cid' => (string)$x['id'], '_hash' => (string)($x['verify_hash'] ?? '')]
-            : ['id' => (int)$x['room_id'], 'name' => szobanev($x),
+            : ['id' => (int)$x['room_id'], 'name' => szobanev($x, $k['ac'] + count($k['ages'])),
                'board' => (string)($x['boarding'] ?? ''), 'transfer' => false,
                'priceHuf' => $huf, 'priceEur' => $eur, 'discPct' => (float)($x['discount_percent'] ?? 0)];
         if (!isset($csoportok[$csoportKulcs])) {
