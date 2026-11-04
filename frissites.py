@@ -70,6 +70,14 @@ ELO_FAJLOK = {
     "bahari": {"proxy.php": "elo/bahari_proxy.php", "cesys.php": "elo/cesys.php"},
     "zanzibar": {"api.php": "elo/zanzibar_api.php", "motor.php": "elo/kereso_motor.php", "cesys.php": "elo/cesys.php",
                  "regiok.json": "elo/zanzibar_regiok.json"},
+    "dominika": {"api.php": "elo/dominika_api.php", "motor.php": "elo/kereso_motor.php", "cesys.php": "elo/cesys.php",
+                 "regiok.json": "elo/dominika_regiok.json"},
+}
+
+# Saját (nem a központtól átvett) oldalak: név -> forrásmappa. Az index.html-ben a {{telefon}}, {{email}},
+# {{cim}} stb. helyére a GYOR adatai kerülnek; a mappa többi fájlja változatlanul az oldal mellé kerül.
+SAJAT_OLDALAK = {
+    "dominika": "sajat/dominika",
 }
 
 # Előnézet: amíg nincs saját tárhely, az oldalak a GitHub Pages-en láthatók. Ilyenkor
@@ -483,6 +491,42 @@ def frissit(nev):
     print(f"  kész: {nev}/index.html (űrlapküldő: {kuldo or 'nincs'})")
 
 
+def sajat_oldal(nev):
+    """Saját oldal elkészítése a sajat/ mappából (győri adatok, tájékoztató, ellenőrzés, élő adatos fájlok)."""
+    forras = ALAP / SAJAT_OLDALAK[nev]
+    print(f"{nev}: saját oldal innen: {SAJAT_OLDALAK[nev]}/")
+    html = (forras / "index.html").read_text(encoding="utf-8")
+    with Image.open(LOGO) as kep:
+        szel, mag = kep.size
+    adatok = {k: html_lib.escape(str(v)) for k, v in GYOR.items()}
+    adatok.update({"logo_szel": str(szel), "logo_mag": str(mag), "ev": time.strftime("%Y")})
+    html = re.sub(r"\{\{(\w+)\}\}", lambda m: adatok[m.group(1)], html)
+    if ELONEZET:
+        html = csere(html, r'(<meta charset="?utf-?8"?>)', r'\1\n<meta name="robots" content="noindex, nofollow">',
+                     "előnézeti jelölés", pontosan=1, flags=re.I)
+    html = tajekoztato_be(html)
+    ellenoriz(html, nev)
+
+    cel = KIMENET / nev
+    uj = KIMENET / f".{nev}.uj"
+    if uj.exists():
+        shutil.rmtree(uj)
+    shutil.copytree(forras, uj)
+    try:
+        (uj / "index.html").write_text(html, encoding="utf-8")
+        (uj / "img").mkdir(exist_ok=True)
+        shutil.copyfile(LOGO, uj / "img" / GYOR["logo"])
+        for cel_nev, elo in ELO_FAJLOK.get(nev, {}).items():
+            shutil.copyfile(ALAP / elo, uj / cel_nev)
+    except BaseException:
+        shutil.rmtree(uj, ignore_errors=True)
+        raise
+    if cel.exists():
+        shutil.rmtree(cel)
+    uj.rename(cel)
+    print(f"  kész: {nev}/index.html (saját oldal)")
+
+
 def nyitolap():
     """Előnézeti nyitólap a tároló gyökerébe: linkek az elkészült oldalakra."""
     sorok = []
@@ -495,6 +539,13 @@ def nyitolap():
         sorok.append(
             f'  <li><a href="{nev}/">{felirat}</a><br><small>Leendő cím: https://{nev}.{GYOR["domain"]}/ · '
             f'forrás: <a href="{forras}">{html_lib.escape(forras)}</a></small></li>')
+    for nev in SAJAT_OLDALAK:
+        oldal = KIMENET / nev / "index.html"
+        if oldal.exists():
+            cim = re.search(r"<title>([^<]*)</title>", oldal.read_text(encoding="utf-8"))
+            felirat = html_lib.escape(cim.group(1) if cim else nev)
+            sorok.append(f'  <li><a href="{nev}/">{felirat}</a><br><small>Leendő cím: https://{nev}.{GYOR["domain"]}/ · '
+                         f'saját oldal (élő árakkal, foglalási igénnyel)</small></li>')
     tartalom = f"""<!doctype html>
 <html lang="hu">
 <head>
@@ -528,13 +579,16 @@ a GitHub-előnézetben ehelyett a legtöbb oldal a levelezőprogramot nyitja meg
 
 
 def main(nevek):
-    ismeretlen = [n for n in nevek if n not in OLDALAK]
+    ismeretlen = [n for n in nevek if n not in OLDALAK and n not in SAJAT_OLDALAK]
     if ismeretlen:
-        sys.exit(f"Ismeretlen oldal: {', '.join(ismeretlen)}. Választható: {', '.join(OLDALAK)}")
+        sys.exit(f"Ismeretlen oldal: {', '.join(ismeretlen)}. Választható: {', '.join([*OLDALAK, *SAJAT_OLDALAK])}")
     hibak = []
-    for nev in nevek or list(OLDALAK):
+    for nev in nevek or [*OLDALAK, *SAJAT_OLDALAK]:
         # egy oldal hibája miatt a többi még frissülhet; a hibás oldal a régi változatában marad
         try:
+            if nev in SAJAT_OLDALAK:
+                sajat_oldal(nev)
+                continue
             frissit(nev)
         except CsereHiba as hiba:
             hibak.append(f"{hiba}\n  A központi oldal valószínűleg megváltozott, a frissites.py cseréit igazítani kell.")
