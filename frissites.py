@@ -50,6 +50,13 @@ OLDALAK = {
     "mauritius": "https://mauritius.atlasztravel.hu/",
     "maldiv": "https://maldiv.atlasztravel.hu/",
     "vietnam": "https://vietnam.atlasztravel.hu/",
+    "bahari": "https://bahari.atlasztravel.hu/",
+}
+
+# Élő adatos oldalak: a központ szerverén futó adatlekérő helyett a sajátunk kerül melléjük
+# (oldal: {fájlnév az oldal mellett: forrás az elo/ mappában}).
+ELO_FAJLOK = {
+    "bahari": {"proxy.php": "elo/bahari_proxy.php", "cesys.php": "elo/cesys.php"},
 }
 
 # Előnézet: amíg nincs saját tárhely, az oldalak a GitHub Pages-en láthatók. Ilyenkor
@@ -77,6 +84,10 @@ def letolt(url, probalkozas=6):
         try:
             with urllib.request.urlopen(kerest, timeout=90) as valasz:
                 return valasz.read()
+        except urllib.error.HTTPError as hiba:
+            if hiba.code < 500 or i == probalkozas - 1:  # a hiányzó fájlt nincs értelme újra kérni
+                raise
+            time.sleep(2 ** (i + 1))
         except (urllib.error.URLError, ConnectionError, TimeoutError):
             if i == probalkozas - 1:
                 raise
@@ -127,7 +138,9 @@ def beagyazott_kepek_ki(html, cel):
         (cel / fajlnev).write_bytes(nyers)
         return eleje + fajlnev + vege
     # <img src="data:..."> és CSS url(data:...)
-    return re.sub(r'(src="|url\(["\']?)data:image/(jpeg|png|webp);base64,([A-Za-z0-9+/=]+)(["\']?\)?|")', ki, html)
+    html = re.sub(r'(src="|url\(["\']?)data:image/(jpeg|png|webp);base64,([A-Za-z0-9+/=]+)(["\']?\)?|")', ki, html)
+    # JavaScriptben szöveként megadott képek (pl. img:"data:image/jpeg;base64,…")
+    return re.sub(r'(["\'])data:image/(jpeg|png|webp);base64,([A-Za-z0-9+/=]+)(\1)', ki, html)
 
 
 def kozos_cserek(html, nev):
@@ -136,6 +149,7 @@ def kozos_cserek(html, nev):
     html = csere(html, rf"https://{nev}\.atlasztravel\.hu", f"https://{nev}.{g['domain']}", "saját cím", legalabb=0)
     # a központi weboldal és ajánlatai helyett a győri (azonos foglalási rendszer, azonos ajánlatkódok)
     html = re.sub(r"https://(?:www\.)?atlasztravel\.hu", g["weboldal"], html)
+    html = re.sub(r"(?<![\w/.])www\.atlasztravel\.hu", g["weboldal_felirat"], html)
     html = re.sub(r"\b([Aa])z (?=atlasztravel\.hu)", r"\1 ", html)
     html = re.sub(r"(?<![@\w.\-/])atlasztravel\.hu", g["weboldal_felirat"], html)
 
@@ -143,7 +157,7 @@ def kozos_cserek(html, nev):
     html = re.sub(r"tel:\+36\d{8,9}", "tel:" + g["telefon_link"], html)
     html = re.sub(MINTA_VAGY_TEL, lambda m: m.group(1) or g["telefon"], html)
     tel_a = r'<a [^>]*href="tel:' + re.escape(g["telefon_link"]) + r'"[^>]*>' + re.escape(g["telefon"]) + r"</a>"
-    html = re.sub(rf"({tel_a})(?:\s*(?:,|·)?\s*{tel_a})+", r"\1", html)
+    html = re.sub(rf"({tel_a})(?:\s*(?:,|·|<br>|vagy|és)?\s*{tel_a})+", r"\1", html)
     html = re.sub(re.escape(g["telefon"]) + r"(?:,? (?:vagy|és) " + re.escape(g["telefon"]) + r")+", g["telefon"], html)
 
     # e-mail-címek
@@ -246,12 +260,29 @@ def vietnam_cserek(html):
     return lablec_cim(html)
 
 
+def bahari_cserek(html):
+    g = GYOR
+    kartya = (f'\n        <a href="tel:{g["telefon_link"]}"><span aria-hidden="true">☎</span>{g["telefon"]}</a>'
+              f'\n        <a href="mailto:{g["email"]}"><span aria-hidden="true">✉</span>{g["email"]}</a>'
+              f'\n        <a {TERKEP_LINK}><span aria-hidden="true">⌂</span>{g["cim"]}</a>\n      ')
+    html = csere(html, r'(<div class="contact-card">)(?:(?!</div>).)*(</div>)', lambda m: m.group(1) + kartya + m.group(2),
+                 "kapcsolati kártya", pontosan=1, flags=re.S)
+    html = csere(html, r'<h4>Irodáink</h4><p>[^<]*</p>', f'<h4>Győri irodánk</h4><p>{g["cim"]}<br>{g["nyitvatartas"]}</p>',
+                 "irodák a láblécben", pontosan=1)
+    html = csere(html, r'<h4>Atlasz Travel</h4>', f'<h4>{g["nev"]}</h4>', "cégnév a láblécben", pontosan=1)
+    # a beépített tartalék árak (ha az élő adat nem jön meg) közül az elmúlt időpontok ne látszódjanak
+    return csere(html, r'(const STATIC = \[.*?\n\];)',
+                 r'\1\nSTATIC.splice(0, STATIC.length, ...STATIC.filter(d => d.f >= new Date().toISOString().slice(0, 10)));',
+                 "tartalék árak szűrése", pontosan=1, flags=re.S)
+
+
 OLDAL_CSEREK = {
     "oman": [oman_cserek],
     "riu": [riu_cserek],
     "mauritius": [premium_cserek],
     "maldiv": [premium_cserek],
     "vietnam": [vietnam_cserek],
+    "bahari": [bahari_cserek],
 }
 
 
@@ -269,7 +300,8 @@ def logo_csere(html):
         return re.sub(r'height="\d+"', f'height="{mag}"', tag)
     html = csere(html, r'<img\b[^>]*\balt="Atlasz Travel[^"]*"[^>]*>', uj_kep, "logók", legalabb=1)
     # a logólink felolvasóprogramoknak szóló felirata
-    return re.sub(r'aria-label="Atlasz Travel[^"]*?([,–-]\s*oldal teteje)"', rf'aria-label="{g["nev"]} – oldal teteje"', html)
+    html = re.sub(r'aria-label="Atlasz Travel[^"]*?([,–-]\s*oldal teteje)"', rf'aria-label="{g["nev"]} – oldal teteje"', html)
+    return re.sub(r'aria-label="Atlasz Travel(?: Prémium)?"', f'aria-label="{g["nev"]}"', html)
 
 
 def felesleges_torlese(html, mappa, megtart):
@@ -329,7 +361,12 @@ def frissit(nev):
         for i, utvonal in enumerate(fajlok, 1):
             hely = uj / utvonal
             hely.parent.mkdir(parents=True, exist_ok=True)
-            hely.write_bytes(letolt(forras + utvonal))
+            try:
+                hely.write_bytes(letolt(forras + utvonal))
+            except urllib.error.HTTPError as hiba:
+                if hiba.code != 404:
+                    raise
+                print(f"\n  figyelem: a központi oldalon sincs meg: {utvonal}")
             print(f"\r  képek: {i}/{len(fajlok)}", end="", flush=True)
         if fajlok:
             print()
@@ -350,7 +387,9 @@ def frissit(nev):
             shutil.copyfile(URLAP_SABLON, uj / kuldo)
         (uj / "img").mkdir(exist_ok=True)
         shutil.copyfile(LOGO, uj / "img" / GYOR["logo"])
-        felesleges_torlese(html, uj, {"index.html", kuldo})
+        for cel_nev, forras in ELO_FAJLOK.get(nev, {}).items():
+            shutil.copyfile(ALAP / forras, uj / cel_nev)
+        felesleges_torlese(html, uj, {"index.html", kuldo, *ELO_FAJLOK.get(nev, {})})
     except BaseException:
         shutil.rmtree(uj, ignore_errors=True)
         raise
