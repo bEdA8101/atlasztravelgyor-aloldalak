@@ -296,6 +296,13 @@ def bahari_cserek(html):
     # a régi rövid ármegjegyzés helyett az általános lábléc-tájékoztató áll (LABLEC_TAJEKOZTATO)
     html = csere(html, r'(<div class="copy">[^<]*?)\s*Az árak tájékoztató jellegűek, a végleges árat foglaláskor erősítjük meg\.',
                  r'\1', "régi ármegjegyzés", pontosan=1)
+    # a keresési feltételeket (utasok) csak a kereső mutassa, a táblázat fölött ne ismételjük
+    html = csere(html, re.escape('"Élő árak lekérdezése: "+compText()+"…"'), lambda m: '"Élő árak lekérdezése…"', "betöltési felirat", pontosan=1)
+    html = csere(html, re.escape("showInfo(`Élő árak: ${compText()}. ${DATA.length} időpont.`,"),
+                 lambda m: "showInfo(`${DATA.length} szabad időpont.`,", "találati felirat", pontosan=1)
+    html = csere(html, re.escape('showInfo(isMulti()?`Árak: ${compText()}.`:"Árak 2 felnőtt részére.",'),
+                 lambda m: 'showInfo("Tájékoztató árak.",', "tartalék felirat", pontosan=1)
+    html = csere(html, re.escape('else showInfo(compText()+".",'), lambda m: 'else showInfo("",', "hibafelirat", pontosan=1)
     # a beépített tartalék árak (ha az élő adat nem jön meg) közül az elmúlt időpontok ne látszódjanak
     return csere(html, r'(const STATIC = \[.*?\n\];)',
                  r'\1\nSTATIC.splice(0, STATIC.length, ...STATIC.filter(d => d.f >= new Date().toISOString().slice(0, 10)));',
@@ -343,6 +350,13 @@ def zanzibar_cserek(html):
                  "bécsi ár (legjobb)", pontosan=1)
     html = csere(html, re.escape("{action:'price_at', code: r.id}"), lambda m: "{action:'price_at', code: r.id, date: x.id}",
                  "bécsi ár (szoba)", pontosan=1)
+    # a keresési feltételeket (utasok, időszak) csak a kereső mutassa, a találatok fölött és az áraknál ne ismételjük
+    html = csere(html, re.escape("""$('rstatus').textContent = list.length+' szálloda, '+compLabel(state.comp)+' részére. Indulás legkorábban: '+day(state.params.df,true)+', hazaérkezés legkésőbb: '+day(state.params.dt,true)+(min ? ' Ár/fő '+huf(min)+'-tól.' : '');"""),
+                 lambda m: "$('rstatus').textContent = list.length+' szálloda';", "találati sor", pontosan=1)
+    html = csere(html, re.escape("""$('lm-range').textContent = 'Indulás '+day(d.df,false)+' és '+day(d.dt,false)+' között, 2 felnőtt részére.';"""),
+                 lambda m: "$('lm-range').textContent = '';", "last minute alcím", pontosan=1)
+    html = csere(html, r"(['>])Összesen '\+esc\(compLabel\([\w.]+\)\)\+' részére: ", lambda m: m.group(1) + "Összesen: ",
+                 "összesen-feliratok", pontosan=4)
     # a győri program nem küld másolatot az ügyfélnek (nyilvános űrlapról visszaélésre adna módot)
     return csere(html, r'\s*A foglalás másolatát elküldtük az Ön e-mail-címére is\.', '', "másolat-ígéret", pontosan=1)
 

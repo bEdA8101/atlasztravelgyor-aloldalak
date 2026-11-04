@@ -635,7 +635,7 @@ function staticMap(cols){
 
 async function load(){
   const res=document.getElementById("results"); res.hidden=false;
-  document.getElementById("resInfo").textContent = "Élő árak lekérdezése: "+compText()+"…";
+  document.getElementById("resInfo").textContent = "Élő árak lekérdezése…";
   document.getElementById("dateHead").innerHTML="";
   document.getElementById("dateRows").innerHTML=`<tr><td class="loading">Egy pillanat, lekérdezzük a szabad helyeket és az aktuális árakat${isMulti()?" szobánként":""}…</td></tr>`;
   document.querySelector(".warn")?.remove();
@@ -676,9 +676,9 @@ async function load(){
     // keep only columns that have at least one price
     Object.keys(COLS).forEach(k=>{ if(!DATA.some(d=>d.p[k])) delete COLS[k]; });
   }
-  if(mode==="live") showInfo(`Élő árak: ${compText()}. ${DATA.length} időpont.`, DATA.length?(isMulti()?"Több szobánál a szabad szobák számát a foglalás visszaigazolásakor is ellenőrizzük.":""):"Erre az összetételre most nem találtunk szabad helyet a rendszerben. Írjon nekünk, és megnézzük, milyen szobával tudjuk megoldani.");
-  else if(mode==="static") showInfo(isMulti()?`Árak: ${compText()}.`:"Árak 2 felnőtt részére.", "Az élő árakat most nem sikerült lekérdezni, ezért a 2026. október 25-i árakat látja. A végleges árat a foglalás visszaigazolásakor megerősítjük.");
-  else showInfo(compText()+".", "Az élő árakat most nem sikerült lekérdezni erre az összetételre. Válasszon időpontot a foglalási űrlapon, és a pontos árat visszaigazoljuk, vagy hívjon minket: +36 20 266 8144.");
+  if(mode==="live") showInfo(`${DATA.length} szabad időpont.`, DATA.length?(isMulti()?"Több szobánál a szabad szobák számát a foglalás visszaigazolásakor is ellenőrizzük.":""):"Erre az összetételre most nem találtunk szabad helyet a rendszerben. Írjon nekünk, és megnézzük, milyen szobával tudjuk megoldani.");
+  else if(mode==="static") showInfo("Tájékoztató árak.", "Az élő árakat most nem sikerült lekérdezni, ezért a 2026. október 25-i árakat látja. A végleges árat a foglalás visszaigazolásakor megerősítjük.");
+  else showInfo("", "Az élő árakat most nem sikerült lekérdezni erre az összetételre. Válasszon időpontot a foglalási űrlapon, és a pontos árat visszaigazoljuk, vagy hívjon minket: +36 20 266 8144.");
 
   fMonth="all"; fRoom = pendingRoom && COLS[pendingRoom] ? pendingRoom : "all"; pendingRoom=null;
   buildChips(); render(); fillFormSelects();

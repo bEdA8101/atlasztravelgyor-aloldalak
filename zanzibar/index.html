@@ -753,7 +753,7 @@ window.zImgErr = function(el){
     if(!list.length){ $('rstatus').textContent = ''; if(!document.querySelector('.hcard')) $('hgrid').innerHTML = '<div class="r-msg" style="grid-column:1/-1">A megadott időszakba nem fér bele utazás. Válasszon későbbi hazaérkezést vagy kevesebb éjszakát.</div>'; return; }
     const prices = list.map(h=>h.bestPrice || h.priceHuf).filter(v => v > 0);
     const min = prices.length ? Math.min(...prices) : 0;
-    $('rstatus').textContent = list.length+' szálloda, '+compLabel(state.comp)+' részére. Indulás legkorábban: '+day(state.params.df,true)+', hazaérkezés legkésőbb: '+day(state.params.dt,true)+(min ? ' Ár/fő '+huf(min)+'-tól.' : '');
+    $('rstatus').textContent = list.length+' szálloda';
   }
 
   /* egy szálloda időpontjai (a megadott indulás és hazaérkezés közé eső utak) */
@@ -791,7 +791,7 @@ window.zImgErr = function(el){
     const p = res.price;
     if(p && p.available === false){ el.classList.add('sold'); }
     let html = '<strong>Legjobb ár:</strong> '+esc(bestTerm(res.best));
-    if(p && p.available && p.totalHuf) html += '<br>Összesen '+esc(compLabel(comp))+' részére: <strong>'+huf(p.totalHuf)+'</strong>'+(p.totalEur ? ' ('+eur(p.totalEur)+')' : '');
+    if(p && p.available && p.totalHuf) html += '<br>Összesen: <strong>'+huf(p.totalHuf)+'</strong>'+(p.totalEur ? ' ('+eur(p.totalEur)+')' : '');
     if(p && p.airline) html += '<br>'+esc(p.airline)+(p.stops === 0 ? ', közvetlen járat' : p.stops > 0 ? ', '+p.stops+' átszállással' : '');
     if(res.count > 1) html += '<br>'+res.count+' időpont a megadott időszakban';
     el.innerHTML = html;
@@ -804,7 +804,7 @@ window.zImgErr = function(el){
     if(!d.available){ el.classList.add('sold'); el.textContent = 'A legolcsóbb időpont betelt. A többi időpontot a szálloda oldalán találja.'; return; }
     let html = '';
     if(d.start) html += '<strong>Legolcsóbb időpont:</strong> '+esc(day(d.start,true))+(d.end ? ' – '+esc(day(d.end,false)) : '')+'<br>';
-    if(d.totalHuf) html += 'Összesen '+esc(compLabel(comp))+' részére: <strong>'+huf(d.totalHuf)+'</strong>';
+    if(d.totalHuf) html += 'Összesen: <strong>'+huf(d.totalHuf)+'</strong>';
     if(d.airline || d.stops !== null){
       const fl = [];
       if(d.airline) fl.push(esc(d.airline));
@@ -948,14 +948,14 @@ window.zImgErr = function(el){
     if(dctx.params.src === 'sk'){
       const t = $('d-total');
       if(dctx.comp.ages.length) t.textContent = 'Ár/fő: '+huf(r.priceHuf)+' ('+eur(r.priceEur)+'). A gyerekes teljes árat kollégáink pontosítják.';
-      else { state.sel.total = r.priceHuf * dctx.comp.ac; t.innerHTML = 'Összesen '+esc(compLabel(dctx.comp))+' részére: <strong>'+huf(state.sel.total)+'</strong> ('+eur(r.priceEur * dctx.comp.ac)+')'; }
+      else { state.sel.total = r.priceHuf * dctx.comp.ac; t.innerHTML = 'Összesen: <strong>'+huf(state.sel.total)+'</strong> ('+eur(r.priceEur * dctx.comp.ac)+')'; }
       f.scrollIntoView({block:'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
       return;
     }
     const q = compQuery(new URLSearchParams(dctx.params.src === 'at' ? {action:'price_at', code: r.id, date: x.id} : {action:'price', date: x.id, room: r.id}));
     fetch(API + '?' + q.toString()).then(res => res.json()).then(p => {
       const t = $('d-total'); if(!t || state.sel.room !== r) return;
-      if(p.ok && p.available && p.totalHuf){ state.sel.total = p.totalHuf; t.innerHTML = 'Összesen '+esc(compLabel(dctx.comp))+' részére: <strong>'+huf(p.totalHuf)+'</strong>'; }
+      if(p.ok && p.available && p.totalHuf){ state.sel.total = p.totalHuf; t.innerHTML = 'Összesen: <strong>'+huf(p.totalHuf)+'</strong>'; }
       else if(p.ok && !p.available){ t.textContent = 'Ez a szoba erre az időpontra betelt, válasszon másikat.'; }
       else t.textContent = 'A teljes árat kollégáink pontosítják.';
     }).catch(() => { const t = $('d-total'); if(t) t.textContent = 'A teljes árat kollégáink pontosítják.'; });
@@ -1095,7 +1095,7 @@ window.zImgErr = function(el){
       if(!d.ok) throw new Error(d.message || '');
       const comp = {ac: 2, ages: []};
       d.groups.forEach(g => { if(g.src === 'sk') g.hotels.forEach(skToHu); });
-      $('lm-range').textContent = 'Indulás '+day(d.df,false)+' és '+day(d.dt,false)+' között, 2 felnőtt részére.';
+      $('lm-range').textContent = '';
       box.innerHTML = d.groups.map((g,gi) =>
         '<div class="lm-col"><h3>Indulás: '+esc(g.label)+'</h3>'+
         (g.hotels.length ? '<ol class="lm-list">'+g.hotels.map((h,hi) =>
