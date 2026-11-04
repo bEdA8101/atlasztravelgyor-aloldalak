@@ -11,6 +11,7 @@ A központ engedélyezte a tartalmak átvételét.
 | `maldiv/` | maldiv.atlasztravelgyor.hu | https://maldiv.atlasztravel.hu/ |
 | `vietnam/` | vietnam.atlasztravelgyor.hu | https://vietnam.atlasztravel.hu/ |
 | `bahari/` | bahari.atlasztravelgyor.hu | https://bahari.atlasztravel.hu/ (élő árakkal) |
+| `zanzibar/` | zanzibar.atlasztravelgyor.hu | https://zanzibar.atlasztravel.hu/ (teljes kereső élő adatokkal) |
 
 **Előnézet** (a tárhely elkészültéig): https://beda8101.github.io/atlasztravelgyor-aloldalak/
 
@@ -55,6 +56,11 @@ frissites.py az oldal mellé másol az `elo/` mappából:
 - `elo/bahari_proxy.php` – a bahari-oldal adatai (az oldal mellett `proxy.php` néven): a
   TUI BLUE Bahari pozsonyi, 7 éjszakás, all inclusive útjai az atlastravel.sk kínálatából.
   Gyerekes utazásnál a pontos végösszeget a CeSYS árszolgáltatása adja.
+- `elo/zanzibar_api.php` – a zanzibar-oldal keresője (az oldal mellett `api.php` néven): szállodák,
+  időpontok, szobák, pontos ár és last minute ajánlatok budapesti és bécsi indulással a győri
+  CeSYS-oldalról (a bécsi kínálat a CeSYS Amadeus-kapcsolatából), pozsonyi indulással az
+  atlastravel.sk-ról. Az ajánlatkérést és a foglalást levélben küldi a gyor@atlasztravel.hu címre
+  (az ügyfélnek nem küld másolatot). Forrásonként egyszerre legfeljebb 2–3 kérést küld.
 
 A források: az atlasztravelgyor.hu és az atlastravel.sk nyilvános adatszolgáltató címei
 (ugyanazok, amelyeket a böngésző is használ), valamint a CeSYS árszolgáltatása. A lekérdezések
