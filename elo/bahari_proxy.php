@@ -19,7 +19,7 @@ const REPTER = 7;               // Pozsony
 const ELLATAS = 8;              // all inclusive
 const ERVENYES = 1800;          // a tárolt adat fél óráig friss
 const NAPOK_ELORE = 330;        // ennyi napra előre keresünk
-const MAX_OLDAL = 6;            // legfeljebb ennyi találati oldal (oldalanként 50 időpont)
+const MAX_OLDAL = 2;            // legfeljebb ennyi találati oldal (oldalanként 200 időpont; általában 1 elég)
 
 [$felnott, $korok] = utasok_a_kerelembol();
 $kulcs = 'bahari-' . $felnott . '-' . implode('_', $korok);
@@ -43,7 +43,7 @@ function idopontok_lekerdezese(int $felnott, array $korok): ?array
         ['ti', 1], ['uf', 7], ['ut', 9], ['bi', ELLATAS], ['pt', 15000], ['ai[]', REPTER], ['ar', 4], ['sp', 'false'],
         ['bi_f[]', ELLATAS], ['ti_f', 1], ['ai_f[]', REPTER], ['lm_f', ''], ['fm_f', ''], ['uf_f', 7], ['ut_f', 9],
         ['pf_f', ''], ['pt_f', 15000], ['ri_f', ''], ['rv_f', ''], ['ns_f', 'false'], ['sp_f', 'false'],
-        ['rop', 50], ['hotel', SZALLODA], ['skip', 0], ['source', 'cesys_default'], ['sm', 1],
+        ['rop', 200], ['hotel', SZALLODA], ['skip', 0], ['source', 'cesys_default'], ['sm', 1],
         ['sort', 'date_from'], ['direction', 'asc'], ['currency', 'EUR'],
     ]);
     $osszes = [];
