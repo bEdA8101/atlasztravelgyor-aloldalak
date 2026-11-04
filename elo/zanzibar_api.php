@@ -538,6 +538,20 @@ function regio_tablazat(): array
     return $tabla;
 }
 
+/** Igaz, ha az egyszavas $a név a többszavas $b név szavainak egybeírása (pl. „myblue” és „my blue”). */
+function egybeirt(array $a, array $b): bool
+{
+    if (count($a) !== 1 || count($b) < 2 || strlen($a[0]) !== strlen(implode('', $b))) {
+        return false;
+    }
+    foreach ($b as $szo) {
+        if (strpos($a[0], $szo) === false) {
+            return false;
+        }
+    }
+    return true;
+}
+
 /** Partszakasz egy szállodanévhez a megadott táblázatból (névszavak szerint), végül a névben szereplő helynévből. */
 function regio_nevbol(string $nev, array $terkep): ?string
 {
@@ -547,9 +561,9 @@ function regio_nevbol(string $nev, array $terkep): ?string
         if (isset($terkep[$kulcs])) {
             return $terkep[$kulcs];
         }
-        $osszevont = implode('', $szavak);   // „Myblue” = „My Blue”
-        foreach ($terkep as $k => $regio) {
-            if (str_replace(' ', '', $k) === $osszevont) {
+        foreach ($terkep as $k => $regio) {   // egybe- és különírás: „Myblue” = „My Blue”
+            $m = explode(' ', $k);
+            if (egybeirt($szavak, $m) || egybeirt($m, $szavak)) {
                 return $regio;
             }
         }
