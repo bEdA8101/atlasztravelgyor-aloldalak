@@ -98,9 +98,11 @@ mindkettőnél megtalálja. Ha egy szállodánál rossz vagy hiányzó partszaka
 táblázat „szallodak” részébe (`"Szálloda neve": "Partszakasz"`), vagy kérd Claude-tól.
 
 **A dominika-oldal** (`elo/dominika_api.php`, az oldal mellett `api.php`): pozsonyi indulás közvetlen
-járattal (atlastravel.sk) és bécsi indulás átszállással (a győri oldal Amadeus-kínálata), csak 4 és
-5 csillagos szállodák, alapból all inclusive ellátással, és csak Punta Cana, Bávaro és Bayahibe
-területén. A területet a program a győri oldal területoldalaiból, a szálloda térképes helyéből és a
+járattal (atlastravel.sk), bécsi indulás átszállással (a győri oldal Amadeus-kínálata) és budapesti
+indulás átszállással (a győri oldal saját kínálata, `di=130`; jellemzően Lufthansa, Frankfurton át),
+csak 4 és 5 csillagos szállodák, alapból all inclusive ellátással (a budapesti keresőben ez nem
+szűrhető, ezért a program a kártyák ellátása szerint szűr, a körutazásokat pedig kihagyja), és csak
+Punta Cana, Bávaro és Bayahibe területén. A területet a program a győri oldal területoldalaiból, a szálloda térképes helyéből és a
 forrás besorolásából állapítja meg; ha rosszul sorol be egy szállodát, írd be az
 `elo/dominika_regiok.json` táblázatba (`"Szálloda neve": "Bávaro"`).
 - **Ajánlatkérés:** név, e-mail, (telefon), az utasok száma, a gyerekek életkora, időszak, kérés.

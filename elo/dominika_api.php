@@ -1,6 +1,7 @@
 <?php
 // A dominika-oldal élő adatai (az oldal mellett api.php néven): a közös keresőmotor (motor.php)
-// a dominikai beállításokkal. Bécsi indulás átszállással (a győri CeSYS-oldal Amadeus-kínálata) és
+// a dominikai beállításokkal. Bécsi indulás átszállással (a győri CeSYS-oldal Amadeus-kínálata),
+// budapesti indulás átszállással (a győri CeSYS-oldal saját kínálata, jellemzően Frankfurton át) és
 // pozsonyi indulás közvetlen járattal (atlastravel.sk); csak 4 és 5 csillagos szállodák, csak
 // Punta Cana, Bávaro és Bayahibe területén. Az ajánlatkérések és a foglalási igények a győri irodának
 // mennek levélben; a foglalási igényhez a program ellenőrzi a kötelező utasadatokat. A kérések
@@ -15,11 +16,15 @@ const FORRASOK = [
     'sk' => ['oldal' => 'https://www.atlastravel.sk', 'kereso' => '/vyhladavanie-zajazdov/1', 'cel' => ['ci', 46], 'ai' => [7],
              'source' => 'cesys_default', 'sm' => 1, 'cimke' => 'Pozsony', 'extra' => [['ar', 4]],
              'ellatas' => ['ai' => [['bi', 8]]], 'ellatas_idopont' => ['ai' => [['bi', 8], ['bi_f[]', 8]]]],
+    // a győri keresőben a szállodalista nem szűrhető ellátásra: azt az oldal_szallodak() szűri a kártya ellátása szerint
+    'hu' => ['oldal' => 'https://www.atlasztravelgyor.hu', 'kereso' => '/utazas-kereses/1', 'cel' => ['di', 130], 'ai' => [18, 19, 24],
+             'source' => 'cesys_default', 'sm' => 1, 'cimke' => 'Budapest', 'extra' => [['ar', 4]],
+             'ellatas_idopont' => ['ai' => [['bi', 8], ['bi_f[]', 8]]]],
 ];
-const EGYSZERRE = ['at' => 3, 'sk' => 2];   // egyszerre legfeljebb ennyi kérés forrásonként (kíméljük őket)
+const EGYSZERRE = ['at' => 3, 'sk' => 2, 'hu' => 3];   // egyszerre legfeljebb ennyi kérés forrásonként (kíméljük őket)
 const OLDAL_NEV = 'Dominikai Köztársaság';
 const OLDAL_MAPPA = 'dominika';
-const LM_FORRASOK = ['sk', 'at'];
+const LM_FORRASOK = ['sk', 'hu', 'at'];
 const HELY_MAX_UJ = 12;          // egy válaszhoz legfeljebb ennyi szálloda-adatlapot nézünk meg (térképes hely)
 const MIN_CSILLAG = 4;
 const TERULETEK = ['Punta Cana', 'Bávaro', 'Bayahibe'];
@@ -136,6 +141,13 @@ function oldal_szallodak(array $eredmeny, array $kereses): array
     foreach ($eredmeny['hotels'] as $i => $h) {
         if ($h['stars'] > 0 && $h['stars'] < MIN_CSILLAG) {
             continue;
+        }
+        $ellatas = mb_strtolower((string)($h['board'] ?? ''));
+        if (strpos($ellatas, 'program szerint') !== false) {
+            continue;   // körutazás, nem szálloda
+        }
+        if (($kereses['bi'] ?? '') === 'ai' && strpos($ellatas, 'inclusive') === false) {
+            continue;   // csak all inclusive kérték (a budapesti keresőben ez nem szűrhető)
         }
         $kulcs = implode(' ', nev_szavak($h['name']));
         $gyori = $gyor['szallodak'][$kulcs] ?? regio_nevbol($h['name'], $gyor['szallodak']);
