@@ -1,7 +1,8 @@
 <?php
 // A bahari-oldal élő adatai: a TUI BLUE Bahari Zanzibar pozsonyi indulású, 7 éjszakás,
 // all inclusive útjai az atlastravel.sk kínálatából (időpontok, szobák, járatidők,
-// árak). Gyerekes utazásnál a végösszeget a CeSYS árszolgáltatása adja.
+// árak). Ha az utasok nem pontosan 2 felnőttek, a végösszeget a CeSYS árszolgáltatása adja
+// (egy felnőttnél egyágyas felár, harmadik felnőttnél és gyerekeknél kedvezmény lehet).
 // A frissites.py proxy.php néven másolja a bahari-oldal mellé; az oldal így hívja:
 //   proxy.php?ac=2            (2 felnőtt)
 //   proxy.php?ac=2&ages[]=5   (2 felnőtt + egy 5 éves gyerek)
@@ -96,6 +97,7 @@ function sorra_alakit(array $x): ?array
         'price' => (int)round((float)$ar),
         'orig' => (int)round((float)$ar + (is_numeric($kedvezmeny) && $kedvezmeny > 0 ? (float)$kedvezmeny : 0)),
         'total' => null,
+        '_ar' => (float)$ar,
         '_date_id' => $x['id'] ?? null,
         '_room_id' => $x['room_id'] ?? null,
     ];
@@ -110,8 +112,9 @@ if ($idopontok === null) {
 
 $sorok = array_values(array_filter(array_map('sorra_alakit', $idopontok)));
 
-// Gyerekes utazásnál a pontos végösszeg az árszolgáltatásból (a lista csak „-tól” árat ad).
-if ($korok) {
+// A lista ára/fő a két felnőttes alapár: 2 felnőttnél ár/fő × 2 megegyezik a végösszeggel (ellenőrizve), minden
+// más összetételnél a pontos végösszeg az árszolgáltatásból jön.
+if ($korok || $felnott !== 2) {
     $torzsek = [];
     foreach ($sorok as $i => $sor) {
         if ($sor['_date_id'] && $sor['_room_id']) {
@@ -139,7 +142,17 @@ if ($korok) {
 }
 
 foreach ($sorok as &$sor) {
-    unset($sor['_date_id'], $sor['_room_id']);
+    if (!$korok && $sor['total'] === null && $felnott === 2) {
+        $sor['total'] = (int)round($sor['_ar'] * 2);   // 2 felnőtt: ár/fő × 2 = a forrás végösszege
+    } elseif (!$korok && $sor['total'] !== null && $sor['price'] > 0) {
+        // csak felnőttek (1 vagy 3+ fő): az 1 főre jutó ár a végösszegből, a kedvezmény előtti ár ugyanolyan arányban
+        $fo = (int)round($sor['total'] / $felnott);
+        if ($sor['orig'] > $sor['price']) {
+            $sor['orig'] = (int)round($sor['orig'] * $fo / $sor['price']);
+        }
+        $sor['price'] = $fo;
+    }
+    unset($sor['_date_id'], $sor['_room_id'], $sor['_ar']);
 }
 unset($sor);
 
