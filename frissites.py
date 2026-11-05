@@ -495,11 +495,18 @@ def zanzibar_cserek(html):
                  "euró végösszeg (szobaválasztás)", pontosan=1)
 
 
+def sorkoz_be(valaszto):
+    """Nagyobb sorköz a többsoros címekhez, hogy az ékezetek (Ő, Ű, Ö) ne érjenek a fölöttük lévő sor betűihez
+    (a központi dizájn 1,0–1,05-ös sorköze a magyar ékezeteknél szűk). Csak a mi másolatunkon."""
+    stilus = f"<style>/* sorköz: az ékezetek ne lógjanak egymásba */ {valaszto}{{line-height:1.14!important}}</style>\n"
+    return lambda html: csere(html, r"</head>", lambda m: stilus + m.group(0), f"sorköz ({valaszto})", pontosan=1)
+
+
 OLDAL_CSEREK = {
     "oman": [oman_cserek],
-    "riu": [riu_cserek],
-    "mauritius": [premium_cserek],
-    "maldiv": [premium_cserek],
+    "riu": [riu_cserek, sorkoz_be("h1")],
+    "mauritius": [premium_cserek, sorkoz_be("h2")],
+    "maldiv": [premium_cserek, sorkoz_be("h2")],
     "vietnam": [vietnam_cserek],
     "bahari": [bahari_cserek],
     "zanzibar": [zanzibar_cserek],
