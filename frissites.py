@@ -447,7 +447,41 @@ def zanzibar_cserek(html):
                  lambda m: '<datalist id="gy-nemzet"><option value="magyar"><option value="szlovák"><option value="osztrák"><option value="román"><option value="német"><option value="szerb"><option value="ukrán"><option value="horvát"></datalist>\n    ' + m.group(0),
                  "állampolgárság-lista", pontosan=1)
     # a győri program nem küld másolatot az ügyfélnek (nyilvános űrlapról visszaélésre adna módot)
-    return csere(html, r'\s*A foglalás másolatát elküldtük az Ön e-mail-címére is\.', '', "másolat-ígéret", pontosan=1)
+    html = csere(html, r'\s*A foglalás másolatát elküldtük az Ön e-mail-címére is\.', '', "másolat-ígéret", pontosan=1)
+    # pozsonyi indulás: a teljes árat is az árszolgáltatás adja, nem az ár/fő × felnőttek (egy felnőttnél egyágyas
+    # felár, a harmadik felnőttnél kedvezmény lehet; gyerekekkel is pontos összeg)
+    html = csere(html, r"\n      if\(ctx\.params\.src === 'sk'\)\{\n        // atlastravel\.sk: ár/fő euróban.*?\n      \}\n", "\n",
+                 "pozsonyi teljes ár (kártya)", pontosan=1, flags=re.S)
+    # a kártyán a legolcsóbb, erre az utaslétszámra foglalható időpont (pl. egyedül utazónak a kétágyas szoba nem
+    # foglalható): ár szerint legfeljebb 3 időpontot nézünk meg; a járatadat az időpontlistából jön
+    uj_legjobb = """      const sorted = d.dates.slice().sort((a,b) => a.priceHuf - b.priceHuf);
+      const probe = i => {
+        const best = sorted[i];
+        const q = new URLSearchParams(ctx.params.src === 'at' ? {action:'price_at', code: best.room, date: best.id} : {action:'price', src: ctx.params.src, date: best.id, room: best.room});
+        q.set('ac', ctx.comp.ac); if(ctx.comp.ages.length) q.set('ages', ctx.comp.ages.join(','));
+        return fetch(API + '?' + q.toString()).then(r => r.json()).catch(() => null).then(p => {
+          if(p && p.ok && p.available === false && i + 1 < Math.min(3, sorted.length)) return probe(i + 1);
+          return {best, count: d.dates.length, price: (p && p.ok) ? Object.assign(p, p.airline ? {} : {airline: best.flight ? best.flight.airline : null, stops: best.flight ? best.flight.stops : null}) : null};
+        });
+      };
+      return probe(0);"""
+    html = csere(html, r"      const best = d\.dates\.reduce\(\(a,b\) => \(b\.priceHuf < a\.priceHuf \? b : a\)\);\n"
+                       r"      const q = new URLSearchParams\(ctx\.params\.src === 'at'.*?\? p : null\}\)\);",
+                 lambda m: uj_legjobb, "foglalható legjobb időpont (kártya)", pontosan=1, flags=re.S)
+    html = csere(html, re.escape("if(res.count > 1) html += '<br>'+res.count+' időpont a megadott időszakban';"),
+                 lambda m: ("if(p && p.available === false) html += '<br>Erre az utaslétszámra a legolcsóbb időpontok most nem foglalhatók, "
+                            "a többi időpontot a szállodánál nézheti meg.';\n    " + m.group(0)),
+                 "nem foglalható legjobb időpont (kártya)", pontosan=1)
+    html = csere(html, re.escape("let html = '<strong>Legjobb ár:</strong> '+esc(bestTerm(res.best));"),
+                 lambda m: "let html = '<strong>'+(p && p.available === false ? 'Legolcsóbb időpont' : 'Legjobb ár')+':</strong> '+esc(bestTerm(res.best));",
+                 "felirat nem foglalható időpontnál (kártya)", pontosan=1)
+    html = csere(html, r"\n    if\(dctx\.params\.src === 'sk'\)\{\n      const t = \$\('d-total'\);.*?\n      return;\n    \}\n", "\n",
+                 "pozsonyi teljes ár (szobaválasztás)", pontosan=1, flags=re.S)
+    html = csere(html, re.escape("{action:'price', date: x.id, room: r.id}"),
+                 lambda m: "{action:'price', src: dctx.params.src, date: x.id, room: r.id}", "árkérés forrása (szobaválasztás)", pontosan=1)
+    return csere(html, re.escape("t.innerHTML = 'Összesen: <strong>'+huf(p.totalHuf)+'</strong>'; }"),
+                 lambda m: "t.innerHTML = 'Összesen: <strong>'+huf(p.totalHuf)+'</strong>'+(dctx.params.src === 'sk' && p.totalEur ? ' ('+eur(p.totalEur)+')' : ''); }",
+                 "euró végösszeg (szobaválasztás)", pontosan=1)
 
 
 OLDAL_CSEREK = {
