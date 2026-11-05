@@ -765,6 +765,26 @@ function last_minute(string $df, string $dt): array
 
 // ---------------------------------------------------------------- levél (ajánlatkérés, foglalás)
 
+/** Egysoros szöveg a levélbe: sortörések és vezérlőkarakterek nélkül, legfeljebb $hossz karakter. */
+function sor($v, int $hossz = 200): string
+{
+    if (!is_scalar($v)) {
+        return '';
+    }
+    $s = preg_replace('/[\x00-\x1F\x7F]+/u', ' ', (string)$v);
+    return trim(mb_substr((string)$s, 0, $hossz));
+}
+
+/** Érvényes, múltbeli születési dátum (ÉÉÉÉ-HH-NN), legfeljebb 110 éve. */
+function szuletesi_datum(string $s): bool
+{
+    if (!preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $s, $m) || !checkdate((int)$m[2], (int)$m[3], (int)$m[1])) {
+        return false;
+    }
+    return $s < date('Y-m-d') && (int)$m[1] >= (int)date('Y') - 110;
+}
+
+
 function level(string $fajta): void
 {
     if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
@@ -795,13 +815,18 @@ function level(string $fajta): void
             $sorok[] = $cimke . ': ' . mb_substr(trim((string)$ertek), 0, 3000);
         }
     }
+    // a tárgyban és a levél elején mindig: a típus (ajánlatkérés / foglalási igény) és az oldal
+    $tipusNev = $sajat['targy'] ?? ($fajta === 'book' ? 'Foglalási igény' : 'Ajánlatkérés');
+    $host = strtolower((string)preg_replace('/[^a-z0-9.\-]/i', '', (string)preg_replace('/:\d+$/', '', (string)($_SERVER['HTTP_HOST'] ?? ''))));
+    $oldalCim = 'https://' . $host . rtrim(str_replace('\\', '/', dirname((string)($_SERVER['SCRIPT_NAME'] ?? '/'))), '/') . '/';
+    $sorok = array_merge(['TÍPUS: ' . mb_strtoupper($tipusNev), 'OLDAL: ' . OLDAL_NEV . ' – ' . $oldalCim, str_repeat('-', 40)], $sorok);
     $szalloda = preg_replace('/[\r\n\t]+/', ' ', mb_substr((string)($adat['hotel'] ?? ''), 0, 100));
-    $targy = ($sajat['targy'] ?? ($fajta === 'book' ? 'Foglalás' : 'Ajánlatkérés')) . ' – ' . OLDAL_NEV . ($szalloda !== '' ? ', ' . $szalloda : '');
+    $targy = $tipusNev . ' – ' . OLDAL_NEV . ' (' . $host . ')' . ($szalloda !== '' ? ' – ' . $szalloda : '');
     $fejlecek = implode("\r\n", [
         'From: =?UTF-8?B?' . base64_encode('Atlasz Travel Győr weboldal') . '?= <' . FELADO . '>',
         'Reply-To: ' . $email, 'MIME-Version: 1.0', 'Content-Type: text/plain; charset=UTF-8', 'Content-Transfer-Encoding: 8bit',
     ]);
-    $torzs = implode("\n", $sorok) . "\n\n--\nKüldve: " . date('Y-m-d H:i') . ' – ' . OLDAL_MAPPA . ' oldal' . "\n";
+    $torzs = implode("\n", $sorok) . "\n\n--\nKüldve: " . date('Y-m-d H:i') . ' – ' . $oldalCim . "\n";
     $ok = mail(CIMZETT, '=?UTF-8?B?' . base64_encode($targy) . '?=', $torzs, $fejlecek);
     json_valasz($ok ? ['ok' => true] : ['ok' => false, 'error' => 'A levél most nem ment el.'], $ok ? 200 : 500);
 }

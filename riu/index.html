@@ -1539,7 +1539,7 @@ form.addEventListener("submit", async e => {
   fd.set("uticel", destName);
   fd.set("szalloda", "RIU " + destName + (hotelSel.value ? " – " + hotelSel.value : ""));
   fd.append("kezdes", String(KEZDES));
-  const summary = `Ajánlatkérés: RIU, ${destName}
+  const summary = `${(form.querySelector('input[name=\'tipus\']:checked')||{}).value==='foglalasi_igeny' ? 'Foglalási igény' : 'Ajánlatkérés'}: RIU, ${destName}
 Szálloda: ${hotelSel.value || "-"}
 Név: ${fd.get("nev")}
 Telefon: ${fd.get("telefon")}
@@ -1559,7 +1559,7 @@ Utasok: ${fd.get("utasok") || "-"}
   }
   form.innerHTML = "";
   const done = document.createElement("div"); done.className = "done"; done.setAttribute("role", "status");
-  done.innerHTML = `<h3>Köszönjük, megkaptuk!</h3><p>Hamarosan jelentkezünk a részletes ajánlattal.</p><pre></pre><a class="btn btn-red" href="tel:+36202668144">Hívás most</a>`;
+  done.innerHTML = `<h3>Köszönjük, megkaptuk!</h3><p>${(form.querySelector('input[name=\'tipus\']:checked')||{}).value==='foglalasi_igeny' ? 'Kollégánk munkanapokon 24 órán belül visszaigazolja a pontos árat és a szabad helyeket.' : 'Hamarosan jelentkezünk a részletes ajánlattal.'}</p><pre></pre><a class="btn btn-red" href="tel:+36202668144">Hívás most</a>`;
   done.querySelector("pre").textContent = summary; form.appendChild(done);
 });
 
@@ -1574,5 +1574,6 @@ Utasok: ${fd.get("utasok") || "-"}
   setTimeout(() => els.forEach(el => { if (el.getBoundingClientRect().top < innerHeight) el.classList.add("in"); }), 2000);
 })();
 </script>
+<script src="foglalas.js" defer data-mod="beepitett" data-urlap="#form" data-alap="ajanlatkeres" data-letszam="" data-utasszoveg="utasok" data-telefon="+36 20 266 8144"></script>
 </body>
 </html>

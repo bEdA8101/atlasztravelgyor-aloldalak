@@ -250,8 +250,8 @@ form .fh{font-size:17px;color:var(--magenta);margin-top:6px;padding-top:14px;bor
 form .fh:first-child{border-top:0;padding-top:0;margin-top:0}
 form .hint{margin:-8px 0 0;font-size:14px;color:var(--muted)}
 #travellers{display:grid;gap:12px}
-.trav{display:grid;grid-template-columns:1.6fr 1fr;gap:12px 14px;background:#FAF9FD;border:2px solid var(--line);border-radius:14px;padding:14px 16px}
-.trav.kid{grid-template-columns:1.4fr 1fr .8fr}
+.trav{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:12px 14px;background:#FAF9FD;border:2px solid var(--line);border-radius:14px;padding:14px 16px}
+.trav.kid{grid-template-columns:1.4fr 1fr 1fr .8fr}
 .trav .who{grid-column:1/-1;font-weight:800;font-size:14px;color:var(--indigo)}
 @media (max-width:600px){.trav,.trav.kid{grid-template-columns:1fr}}
 .form-msg{grid-column:1/-1;border-radius:12px;padding:14px 16px;font-weight:700;display:none}
@@ -431,7 +431,7 @@ footer a{color:#fff}
         <a href="https://www.google.com/maps/search/?api=1&amp;query=Atlasz+Travel+Gy%C5%91r+9021+Gy%C5%91r+Kir%C3%A1ly+u.+1." target="_blank" rel="noopener"><span aria-hidden="true">⌂</span>9021 Győr, Király u. 1.</a>
       </div>
     </div>
-    <form id="offerForm" novalidate>
+    <form id="offerForm" novalidate><input type="hidden" name="tipus" value="foglalasi_igeny">
       <h3 class="full fh">Az utazás</h3>
       <div><label for="idopont">Időpont <em>*</em></label><select id="idopont" name="idopont" required></select></div>
       <div><label for="szoba">Szobatípus <em>*</em></label><select id="szoba" name="szoba" required></select></div>
@@ -456,6 +456,7 @@ footer a{color:#fff}
       <div class="full"><label class="check"><input type="checkbox" name="parkolas" value="1"> Parkolást kérek a pozsonyi repülőtéren</label></div>
       <div class="full"><label for="uzenet">Megjegyzés</label><textarea id="uzenet" name="uzenet" placeholder="Különleges kérés, pl. franciaágy vagy két külön ágy, ünnepi alkalom…"></textarea></div>
       <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <label class="check full"><input type="checkbox" name="adatkezeles" value="elfogadva"> <span>Elolvastam és elfogadom az <a href="https://www.atlasztravelgyor.hu/adatvedelem" target="_blank" rel="noopener">adatkezelési tájékoztatót</a>; hozzájárulok, hogy az iroda az utasok adatait a foglaláshoz felhasználja. *</span></label>
       <div class="full"><button class="btn" type="submit" style="width:100%">Szeretnék foglalni</button></div>
       <div class="form-msg" id="formMsg" role="status"></div>
     </form>
@@ -771,10 +772,12 @@ function travHTML(room, a, ages, kidsCount){
   let h="", pre=`r${room}`;
   for(let i=1;i<=a;i++) h += `<div class="trav"><div class="who">${i}. felnőtt utas${room===1&&i===1?" (kapcsolattartó)":""}</div>
     <div><label for="${pre}a${i}n">Teljes név <em>*</em></label><input id="${pre}a${i}n" name="utas_nev[]" required autocomplete="${room===1&&i===1?'name':'off'}"></div>
+    <div><label for="${pre}a${i}c">Állampolgárság <em>*</em></label><input id="${pre}a${i}c" name="utas_allampolgarsag[]" list="gyf-nemzet" required value="magyar"></div>
     <div><label for="${pre}a${i}d">Születési dátum <em>*</em></label><input id="${pre}a${i}d" name="utas_szul[]" type="date" required></div>
     <input type="hidden" name="utas_tipus[]" value="felnőtt"><input type="hidden" name="utas_kor[]" value=""><input type="hidden" name="utas_szoba[]" value="${room}"></div>`;
   for(let i=1;i<=kidsCount;i++) h += `<div class="trav kid"><div class="who">${i}. gyerek utas</div>
     <div><label for="${pre}c${i}n">Teljes név <em>*</em></label><input id="${pre}c${i}n" name="utas_nev[]" required></div>
+    <div><label for="${pre}c${i}c">Állampolgárság <em>*</em></label><input id="${pre}c${i}c" name="utas_allampolgarsag[]" list="gyf-nemzet" required value="magyar"></div>
     <div><label for="${pre}c${i}d">Születési dátum <em>*</em></label><input id="${pre}c${i}d" name="utas_szul[]" type="date" required></div>
     <div><label for="${pre}c${i}k">Kora utazáskor <em>*</em></label><input id="${pre}c${i}k" name="utas_kor[]" type="number" min="0" max="17" required value="${ages[i-1]??""}"></div>
     <input type="hidden" name="utas_tipus[]" value="gyerek"><input type="hidden" name="utas_szoba[]" value="${room}"></div>`;
@@ -831,5 +834,6 @@ form.addEventListener("submit", async e=>{
   btn.disabled=false; btn.textContent="Szeretnék foglalni";
 });
 </script>
+<script src="foglalas.js" defer data-mod="kulon-ajanlat" data-urlap="#offerForm" data-kuldo="send.php" data-telefon="+36 20 266 8144"></script>
 </body>
 </html>

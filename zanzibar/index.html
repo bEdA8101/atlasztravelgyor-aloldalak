@@ -262,7 +262,7 @@ dialog#hotel::backdrop{background:rgba(6,45,54,.65)}
 .book textarea{font:inherit; color:var(--text); background:var(--bg); border:1.5px solid var(--line); border-radius:10px; padding:.65rem .75rem; width:100%; min-height:96px; resize:vertical}
 .book textarea:focus{border-color:var(--lagoon); outline:none; box-shadow:0 0 0 3px rgba(47,191,181,.25)}
 .trav{display:grid; gap:.7rem}
-.trav-row{display:grid; grid-template-columns:auto minmax(0,1.6fr) minmax(0,1fr); gap:.8rem; align-items:end; background:var(--foam); border-radius:14px; padding:.8rem .9rem}
+.trav-row{display:grid; grid-template-columns:auto minmax(0,1.6fr) minmax(0,1fr) minmax(0,1fr); gap:.8rem; align-items:end; background:var(--foam); border-radius:14px; padding:.8rem .9rem}
 .trav-row .field{margin:0}
 .trav-n{font:700 .85rem "Figtree",sans-serif; color:var(--ocean); background:var(--surface); border-radius:999px; padding:.35rem .7rem; white-space:nowrap; align-self:center}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .trav-n{color:var(--text)}}
@@ -463,11 +463,12 @@ dialog#hotel::backdrop{background:rgba(6,45,54,.65)}
     </fieldset>
     <div class="field"><label for="b-msg">Megjegyzés</label><textarea id="b-msg" name="message" placeholder="Például szobaigény, reptéri parkolás, utasbiztosítás"></textarea></div>
     <div class="hp" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label>Weboldal <input name="website" tabindex="-1" autocomplete="off"></label></div>
+    <datalist id="gy-nemzet"><option value="magyar"><option value="szlovák"><option value="osztrák"><option value="román"><option value="német"><option value="szerb"><option value="ukrán"><option value="horvát"></datalist>
     <label class="consent"><input type="checkbox" id="b-ok" required> <span>Hozzájárulok, hogy az Atlasz Travel a megadott adataimat a foglalás intézéséhez kezelje. *</span></label>
     <p class="err" id="b-err" role="alert"></p>
-    <button class="btn" type="submit">Foglalás elküldése</button>
+    <button class="btn" type="submit">Foglalási igény elküldése</button>
   </form>
-  <div class="book-ok" id="book-ok" tabindex="-1" hidden><strong>Köszönjük, megkaptuk a foglalását.</strong>Kollégánk hamarosan felveszi Önnel a kapcsolatot, és visszaigazolja a szabad helyet és a pontos árat.</div>
+  <div class="book-ok" id="book-ok" tabindex="-1" hidden><strong>Köszönjük, megkaptuk a foglalási igényét.</strong>Kollégánk hamarosan felveszi Önnel a kapcsolatot, és visszaigazolja a szabad helyet és a pontos árat.</div>
 </section>
 
 <section class="contact">
@@ -994,13 +995,14 @@ window.zImgErr = function(el){
   for(let i=1;i<=8;i++) bAc.add(new Option(i, i, i===2, i===2));
   for(let i=0;i<=4;i++) bCc.add(new Option(i, i, i===0, i===0));
   function travRows(){
-    const keep = [...bTrav.querySelectorAll('.trav-row')].map(r => [r.querySelector('[data-k="n"]').value, r.querySelector('[data-k="d"]').value]);
+    const keep = [...bTrav.querySelectorAll('.trav-row')].map(r => [r.querySelector('[data-k="n"]').value, r.querySelector('[data-k="d"]').value, r.querySelector('[data-k="c"]').value]);
     const ac = +bAc.value, cc = +bCc.value; let html = '', k = 0;
     for(let i=0;i<ac+cc;i++){
       const lbl = i >= ac ? (i-ac+1)+'. gyerek' : (i+1)+'. felnőtt';
-      const v = keep[k++] || ['',''];
+      const v = keep[k++] || ['','','magyar'];
       html += '<div class="trav-row"><span class="trav-n">'+lbl+'</span>'+
         '<div class="field"><label for="t-n'+i+'">Név *</label><input id="t-n'+i+'" data-k="n" data-l="'+lbl+'" required value="'+esc(v[0])+'"></div>'+
+        '<div class="field"><label for="t-c'+i+'">Állampolgárság *</label><input id="t-c'+i+'" data-k="c" list="gy-nemzet" required value="'+esc(v[2])+'"></div>'+
         '<div class="field"><label for="t-d'+i+'">Születési dátum *</label><input id="t-d'+i+'" data-k="d" type="date" required max="'+iso(today)+'" value="'+esc(v[1])+'"></div></div>';
     }
     bTrav.innerHTML = html;
@@ -1034,13 +1036,13 @@ window.zImgErr = function(el){
     const f = e.target, btn = f.querySelector('button[type=submit]');
     if(!f.reportValidity()) return;
     const travellers = [...bTrav.querySelectorAll('.trav-row')].map(r => {
-      const n = r.querySelector('[data-k="n"]'), d = r.querySelector('[data-k="d"]');
-      return n.dataset.l + ': ' + n.value.trim() + ', szül. ' + (d.value ? day(d.value, true) : '');
+      const n = r.querySelector('[data-k="n"]'), d = r.querySelector('[data-k="d"]'), c = r.querySelector('[data-k="c"]');
+      return {label: n.dataset.l, name: n.value.trim(), nationality: c.value.trim(), birth: d.value};
     });
     const data = {
       hotel: f.elements.hotel.value, term: f.elements.term.value, room: f.elements.room.value, from: f.elements.from.value,
       price: bookPrice, name: f.elements.name.value, phone: f.elements.phone.value, email: f.elements.email.value,
-      address: f.elements.address.value, adults: bAc.value, children: bCc.value, travellers: travellers.join('\n'),
+      address: f.elements.address.value, adults: bAc.value, children: bCc.value, travellersDetail: travellers,
       message: f.elements.message.value, website: f.elements.website.value
     };
     btn.disabled = true; btn.textContent = 'Küldés…'; $('b-err').textContent = '';
@@ -1049,8 +1051,8 @@ window.zImgErr = function(el){
         if(!d.ok) throw new Error(d.error);
         f.hidden = true; $('book-sum').hidden = true; $('book-ok').hidden = false; $('book-ok').focus();
       })
-      .catch(() => { $('b-err').innerHTML = 'A foglalás nem ment el. Próbálja újra, vagy hívjon minket: <a href="tel:'+CONFIG.phoneTel+'">'+esc(CONFIG.phone)+'</a>.'; })
-      .finally(() => { btn.disabled = false; btn.textContent = 'Foglalás elküldése'; });
+      .catch(err => { $('b-err').innerHTML = (err && err.message ? esc(err.message) + ' ' : 'A foglalási igény nem ment el. ') + 'Próbálja újra, vagy hívjon minket: <a href="tel:'+CONFIG.phoneTel+'">'+esc(CONFIG.phone)+'</a>.'; })
+      .finally(() => { btn.disabled = false; btn.textContent = 'Foglalási igény elküldése'; });
   });
 
   $('door').addEventListener('submit', e => { e.preventDefault(); search(true); });

@@ -207,6 +207,56 @@ function regio_tablazat(): array
     return $tabla;
 }
 
+// ---------------------------------------------------------------- foglalási igény
+
+/**
+ * A motor horga: foglalási igénynél utasonként teljes név (ahogy az útlevélben szerepel), állampolgárság és
+ * születési dátum, valamint a megrendelő lakcíme és telefonszáma kötelező. Ajánlatkérésnél az alap levél.
+ */
+function oldal_level(array $adat, string $fajta): ?array
+{
+    if ($fajta !== 'book') {
+        return null;
+    }
+    $utasok = is_array($adat['travellersDetail'] ?? null) ? array_values($adat['travellersDetail']) : [];
+    if (!$utasok || count($utasok) > 12) {
+        return ['hiba' => 'Kérjük, adja meg az utasok adatait.'];
+    }
+    $lista = [];
+    foreach ($utasok as $i => $u) {
+        $nev = sor($u['name'] ?? '', 120);
+        $allampolgarsag = sor($u['nationality'] ?? '', 60);
+        $szul = sor($u['birth'] ?? '', 10);
+        if (mb_strlen($nev) < 3 || strpos($nev, ' ') === false || $allampolgarsag === '' || !szuletesi_datum($szul)) {
+            return ['hiba' => 'Kérjük, adja meg a(z) ' . ($i + 1) . '. utas teljes nevét, állampolgárságát és születési dátumát.'];
+        }
+        $lista[] = '    – ' . $nev . ' (' . sor($u['label'] ?? '', 30) . '), állampolgárság: ' . $allampolgarsag . ', született: ' . $szul;
+    }
+    if (sor($adat['address'] ?? '') === '' || strlen((string)preg_replace('/\D+/', '', (string)($adat['phone'] ?? ''))) < 8) {
+        return ['hiba' => 'Kérjük, adja meg a lakcímét és a telefonszámát.'];
+    }
+    $sorok = [];
+    foreach ([['hotel', 'Szálloda'], ['term', 'Időpont'], ['room', 'Szoba és ellátás'], ['from', 'Indulás'], ['price', 'Ár az oldalon']] as [$m, $c]) {
+        if (sor($adat[$m] ?? '') !== '') {
+            $sorok[] = $c . ': ' . sor($adat[$m], 300);
+        }
+    }
+    $sorok[] = '';
+    $sorok[] = 'Megrendelő: ' . sor($adat['name'] ?? '', 120);
+    $sorok[] = 'Telefon: ' . sor($adat['phone'] ?? '', 40);
+    $sorok[] = 'E-mail: ' . sor($adat['email'] ?? '', 160);
+    $sorok[] = 'Lakcím: ' . sor($adat['address'] ?? '', 200);
+    $sorok[] = '';
+    $sorok[] = 'UTASOK (a nevek az útlevél szerint): ' . sor($adat['adults'] ?? '', 3) . ' felnőtt, ' . sor($adat['children'] ?? '', 3) . ' gyerek';
+    array_push($sorok, ...$lista);
+    if (sor($adat['message'] ?? '') !== '') {
+        $sorok[] = '';
+        $sorok[] = 'Megjegyzés: ' . sor($adat['message'], 3000);
+    }
+    $sorok[] = 'Adatkezelési hozzájárulás: megadva';
+    return ['targy' => 'Foglalási igény', 'sorok' => $sorok];
+}
+
 // ---------------------------------------------------------------- kérések
 
 kereso_kerelmek();

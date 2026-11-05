@@ -17,7 +17,7 @@ const FORRASOK = [
              'ellatas' => ['ai' => [['bi', 8]]], 'ellatas_idopont' => ['ai' => [['bi', 8], ['bi_f[]', 8]]]],
 ];
 const EGYSZERRE = ['at' => 3, 'sk' => 2];   // egyszerre legfeljebb ennyi kérés forrásonként (kíméljük őket)
-const OLDAL_NEV = 'Dominika';
+const OLDAL_NEV = 'Dominikai Köztársaság';
 const OLDAL_MAPPA = 'dominika';
 const LM_FORRASOK = ['sk', 'at'];
 const HELY_MAX_UJ = 12;          // egy válaszhoz legfeljebb ennyi szálloda-adatlapot nézünk meg (térképes hely)
@@ -188,25 +188,6 @@ function oldal_szallodak(array $eredmeny, array $kereses): array
 }
 
 // ---------------------------------------------------------------- ajánlatkérés, foglalási igény
-
-/** Egysoros szöveg a levélbe: sortörések és vezérlőkarakterek nélkül, legfeljebb $hossz karakter. */
-function sor($v, int $hossz = 200): string
-{
-    if (!is_scalar($v)) {
-        return '';
-    }
-    $s = preg_replace('/[\x00-\x1F\x7F]+/u', ' ', (string)$v);
-    return trim(mb_substr((string)$s, 0, $hossz));
-}
-
-/** Érvényes, múltbeli születési dátum (ÉÉÉÉ-HH-NN), legfeljebb 110 éve. */
-function szuletesi_datum(string $s): bool
-{
-    if (!preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $s, $m) || !checkdate((int)$m[2], (int)$m[3], (int)$m[1])) {
-        return false;
-    }
-    return $s < date('Y-m-d') && (int)$m[1] >= (int)date('Y') - 110;
-}
 
 /**
  * A motor horga: az ajánlatkérés és a foglalási igény ellenőrzése, a levél sorai. Ajánlatkéréshez elég
