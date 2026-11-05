@@ -12,6 +12,7 @@ A központ engedélyezte a tartalmak átvételét.
 | `vietnam/` | vietnam.atlasztravelgyor.hu | https://vietnam.atlasztravel.hu/ |
 | `bahari/` | bahari.atlasztravelgyor.hu | https://bahari.atlasztravel.hu/ (élő árakkal) |
 | `zanzibar/` | zanzibar.atlasztravelgyor.hu | https://zanzibar.atlasztravel.hu/ (teljes kereső élő adatokkal) |
+| `mscutak/` | mscutak.atlasztravelgyor.hu | https://mscutak.atlasztravel.hu/ (MSC hajóutak; az árakat a központ az oldalban frissíti) |
 | `dominika/` | dominika.atlasztravelgyor.hu | saját oldal (`sajat/dominika/`), élő árakkal és foglalási igénnyel |
 
 **Előnézet** (a tárhely elkészültéig): https://beda8101.github.io/atlasztravelgyor-aloldalak/
@@ -132,7 +133,7 @@ az adatkezelési tájékoztató elfogadása (www.atlasztravelgyor.hu/adatvedelem
 beküldés előtt, a tárhelyen futó program pedig a levél elküldése előtt is ellenőrzi. Több szoba is
 megadható. Az adatokat a program nem tárolja, csak továbbítja levélben.
 
-- Omán, RIU, Mauritius, Maldív, Vietnám: az oldal saját űrlapja tetején választható: „Ajánlatot
+- Omán, RIU, Mauritius, Maldív, Vietnám, MSC hajóutak (mindkét űrlap): az oldal saját űrlapja tetején választható: „Ajánlatot
   kérek” vagy „Foglalási igényt adok le” (`eszkozok/foglalas.js`, a `frissites.py`
   `FOGLALAS_MODUL` beállítása szerint). A levelet az `urlap_kuldes.php` küldi.
 - Bahari: az oldal űrlapja a foglalási igény (utasonként állampolgársággal), mellette a „Csak
