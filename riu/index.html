@@ -1399,7 +1399,7 @@ let lastFocus = null;
 function openHotel(destId, hotelId) {
   const d = DESTINATIONS.find(x => x.id === destId); const h = d && d.hotels.find(x => x.id === hotelId); if (!h) return;
   const D = h.detail;
-  const dates = [...D.dates].sort((a, b) => a[0].localeCompare(b[0]));
+  const dates = [...D.dates].filter(r => r[0] >= new Date().toISOString().slice(0, 10)).sort((a, b) => a[0].localeCompare(b[0]));
   const fl = D.flight;
   const flCard = (f, label) => `
         <div>${label ? `<span class="fl-type">${esc(label)}</span>` : ""}

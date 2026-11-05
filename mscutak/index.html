@@ -1129,6 +1129,7 @@ $("fCruise").onchange=e=>{const c=CRUISES[e.target.selectedIndex];selectCruise(c
 function fromHash(init){const c=CRUISES.find(x=>"#"+x.id===location.hash);if(c)selectCruise(c);else if(init||!state.cruise)selectCruise(CRUISES[0])}
 window.addEventListener("hashchange",()=>fromHash(false));
 
+CRUISES.forEach(c => { c.sailings = c.sailings.filter(s => s.dep >= new Date().toISOString().slice(0, 10)); });
 renderFilters();fromHash(true);
 
 // Élő adat: ha a tárhelyen van arak.php, onnan frissíti az indulásokat és árakat ({cruises:[{id, sailings:[...]}]}).

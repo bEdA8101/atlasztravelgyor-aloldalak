@@ -649,6 +649,7 @@ function label(iso) {
 
 const dateSel = document.getElementById("f-date");
 const box = document.querySelector(".date-chips");
+DATES.splice(0, DATES.length, ...DATES.filter(([iso]) => iso >= new Date().toISOString().slice(0, 10)));
 DATES.forEach(([iso, e]) => {
   const l = label(iso);
   const o = document.createElement("option");
