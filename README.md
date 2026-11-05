@@ -207,6 +207,10 @@ típus szerinti szűréssel), a www.atlasztravelgyor.hu főoldal és a győri ir
 
 - Az ajánlatok a `sajat/utazzvelunk/ajanlatok.json`-ban vannak, abban a sorrendben, ahogy az
   oldalon megjelennek. Szöveg, címke, kiemelés itt módosítható.
+- **Hívó kifejezés** (`"cimke"`): az indulási táblán zöld jelzőfénnyel és a kártya képén látszik.
+  **Repülőtéri felirat** (`"allapotok"`): valódi határidőhöz kötve, a megadott időszakban a hívó
+  kifejezés helyére kerül (például Vietnám: „Kapunyitás: dec. 16.” december 15-ig; Omán: sárga,
+  villogó „Utolsó hívás: ápr. 3.” 2027. március 6-tól). Csak valós határidőhöz szabad használni.
 - **Ideiglenes elrejtés:** `"lathato": false`. **Szezonális megjelenés:** `"latszik_tol"` és
   `"latszik_ig"` (ÉÉÉÉ-HH-NN). A program minden éjjel újraépíti az oldalt, így a dátumok maguktól
   érvényesülnek (az omán ajánlat például 2027. április 3. után magától eltűnik).
