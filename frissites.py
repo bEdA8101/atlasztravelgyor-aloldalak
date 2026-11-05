@@ -277,6 +277,10 @@ def riu_cserek(html):
     html = csere(html, minta, lambda m: (
         f'{m.group(1)}\n          <a {TERKEP_LINK}><span class="ico">{m.group(2)}{GOMBOSTU}</svg></span>'
         f'<div><span>Iroda</span><strong>{g["cim"]}</strong></div></a>'), "iroda címe a kapcsolatoknál", pontosan=1, flags=re.S)
+    # az elmúlt indulások ne látszódjanak (a központi oldal adatai néha régebbi napokat is tartalmaznak)
+    html = csere(html, re.escape("const dates = [...D.dates].sort((a, b) => a[0].localeCompare(b[0]));"),
+                 lambda m: "const dates = [...D.dates].filter(r => r[0] >= new Date().toISOString().slice(0, 10)).sort((a, b) => a[0].localeCompare(b[0]));",
+                 "elmúlt indulások szűrése", pontosan=1)
     return lablec_cim(html)
 
 
@@ -299,6 +303,10 @@ def vietnam_cserek(html):
     html = csere(html, r'(<span>Telefon: <a href="tel:[^"]+">[^<]+</a></span>)(\s*)',
                  rf'\1\2<span>E-mail: <a href="mailto:{g["email"]}">{g["email"]}</a></span>\2',
                  "e-mail a láblécben", pontosan=1)
+    # az elmúlt indulások ne látszódjanak (ha a központi oldal még nem frissült)
+    html = csere(html, re.escape("DATES.forEach(([iso, e]) => {"),
+                 lambda m: "DATES.splice(0, DATES.length, ...DATES.filter(([iso]) => iso >= new Date().toISOString().slice(0, 10)));\n" + m.group(0),
+                 "elmúlt indulások szűrése", pontosan=1)
     return lablec_cim(html)
 
 
@@ -356,6 +364,10 @@ def msc_cserek(html):
                             f'<a href="{g["weboldal"]}">{g["weboldal_felirat"]}</a></div>'), "irodák a láblécben", pontosan=1, flags=re.S)
     # a régi rövid ármegjegyzés helyett az általános lábléc-tájékoztató áll (LABLEC_TAJEKOZTATO)
     html = csere(html, r'\s*<div style="max-width:36ch">Az árak tájékoztató jellegűek[^<]*</div>', "", "régi ármegjegyzés", pontosan=1)
+    # az elmúlt indulások ne látszódjanak (ha a központi oldal még nem frissült)
+    html = csere(html, re.escape("renderFilters();fromHash(true);"),
+                 lambda m: "CRUISES.forEach(c => { c.sailings = c.sailings.filter(s => s.dep >= new Date().toISOString().slice(0, 10)); });\n" + m.group(0),
+                 "elmúlt indulások szűrése", pontosan=1)
     return html
 
 
