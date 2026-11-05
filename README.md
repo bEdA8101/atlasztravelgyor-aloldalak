@@ -111,7 +111,9 @@ forrás besorolásából állapítja meg; ha rosszul sorol be egy szállodát, �
   és telefonszáma; az adatkezelési tájékoztató elfogadása. Ezeket az oldal és a program is ellenőrzi.
   A levél a gyor@atlasztravel.hu címre megy, a program sehol nem tárolja az utasadatokat.
 
-A dominika-oldal saját oldal: a forrása a `sajat/dominika/index.html`. Ebben a `{{telefon}}`,
+A dominika-oldal saját oldal: a forrása a `sajat/dominika/index.html` (színvilága „modern amerikai
+üdülőmárka”: fehér, óceánkék, türkiz, naplementenarancs; betűi az Oswald és az Inter, a
+`sajat/dominika/fonts` mappából, a tárhelyről töltődnek). Ebben a `{{telefon}}`,
 `{{email}}`, `{{cim}}` stb. helyére a `frissites.py` a `GYOR` rész adatait írja, és ugyanúgy
 hozzáteszi a lábléc-tájékoztatót, mint a többi oldalhoz. Szöveget, képet itt kell módosítani.
 
