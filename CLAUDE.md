@@ -5,7 +5,7 @@ Ez a tároló az atlasztravelgyor.hu aloldalait tartalmazza: a központi Atlasz 
 
 ## A felhasználóról
 
-- Magyarul kommunikálj.
+- Magyarul kommunikálj, tegeződve (a felhasználó kérése).
 - Teljesen kezdő a GitHub és a weboldalak terén. Minden lépést egyszerűen, szakszavak nélkül
   vagy azok megmagyarázásával írj le.
 
