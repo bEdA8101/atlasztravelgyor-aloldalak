@@ -17,13 +17,16 @@ hogy egy csere nem talál, vagy a kész oldalon központi elérhetőség maradna
 import base64
 import hashlib
 import html as html_lib
+import json
 import re
 import shutil
 import sys
 import time
 import urllib.error
 import urllib.request
+from datetime import date, datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 from PIL import Image  # a logó méretéhez; telepítés: pip install pillow
 
@@ -94,6 +97,12 @@ FOGLALAS_MODUL = {
 # {{cim}} stb. helyére a GYOR adatai kerülnek; a mappa többi fájlja változatlanul az oldal mellé kerül.
 SAJAT_OLDALAK = {
     "dominika": "sajat/dominika",
+    # gyűjtőoldal: a kártyák és az indulási tábla a mappa ajanlatok.json-jából készülnek (gyujto_blokkok)
+    "utazzvelunk": "sajat/utazzvelunk",
+}
+SAJAT_LEIRAS = {
+    "dominika": "saját oldal (élő árakkal, foglalási igénnyel)",
+    "utazzvelunk": "gyűjtőoldal: innen érhető el a többi aloldal (ajánlatok: sajat/utazzvelunk/ajanlatok.json)",
 }
 
 # Előnézet: True esetén az oldalak „noindex” jelölést kapnak, hogy a keresők ne listázzák őket.
@@ -653,6 +662,98 @@ def frissit(nev):
     print(f"  kész: {nev}/index.html (űrlapküldő: {kuldo or 'nincs'})")
 
 
+NYIL_SVG = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">'
+            '<path d="M5 12h14M13 6l6 6-6 6"/></svg>')
+
+GYUJTO_KARTYA = """      <article class="kartya{osztaly}" data-kat="{kat}"{kiemelt_jel}>
+        <a href="{cim}">
+          <div class="kartya-kep">
+            <img src="img/{kep}-kis.webp" srcset="img/{kep}-kis.webp 760w, img/{kep}.webp 1400w" sizes="{meretek}" width="{szel}" height="{mag}" alt="{alt}" loading="lazy" decoding="async">
+            <span class="kod" aria-hidden="true">{kod}</span><span class="cimke">{cimke}</span>
+          </div>
+          <div class="kartya-test">
+            <p class="hely">{hely}</p>
+            <h3>{nev}</h3>
+            <p class="szoveg">{szoveg}</p>
+            <ul class="jellemzok">{jellemzok}</ul>
+            <span class="tovabb">Megnézem {nyil}</span>
+          </div>
+        </a>
+      </article>"""
+
+
+def kartya_elrendezes(lista):
+    """A kártyák szélessége, hogy ne maradjon félig üres sor (a lap JavaScriptje szűréskor ugyanígy számol).
+
+    Kiemelt kártyából kettő fér egy sorba, simából három; a kilógó utolsó kártya teljes szélességű,
+    két kilógó sima kártya pedig fele-fele szélességű lesz.
+    """
+    kiemelt = [a["azonosito"] for a in lista if a.get("kiemelt")]
+    sima = [a["azonosito"] for a in lista if not a.get("kiemelt")]
+    osztaly = {a: " kiemelt" for a in kiemelt} | {a: "" for a in sima}
+    if len(kiemelt) % 2:
+        osztaly[kiemelt[-1]] = " szeles"
+    if len(sima) % 3 == 1:
+        osztaly[sima[-1]] = " szeles"
+    elif len(sima) % 3 == 2:
+        osztaly[sima[-2]] = osztaly[sima[-1]] = " fel"
+    return osztaly
+
+
+def gyujto_blokkok(forras):
+    """A gyűjtőoldal változó részei az ajanlatok.json-ból: indulási tábla, szűrőgombok, kártyák.
+
+    Csak a most látható ajánlatok kerülnek fel ("lathato", "latszik_tol", "latszik_ig"). Mivel a program
+    minden éjjel lefut, a szezonális dátumok maguktól érvényesülnek.
+    """
+    adat = json.loads((forras / "ajanlatok.json").read_text(encoding="utf-8"))
+    ma = datetime.now(ZoneInfo("Europe/Budapest")).date()
+
+    def latszik(a):
+        tol, ig = a.get("latszik_tol"), a.get("latszik_ig")
+        return bool(a.get("lathato", True) and (not tol or date.fromisoformat(tol) <= ma)
+                    and (not ig or ma <= date.fromisoformat(ig)))
+
+    lista = [a for a in adat["ajanlatok"] if latszik(a)]
+    if not lista:
+        raise CsereHiba("utazzvelunk: egyetlen ajánlat sem látható (ajanlatok.json)")
+    e = html_lib.escape
+    elrendezes = kartya_elrendezes(lista)
+    tabla, kartyak, darab = [], [], {}
+    for a in lista:
+        kat = a["kategoria"]
+        if kat not in adat["kategoriak"]:
+            raise CsereHiba(f"utazzvelunk: ismeretlen kategória a(z) {a['azonosito']} ajánlatnál: {kat}")
+        if not a["cim"].startswith("https://"):
+            raise CsereHiba(f"utazzvelunk: a(z) {a['azonosito']} címe nem https://-sel kezdődik")
+        kis, nagy = forras / "img" / f"{a['kep']}-kis.webp", forras / "img" / f"{a['kep']}.webp"
+        for k in (kis, nagy):
+            if not k.exists():
+                raise CsereHiba(f"utazzvelunk: hiányzó kép: {k.relative_to(ALAP)}")
+        with Image.open(kis) as kep:
+            szel, mag = kep.size
+        darab[kat] = darab.get(kat, 0) + 1
+        betuk = "".join(f"<i>{e(c)}</i>" for c in a["kod"][:3])
+        elo = " elo" if a.get("elo_arak") else ""
+        tabla.append(f'        <li><a href="{e(a["cim"])}"><span class="t-kod" aria-hidden="true">{betuk}</span>'
+                     f'<span class="t-cel">{e(a["nev"])}</span><span class="t-honnan">{e(a["honnan"])}</span>'
+                     f'<span class="t-all{elo}">{e(a["cimke"])}</span></a></li>')
+        kiemelt = bool(a.get("kiemelt"))
+        kartyak.append(GYUJTO_KARTYA.format(
+            osztaly=elrendezes[a["azonosito"]], kiemelt_jel=' data-kiemelt="1"' if kiemelt else "",
+            kat=e(kat), cim=e(a["cim"]), kep=e(a["kep"]),
+            meretek=("(min-width: 1020px) 565px" if kiemelt else "(min-width: 1020px) 375px") + ", (min-width: 640px) 50vw, 100vw",
+            szel=szel, mag=mag, alt=e(a.get("kep_leiras") or a["nev"]), kod=e(a["kod"]), cimke=e(a["cimke"]),
+            hely=e(a["hely"]), nev=e(a["nev"]), szoveg=e(a["szoveg"]),
+            jellemzok="".join(f"<li>{e(j)}</li>" for j in a.get("jellemzok", [])), nyil=NYIL_SVG))
+    szurok = [f'        <button type="button" class="szuro" data-kat="" aria-pressed="true">Mind <span>{len(lista)}</span></button>']
+    szurok += [f'        <button type="button" class="szuro" data-kat="{e(k)}" aria-pressed="false">{e(f)} <span>{darab[k]}</span></button>'
+               for k, f in adat["kategoriak"].items() if darab.get(k)]
+    if len(szurok) < 3:   # egyetlen kategóriánál nincs mit szűrni
+        szurok = []
+    return {"tabla": "\n".join(tabla), "kartyak": "\n".join(kartyak), "szurok": "\n".join(szurok), "db": str(len(lista))}
+
+
 def sajat_oldal(nev):
     """Saját oldal elkészítése a sajat/ mappából (győri adatok, tájékoztató, ellenőrzés, élő adatos fájlok)."""
     forras = ALAP / SAJAT_OLDALAK[nev]
@@ -662,6 +763,8 @@ def sajat_oldal(nev):
         szel, mag = kep.size
     adatok = {k: html_lib.escape(str(v)) for k, v in GYOR.items()}
     adatok.update({"logo_szel": str(szel), "logo_mag": str(mag), "ev": time.strftime("%Y")})
+    if (forras / "ajanlatok.json").exists():
+        adatok.update(gyujto_blokkok(forras))   # kész HTML-részek (a szövegek már escape-elve)
     html = re.sub(r"\{\{(\w+)\}\}", lambda m: adatok[m.group(1)], html)
     if ELONEZET:
         html = csere(html, r'(<meta charset="?utf-?8"?>)', r'\1\n<meta name="robots" content="noindex, nofollow">',
@@ -673,7 +776,7 @@ def sajat_oldal(nev):
     uj = KIMENET / f".{nev}.uj"
     if uj.exists():
         shutil.rmtree(uj)
-    shutil.copytree(forras, uj)
+    shutil.copytree(forras, uj, ignore=shutil.ignore_patterns("ajanlatok.json"))
     try:
         (uj / "index.html").write_text(html, encoding="utf-8")
         (uj / "img").mkdir(exist_ok=True)
@@ -699,15 +802,15 @@ def nyitolap():
         cim = re.search(r"<title>([^<]*)</title>", oldal.read_text(encoding="utf-8"))
         felirat = html_lib.escape(cim.group(1) if cim else nev)
         sorok.append(
-            f'  <li><a href="{nev}/">{felirat}</a><br><small>Leendő cím: https://{nev}.{GYOR["domain"]}/ · '
+            f'  <li><a href="{nev}/">{felirat}</a><br><small>Éles cím: https://{nev}.{GYOR["domain"]}/ · '
             f'forrás: <a href="{forras}">{html_lib.escape(forras)}</a></small></li>')
     for nev in SAJAT_OLDALAK:
         oldal = KIMENET / nev / "index.html"
         if oldal.exists():
             cim = re.search(r"<title>([^<]*)</title>", oldal.read_text(encoding="utf-8"))
             felirat = html_lib.escape(cim.group(1) if cim else nev)
-            sorok.append(f'  <li><a href="{nev}/">{felirat}</a><br><small>Leendő cím: https://{nev}.{GYOR["domain"]}/ · '
-                         f'saját oldal (élő árakkal, foglalási igénnyel)</small></li>')
+            sorok.append(f'  <li><a href="{nev}/">{felirat}</a><br><small>Éles cím: https://{nev}.{GYOR["domain"]}/ · '
+                         f'{html_lib.escape(SAJAT_LEIRAS.get(nev, "saját oldal"))}</small></li>')
     tartalom = f"""<!doctype html>
 <html lang="hu">
 <head>
