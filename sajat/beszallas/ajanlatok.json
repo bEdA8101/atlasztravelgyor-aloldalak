@@ -1,6 +1,6 @@
 {
   "_leiras": [
-    "A gyűjtőoldal (utazzvelunk.atlasztravelgyor.hu) ajánlatai, ebben a sorrendben jelennek meg.",
+    "A gyűjtőoldal (beszallas.atlasztravelgyor.hu) ajánlatai, ebben a sorrendben jelennek meg.",
     "Új aloldal: másolj le egy blokkot, írd át, és tegyél mellé képet az img mappába (<kep>.webp és <kep>-kis.webp).",
     "Ideiglenes elrejtés: \"lathato\": false. Szezonális megjelenés: \"latszik_tol\" / \"latszik_ig\" (ÉÉÉÉ-HH-NN),",
     "a frissites.py minden éjjel újraépíti az oldalt, így a dátumok maguktól érvényesülnek.",

@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Utazz velünk! – válogatott utak | Atlasz Travel Győr</title>
-<meta name="description" content="Az Atlasz Travel Győr válogatott ajánlatai egy helyen: Zanzibár, Dominika, Vietnám, Omán, Mauritius, Maldív-szigetek, RIU szállodák és MSC hajóutak. Indulás Pozsonyból, Bécsből vagy Budapestről, ügyintézés Győrben.">
-<link rel="canonical" href="https://utazzvelunk.atlasztravelgyor.hu/">
+<title>Beszállás! – válogatott utak | {{nev}}</title>
+<meta name="description" content="Az {{nev}} válogatott ajánlatai egy helyen: Zanzibár, Dominika, Vietnám, Omán, Mauritius, Maldív-szigetek, RIU szállodák és MSC hajóutak. Indulás Pozsonyból, Bécsből vagy Budapestről, ügyintézés Győrben.">
+<link rel="canonical" href="https://beszallas.{{domain}}/">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Atlasz Travel Győr">
-<meta property="og:title" content="Utazz velünk! – válogatott utak az Atlasz Travel Győr irodától">
+<meta property="og:site_name" content="{{nev}}">
+<meta property="og:title" content="Beszállás! Válogatott utak az {{nev}} irodától">
 <meta property="og:description" content="Egzotikus tengerpartok, prémium úti célok és hajóutak egy helyen. Indulás Pozsonyból, Bécsből vagy Budapestről.">
-<meta property="og:url" content="https://utazzvelunk.atlasztravelgyor.hu/">
-<meta property="og:image" content="https://utazzvelunk.atlasztravelgyor.hu/img/og.jpg">
+<meta property="og:url" content="https://beszallas.{{domain}}/">
+<meta property="og:image" content="https://beszallas.{{domain}}/img/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="hu_HU">
@@ -24,11 +24,11 @@
 {
   "@context": "https://schema.org",
   "@type": "TravelAgency",
-  "name": "Atlasz Travel Győr",
-  "url": "https://www.atlasztravelgyor.hu",
-  "telephone": "+36 20 266 8144",
-  "email": "gyor@atlasztravel.hu",
-  "image": "https://utazzvelunk.atlasztravelgyor.hu/img/og.jpg",
+  "name": "{{nev}}",
+  "url": "{{weboldal}}",
+  "telephone": "{{telefon}}",
+  "email": "{{email}}",
+  "image": "https://beszallas.{{domain}}/img/og.jpg",
   "address": {"@type": "PostalAddress", "streetAddress": "Király u. 1.", "postalCode": "9021", "addressLocality": "Győr", "addressCountry": "HU"},
   "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "10:00", "closes": "17:00"}]
 }
@@ -82,7 +82,7 @@ h1,h2,h3{font-family:var(--disp);font-weight:800;text-transform:uppercase;line-h
 .nyito{background:var(--ink);color:#fff;position:relative;overflow:hidden}
 .nyito::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:var(--brand)}
 .nyito .wrap{display:grid;grid-template-columns:1.02fr .98fr;gap:56px;align-items:center;padding-top:72px;padding-bottom:84px}
-.nyito h1{font-size:clamp(76px,10.5vw,148px);color:#fff}
+.nyito h1{font-size:clamp(58px,8.4vw,118px);color:#fff}
 .nyito h1 span{display:block;background:var(--brand);-webkit-background-clip:text;background-clip:text;color:transparent}
 .nyito .bevezeto{font-size:clamp(17px,1.6vw,19px);line-height:1.6;color:rgba(255,255,255,.82);max-width:34em;margin:26px 0 32px}
 .nyito .gombok{display:flex;flex-wrap:wrap;gap:12px}
@@ -257,13 +257,13 @@ footer .logo-feher{height:40px;width:auto;background:#fff;border-radius:8px;padd
 <body>
 <header class="fej">
   <div class="wrap">
-    <a class="logo" href="https://www.atlasztravelgyor.hu" aria-label="Atlasz Travel Győr – főoldal"><img src="img/atlasz-travel-gyor-logo.png" alt="Atlasz Travel Győr" width="537" height="268"></a>
+    <a class="logo" href="{{weboldal}}" aria-label="{{nev}} – főoldal"><img src="img/{{logo}}" alt="{{nev}}" width="{{logo_szel}}" height="{{logo_mag}}"></a>
     <nav aria-label="Oldal">
       <a class="menu" href="#ajanlatok">Ajánlatok</a>
       <a class="menu" href="#repterek">Repterek</a>
       <a class="menu" href="#iroda">Iroda</a>
-      <a class="tel" href="tel:+36202668144">+36 20 266 8144</a>
-      <a class="gomb tele" href="https://www.atlasztravelgyor.hu">Főoldal <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+      <a class="tel" href="tel:{{telefon_link}}">{{telefon}}</a>
+      <a class="gomb tele" href="{{weboldal}}">Főoldal <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
     </nav>
   </div>
 </header>
@@ -272,27 +272,19 @@ footer .logo-feher{height:40px;width:auto;background:#fff;border-radius:8px;padd
 <section class="nyito" aria-labelledby="cim">
   <div class="wrap">
     <div>
-      <p class="kicker">Atlasz Travel Győr · Király u. 1.</p>
-      <h1 id="cim">Utazz <span>velünk!</span></h1>
+      <p class="kicker">{{nev}} · Király u. 1.</p>
+      <h1 id="cim">Kezdődik a <span>beszállás!</span></h1>
       <p class="bevezeto">Válogatott utak egy helyen: Zanzibártól a Karib-tengerig, ötcsillagos all inclusive szállodák, prémium úti célok és hajóutak. Indulás Pozsonyból, Bécsből vagy Budapestről, az ügyintézés pedig itt, Győrben.</p>
       <div class="gombok">
         <a class="gomb tele" href="#ajanlatok">Megnézem az ajánlatokat <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
-        <a class="gomb korvonal" href="https://www.atlasztravelgyor.hu">Teljes kínálat <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+        <a class="gomb korvonal" href="{{weboldal}}">Teljes kínálat <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
       </div>
-      <p class="iroda-sor">Személyesen is: hétfő–péntek 10:00–17:00 · <a href="tel:+36202668144">+36 20 266 8144</a></p>
+      <p class="iroda-sor">Személyesen is: {{nyitvatartas}} · <a href="tel:{{telefon_link}}">{{telefon}}</a></p>
     </div>
     <div class="tabla" role="navigation" aria-label="Ajánlataink röviden">
-      <div class="tabla-fej"><b>Indulások</b><span>9 válogatott ajánlat</span></div>
+      <div class="tabla-fej"><b>Indulások</b><span>{{db}} válogatott ajánlat</span></div>
       <ol>
-        <li><a href="https://zanzibar.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>Z</i><i>N</i><i>Z</i></span><span class="t-cel">Zanzibár</span><span class="t-honnan">BUD · VIE · BTS</span><span class="t-all zold"><span>Fűszersziget,</span> <span>szafari</span></span></a></li>
-        <li><a href="https://dominika.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>P</i><i>U</i><i>J</i></span><span class="t-cel">Dominikai Köztársaság</span><span class="t-honnan">BUD · VIE · BTS</span><span class="t-all zold"><span>Karibi nyár,</span> <span>vakító homok</span></span></a></li>
-        <li><a href="https://bahari.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>Z</i><i>N</i><i>Z</i></span><span class="t-cel">TUI BLUE Bahari</span><span class="t-honnan">BTS</span><span class="t-all zold"><span>Óceánparti 5*,</span> <span>buja kertek</span></span></a></li>
-        <li><a href="https://vietnam.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>P</i><i>Q</i><i>C</i></span><span class="t-cel">Vietnám, Phu Quoc</span><span class="t-honnan">BTS</span><span class="t-all zold"><span>Kapunyitás: dec. 16.</span></span></a></li>
-        <li><a href="https://oman.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>S</i><i>L</i><i>L</i></span><span class="t-cel">Omán, Salalah</span><span class="t-honnan">BTS</span><span class="t-all zold"><span>Ezeregyéjszaka</span> <span>all inclusive ellátással</span></span></a></li>
-        <li><a href="https://mscutak.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>M</i><i>S</i><i>C</i></span><span class="t-cel">MSC hajóutak</span><span class="t-honnan">VCE · BCN · VLC</span><span class="t-all zold"><span>Úszó szálloda</span> <span>és tengernyi élmény</span></span></a></li>
-        <li><a href="https://riu.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>R</i><i>I</i><i>U</i></span><span class="t-cel">RIU szállodák</span><span class="t-honnan">9 úti cél</span><span class="t-all zold"><span>Számos úti cél,</span> <span>jól ismert minőség</span></span></a></li>
-        <li><a href="https://mauritius.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>M</i><i>R</i><i>U</i></span><span class="t-cel">Mauritius</span><span class="t-honnan">Egyedi ajánlat</span><span class="t-all zold"><span>Szigetálom,</span> <span>nászút és felfedezés</span></span></a></li>
-        <li><a href="https://maldiv.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>M</i><i>L</i><i>E</i></span><span class="t-cel">Maldív-szigetek</span><span class="t-honnan">Egyedi ajánlat</span><span class="t-all zold"><span>Mesesziget,</span> <span>vízi villák</span></span></a></li>
+{{tabla}}
       </ol>
     </div>
   </div>
@@ -307,149 +299,11 @@ footer .logo-feher{height:40px;width:auto;background:#fff;border-radius:8px;padd
         <p>Minden kártya mögött egy részletes aloldal áll időpontokkal, árakkal és ajánlatkéréssel.</p>
       </div>
       <div class="szurok" role="group" aria-label="Szűrés típus szerint">
-        <button type="button" class="szuro" data-kat="" aria-pressed="true">Mind <span>9</span></button>
-        <button type="button" class="szuro" data-kat="egzotikus" aria-pressed="false">Egzotikus tengerpartok <span>5</span></button>
-        <button type="button" class="szuro" data-kat="tengerpart" aria-pressed="false">Tengerparti szállodák <span>1</span></button>
-        <button type="button" class="szuro" data-kat="hajout" aria-pressed="false">Hajóutak <span>1</span></button>
-        <button type="button" class="szuro" data-kat="premium" aria-pressed="false">Prémium úti célok <span>2</span></button>
+{{szurok}}
       </div>
     </div>
     <div class="racs">
-      <article class="kartya kiemelt" data-kat="egzotikus" data-kiemelt="1">
-        <a href="https://zanzibar.atlasztravelgyor.hu/">
-          <div class="kartya-kep">
-            <img src="img/zanzibar-kis.webp" srcset="img/zanzibar-kis.webp 760w, img/zanzibar.webp 1400w" sizes="(min-width: 1020px) 565px, (min-width: 640px) 50vw, 100vw" width="760" height="380" alt="Függőágy pálmafák között Zanzibár türkiz vizű partján" loading="lazy" decoding="async">
-            <span class="kod" aria-hidden="true">ZNZ</span><span class="cimke">Fűszersziget, szafari</span>
-          </div>
-          <div class="kartya-test">
-            <p class="hely">Tanzánia · Indiai-óceán</p>
-            <h3>Zanzibár</h3>
-            <p class="szoveg">Fehér homok, türkiz lagúna, fűszerillatú sikátorok. Zanzibári szállodáink és időpontjaink egy keresőben, élő árakkal.</p>
-            <ul class="jellemzok"><li>Indulás Budapestről, Bécsből vagy Pozsonyból</li><li>Last minute ajánlatok</li><li>Foglalási igény online</li></ul>
-            <span class="tovabb">Megnézem <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-      </article>
-      <article class="kartya kiemelt" data-kat="egzotikus" data-kiemelt="1">
-        <a href="https://dominika.atlasztravelgyor.hu/">
-          <div class="kartya-kep">
-            <img src="img/dominika-kis.webp" srcset="img/dominika-kis.webp 760w, img/dominika.webp 1400w" sizes="(min-width: 1020px) 565px, (min-width: 640px) 50vw, 100vw" width="760" height="428" alt="Pálmafás karibi tengerpart Dominikán" loading="lazy" decoding="async">
-            <span class="kod" aria-hidden="true">PUJ</span><span class="cimke">Karibi nyár, vakító homok</span>
-          </div>
-          <div class="kartya-test">
-            <p class="hely">Karib-tenger · Punta Cana, Bávaro, Bayahibe</p>
-            <h3>Dominikai Köztársaság</h3>
-            <p class="szoveg">Punta Cana, Bávaro és Bayahibe 4 és 5 csillagos all inclusive szállodái. Pozsonyból közvetlen járattal, Bécsből vagy Budapestről átszállással.</p>
-            <ul class="jellemzok"><li>4–5 csillagos all inclusive</li><li>Indulás Pozsonyból, Bécsből vagy Budapestről</li><li>Foglalási igény online</li></ul>
-            <span class="tovabb">Megnézem <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-      </article>
-      <article class="kartya" data-kat="egzotikus">
-        <a href="https://bahari.atlasztravelgyor.hu/">
-          <div class="kartya-kep">
-            <img src="img/bahari-kis.webp" srcset="img/bahari-kis.webp 760w, img/bahari.webp 1400w" sizes="(min-width: 1020px) 375px, (min-width: 640px) 50vw, 100vw" width="760" height="428" alt="A TUI BLUE Bahari szálloda és a kiwengwai strand madártávlatból" loading="lazy" decoding="async">
-            <span class="kod" aria-hidden="true">ZNZ</span><span class="cimke">Óceánparti 5*, buja kertek</span>
-          </div>
-          <div class="kartya-test">
-            <p class="hely">Zanzibár · Kiwengwa</p>
-            <h3>TUI BLUE Bahari</h3>
-            <p class="szoveg">Ötcsillagos all inclusive szálloda Kiwengwa homokos strandján, 7 éjszakára, közvetlen járattal Pozsonyból, transzferrel.</p>
-            <ul class="jellemzok"><li>5* all inclusive</li><li>Közvetlen járat Pozsonyból</li><li>Foglalási igény online</li></ul>
-            <span class="tovabb">Megnézem <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-      </article>
-      <article class="kartya" data-kat="egzotikus">
-        <a href="https://vietnam.atlasztravelgyor.hu/">
-          <div class="kartya-kep">
-            <img src="img/vietnam-kis.webp" srcset="img/vietnam-kis.webp 760w, img/vietnam.webp 1400w" sizes="(min-width: 1020px) 375px, (min-width: 640px) 50vw, 100vw" width="760" height="427" alt="A Meliá Vinpearl Phu Quoc üdülő és tengerpartja madártávlatból" loading="lazy" decoding="async">
-            <span class="kod" aria-hidden="true">PQC</span><span class="cimke">Kapunyitás: dec. 16.</span>
-          </div>
-          <div class="kartya-test">
-            <p class="hely">Meliá Vinpearl Phu Quoc 5*</p>
-            <h3>Vietnám, Phu Quoc</h3>
-            <p class="szoveg">Tél helyett trópusi nyár: 9 nap / 7 éj közvetlen járattal Pozsonyból, poggyásszal és transzferrel, reggelivel vagy all inclusive.</p>
-            <ul class="jellemzok"><li>Indulás 2026. december 16-tól</li><li>Közvetlen járat Pozsonyból</li><li>Villák saját stranddal</li></ul>
-            <span class="tovabb">Megnézem <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-      </article>
-      <article class="kartya" data-kat="egzotikus">
-        <a href="https://oman.atlasztravelgyor.hu/">
-          <div class="kartya-kep">
-            <img src="img/oman-kis.webp" srcset="img/oman-kis.webp 760w, img/oman.webp 1400w" sizes="(min-width: 1020px) 375px, (min-width: 640px) 50vw, 100vw" width="760" height="505" alt="Salalah fehér homokos partja hegyekkel a háttérben" loading="lazy" decoding="async">
-            <span class="kod" aria-hidden="true">SLL</span><span class="cimke">Ezeregyéjszaka all inclusive ellátással</span>
-          </div>
-          <div class="kartya-test">
-            <p class="hely">Indiai-óceán</p>
-            <h3>Omán, Salalah</h3>
-            <p class="szoveg">Két ötcsillagos, all inclusive tengerparti szálloda Hawana Salalah üdülőközpontjában, közvetlen charterjárattal Pozsonyból.</p>
-            <ul class="jellemzok"><li>Fanar Hotel 5* · Salalah Rotana 5*</li><li>Indulás szombatonként</li><li>Közvetlen járat Pozsonyból</li></ul>
-            <span class="tovabb">Megnézem <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-      </article>
-      <article class="kartya" data-kat="hajout">
-        <a href="https://mscutak.atlasztravelgyor.hu/">
-          <div class="kartya-kep">
-            <img src="img/mscutak-kis.webp" srcset="img/mscutak-kis.webp 760w, img/mscutak.webp 1400w" sizes="(min-width: 1020px) 375px, (min-width: 640px) 50vw, 100vw" width="760" height="367" alt="MSC óceánjáró a nyílt tengeren" loading="lazy" decoding="async">
-            <span class="kod" aria-hidden="true">MSC</span><span class="cimke">Úszó szálloda és tengernyi élmény</span>
-          </div>
-          <div class="kartya-test">
-            <p class="hely">Földközi-tenger · Karib-tenger</p>
-            <h3>MSC hajóutak</h3>
-            <p class="szoveg">Egy hét a tengeren, szinte minden nap új kikötő. Indulás Velencéből, Barcelonából, Valenciából, Rómából, Nápolyból, Vallettából vagy Port Canaveralből.</p>
-            <ul class="jellemzok"><li>Időpont- és kabinválasztás árakkal</li><li>Repülőjegyet, transzfert is intézünk</li><li>Családi ajánlatkérés</li></ul>
-            <span class="tovabb">Megnézem <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-      </article>
-      <article class="kartya" data-kat="tengerpart">
-        <a href="https://riu.atlasztravelgyor.hu/">
-          <div class="kartya-kep">
-            <img src="img/riu-kis.webp" srcset="img/riu-kis.webp 760w, img/riu.webp 1400w" sizes="(min-width: 1020px) 375px, (min-width: 640px) 50vw, 100vw" width="760" height="502" alt="Pár pihen egy pálmafás RIU szálloda medencéjében" loading="lazy" decoding="async">
-            <span class="kod" aria-hidden="true">RIU</span><span class="cimke">Számos úti cél, jól ismert minőség</span>
-          </div>
-          <div class="kartya-test">
-            <p class="hely">Kilenc úti cél, egy szállodalánc</p>
-            <h3>RIU szállodák</h3>
-            <p class="szoveg">Megbízható tengerparti szállodák Törökországtól a Kanári-szigeteken és Dubain át Zanzibárig, Mauritiusig és Dominikáig.</p>
-            <ul class="jellemzok"><li>Törökország, Portugália, Kanári-szigetek</li><li>Dubai, Szenegál, Mauritius</li><li>Zanzibár, Maldív-szigetek, Dominika</li></ul>
-            <span class="tovabb">Megnézem <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-      </article>
-      <article class="kartya" data-kat="premium">
-        <a href="https://mauritius.atlasztravelgyor.hu/">
-          <div class="kartya-kep">
-            <img src="img/mauritius-kis.webp" srcset="img/mauritius-kis.webp 760w, img/mauritius.webp 1400w" sizes="(min-width: 1020px) 375px, (min-width: 640px) 50vw, 100vw" width="760" height="570" alt="A Le Morne-félsziget Mauritiuson naplementében" loading="lazy" decoding="async">
-            <span class="kod" aria-hidden="true">MRU</span><span class="cimke">Szigetálom, nászút és felfedezés</span>
-          </div>
-          <div class="kartya-test">
-            <p class="hely">Atlasz Prémium · Indiai-óceán</p>
-            <h3>Mauritius</h3>
-            <p class="szoveg">Szakértői kalauz és személyre szabott ajánlat: partvidékek, a legjobb időszak, szállodaválasztás és élmények.</p>
-            <ul class="jellemzok"><li>Személyre szabott ajánlat</li><li>Nászút, szimbolikus esküvő</li><li>50 kérdés, 50 válasz</li></ul>
-            <span class="tovabb">Megnézem <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-      </article>
-      <article class="kartya szeles" data-kat="premium">
-        <a href="https://maldiv.atlasztravelgyor.hu/">
-          <div class="kartya-kep">
-            <img src="img/maldiv-kis.webp" srcset="img/maldiv-kis.webp 760w, img/maldiv.webp 1400w" sizes="(min-width: 1020px) 375px, (min-width: 640px) 50vw, 100vw" width="760" height="393" alt="Vízre épült villák a Maldív-szigeteken madártávlatból" loading="lazy" decoding="async">
-            <span class="kod" aria-hidden="true">MLE</span><span class="cimke">Mesesziget, vízi villák</span>
-          </div>
-          <div class="kartya-test">
-            <p class="hely">Atlasz Prémium · Indiai-óceán</p>
-            <h3>Maldív-szigetek</h3>
-            <p class="szoveg">Resortszigetek, beach és water villák, víz alatti világ: a sziget kiválasztásától a transzferig személyre szabva.</p>
-            <ul class="jellemzok"><li>Beach és water villák</li><li>Speedboat, hidroplán vagy belső járat</li><li>50 kérdés, 50 válasz</li></ul>
-            <span class="tovabb">Megnézem <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-      </article>
+{{kartyak}}
     </div>
   </div>
 </section>
@@ -489,9 +343,9 @@ footer .logo-feher{height:40px;width:auto;background:#fff;border-radius:8px;padd
       <p>Egyiptom, Törökország, a görög és a Kanári-szigetek, körutazások és last minute ajánlatok: a teljes kínálatunkat online kereséssel a főoldalon találod, budapesti, bécsi, pozsonyi és más indulással.</p>
     </div>
     <ul class="fooldal-linkek">
-      <li><a class="fo" href="https://www.atlasztravelgyor.hu"><span>www.atlasztravelgyor.hu<small>Keresés a teljes kínálatban</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a></li>
-      <li><a href="https://www.atlasztravelgyor.hu/top-kinalatok/4:last-minute-utak.html"><span>Last minute utak<small>Indulás a következő napokban</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a></li>
-      <li><a href="https://www.atlasztravelgyor.hu/gyors-ajanlatkeres"><span>Egyedi ajánlatkérés<small>Megírod, mire vágysz, mi összeállítjuk</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a></li>
+      <li><a class="fo" href="{{weboldal}}"><span>{{weboldal_felirat}}<small>Keresés a teljes kínálatban</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a></li>
+      <li><a href="{{weboldal}}/top-kinalatok/4:last-minute-utak.html"><span>Last minute utak<small>Indulás a következő napokban</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a></li>
+      <li><a href="{{weboldal}}/gyors-ajanlatkeres"><span>Egyedi ajánlatkérés<small>Megírod, mire vágysz, mi összeállítjuk</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a></li>
     </ul>
   </div>
 </section>
@@ -504,11 +358,11 @@ footer .logo-feher{height:40px;width:auto;background:#fff;border-radius:8px;padd
       <p class="bev">Ha szívesebben beszélnéd meg élőben, várunk győri irodánkban. Hívhatsz vagy írhatsz is: segítünk kiválasztani az úti célt, a szállodát és az indulási repteret.</p>
     </div>
     <div class="adatok">
-      <div class="adat"><b>Telefon</b><a href="tel:+36202668144">+36 20 266 8144</a></div>
-      <div class="adat"><b>E-mail</b><a href="mailto:gyor@atlasztravel.hu">gyor@atlasztravel.hu</a></div>
-      <div class="adat"><b>Iroda</b><span>9021 Győr, Király u. 1.</span></div>
-      <div class="adat"><b>Nyitvatartás</b><span>hétfő–péntek 10:00–17:00</span></div>
-      <div class="adat szeles"><span>Útvonaltervezés a győri irodához</span><a class="gomb korvonal" href="https://www.google.com/maps/search/?api=1&amp;query=Atlasz+Travel+Gy%C5%91r+9021+Gy%C5%91r+Kir%C3%A1ly+u.+1." target="_blank" rel="noopener">Térkép <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a></div>
+      <div class="adat"><b>Telefon</b><a href="tel:{{telefon_link}}">{{telefon}}</a></div>
+      <div class="adat"><b>E-mail</b><a href="mailto:{{email}}">{{email}}</a></div>
+      <div class="adat"><b>Iroda</b><span>{{cim}}</span></div>
+      <div class="adat"><b>Nyitvatartás</b><span>{{nyitvatartas}}</span></div>
+      <div class="adat szeles"><span>Útvonaltervezés a győri irodához</span><a class="gomb korvonal" href="{{terkep}}" target="_blank" rel="noopener">Térkép <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a></div>
     </div>
   </div>
 </section>
@@ -516,11 +370,10 @@ footer .logo-feher{height:40px;width:auto;background:#fff;border-radius:8px;padd
 
 <footer>
   <div class="wrap">
-    <img class="logo-feher" src="img/atlasz-travel-gyor-logo.png" alt="" width="537" height="268" loading="lazy">
-    <span>© 2026 Atlasz Travel Győr · 9021 Győr, Király u. 1. · <a href="tel:+36202668144">+36 20 266 8144</a> · <a href="mailto:gyor@atlasztravel.hu">gyor@atlasztravel.hu</a></span>
-    <a href="https://www.atlasztravelgyor.hu">www.atlasztravelgyor.hu</a>
+    <img class="logo-feher" src="img/{{logo}}" alt="" width="{{logo_szel}}" height="{{logo_mag}}" loading="lazy">
+    <span>© {{ev}} {{nev}} · {{cim}} · <a href="tel:{{telefon_link}}">{{telefon}}</a> · <a href="mailto:{{email}}">{{email}}</a></span>
+    <a href="{{weboldal}}">{{weboldal_felirat}}</a>
   </div>
-<div class="gy-tajekoztato" style="max-width:1100px;margin:24px auto 0;padding:14px 20px 16px;border-top:1px solid rgba(127,127,127,.25);font-size:12px;line-height:1.6;text-align:center;opacity:.8"><p style="margin:0 auto;max-width:none">A weboldalon megjelenített ajánlatok, árak és információk tájékoztató jellegűek, nem minősülnek kötelező érvényű ajánlattételnek. Az árak, a foglalhatóság és a szolgáltatások feltételei változhatnak; az esetleges elírások és megjelenítési hibák javításának jogát fenntartjuk. A foglalás minden esetben az aktuális árak és feltételek visszaigazolásától függ. A feltüntetett árak – eltérő kifejezett tájékoztatás hiányában – nem tartalmazzák a külön fizetendő vízumok, beutazási engedélyek, biztosítások, helyi adók, illetékek és egyéb járulékos költségek díjait. A pontos, aktuális árakról és feltételekről foglalás előtt tájékoztatást adunk.</p></div>
 </footer>
 
 <script>

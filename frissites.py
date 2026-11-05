@@ -98,11 +98,11 @@ FOGLALAS_MODUL = {
 SAJAT_OLDALAK = {
     "dominika": "sajat/dominika",
     # gyűjtőoldal: a kártyák és az indulási tábla a mappa ajanlatok.json-jából készülnek (gyujto_blokkok)
-    "utazzvelunk": "sajat/utazzvelunk",
+    "beszallas": "sajat/beszallas",
 }
 SAJAT_LEIRAS = {
     "dominika": "saját oldal (élő árakkal, foglalási igénnyel)",
-    "utazzvelunk": "gyűjtőoldal: innen érhető el a többi aloldal (ajánlatok: sajat/utazzvelunk/ajanlatok.json)",
+    "beszallas": "gyűjtőoldal: innen érhető el a többi aloldal (ajánlatok: sajat/beszallas/ajanlatok.json)",
 }
 
 # Előnézet: True esetén az oldalak „noindex” jelölést kapnak, hogy a keresők ne listázzák őket.
@@ -721,7 +721,7 @@ def gyujto_felirat(a, ma):
     határidőhöz), ha nincs ilyen, a hívó kifejezés. Visszaad: (szöveg, jelzés: "zold" vagy "sarga")."""
     for allapot in a.get("allapotok", []):
         if allapot.get("jelzes", "zold") not in ("zold", "sarga") or not allapot.get("szoveg"):
-            raise CsereHiba(f"utazzvelunk: hibás felirat a(z) {a['azonosito']} ajánlatnál: {allapot}")
+            raise CsereHiba(f"gyűjtőoldal: hibás felirat a(z) {a['azonosito']} ajánlatnál: {allapot}")
         tol, ig = allapot.get("tol"), allapot.get("ig")
         if (not tol or date.fromisoformat(tol) <= ma) and (not ig or ma <= date.fromisoformat(ig)):
             return allapot["szoveg"], allapot.get("jelzes", "zold")
@@ -744,20 +744,20 @@ def gyujto_blokkok(forras):
 
     lista = [a for a in adat["ajanlatok"] if latszik(a)]
     if not lista:
-        raise CsereHiba("utazzvelunk: egyetlen ajánlat sem látható (ajanlatok.json)")
+        raise CsereHiba("gyűjtőoldal: egyetlen ajánlat sem látható (ajanlatok.json)")
     e = html_lib.escape
     elrendezes = kartya_elrendezes(lista)
     tabla, kartyak, darab = [], [], {}
     for a in lista:
         kat = a["kategoria"]
         if kat not in adat["kategoriak"]:
-            raise CsereHiba(f"utazzvelunk: ismeretlen kategória a(z) {a['azonosito']} ajánlatnál: {kat}")
+            raise CsereHiba(f"gyűjtőoldal: ismeretlen kategória a(z) {a['azonosito']} ajánlatnál: {kat}")
         if not a["cim"].startswith("https://"):
-            raise CsereHiba(f"utazzvelunk: a(z) {a['azonosito']} címe nem https://-sel kezdődik")
+            raise CsereHiba(f"gyűjtőoldal: a(z) {a['azonosito']} címe nem https://-sel kezdődik")
         kis, nagy = forras / "img" / f"{a['kep']}-kis.webp", forras / "img" / f"{a['kep']}.webp"
         for k in (kis, nagy):
             if not k.exists():
-                raise CsereHiba(f"utazzvelunk: hiányzó kép: {k.relative_to(ALAP)}")
+                raise CsereHiba(f"gyűjtőoldal: hiányzó kép: {k.relative_to(ALAP)}")
         with Image.open(kis) as kep:
             szel, mag = kep.size
         darab[kat] = darab.get(kat, 0) + 1
