@@ -14,7 +14,7 @@ Ez a tároló az atlasztravelgyor.hu aloldalait tartalmazza: a központi Atlasz 
 - A kész oldalakat (`oman/`, `riu/`, `mauritius/`, `maldiv/`, `vietnam/`, `index.html`) a
   `frissites.py` állítja elő. **Ne szerkeszd őket kézzel**: minden változtatást a
   `frissites.py` cseréiben vezess, majd futtasd: `python frissites.py`.
-- Gyűjtőoldal: `sajat/utazzvelunk/` (utazzvelunk.atlasztravelgyor.hu). Új vagy megszűnő aloldalnál
+- Gyűjtőoldal: `sajat/beszallas/` (beszallas.atlasztravelgyor.hu). Új vagy megszűnő aloldalnál
   frissítsd az `ajanlatok.json`-t is (látható, latszik_tol / latszik_ig a szezonális oldalakhoz).
 - A győri adatok (telefon, e-mail, cím, nyitvatartás) a `frissites.py` `GYOR` részében vannak.
   Az oldalakon csak a győri iroda elérhetősége szerepeljen, személyes munkatársi elérhetőség ne.
