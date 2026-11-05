@@ -117,6 +117,29 @@ nem terheli. Ha a forrás épp nem elérhető, a legutóbbi (legfeljebb egynapos
 újrapróbálja, a kimaradásokat hibanaplóba írja; a zanzibar-oldalon ez így nézhető meg:
 `https://<aloldal>/zanzibar/api.php?action=allapot` (az utolsó 30 kimaradás ideje, címe és oka).
 
+## Ajánlatkérés és foglalási igény
+
+Minden aloldalon beadható ajánlatkérés és foglalási igény is. Minden levél a gyor@atlasztravel.hu
+címre megy, és a tárgyából, illetve az első két sorából mindig kiderül:
+
+- **TÍPUS:** Ajánlatkérés vagy Foglalási igény,
+- **OLDAL:** az oldal neve és címe (a levélküldő program a saját helyéből állapítja meg, a látogató
+  nem írhatja át).
+
+Foglalási igénynél kötelező: szobánként minden utas teljes neve (ahogy az útlevelében áll),
+állampolgársága és születési dátuma; a fő (szerződő) utas lakcíme, e-mail-címe és telefonszáma;
+az adatkezelési tájékoztató elfogadása (www.atlasztravelgyor.hu/adatvedelem). Ezt az oldal a
+beküldés előtt, a tárhelyen futó program pedig a levél elküldése előtt is ellenőrzi. Több szoba is
+megadható. Az adatokat a program nem tárolja, csak továbbítja levélben.
+
+- Omán, RIU, Mauritius, Maldív, Vietnám: az oldal saját űrlapja tetején választható: „Ajánlatot
+  kérek” vagy „Foglalási igényt adok le” (`eszkozok/foglalas.js`, a `frissites.py`
+  `FOGLALAS_MODUL` beállítása szerint). A levelet az `urlap_kuldes.php` küldi.
+- Bahari: az oldal űrlapja a foglalási igény (utasonként állampolgársággal), mellette a „Csak
+  ajánlatot kérek” fülön egyszerű ajánlatkérő.
+- Zanzibár, Dominika: a szállodaablakból foglalási igény, illetve ajánlatkérés (a levelet a
+  keresőmotor küldi).
+
 ## Módosítás
 
 A kész oldalakat a program minden futáskor újra előállítja a központi oldalból. Ezért a kézi
