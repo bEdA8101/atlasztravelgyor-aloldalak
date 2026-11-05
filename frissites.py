@@ -62,6 +62,7 @@ OLDALAK = {
     "vietnam": "https://vietnam.atlasztravel.hu/",
     "bahari": "https://bahari.atlasztravel.hu/",
     "zanzibar": "https://zanzibar.atlasztravel.hu/",
+    "mscutak": "https://mscutak.atlasztravel.hu/",
 }
 
 # Élő adatos oldalak: a központ szerverén futó adatlekérő helyett a sajátunk kerül melléjük
@@ -85,6 +86,8 @@ FOGLALAS_MODUL = {
     "maldiv": {"mod": "beepitett", "urlap": "#form", "alap": "ajanlatkeres", "letszam": "felnottek,gyerekek"},
     "vietnam": {"mod": "beepitett", "urlap": "#form", "alap": "ajanlatkeres", "letszam": "felnott,gyerek"},
     "bahari": {"mod": "kulon-ajanlat", "urlap": "#offerForm", "kuldo": "send.php"},
+    "mscutak": {"mod": "beepitett", "urlap": "#form,#form2", "alap": "ajanlatkeres", "letszam": "felnottek,gyermekek",
+                "utasszoveg": "utasok", "egyseg": "kabin"},
 }
 
 # Saját (nem a központtól átvett) oldalak: név -> forrásmappa. Az index.html-ben a {{telefon}}, {{email}},
@@ -203,7 +206,10 @@ def kozos_cserek(html, nev):
 
     # cégnév a láblécben, a címben és a megosztási adatokban
     html = re.sub(r"(©\s*\d{4}\s*Atlasz Travel)(?! Győr)", r"\1 Győr", html)
-    html = csere(html, r"(<title>[^<]*?(?:\||–) Atlasz [^<]*?)</title>", r"\1 – Győr</title>", "oldalcím", pontosan=1)
+    if re.search(r"<title>[^<]*?(?:\||–) Atlasz [^<]*?</title>", html):
+        html = csere(html, r"(<title>[^<]*?(?:\||–) Atlasz [^<]*?)</title>", r"\1 – Győr</title>", "oldalcím", pontosan=1)
+    else:   # más márkanevű oldal (pl. Atlas Cruise): a győri iroda neve a cím végére
+        html = csere(html, r"(<title>[^<]*?)</title>", lambda m: m.group(1) + " – " + g["nev"] + "</title>", "oldalcím", pontosan=1)
     html = re.sub(r'(<meta property="og:site_name" content="[^"]*?)"', r'\1 – Győr"', html)
 
     return html
@@ -308,7 +314,7 @@ def bahari_cserek(html):
     html = csere(html, r'<h4>Atlasz Travel</h4>', f'<h4>{g["nev"]}</h4>', "cégnév a láblécben", pontosan=1)
     # foglalási igény: típus, állampolgárság utasonként, adatkezelési hozzájárulás
     html = csere(html, re.escape('<form id="offerForm" novalidate>'),
-                 lambda m: m.group(0) + '<input type="hidden" name="tipus" value="foglalasi_igeny">', "foglalási típus", pontosan=1)
+                 lambda m: m.group(0) + '<input type="hidden" name="urlap_tipus" value="foglalasi_igeny">', "foglalási típus", pontosan=1)
     html = csere(html, re.escape('<input id="${pre}a${i}n" name="utas_nev[]" required autocomplete="${room===1&&i===1?\'name\':\'off\'}"></div>'),
                  lambda m: m.group(0) + '\n    <div><label for="${pre}a${i}c">Állampolgárság <em>*</em></label><input id="${pre}a${i}c" name="utas_allampolgarsag[]" list="gyf-nemzet" required value="magyar"></div>',
                  "felnőtt állampolgárság", pontosan=1)
@@ -336,6 +342,21 @@ def bahari_cserek(html):
     return csere(html, r'(const STATIC = \[.*?\n\];)',
                  r'\1\nSTATIC.splice(0, STATIC.length, ...STATIC.filter(d => d.f >= new Date().toISOString().slice(0, 10)));',
                  "tartalék árak szűrése", pontosan=1, flags=re.S)
+
+
+def msc_cserek(html):
+    """MSC hajóutak: az „Atlas Cruise” márkanév helyett a győri iroda, a láblécben a győri elérhetőség."""
+    g = GYOR
+    html = csere(html, r'alt="Atlas Cruise"', 'alt="Atlasz Travel"', "logó felirata", legalabb=1)
+    html = csere(html, r"\| Atlas Cruise – " + re.escape(g["nev"]) + "</title>", "| " + g["nev"] + "</title>", "oldalcím", pontosan=1)
+    html = csere(html, r"\| Atlas Cruise`", "| " + g["nev"] + "`", "dinamikus oldalcím", legalabb=1)
+    html = csere(html, r"Atlas Cruise – Atlasz Travel", g["nev"], "márkanév", legalabb=1)
+    html = csere(html, r"<div><b>Irodáink</b><br>.*?</div>",
+                 lambda m: (f'<div><b>Győri irodánk</b><br>{g["cim"]}<br>{g["nyitvatartas"]}<br>'
+                            f'<a href="{g["weboldal"]}">{g["weboldal_felirat"]}</a></div>'), "irodák a láblécben", pontosan=1, flags=re.S)
+    # a régi rövid ármegjegyzés helyett az általános lábléc-tájékoztató áll (LABLEC_TAJEKOZTATO)
+    html = csere(html, r'\s*<div style="max-width:36ch">Az árak tájékoztató jellegűek[^<]*</div>', "", "régi ármegjegyzés", pontosan=1)
+    return html
 
 
 def zanzibar_cserek(html):
@@ -425,6 +446,7 @@ OLDAL_CSEREK = {
     "vietnam": [vietnam_cserek],
     "bahari": [bahari_cserek],
     "zanzibar": [zanzibar_cserek],
+    "mscutak": [msc_cserek],
 }
 
 
@@ -442,7 +464,7 @@ def foglalas_modul_be(html, nev):
     if not beall:
         return html
     # a RIU- és a Vietnám-oldal saját köszönő- és összegzőszövege a választott típus szerint
-    fogl = "(form.querySelector('input[name=\\'tipus\\']:checked')||{}).value==='foglalasi_igeny'"
+    fogl = "(form.querySelector('input[name=\\'urlap_tipus\\']:checked')||{}).value==='foglalasi_igeny'"
     if nev in ("riu", "vietnam"):
         html = csere(html, r"<p>Hamarosan jelentkezünk a részletes ajánlattal\.",
                      lambda m: "<p>${" + fogl + " ? 'Kollégánk munkanapokon 24 órán belül visszaigazolja a pontos árat és a szabad helyeket.' : 'Hamarosan jelentkezünk a részletes ajánlattal.'}",
@@ -512,7 +534,9 @@ def ellenoriz(html, nev):
 
 
 def urlapkuldo_nev(html):
-    m = re.search(r'fetch\("([\w\-]+\.php)"', html) or re.search(r'KULDO_CIM\s*=\s*"([\w\-]+\.php)"', html)
+    """Az űrlap küldőprogramjának neve: amelyiknek az oldal POST-tal küld (pl. send.php, kuldes.php)."""
+    m = (re.search(r'fetch\("([\w\-]+\.php)",\s*\{\s*method:\s*"POST"', html)
+         or re.search(r'KULDO_CIM\s*=\s*"([\w\-]+\.php)"', html) or re.search(r'fetch\("([\w\-]+\.php)"', html))
     return m.group(1) if m else None
 
 
