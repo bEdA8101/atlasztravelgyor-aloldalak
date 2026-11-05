@@ -3,7 +3,7 @@
 Az atlasztravelgyor.hu aloldalai: a központi Atlasz Travel aloldalak győri változatai.
 A központ engedélyezte a tartalmak átvételét.
 
-| Mappa | Leendő cím | Forrás |
+| Mappa | Cím | Forrás |
 |---|---|---|
 | `oman/` | oman.atlasztravelgyor.hu | https://oman.atlasztravel.hu/ |
 | `riu/` | riu.atlasztravelgyor.hu | https://riu.atlasztravel.hu/ |
@@ -14,6 +14,7 @@ A központ engedélyezte a tartalmak átvételét.
 | `zanzibar/` | zanzibar.atlasztravelgyor.hu | https://zanzibar.atlasztravel.hu/ (teljes kereső élő adatokkal) |
 | `mscutak/` | mscutak.atlasztravelgyor.hu | https://mscutak.atlasztravel.hu/ (MSC hajóutak; az árakat a központ az oldalban frissíti) |
 | `dominika/` | dominika.atlasztravelgyor.hu | saját oldal (`sajat/dominika/`), élő árakkal és foglalási igénnyel |
+| `utazzvelunk/` | utazzvelunk.atlasztravelgyor.hu | gyűjtőoldal (`sajat/utazzvelunk/`): innen érhető el a többi aloldal, ezt kell hirdetni |
 
 Az oldalak 2026 novembere óta élesek a táblázat második oszlopában álló címeken. A tesztoldal
 (tesztoldal.atlasztravelgyor.hu) ugyanezeket mutatja mappánként, a keresők elől elrejtve.
@@ -27,7 +28,8 @@ feltoltes.json      mi hova kerüljön a tárhelyen (melyik mappa melyik aldomai
 .github/workflows/  automatikus feltöltés és napi frissítés a GitHubon
 urlap_kuldes.php    az ajánlatkérő űrlap e-mail-küldője (a program másolja az oldalak mellé)
 elo/                az élő adatos oldalak saját adatlekérői (PHP), lásd lent
-sajat/              a saját (nem a központtól átvett) oldalak forrása, pl. sajat/dominika/index.html
+sajat/              a saját (nem a központtól átvett) oldalak forrása, pl. sajat/dominika/index.html,
+                    sajat/utazzvelunk/ (gyűjtőoldal; az ajánlatok listája: ajanlatok.json)
 eszkozok/           a győri logó (átlátszó hátterű PNG), a program minden oldal mellé másolja
 index.html          az előnézet nyitólapja (a program készíti)
 oman/, riu/, …      a KÉSZ oldalak – a program készíti, kézzel ne szerkeszd őket
@@ -198,7 +200,24 @@ Vietnám-oldalon `kuldes.php`). PHP nélkül (például a GitHub-előnézetben) 
 és a Maldív-oldal a levelezőprogramot nyitja meg, a RIU- és a Vietnám-oldal hibaüzenetet és
 telefonszámot mutat.
 
+## Gyűjtőoldal (utazzvelunk.atlasztravelgyor.hu)
+
+Ezt az egy oldalt kell hirdetni: innen érhető el minden aktuális aloldal (indulási tábla, kártyák
+típus szerinti szűréssel), a www.atlasztravelgyor.hu főoldal és a győri iroda elérhetősége.
+
+- Az ajánlatok a `sajat/utazzvelunk/ajanlatok.json`-ban vannak, abban a sorrendben, ahogy az
+  oldalon megjelennek. Szöveg, címke, kiemelés itt módosítható.
+- **Ideiglenes elrejtés:** `"lathato": false`. **Szezonális megjelenés:** `"latszik_tol"` és
+  `"latszik_ig"` (ÉÉÉÉ-HH-NN). A program minden éjjel újraépíti az oldalt, így a dátumok maguktól
+  érvényesülnek (az omán ajánlat például 2027. április 3. után magától eltűnik).
+- **Új ajánlat:** új blokk a listában, mellé kép a `sajat/utazzvelunk/img` mappába
+  (`<kep>.webp` 1400 px és `<kep>-kis.webp` 760 px széles). A kártyák elrendezése magától igazodik
+  a darabszámhoz (és szűréskor is), nem marad félig üres sor.
+- A betűtípusok (Barlow Condensed, Montserrat, OFL-licenc) a tárhelyről töltődnek, nem a Google-tól.
+
 ## Új aloldal felvétele
 
 Vedd fel a `frissites.py` `OLDALAK` listájába (például `"dubai": "https://dubai.atlasztravel.hu/"`),
 majd futtasd a programot. Ha az oldal új felépítésű, egyedi cserék is kellhetnek (`OLDAL_CSEREK`).
+Utána: aldomain a tárhelyen, új cél a `feltoltes.json`-ban, és új blokk a gyűjtőoldal
+`ajanlatok.json`-jában.
