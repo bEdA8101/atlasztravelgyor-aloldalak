@@ -1,10 +1,11 @@
 {
-  "_leiras": "Mi hova kerüljön a tárhelyen. 'cel': a mappa a tárhelyen (az FTP-fiók gyökeréhez képest), 'forras': a helyi mappa, amelynek a tartalma oda kerül, 'csak': ha meg van adva, a forrásból csak ezek kerülnek fel.",
+  "_leiras": "Mi hova kerüljön a tárhelyen. 'cel': a mappa a tárhelyen (az FTP-fiók gyökeréhez képest), 'forras': a helyi mappa, amelynek a tartalma oda kerül, 'csak': ha meg van adva, a forrásból csak ezek kerülnek fel. A tesztoldal a Google elől el van rejtve (robots.txt), az éles aloldalak (<név>.atlasztravelgyor.hu) a saját mappájuk tartalmát kapják.",
   "celok": [
     {
       "cel": "tesztoldal.atlasztravelgyor.hu",
       "forras": ".",
       "csak": [
+        "robots.txt",
         "index.html",
         "oman",
         "riu",
@@ -16,6 +17,42 @@
         "dominika",
         "mscutak"
       ]
+    },
+    {
+      "cel": "oman.atlasztravelgyor.hu",
+      "forras": "oman"
+    },
+    {
+      "cel": "riu.atlasztravelgyor.hu",
+      "forras": "riu"
+    },
+    {
+      "cel": "mauritius.atlasztravelgyor.hu",
+      "forras": "mauritius"
+    },
+    {
+      "cel": "maldiv.atlasztravelgyor.hu",
+      "forras": "maldiv"
+    },
+    {
+      "cel": "vietnam.atlasztravelgyor.hu",
+      "forras": "vietnam"
+    },
+    {
+      "cel": "bahari.atlasztravelgyor.hu",
+      "forras": "bahari"
+    },
+    {
+      "cel": "zanzibar.atlasztravelgyor.hu",
+      "forras": "zanzibar"
+    },
+    {
+      "cel": "dominika.atlasztravelgyor.hu",
+      "forras": "dominika"
+    },
+    {
+      "cel": "mscutak.atlasztravelgyor.hu",
+      "forras": "mscutak"
     }
   ]
 }

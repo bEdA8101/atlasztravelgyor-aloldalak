@@ -1,0 +1,3 @@
+# Csak a tesztoldalra kerül fel (feltoltes.json): a keresők ne listázzák a tesztoldalt.
+User-agent: *
+Disallow: /
