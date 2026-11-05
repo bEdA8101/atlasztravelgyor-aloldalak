@@ -359,6 +359,8 @@ def msc_cserek(html):
     html = csere(html, r"\| Atlas Cruise – " + re.escape(g["nev"]) + "</title>", "| " + g["nev"] + "</title>", "oldalcím", pontosan=1)
     html = csere(html, r"\| Atlas Cruise`", "| " + g["nev"] + "`", "dinamikus oldalcím", legalabb=1)
     html = csere(html, r"Atlas Cruise – Atlasz Travel", g["nev"], "márkanév", legalabb=1)
+    # a többi előfordulás (pl. a Black November-doboz felirata, megosztási cím) is a győri iroda neve legyen
+    html = csere(html, r"Atlas Cruise", g["nev"], "további márkanév", legalabb=0)
     html = csere(html, r"<div><b>Irodáink</b><br>.*?</div>",
                  lambda m: (f'<div><b>Győri irodánk</b><br>{g["cim"]}<br>{g["nyitvatartas"]}<br>'
                             f'<a href="{g["weboldal"]}">{g["weboldal_felirat"]}</a></div>'), "irodák a láblécben", pontosan=1, flags=re.S)
