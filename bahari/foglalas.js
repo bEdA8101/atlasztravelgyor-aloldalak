@@ -2,7 +2,8 @@
  * Atlasz Travel Győr – ajánlatkérés és foglalási igény az aloldalakon.
  * A frissites.py másolja az oldalak mellé (foglalas.js), és így tölti be:
  *   <script src="foglalas.js" defer data-mod="beepitett" data-urlap="#form" data-alap="ajanlatkeres"
- *           data-letszam="felnottek,gyerekek"></script>
+ *           data-letszam="felnottek,gyerekek" data-egyseg="szoba"></script>
+ * data-urlap több űrlapot is megadhat vesszővel (pl. "#form,#form2"); data-egyseg: szoba vagy kabin.
  *
  * data-mod="beepitett": az oldal saját űrlapja tetejére választó kerül (Ajánlatot kérek / Foglalási igényt
  *   adok le). Foglalási igénynél megjelenik a szobák és az utasok része (utasonként teljes név, ahogy az
@@ -11,7 +12,7 @@
  *   ez a modul még a beküldés előtt megállítja.
  * data-mod="kulon-ajanlat": az oldal űrlapja maga a foglalási igény (pl. bahari); mellé fülekkel egy
  *   egyszerű ajánlatkérő űrlap kerül, amely a data-kuldo címre (send.php) küld.
- * A levélben a „tipus” mező mondja meg, melyik a kettő közül; az oldalt a levélküldő maga állapítja meg.
+ * A levélben az „urlap_tipus” mező mondja meg, melyik a kettő közül; az oldalt a levélküldő maga állapítja meg.
  */
 (() => {
   'use strict';
@@ -22,12 +23,15 @@
     alap: S.dataset.alap === 'foglalasi_igeny' ? 'foglalasi_igeny' : 'ajanlatkeres',
     letszam: (S.dataset.letszam || '').split(',').map(s => s.trim()).filter(Boolean),
     utasszoveg: S.dataset.utasszoveg || '',
+    egyseg: S.dataset.egyseg === 'kabin' ? 'kabin' : 'szoba',
     kuldo: S.dataset.kuldo || 'send.php',
     telefon: S.dataset.telefon || '',
     adatvedelem: 'https://www.atlasztravelgyor.hu/adatvedelem'
   };
-  const form = document.querySelector(cfg.urlap);
-  if (!form) return;
+  const formok = [...document.querySelectorAll(cfg.urlap)];
+  if (!formok.length) return;
+  const form = formok[0];
+  const Egyseg = cfg.egyseg === 'kabin' ? 'Kabin' : 'Szoba';
 
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
   const ma = new Date().toISOString().slice(0, 10);
@@ -87,13 +91,13 @@
       let k = 0;
       doboz.innerHTML = szobak.map((r, si) => {
         const fo = [...Array(r.ac).keys()].map(i => ({gyerek: false, i})).concat(r.ages.map((a, i) => ({gyerek: true, i, a})));
-        return `<fieldset class="gyf-szoba" data-si="${si}"><legend>${si + 1}. szoba</legend>
+        return `<fieldset class="gyf-szoba" data-si="${si}"><legend>${si + 1}. ${cfg.egyseg}</legend>
           <input type="hidden" name="${elotag}szoba_${si + 1}_osszetetel" value="${r.ac} felnőtt${r.ages.length ? ', ' + r.ages.length + ' gyerek (' + r.ages.map(a => a + ' éves').join(', ') + ')' : ''}">
           <div class="gyf-sor">
             <label class="gyf-m"><span>Felnőttek</span><select data-ac>${szamOpt(1, 4, r.ac)}</select></label>
             <label class="gyf-m"><span>Gyerekek</span><select data-cc>${szamOpt(0, 3, r.ages.length)}</select></label>
             ${r.ages.map((a, i) => `<label class="gyf-m"><span>${i + 1}. gyerek kora</span><select data-kor="${i}">${korOpt(a)}</select></label>`).join('')}
-            ${si > 0 ? '<button type="button" class="gyf-torles" data-torol>Szoba törlése</button>' : ''}
+            ${si > 0 ? '<button type="button" class="gyf-torles" data-torol>' + Egyseg + ' törlése</button>' : ''}
           </div>
           ${fo.map((p, ui) => { const v = r.utas[ui] || {}; k++; const fofo = si === 0 && ui === 0;
             return `<div class="gyf-utas" data-k="${si}-${ui}">
@@ -105,7 +109,7 @@
               <label class="gyf-m"><span>Születési dátum *</span><input data-d name="${elotag}utas_${k}_szul" type="date" max="${ma}" value="${esc(v.d || '')}"></label>
             </div>`; }).join('')}
         </fieldset>`;
-      }).join('') + `<input type="hidden" name="${elotag}szobak_szama" value="${szobak.length}">`;
+      }).join('') + `<input type="hidden" name="${elotag}szobak_szama" value="${szobak.length}"><input type="hidden" name="${elotag}egyseg" value="${cfg.egyseg}">`;
     };
     doboz.addEventListener('change', e => {
       const fs = e.target.closest('[data-si]'); if (!fs) return;
@@ -132,7 +136,10 @@
         const rossz = [];
         doboz.querySelectorAll('.gyf-utas').forEach(u => {
           const n = u.querySelector('[data-n]'), c = u.querySelector('[data-c]'), d = u.querySelector('[data-d]');
-          [[n, !/\S{2,}\s+\S{2,}/.test(n.value.trim())], [c, c.value.trim().length < 3], [d, !d.value || d.value >= ma]]
+          const kor = /gyerek, (\d+) éves/.exec(u.querySelector('input[name$="_tipus"]').value);
+          const evek = d.value ? (Date.now() - new Date(d.value + 'T12:00:00')) / 31557600000 : null;
+          const rosszKor = kor && evek !== null && (evek > +kor[1] + 1.05 || evek < +kor[1] - 1.05);
+          [[n, !/\S{2,}\s+\S{2,}/.test(n.value.trim())], [c, c.value.trim().length < 3], [d, !d.value || d.value >= ma || rosszKor]]
             .forEach(([el, hib]) => { el.classList.toggle('gyf-rossz', hib); if (hib) rossz.push(el); });
         });
         return rossz;
@@ -154,13 +161,12 @@
       <span>Elolvastam és elfogadom az <a href="${cfg.adatvedelem}" target="_blank" rel="noopener">adatkezelési tájékoztatót</a>; hozzájárulok, hogy az iroda az utasok adatait a foglaláshoz felhasználja. *</span></label>`;
 
   /* ---------- 1. beépített mód: az oldal saját űrlapja kap választót és utasrészt ---------- */
-  if (cfg.mod === 'beepitett') {
-    nemzetLista();
+  function beepit(form) {
     const valaszto = document.createElement('fieldset');
     valaszto.className = 'gyf-valaszto';
     valaszto.innerHTML = `<legend>Mit szeretne?</legend>
-      <label><input type="radio" name="tipus" value="ajanlatkeres"${cfg.alap === 'ajanlatkeres' ? ' checked' : ''}> Ajánlatot kérek</label>
-      <label><input type="radio" name="tipus" value="foglalasi_igeny"${cfg.alap === 'foglalasi_igeny' ? ' checked' : ''}> Foglalási igényt adok le</label>`;
+      <label><input type="radio" name="urlap_tipus" value="ajanlatkeres"${cfg.alap === 'ajanlatkeres' ? ' checked' : ''}> Ajánlatot kérek</label>
+      <label><input type="radio" name="urlap_tipus" value="foglalasi_igeny"${cfg.alap === 'foglalasi_igeny' ? ' checked' : ''}> Foglalási igényt adok le</label>`;
     form.insertBefore(valaszto, form.firstElementChild);
 
     const blokk = document.createElement('div');
@@ -168,7 +174,7 @@
     const resz = szobakResz('');
     blokk.innerHTML = `<p class="gyf-info">A foglalási igény még nem végleges foglalás: kollégánk munkanapokon 24 órán belül visszaigazolja a pontos árat és a szabad helyeket. Minden utas nevét pontosan úgy adja meg, ahogyan az útlevelében szerepel; a gyerekek életkorát az utazás idejére számítsa.</p>`;
     blokk.appendChild(resz.doboz);
-    const uj = document.createElement('button'); uj.type = 'button'; uj.className = 'gyf-gomb'; uj.textContent = '+ Újabb szoba';
+    const uj = document.createElement('button'); uj.type = 'button'; uj.className = 'gyf-gomb'; uj.textContent = '+ Újabb ' + cfg.egyseg;
     uj.addEventListener('click', () => { uj.hidden = resz.ujSzoba() >= 4; });
     blokk.appendChild(uj);
     const cim = document.createElement('div');
@@ -191,7 +197,7 @@
       const sz = el => el ? parseInt(el.value, 10) : NaN;
       return [sz(f), sz(g)];
     };
-    const mod = () => (form.querySelector('input[name="tipus"]:checked') || {}).value || 'ajanlatkeres';
+    const mod = () => (form.querySelector('input[name="urlap_tipus"]:checked') || {}).value || 'ajanlatkeres';
     const allit = () => {
       const fogl = mod() === 'foglalasi_igeny';
       blokk.hidden = !fogl;
@@ -225,12 +231,12 @@
           else el.value = String(v);
         });
         const usz = cfg.utasszoveg && form.elements[cfg.utasszoveg];
-        if (usz) usz.value = ossz[0] + ' felnőtt' + (ossz[1] ? ', ' + ossz[1] + ' gyerek' : '') + ' (' + fo.length + ' szoba, részletek az utaslistában)';
+        if (usz) usz.value = ossz[0] + ' felnőtt' + (ossz[1] ? ', ' + ossz[1] + ' gyerek' : '') + ' (' + fo.length + ' ' + cfg.egyseg + ', részletek az utaslistában)';
         return;
       }
       e.preventDefault(); e.stopImmediatePropagation();
       hiba.textContent = rossz.length
-        ? 'Kérjük, adja meg minden utas teljes nevét, állampolgárságát és születési dátumát, valamint a fő utas lakcímét.'
+        ? 'Kérjük, adja meg minden utas teljes nevét, állampolgárságát és születési dátumát (a gyerekeknél a megadott életkornak megfelelően), valamint a fő utas lakcímét.'
         : 'A foglalási igényhez kérjük, fogadja el az adatkezelési tájékoztatót.';
       (rossz[0] || hj).focus();
     }, true);
@@ -243,14 +249,19 @@
       if (utolsoMod !== 'foglalasi_igeny') return;
       for (const m of ms) {
         const el = m.target.nodeType === 3 ? m.target.parentElement : m.target;
-        if (el && !blokk.contains(el) && /megkaptuk/i.test(el.textContent) && el.textContent !== koszono && el.children.length === 0) el.textContent = koszono;
+        const sajat = el && (el.closest('form') === form || !el.closest('form'));
+        if (sajat && !blokk.contains(el) && /megkaptuk/i.test(el.textContent) && el.textContent !== koszono && el.children.length === 0) el.textContent = koszono;
       }
     }).observe(form.parentElement || form, {subtree: true, childList: true, characterData: true});
     form.addEventListener('reset', () => setTimeout(() => {
       resz.ures(); uj.hidden = false;
-      form.querySelectorAll('input[name="tipus"]').forEach(r => { r.checked = r.value === cfg.alap; });
+      form.querySelectorAll('input[name="urlap_tipus"]').forEach(r => { r.checked = r.value === cfg.alap; });
       allit();
     }, 0));
+  }
+  if (cfg.mod === 'beepitett') {
+    nemzetLista();
+    formok.forEach(beepit);
     return;
   }
 
@@ -274,7 +285,7 @@
     fulek.innerHTML = '<button type="button" role="tab" aria-selected="true" data-ful="f">Foglalási igény</button><button type="button" role="tab" aria-selected="false" data-ful="a">Csak ajánlatot kérek</button>';
     const aj = document.createElement('form');
     aj.className = 'gyf-ajanlat'; aj.noValidate = true; aj.hidden = true;
-    aj.innerHTML = `<input type="hidden" name="tipus" value="ajanlatkeres">
+    aj.innerHTML = `<input type="hidden" name="urlap_tipus" value="ajanlatkeres">
       <label class="gyf-m"><span>Név *</span><input name="nev" autocomplete="name"></label>
       <label class="gyf-m"><span>E-mail-cím *</span><input name="email" type="email" autocomplete="email"></label>
       <label class="gyf-m"><span>Telefonszám *</span><input name="telefon" type="tel" autocomplete="tel"></label>

@@ -705,7 +705,7 @@ form.addEventListener("submit", async e => {
   fd.append("kezdes", String(KEZDES));
 
   const summary =
-`${(form.querySelector('input[name=\'tipus\']:checked')||{}).value==='foglalasi_igeny' ? 'Foglalási igény' : 'Ajánlatkérés'}: ${HOTEL}
+`${(form.querySelector('input[name=\'urlap_tipus\']:checked')||{}).value==='foglalasi_igeny' ? 'Foglalási igény' : 'Ajánlatkérés'}: ${HOTEL}
 Név: ${fd.get("nev")}
 Telefon: ${fd.get("telefon")}
 E-mail: ${fd.get("email")}
@@ -735,7 +735,7 @@ Ellátás: ${fd.get("ellatas")}
   const done = document.createElement("div");
   done.className = "done";
   done.setAttribute("role", "status");
-  done.innerHTML = `<h3>Köszönjük, megkaptuk!</h3><p>${(form.querySelector('input[name=\'tipus\']:checked')||{}).value==='foglalasi_igeny' ? 'Kollégánk munkanapokon 24 órán belül visszaigazolja a pontos árat és a szabad helyeket.' : 'Hamarosan jelentkezünk a részletes ajánlattal.'} Ha sürgős, hívjon minket: <a href="tel:+36202668144"><strong>+36 20 266 8144</strong></a></p><pre></pre><a class="btn btn-coral" href="tel:+36202668144">Hívás most</a>`;
+  done.innerHTML = `<h3>Köszönjük, megkaptuk!</h3><p>${(form.querySelector('input[name=\'urlap_tipus\']:checked')||{}).value==='foglalasi_igeny' ? 'Kollégánk munkanapokon 24 órán belül visszaigazolja a pontos árat és a szabad helyeket.' : 'Hamarosan jelentkezünk a részletes ajánlattal.'} Ha sürgős, hívjon minket: <a href="tel:+36202668144"><strong>+36 20 266 8144</strong></a></p><pre></pre><a class="btn btn-coral" href="tel:+36202668144">Hívás most</a>`;
   done.querySelector("pre").textContent = summary;
   form.appendChild(done);
 });

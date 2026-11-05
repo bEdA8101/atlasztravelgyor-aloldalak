@@ -5,7 +5,7 @@
 // levelezőprogramot nyit helyette.
 //
 // A levél tárgyából és első soraiból mindig kiderül:
-//   – a típus: Ajánlatkérés vagy Foglalási igény (a „tipus” mező; ha nincs, ajánlatkérés),
+//   – a típus: Ajánlatkérés vagy Foglalási igény (az „urlap_tipus” mező; ha nincs, ajánlatkérés),
 //   – az oldal: a program a saját helyéből állapítja meg (mappa vagy aldomain), a látogató nem írhatja át.
 // Foglalási igénynél kötelező: utasonként teljes név, állampolgárság, születési dátum; a fő utas lakcíme,
 // e-mail-címe és telefonszáma; az adatkezelési hozzájárulás.
@@ -36,10 +36,11 @@ const CIMKEK = [
     'jelleg' => 'Az utazás jellege', 'rugalmassag' => 'Rugalmasság', 'partvidek' => 'Partvidék', 'fizetes' => 'Fizetés',
     'utasbiztositas' => 'Utasbiztosítás', 'stornobiztositas' => 'Stornóbiztosítás', 'parkolas' => 'Reptéri parkolás',
     'uzenet' => 'Megjegyzés', 'megjegyzes' => 'Megjegyzés', 'adatkezeles' => 'Adatkezelési tájékoztató', 'kezdes' => 'Űrlap megnyitva',
-    'oldal' => 'Oldal (az űrlap szerint)',
+    'oldal' => 'Oldal (az űrlap szerint)', 'hajout' => 'Hajóút', 'kabin' => 'Kabin', 'kabinok' => 'Kabinok',
+    'extra' => 'Kiegészítők', 'gyermekek' => 'Gyerekek', 'tipus' => 'Űrlap',
 ];
 // ezeket a program külön kezeli (fejléc, utaslista, lakcím)
-const KULON = ['tipus', 'weboldal', 'website', 'irsz', 'telepules', 'cim'];
+const KULON = ['urlap_tipus', 'egyseg', 'weboldal', 'website', 'irsz', 'telepules', 'cim'];
 
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
@@ -116,7 +117,7 @@ if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
 }
 
 // a típus és az oldal
-$foglalas = ($_POST['tipus'] ?? '') === 'foglalasi_igeny';
+$foglalas = ($_POST['urlap_tipus'] ?? '') === 'foglalasi_igeny';
 $tipusNev = $foglalas ? 'Foglalási igény' : 'Ajánlatkérés';
 $host = strtolower((string)preg_replace('/[^a-z0-9.\-]/i', '', (string)preg_replace('/:\d+$/', '', (string)($_SERVER['HTTP_HOST'] ?? ''))));
 $utvonal = dirname((string)($_SERVER['SCRIPT_NAME'] ?? '/'));
@@ -137,6 +138,13 @@ if ($foglalas) {
         if (mb_strlen($u['nev']) < 3 || strpos($u['nev'], ' ') === false || $u['allampolgarsag'] === '' || !szuletesi_datum($u['szul'])) {
             valasz(false, 'Kérjük, adja meg a(z) ' . ($i + 1) . '. utas teljes nevét, állampolgárságát és születési dátumát.', 422);
         }
+        // gyereknél a születési dátum illjen a megadott életkorhoz (az utazásig legfeljebb egy év telhet el)
+        if (preg_match('/gyerek, (\d+) éves/u', $u['tipus'], $k)) {
+            $evek = (time() - strtotime($u['szul'] . ' 12:00:00')) / 31557600;
+            if ($evek > (int)$k[1] + 1.05 || $evek < (int)$k[1] - 1.05) {
+                valasz(false, 'A(z) ' . ($i + 1) . '. utas születési dátuma nem illik a megadott életkorhoz (' . (int)$k[1] . ' év).', 422);
+            }
+        }
     }
     if (trim((string)($_POST['irsz'] ?? '')) === '' || trim((string)($_POST['telepules'] ?? '')) === '' || trim((string)($_POST['cim'] ?? '')) === ''
         || strlen($telefon) < 8) {
@@ -156,7 +164,8 @@ foreach ($_POST as $mezo => $ertek) {
     }
     $e = sor($ertek, MAX_HOSSZ);
     if ($e !== '') {
-        $cimke = CIMKEK[$mezo] ?? (preg_match('/^gyerek_(\d+)_kor$/', $mezo, $gy) ? $gy[1] . '. gyerek kora' : ucfirst(str_replace('_', ' ', $mezo)));
+        $cimke = $mezo === 'szobak_szama' && ($_POST['egyseg'] ?? '') === 'kabin' ? 'Kabinok száma'
+            : (CIMKEK[$mezo] ?? (preg_match('/^gyerek_(\d+)_kor$/', $mezo, $gy) ? $gy[1] . '. gyerek kora' : ucfirst(str_replace('_', ' ', $mezo))));
         $sorok[] = $cimke . ': ' . $e;
     }
 }
@@ -168,7 +177,7 @@ if ($utasok) {
         if ($u['szoba'] !== (string)$szobaSzam) {
             $szobaSzam = $u['szoba'];
             $osszetetel = sor($_POST['szoba_' . $szobaSzam . '_osszetetel'] ?? '', 120);
-            $sorok[] = '  ' . $szobaSzam . '. szoba' . ($osszetetel !== '' ? ' (' . $osszetetel . ')' : '') . ':';
+            $sorok[] = '  ' . $szobaSzam . '. ' . (($_POST['egyseg'] ?? '') === 'kabin' ? 'kabin' : 'szoba') . ($osszetetel !== '' ? ' (' . $osszetetel . ')' : '') . ':';
         }
         $sorok[] = '    – ' . $u['nev'] . ($u['tipus'] !== '' ? ' (' . $u['tipus'] . ')' : '') . ', állampolgárság: '
             . ($u['allampolgarsag'] !== '' ? $u['allampolgarsag'] : '–') . ', született: ' . ($u['szul'] !== '' ? $u['szul'] : '–');
