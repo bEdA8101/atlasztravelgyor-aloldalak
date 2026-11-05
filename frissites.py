@@ -74,6 +74,19 @@ ELO_FAJLOK = {
                  "regiok.json": "elo/dominika_regiok.json"},
 }
 
+# Ajánlatkérés és foglalási igény minden oldalon (eszkozok/foglalas.js, az oldal mellé foglalas.js néven).
+# mod: „beepitett” – az oldal űrlapja kap választót (Ajánlatot kérek / Foglalási igényt adok le) és utasrészt;
+# „kulon-ajanlat” – az oldal űrlapja a foglalási igény, mellé egyszerű ajánlatkérő kerül.
+# alap: az induló választás; letszam: az oldal felnőtt- és gyerekmezőjének neve (az 1. szoba ebből indul).
+FOGLALAS_MODUL = {
+    "oman": {"mod": "beepitett", "urlap": "#form", "alap": "foglalasi_igeny", "letszam": "felnottek,gyerekek"},
+    "riu": {"mod": "beepitett", "urlap": "#form", "alap": "ajanlatkeres", "letszam": "", "utasszoveg": "utasok"},
+    "mauritius": {"mod": "beepitett", "urlap": "#form", "alap": "ajanlatkeres", "letszam": "felnottek,gyerekek"},
+    "maldiv": {"mod": "beepitett", "urlap": "#form", "alap": "ajanlatkeres", "letszam": "felnottek,gyerekek"},
+    "vietnam": {"mod": "beepitett", "urlap": "#form", "alap": "ajanlatkeres", "letszam": "felnott,gyerek"},
+    "bahari": {"mod": "kulon-ajanlat", "urlap": "#offerForm", "kuldo": "send.php"},
+}
+
 # Saját (nem a központtól átvett) oldalak: név -> forrásmappa. Az index.html-ben a {{telefon}}, {{email}},
 # {{cim}} stb. helyére a GYOR adatai kerülnek; a mappa többi fájlja változatlanul az oldal mellé kerül.
 SAJAT_OLDALAK = {
@@ -293,6 +306,22 @@ def bahari_cserek(html):
     html = csere(html, r'<h4>Irodáink</h4><p>[^<]*</p>', f'<h4>Győri irodánk</h4><p>{g["cim"]}<br>{g["nyitvatartas"]}</p>',
                  "irodák a láblécben", pontosan=1)
     html = csere(html, r'<h4>Atlasz Travel</h4>', f'<h4>{g["nev"]}</h4>', "cégnév a láblécben", pontosan=1)
+    # foglalási igény: típus, állampolgárság utasonként, adatkezelési hozzájárulás
+    html = csere(html, re.escape('<form id="offerForm" novalidate>'),
+                 lambda m: m.group(0) + '<input type="hidden" name="tipus" value="foglalasi_igeny">', "foglalási típus", pontosan=1)
+    html = csere(html, re.escape('<input id="${pre}a${i}n" name="utas_nev[]" required autocomplete="${room===1&&i===1?\'name\':\'off\'}"></div>'),
+                 lambda m: m.group(0) + '\n    <div><label for="${pre}a${i}c">Állampolgárság <em>*</em></label><input id="${pre}a${i}c" name="utas_allampolgarsag[]" list="gyf-nemzet" required value="magyar"></div>',
+                 "felnőtt állampolgárság", pontosan=1)
+    html = csere(html, re.escape('<input id="${pre}c${i}n" name="utas_nev[]" required></div>'),
+                 lambda m: m.group(0) + '\n    <div><label for="${pre}c${i}c">Állampolgárság <em>*</em></label><input id="${pre}c${i}c" name="utas_allampolgarsag[]" list="gyf-nemzet" required value="magyar"></div>',
+                 "gyerek állampolgárság", pontosan=1)
+    html = csere(html, re.escape('.trav{display:grid;grid-template-columns:1.6fr 1fr;'), lambda m: '.trav{display:grid;grid-template-columns:1.6fr 1fr 1fr;', "utassor 3 oszlop", pontosan=1)
+    html = csere(html, re.escape('.trav.kid{grid-template-columns:1.4fr 1fr .8fr}'), lambda m: '.trav.kid{grid-template-columns:1.4fr 1fr 1fr .8fr}', "gyereksor 4 oszlop", pontosan=1)
+    html = csere(html, re.escape('<div class="full"><button class="btn" type="submit" style="width:100%">Szeretnék foglalni</button></div>'),
+                 lambda m: ('<label class="check full"><input type="checkbox" name="adatkezeles" value="elfogadva"> <span>Elolvastam és elfogadom az '
+                            '<a href="https://www.atlasztravelgyor.hu/adatvedelem" target="_blank" rel="noopener">adatkezelési tájékoztatót</a>; '
+                            'hozzájárulok, hogy az iroda az utasok adatait a foglaláshoz felhasználja. *</span></label>\n      ' + m.group(0)),
+                 "adatkezelési hozzájárulás", pontosan=1)
     # a régi rövid ármegjegyzés helyett az általános lábléc-tájékoztató áll (LABLEC_TAJEKOZTATO)
     html = csere(html, r'(<div class="copy">[^<]*?)\s*Az árak tájékoztató jellegűek, a végleges árat foglaláskor erősítjük meg\.',
                  r'\1', "régi ármegjegyzés", pontosan=1)
@@ -357,6 +386,33 @@ def zanzibar_cserek(html):
                  lambda m: "$('lm-range').textContent = '';", "last minute alcím", pontosan=1)
     html = csere(html, r"(['>])Összesen '\+esc\(compLabel\([\w.]+\)\)\+' részére: ", lambda m: m.group(1) + "Összesen: ",
                  "összesen-feliratok", pontosan=4)
+    # foglalási igény: utasonként állampolgárság is, a program ellenőrzi az adatokat; feliratok
+    html = csere(html, re.escape("const keep = [...bTrav.querySelectorAll('.trav-row')].map(r => [r.querySelector('[data-k=\"n\"]').value, r.querySelector('[data-k=\"d\"]').value]);"),
+                 lambda m: "const keep = [...bTrav.querySelectorAll('.trav-row')].map(r => [r.querySelector('[data-k=\"n\"]').value, r.querySelector('[data-k=\"d\"]').value, r.querySelector('[data-k=\"c\"]').value]);",
+                 "utasok megtartása", pontosan=1)
+    html = csere(html, re.escape("const v = keep[k++] || ['',''];"), lambda m: "const v = keep[k++] || ['','','magyar'];", "utas alapérték", pontosan=1)
+    html = csere(html, re.escape("""'<div class="field"><label for="t-d'+i+'">Születési dátum *</label>"""),
+                 lambda m: """'<div class="field"><label for="t-c'+i+'">Állampolgárság *</label><input id="t-c'+i+'" data-k="c" list="gy-nemzet" required value="'+esc(v[2])+'"></div>'+\n        """ + m.group(0),
+                 "állampolgárság mező", pontosan=1)
+    html = csere(html, re.escape(".trav-row{display:grid; grid-template-columns:auto minmax(0,1.6fr) minmax(0,1fr);"),
+                 lambda m: ".trav-row{display:grid; grid-template-columns:auto minmax(0,1.6fr) minmax(0,1fr) minmax(0,1fr);", "utassor oszlopai", pontosan=1)
+    html = csere(html, re.escape("""      const n = r.querySelector('[data-k="n"]'), d = r.querySelector('[data-k="d"]');
+      return n.dataset.l + ': ' + n.value.trim() + ', szül. ' + (d.value ? day(d.value, true) : '');
+    });"""), lambda m: """      const n = r.querySelector('[data-k="n"]'), d = r.querySelector('[data-k="d"]'), c = r.querySelector('[data-k="c"]');
+      return {label: n.dataset.l, name: n.value.trim(), nationality: c.value.trim(), birth: d.value};
+    });""", "utasadatok", pontosan=1)
+    html = csere(html, re.escape("address: f.elements.address.value, adults: bAc.value, children: bCc.value, travellers: travellers.join('\\n'),"),
+                 lambda m: "address: f.elements.address.value, adults: bAc.value, children: bCc.value, travellersDetail: travellers,",
+                 "utasadatok küldése", pontosan=1)
+    html = csere(html, r"Foglalás elküldése", "Foglalási igény elküldése", "küldőgomb", pontosan=2)
+    html = csere(html, re.escape("<strong>Köszönjük, megkaptuk a foglalását.</strong>"),
+                 lambda m: "<strong>Köszönjük, megkaptuk a foglalási igényét.</strong>", "köszönőszöveg", pontosan=1)
+    html = csere(html, re.escape(".catch(() => { $('b-err').innerHTML = 'A foglalás nem ment el. Próbálja újra, vagy hívjon minket:"),
+                 lambda m: ".catch(err => { $('b-err').innerHTML = (err && err.message ? esc(err.message) + ' ' : 'A foglalási igény nem ment el. ') + 'Próbálja újra, vagy hívjon minket:",
+                 "hibaüzenet", pontosan=1)
+    html = csere(html, re.escape('<label class="consent"><input type="checkbox" id="b-ok" required>'),
+                 lambda m: '<datalist id="gy-nemzet"><option value="magyar"><option value="szlovák"><option value="osztrák"><option value="román"><option value="német"><option value="szerb"><option value="ukrán"><option value="horvát"></datalist>\n    ' + m.group(0),
+                 "állampolgárság-lista", pontosan=1)
     # a győri program nem küld másolatot az ügyfélnek (nyilvános űrlapról visszaélésre adna módot)
     return csere(html, r'\s*A foglalás másolatát elküldtük az Ön e-mail-címére is\.', '', "másolat-ígéret", pontosan=1)
 
@@ -378,6 +434,23 @@ def tajekoztato_be(html):
                    'border-top:1px solid rgba(127,127,127,.25);font-size:12px;line-height:1.6;text-align:center;opacity:.8">'
                    f'<p style="margin:0 auto;max-width:none">{html_lib.escape(LABLEC_TAJEKOZTATO, quote=False)}</p></div>\n')
     return csere(html, r"</footer>", lambda m: tajekoztato + "</footer>", "lábléc-tájékoztató", pontosan=1)
+
+
+def foglalas_modul_be(html, nev):
+    """Az ajánlatkérés + foglalási igény modul betöltése (FOGLALAS_MODUL szerint)."""
+    beall = FOGLALAS_MODUL.get(nev)
+    if not beall:
+        return html
+    # a RIU- és a Vietnám-oldal saját köszönő- és összegzőszövege a választott típus szerint
+    fogl = "(form.querySelector('input[name=\\'tipus\\']:checked')||{}).value==='foglalasi_igeny'"
+    if nev in ("riu", "vietnam"):
+        html = csere(html, r"<p>Hamarosan jelentkezünk a részletes ajánlattal\.",
+                     lambda m: "<p>${" + fogl + " ? 'Kollégánk munkanapokon 24 órán belül visszaigazolja a pontos árat és a szabad helyeket.' : 'Hamarosan jelentkezünk a részletes ajánlattal.'}",
+                     "köszönőszöveg", pontosan=1)
+        html = csere(html, r"`Ajánlatkérés: (RIU, |\$\{HOTEL\})", lambda m: "`${" + fogl + " ? 'Foglalási igény' : 'Ajánlatkérés'}: " + m.group(1),
+                     "összegzés", pontosan=1)
+    adat = " ".join(f'data-{k}="{html_lib.escape(v)}"' for k, v in {**beall, "telefon": GYOR["telefon"]}.items())
+    return csere(html, r"</body>", lambda m: f'<script src="foglalas.js" defer {adat}></script>\n</body>', "foglalási modul", pontosan=1)
 
 
 def logo_csere(html):
@@ -484,6 +557,7 @@ def frissit(nev):
         for fuggveny in OLDAL_CSEREK.get(nev, []):
             html = fuggveny(html)
         html = tajekoztato_be(html)
+        html = foglalas_modul_be(html, nev)
         html = logo_csere(html)
         ellenoriz(html, nev)
 
@@ -495,7 +569,9 @@ def frissit(nev):
         shutil.copyfile(LOGO, uj / "img" / GYOR["logo"])
         for cel_nev, forras in ELO_FAJLOK.get(nev, {}).items():
             shutil.copyfile(ALAP / forras, uj / cel_nev)
-        felesleges_torlese(html, uj, {"index.html", kuldo, *ELO_FAJLOK.get(nev, {})})
+        if nev in FOGLALAS_MODUL:
+            shutil.copyfile(ALAP / "eszkozok" / "foglalas.js", uj / "foglalas.js")
+        felesleges_torlese(html, uj, {"index.html", kuldo, "foglalas.js", *ELO_FAJLOK.get(nev, {})})
     except BaseException:
         shutil.rmtree(uj, ignore_errors=True)
         raise
