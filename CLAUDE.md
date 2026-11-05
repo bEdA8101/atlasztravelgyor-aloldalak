@@ -23,6 +23,9 @@ Ez a tároló az atlasztravelgyor.hu aloldalait tartalmazza: a központi Atlasz 
 - Logó: `eszkozok/atlasz-travel-gyor-logo.png` (átlátszó hátterű); az oldalakon az Atlasz Travel
   és az Atlasz Prémium logók helyére ez kerül.
 - Változtatás után ellenőrizd böngészőben is az érintett oldalt (asztali és mobil szélesség).
+- Mindig figyelj a sorközökre: a többsoros címeknél (főleg nagybetűs, ékezetes szövegnél: Á, É, Ő, Ű)
+  az ékezetek és a betűk ne lógjanak a szomszédos sorba. Új vagy módosított oldalnál nézd meg asztali
+  és mobil nézetben is; a központi oldalak másolatán a `sorkoz_be()` csere javítja.
 - Feltöltés: a `feltoltes.py` és a `.github/workflows/` munkafolyamatai végzik (minden push után
   és naponta). Az FTP-adatok csak GitHub-titkokban lehetnek, soha ne kerüljenek fájlba vagy naplóba.
   Új aldomain: a felhasználó létrehozza a tárhelyen, utána vedd fel a `feltoltes.json`-ba.
