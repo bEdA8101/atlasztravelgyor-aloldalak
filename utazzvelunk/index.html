@@ -52,7 +52,7 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
 body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
 img{max-width:100%;display:block}
 a{color:inherit}
@@ -98,7 +98,7 @@ footer a[href^="tel:"],.adat a[href^="tel:"]{white-space:nowrap}
 .tabla-fej b{font:800 26px/1 var(--disp);letter-spacing:.06em;text-transform:uppercase;color:var(--amber)}
 .tabla-fej span{font-size:12px;color:rgba(255,255,255,.5);text-align:right}
 .tabla ol{list-style:none;margin:0;padding:6px 0 0}
-.tabla li a{display:grid;grid-template-columns:62px 1fr auto;grid-template-areas:"kod cel all" "kod honnan all";column-gap:14px;align-items:center;padding:10px 6px;text-decoration:none;border-bottom:1px dashed rgba(255,255,255,.09);border-radius:8px;transition:background .15s ease}
+.tabla li a{display:grid;grid-template-columns:62px auto minmax(0,1fr);grid-template-areas:"kod cel cel" "kod honnan all";column-gap:16px;row-gap:3px;align-items:center;padding:10px 6px;text-decoration:none;border-bottom:1px dashed rgba(255,255,255,.09);border-radius:8px;transition:background .15s ease}
 .tabla li:last-child a{border-bottom:0}
 .tabla li a:hover{background:rgba(255,255,255,.06)}
 .t-kod{grid-area:kod;display:flex;gap:2px}
@@ -106,9 +106,12 @@ footer a[href^="tel:"],.adat a[href^="tel:"]{white-space:nowrap}
 .t-kod i::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(0,0,0,.55)}
 .t-cel{grid-area:cel;font:700 21px/1.05 var(--disp);text-transform:uppercase;letter-spacing:.02em;color:#fff}
 .t-honnan{grid-area:honnan;font-size:12.5px;color:rgba(255,255,255,.55);letter-spacing:.04em}
-.t-all{grid-area:all;font:700 11.5px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.62);white-space:nowrap}
-.t-all.elo{color:#7cf0b0}
-.t-all.elo::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:currentColor;margin-right:7px;vertical-align:1px;box-shadow:0 0 0 3px rgba(124,240,176,.15)}
+/* felirat a jelzőfénnyel: zöld a hívó kifejezés, sárga (villogó) csak valódi határidőnél, mint egy reptéri táblán */
+.t-all{grid-area:all;font:700 11px/1.35 var(--body);letter-spacing:.05em;text-transform:uppercase;text-align:right;color:#7cf0b0}
+.t-all::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:currentColor;margin-right:8px;vertical-align:1px;box-shadow:0 0 0 3px rgba(124,240,176,.15)}
+.t-all.sarga{color:var(--amber)}
+.t-all.sarga::before{box-shadow:0 0 0 3px rgba(255,197,61,.18);animation:villog 1.6s ease-in-out infinite}
+@keyframes villog{50%{opacity:.25}}
 
 /* ajánlatok */
 .szakasz{padding:96px 0}
@@ -137,7 +140,9 @@ footer a[href^="tel:"],.adat a[href^="tel:"]{white-space:nowrap}
 .kartya-kep img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
 .kartya>a:hover .kartya-kep img{transform:scale(1.04)}
 .kartya-kep .kod{position:absolute;left:14px;top:14px;font:800 17px/1 var(--disp);letter-spacing:.08em;color:var(--amber);background:rgba(15,10,30,.86);padding:7px 9px 5px;border-radius:5px}
-.kartya-kep .cimke{position:absolute;right:14px;top:14px;font:700 11.5px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);background:#fff;padding:8px 11px;border-radius:999px}
+.kartya-kep .cimke{position:absolute;right:14px;top:14px;max-width:calc(100% - 96px);display:flex;align-items:flex-start;gap:7px;font:700 13px/1.3 var(--body);color:var(--ink);background:#fff;padding:7px 12px 7px 10px;border-radius:12px;box-shadow:0 6px 18px -10px rgba(0,0,0,.5)}
+.kartya-kep .cimke::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:#1fbf6b;margin-top:5px}
+.kartya-kep .cimke.sarga::before{background:#f0a500;animation:villog 1.6s ease-in-out infinite}
 .kartya-test{display:flex;flex-direction:column;flex:1;padding:22px 24px 24px}
 .kartya .hely{font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
 .kartya h3{font-size:clamp(32px,3.2vw,40px)}
@@ -234,11 +239,10 @@ footer .logo-feher{height:40px;width:auto;background:#fff;border-radius:8px;padd
   .kartya.szeles>a{flex-direction:column}
   .kartya.szeles .kartya-kep{flex:none;aspect-ratio:4/3;min-height:0}
   .tabla{padding:16px 12px 8px}
-  .tabla li a{grid-template-columns:54px 1fr auto;column-gap:10px}
+  .tabla li a{grid-template-columns:54px minmax(0,1fr);grid-template-areas:"kod cel" "kod honnan" "kod all";column-gap:12px}
   .t-kod i{font-size:19px}
   .t-cel{font-size:19px}
-  .t-all{font-size:10.5px}
-  .t-all::before{display:none}
+  .t-all{text-align:left;font-size:10.5px;margin-top:3px}
   .reptar-lista li{grid-template-columns:56px 1fr;gap:4px 12px}
   .reptar-lista em{grid-column:2}
   .adatok{grid-template-columns:1fr}
@@ -277,15 +281,15 @@ footer .logo-feher{height:40px;width:auto;background:#fff;border-radius:8px;padd
     <div class="tabla" role="navigation" aria-label="Ajánlataink röviden">
       <div class="tabla-fej"><b>Indulások</b><span>9 válogatott ajánlat</span></div>
       <ol>
-        <li><a href="https://zanzibar.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>Z</i><i>N</i><i>Z</i></span><span class="t-cel">Zanzibár</span><span class="t-honnan">BUD · VIE · BTS</span><span class="t-all elo">Élő árak</span></a></li>
-        <li><a href="https://dominika.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>P</i><i>U</i><i>J</i></span><span class="t-cel">Dominikai Köztársaság</span><span class="t-honnan">BTS · VIE</span><span class="t-all elo">Élő árak</span></a></li>
-        <li><a href="https://bahari.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>Z</i><i>N</i><i>Z</i></span><span class="t-cel">TUI BLUE Bahari</span><span class="t-honnan">BTS</span><span class="t-all elo">Élő árak</span></a></li>
-        <li><a href="https://vietnam.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>P</i><i>Q</i><i>C</i></span><span class="t-cel">Vietnám, Phu Quoc</span><span class="t-honnan">BTS</span><span class="t-all">Téli napsütés</span></a></li>
-        <li><a href="https://oman.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>S</i><i>L</i><i>L</i></span><span class="t-cel">Omán, Salalah</span><span class="t-honnan">BTS</span><span class="t-all">Szezon áprilisig</span></a></li>
-        <li><a href="https://mscutak.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>M</i><i>S</i><i>C</i></span><span class="t-cel">MSC hajóutak</span><span class="t-honnan">VCE · BCN · VLC</span><span class="t-all">7 éj</span></a></li>
-        <li><a href="https://riu.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>R</i><i>I</i><i>U</i></span><span class="t-cel">RIU szállodák</span><span class="t-honnan">9 úti cél</span><span class="t-all">Tengerpart</span></a></li>
-        <li><a href="https://mauritius.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>M</i><i>R</i><i>U</i></span><span class="t-cel">Mauritius</span><span class="t-honnan">Egyedi ajánlat</span><span class="t-all">Prémium</span></a></li>
-        <li><a href="https://maldiv.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>M</i><i>L</i><i>E</i></span><span class="t-cel">Maldív-szigetek</span><span class="t-honnan">Egyedi ajánlat</span><span class="t-all">Prémium</span></a></li>
+        <li><a href="https://zanzibar.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>Z</i><i>N</i><i>Z</i></span><span class="t-cel">Zanzibár</span><span class="t-honnan">BUD · VIE · BTS</span><span class="t-all zold">Fűszersziget, szafari</span></a></li>
+        <li><a href="https://dominika.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>P</i><i>U</i><i>J</i></span><span class="t-cel">Dominikai Köztársaság</span><span class="t-honnan">BTS · VIE</span><span class="t-all zold">Karibi nyár, vakító homok</span></a></li>
+        <li><a href="https://bahari.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>Z</i><i>N</i><i>Z</i></span><span class="t-cel">TUI BLUE Bahari</span><span class="t-honnan">BTS</span><span class="t-all zold">Óceánparti 5*, buja kertek</span></a></li>
+        <li><a href="https://vietnam.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>P</i><i>Q</i><i>C</i></span><span class="t-cel">Vietnám, Phu Quoc</span><span class="t-honnan">BTS</span><span class="t-all zold">Kapunyitás: dec. 16.</span></a></li>
+        <li><a href="https://oman.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>S</i><i>L</i><i>L</i></span><span class="t-cel">Omán, Salalah</span><span class="t-honnan">BTS</span><span class="t-all zold">Ezeregyéjszaka all inclusive ellátással</span></a></li>
+        <li><a href="https://mscutak.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>M</i><i>S</i><i>C</i></span><span class="t-cel">MSC hajóutak</span><span class="t-honnan">VCE · BCN · VLC</span><span class="t-all zold">Úszó szálloda és tengernyi élmény</span></a></li>
+        <li><a href="https://riu.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>R</i><i>I</i><i>U</i></span><span class="t-cel">RIU szállodák</span><span class="t-honnan">9 úti cél</span><span class="t-all zold">Számos úti cél, jól ismert minőség</span></a></li>
+        <li><a href="https://mauritius.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>M</i><i>R</i><i>U</i></span><span class="t-cel">Mauritius</span><span class="t-honnan">Egyedi ajánlat</span><span class="t-all zold">Szigetálom, nászút és felfedezés</span></a></li>
+        <li><a href="https://maldiv.atlasztravelgyor.hu/"><span class="t-kod" aria-hidden="true"><i>M</i><i>L</i><i>E</i></span><span class="t-cel">Maldív-szigetek</span><span class="t-honnan">Egyedi ajánlat</span><span class="t-all zold">Mesesziget, vízi villák</span></a></li>
       </ol>
     </div>
   </div>
@@ -312,7 +316,7 @@ footer .logo-feher{height:40px;width:auto;background:#fff;border-radius:8px;padd
         <a href="https://zanzibar.atlasztravelgyor.hu/">
           <div class="kartya-kep">
             <img src="img/zanzibar-kis.webp" srcset="img/zanzibar-kis.webp 760w, img/zanzibar.webp 1400w" sizes="(min-width: 1020px) 565px, (min-width: 640px) 50vw, 100vw" width="760" height="380" alt="Függőágy pálmafák között Zanzibár türkiz vizű partján" loading="lazy" decoding="async">
-            <span class="kod" aria-hidden="true">ZNZ</span><span class="cimke">Élő árak</span>
+            <span class="kod" aria-hidden="true">ZNZ</span><span class="cimke">Fűszersziget, szafari</span>
           </div>
           <div class="kartya-test">
             <p class="hely">Tanzánia · Indiai-óceán</p>
@@ -327,7 +331,7 @@ footer .logo-feher{height:40px;width:auto;background:#fff;border-radius:8px;padd
         <a href="https://dominika.atlasztravelgyor.hu/">
           <div class="kartya-kep">
             <img src="img/dominika-kis.webp" srcset="img/dominika-kis.webp 760w, img/dominika.webp 1400w" sizes="(min-width: 1020px) 565px, (min-width: 640px) 50vw, 100vw" width="760" height="428" alt="Pálmafás karibi tengerpart Dominikán" loading="lazy" decoding="async">
-            <span class="kod" aria-hidden="true">PUJ</span><span class="cimke">Élő árak</span>
+            <span class="kod" aria-hidden="true">PUJ</span><span class="cimke">Karibi nyár, vakító homok</span>
           </div>
           <div class="kartya-test">
             <p class="hely">Karib-tenger · Punta Cana, Bávaro, Bayahibe</p>
@@ -342,7 +346,7 @@ footer .logo-feher{height:40px;width:auto;background:#fff;border-radius:8px;padd
         <a href="https://bahari.atlasztravelgyor.hu/">
           <div class="kartya-kep">
             <img src="img/bahari-kis.webp" srcset="img/bahari-kis.webp 760w, img/bahari.webp 1400w" sizes="(min-width: 1020px) 375px, (min-width: 640px) 50vw, 100vw" width="760" height="428" alt="A TUI BLUE Bahari szálloda és a kiwengwai strand madártávlatból" loading="lazy" decoding="async">
-            <span class="kod" aria-hidden="true">ZNZ</span><span class="cimke">Élő árak</span>
+            <span class="kod" aria-hidden="true">ZNZ</span><span class="cimke">Óceánparti 5*, buja kertek</span>
           </div>
           <div class="kartya-test">
             <p class="hely">Zanzibár · Kiwengwa</p>
@@ -357,7 +361,7 @@ footer .logo-feher{height:40px;width:auto;background:#fff;border-radius:8px;padd
         <a href="https://vietnam.atlasztravelgyor.hu/">
           <div class="kartya-kep">
             <img src="img/vietnam-kis.webp" srcset="img/vietnam-kis.webp 760w, img/vietnam.webp 1400w" sizes="(min-width: 1020px) 375px, (min-width: 640px) 50vw, 100vw" width="760" height="427" alt="A Meliá Vinpearl Phu Quoc üdülő és tengerpartja madártávlatból" loading="lazy" decoding="async">
-            <span class="kod" aria-hidden="true">PQC</span><span class="cimke">Téli napsütés</span>
+            <span class="kod" aria-hidden="true">PQC</span><span class="cimke">Kapunyitás: dec. 16.</span>
           </div>
           <div class="kartya-test">
             <p class="hely">Meliá Vinpearl Phu Quoc 5*</p>
@@ -372,7 +376,7 @@ footer .logo-feher{height:40px;width:auto;background:#fff;border-radius:8px;padd
         <a href="https://oman.atlasztravelgyor.hu/">
           <div class="kartya-kep">
             <img src="img/oman-kis.webp" srcset="img/oman-kis.webp 760w, img/oman.webp 1400w" sizes="(min-width: 1020px) 375px, (min-width: 640px) 50vw, 100vw" width="760" height="505" alt="Salalah fehér homokos partja hegyekkel a háttérben" loading="lazy" decoding="async">
-            <span class="kod" aria-hidden="true">SLL</span><span class="cimke">Szezon áprilisig</span>
+            <span class="kod" aria-hidden="true">SLL</span><span class="cimke">Ezeregyéjszaka all inclusive ellátással</span>
           </div>
           <div class="kartya-test">
             <p class="hely">Indiai-óceán</p>
@@ -387,7 +391,7 @@ footer .logo-feher{height:40px;width:auto;background:#fff;border-radius:8px;padd
         <a href="https://mscutak.atlasztravelgyor.hu/">
           <div class="kartya-kep">
             <img src="img/mscutak-kis.webp" srcset="img/mscutak-kis.webp 760w, img/mscutak.webp 1400w" sizes="(min-width: 1020px) 375px, (min-width: 640px) 50vw, 100vw" width="760" height="367" alt="MSC óceánjáró a nyílt tengeren" loading="lazy" decoding="async">
-            <span class="kod" aria-hidden="true">MSC</span><span class="cimke">7 éj</span>
+            <span class="kod" aria-hidden="true">MSC</span><span class="cimke">Úszó szálloda és tengernyi élmény</span>
           </div>
           <div class="kartya-test">
             <p class="hely">Földközi-tenger · Karib-tenger</p>
@@ -402,7 +406,7 @@ footer .logo-feher{height:40px;width:auto;background:#fff;border-radius:8px;padd
         <a href="https://riu.atlasztravelgyor.hu/">
           <div class="kartya-kep">
             <img src="img/riu-kis.webp" srcset="img/riu-kis.webp 760w, img/riu.webp 1400w" sizes="(min-width: 1020px) 375px, (min-width: 640px) 50vw, 100vw" width="760" height="502" alt="Pár pihen egy pálmafás RIU szálloda medencéjében" loading="lazy" decoding="async">
-            <span class="kod" aria-hidden="true">RIU</span><span class="cimke">Tengerpart</span>
+            <span class="kod" aria-hidden="true">RIU</span><span class="cimke">Számos úti cél, jól ismert minőség</span>
           </div>
           <div class="kartya-test">
             <p class="hely">Kilenc úti cél, egy szállodalánc</p>
@@ -417,7 +421,7 @@ footer .logo-feher{height:40px;width:auto;background:#fff;border-radius:8px;padd
         <a href="https://mauritius.atlasztravelgyor.hu/">
           <div class="kartya-kep">
             <img src="img/mauritius-kis.webp" srcset="img/mauritius-kis.webp 760w, img/mauritius.webp 1400w" sizes="(min-width: 1020px) 375px, (min-width: 640px) 50vw, 100vw" width="760" height="570" alt="A Le Morne-félsziget Mauritiuson naplementében" loading="lazy" decoding="async">
-            <span class="kod" aria-hidden="true">MRU</span><span class="cimke">Prémium</span>
+            <span class="kod" aria-hidden="true">MRU</span><span class="cimke">Szigetálom, nászút és felfedezés</span>
           </div>
           <div class="kartya-test">
             <p class="hely">Atlasz Prémium · Indiai-óceán</p>
@@ -432,7 +436,7 @@ footer .logo-feher{height:40px;width:auto;background:#fff;border-radius:8px;padd
         <a href="https://maldiv.atlasztravelgyor.hu/">
           <div class="kartya-kep">
             <img src="img/maldiv-kis.webp" srcset="img/maldiv-kis.webp 760w, img/maldiv.webp 1400w" sizes="(min-width: 1020px) 375px, (min-width: 640px) 50vw, 100vw" width="760" height="393" alt="Vízre épült villák a Maldív-szigeteken madártávlatból" loading="lazy" decoding="async">
-            <span class="kod" aria-hidden="true">MLE</span><span class="cimke">Prémium</span>
+            <span class="kod" aria-hidden="true">MLE</span><span class="cimke">Mesesziget, vízi villák</span>
           </div>
           <div class="kartya-test">
             <p class="hely">Atlasz Prémium · Indiai-óceán</p>

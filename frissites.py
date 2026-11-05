@@ -669,7 +669,7 @@ GYUJTO_KARTYA = """      <article class="kartya{osztaly}" data-kat="{kat}"{kieme
         <a href="{cim}">
           <div class="kartya-kep">
             <img src="img/{kep}-kis.webp" srcset="img/{kep}-kis.webp 760w, img/{kep}.webp 1400w" sizes="{meretek}" width="{szel}" height="{mag}" alt="{alt}" loading="lazy" decoding="async">
-            <span class="kod" aria-hidden="true">{kod}</span><span class="cimke">{cimke}</span>
+            <span class="kod" aria-hidden="true">{kod}</span><span class="cimke{cimke_jel}">{cimke}</span>
           </div>
           <div class="kartya-test">
             <p class="hely">{hely}</p>
@@ -698,6 +698,18 @@ def kartya_elrendezes(lista):
     elif len(sima) % 3 == 2:
         osztaly[sima[-2]] = osztaly[sima[-1]] = " fel"
     return osztaly
+
+
+def gyujto_felirat(a, ma):
+    """A táblán és a kártyán álló felirat: a most érvényes repülőtéri felirat (pl. „Utolsó hívás”, csak valódi
+    határidőhöz), ha nincs ilyen, a hívó kifejezés. Visszaad: (szöveg, jelzés: "zold" vagy "sarga")."""
+    for allapot in a.get("allapotok", []):
+        if allapot.get("jelzes", "zold") not in ("zold", "sarga") or not allapot.get("szoveg"):
+            raise CsereHiba(f"utazzvelunk: hibás felirat a(z) {a['azonosito']} ajánlatnál: {allapot}")
+        tol, ig = allapot.get("tol"), allapot.get("ig")
+        if (not tol or date.fromisoformat(tol) <= ma) and (not ig or ma <= date.fromisoformat(ig)):
+            return allapot["szoveg"], allapot.get("jelzes", "zold")
+    return a["cimke"], "zold"
 
 
 def gyujto_blokkok(forras):
@@ -734,16 +746,17 @@ def gyujto_blokkok(forras):
             szel, mag = kep.size
         darab[kat] = darab.get(kat, 0) + 1
         betuk = "".join(f"<i>{e(c)}</i>" for c in a["kod"][:3])
-        elo = " elo" if a.get("elo_arak") else ""
+        felirat, jelzes = gyujto_felirat(a, ma)
         tabla.append(f'        <li><a href="{e(a["cim"])}"><span class="t-kod" aria-hidden="true">{betuk}</span>'
                      f'<span class="t-cel">{e(a["nev"])}</span><span class="t-honnan">{e(a["honnan"])}</span>'
-                     f'<span class="t-all{elo}">{e(a["cimke"])}</span></a></li>')
+                     f'<span class="t-all {jelzes}">{e(felirat)}</span></a></li>')
         kiemelt = bool(a.get("kiemelt"))
         kartyak.append(GYUJTO_KARTYA.format(
             osztaly=elrendezes[a["azonosito"]], kiemelt_jel=' data-kiemelt="1"' if kiemelt else "",
             kat=e(kat), cim=e(a["cim"]), kep=e(a["kep"]),
             meretek=("(min-width: 1020px) 565px" if kiemelt else "(min-width: 1020px) 375px") + ", (min-width: 640px) 50vw, 100vw",
-            szel=szel, mag=mag, alt=e(a.get("kep_leiras") or a["nev"]), kod=e(a["kod"]), cimke=e(a["cimke"]),
+            szel=szel, mag=mag, alt=e(a.get("kep_leiras") or a["nev"]), kod=e(a["kod"]),
+            cimke=e(felirat), cimke_jel=" sarga" if jelzes == "sarga" else "",
             hely=e(a["hely"]), nev=e(a["nev"]), szoveg=e(a["szoveg"]),
             jellemzok="".join(f"<li>{e(j)}</li>" for j in a.get("jellemzok", [])), nyil=NYIL_SVG))
     szurok = [f'        <button type="button" class="szuro" data-kat="" aria-pressed="true">Mind <span>{len(lista)}</span></button>']

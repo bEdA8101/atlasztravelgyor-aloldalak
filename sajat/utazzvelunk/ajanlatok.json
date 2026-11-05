@@ -6,7 +6,9 @@
     "a frissites.py minden éjjel újraépíti az oldalt, így a dátumok maguktól érvényesülnek.",
     "\"kiemelt\": true esetén nagyobb kártyát kap. \"kategoria\": a lenti kategóriák egyike (szűrőgomb lesz belőle).",
     "\"kod\" és \"honnan\": az indulási táblán látszik (célreptér kódja, illetve az indulási repterek vagy kikötők).",
-    "\"elo_arak\": true, ha az aloldal élő árakat mutat (zöld jelzés a táblán)."
+    "\"cimke\": a hívó kifejezés (a táblán zöld jelzéssel és a kártya képén).",
+    "\"allapotok\": repülőtéri felirat valódi határidőhöz (pl. Kapunyitás, Utolsó hívás); a \"tol\"–\"ig\" időszakban",
+    "a hívó kifejezés helyett ez látszik. \"jelzes\": \"zold\" vagy \"sarga\" (sárga, villogó: csak valódi határidőnél)."
   ],
   "kategoriak": {
     "egzotikus": "Egzotikus tengerpartok",
@@ -22,11 +24,14 @@
       "hely": "Tanzánia · Indiai-óceán",
       "kod": "ZNZ",
       "honnan": "BUD · VIE · BTS",
-      "cimke": "Élő árak",
-      "elo_arak": true,
+      "cimke": "Fűszersziget, szafari",
       "kategoria": "egzotikus",
       "szoveg": "Fehér homok, türkiz lagúna, fűszerillatú sikátorok. Zanzibári szállodáink és időpontjaink egy keresőben, élő árakkal.",
-      "jellemzok": ["Indulás Budapestről, Bécsből vagy Pozsonyból", "Last minute ajánlatok", "Foglalási igény online"],
+      "jellemzok": [
+        "Indulás Budapestről, Bécsből vagy Pozsonyból",
+        "Last minute ajánlatok",
+        "Foglalási igény online"
+      ],
       "kep": "zanzibar",
       "kep_leiras": "Függőágy pálmafák között Zanzibár türkiz vizű partján",
       "kiemelt": true,
@@ -39,11 +44,14 @@
       "hely": "Karib-tenger · Punta Cana, Bávaro, Bayahibe",
       "kod": "PUJ",
       "honnan": "BTS · VIE",
-      "cimke": "Élő árak",
-      "elo_arak": true,
+      "cimke": "Karibi nyár, vakító homok",
       "kategoria": "egzotikus",
       "szoveg": "Punta Cana, Bávaro és Bayahibe 4 és 5 csillagos all inclusive szállodái. Pozsonyból közvetlen járattal, Bécsből átszállással.",
-      "jellemzok": ["4–5 csillagos all inclusive", "Közvetlen járat Pozsonyból", "Foglalási igény online"],
+      "jellemzok": [
+        "4–5 csillagos all inclusive",
+        "Közvetlen járat Pozsonyból",
+        "Foglalási igény online"
+      ],
       "kep": "dominika",
       "kep_leiras": "Pálmafás karibi tengerpart Dominikán",
       "kiemelt": true,
@@ -56,11 +64,14 @@
       "hely": "Zanzibár · Kiwengwa",
       "kod": "ZNZ",
       "honnan": "BTS",
-      "cimke": "Élő árak",
-      "elo_arak": true,
+      "cimke": "Óceánparti 5*, buja kertek",
       "kategoria": "egzotikus",
       "szoveg": "Ötcsillagos all inclusive szálloda Kiwengwa homokos strandján, 7 éjszakára, közvetlen járattal Pozsonyból, transzferrel.",
-      "jellemzok": ["5* all inclusive", "Közvetlen járat Pozsonyból", "Foglalási igény online"],
+      "jellemzok": [
+        "5* all inclusive",
+        "Közvetlen járat Pozsonyból",
+        "Foglalási igény online"
+      ],
       "kep": "bahari",
       "kep_leiras": "A TUI BLUE Bahari szálloda és a kiwengwai strand madártávlatból",
       "kiemelt": false,
@@ -73,14 +84,25 @@
       "hely": "Meliá Vinpearl Phu Quoc 5*",
       "kod": "PQC",
       "honnan": "BTS",
-      "cimke": "Téli napsütés",
+      "cimke": "Tél helyett nyár, közvetlen járattal",
       "kategoria": "egzotikus",
       "szoveg": "Tél helyett trópusi nyár: 9 nap / 7 éj közvetlen járattal Pozsonyból, poggyásszal és transzferrel, reggelivel vagy all inclusive.",
-      "jellemzok": ["Indulás 2026. december 16-tól", "Közvetlen járat Pozsonyból", "Villák saját stranddal"],
+      "jellemzok": [
+        "Indulás 2026. december 16-tól",
+        "Közvetlen járat Pozsonyból",
+        "Villák saját stranddal"
+      ],
       "kep": "vietnam",
       "kep_leiras": "A Meliá Vinpearl Phu Quoc üdülő és tengerpartja madártávlatból",
       "kiemelt": false,
-      "lathato": true
+      "lathato": true,
+      "allapotok": [
+        {
+          "szoveg": "Kapunyitás: dec. 16.",
+          "ig": "2026-12-15",
+          "jelzes": "zold"
+        }
+      ]
     },
     {
       "azonosito": "oman",
@@ -89,15 +111,27 @@
       "hely": "Indiai-óceán",
       "kod": "SLL",
       "honnan": "BTS",
-      "cimke": "Szezon áprilisig",
+      "cimke": "Ezeregyéjszaka all inclusive ellátással",
       "kategoria": "egzotikus",
       "szoveg": "Két ötcsillagos, all inclusive tengerparti szálloda Hawana Salalah üdülőközpontjában, közvetlen charterjárattal Pozsonyból.",
-      "jellemzok": ["Fanar Hotel 5* · Salalah Rotana 5*", "Indulás szombatonként", "Közvetlen járat Pozsonyból"],
+      "jellemzok": [
+        "Fanar Hotel 5* · Salalah Rotana 5*",
+        "Indulás szombatonként",
+        "Közvetlen járat Pozsonyból"
+      ],
       "kep": "oman",
       "kep_leiras": "Salalah fehér homokos partja hegyekkel a háttérben",
       "kiemelt": false,
       "lathato": true,
-      "latszik_ig": "2027-04-03"
+      "latszik_ig": "2027-04-03",
+      "allapotok": [
+        {
+          "szoveg": "Utolsó hívás: ápr. 3.",
+          "tol": "2027-03-06",
+          "ig": "2027-04-03",
+          "jelzes": "sarga"
+        }
+      ]
     },
     {
       "azonosito": "mscutak",
@@ -106,10 +140,14 @@
       "hely": "Földközi-tenger · Karib-tenger",
       "kod": "MSC",
       "honnan": "VCE · BCN · VLC",
-      "cimke": "7 éj",
+      "cimke": "Úszó szálloda és tengernyi élmény",
       "kategoria": "hajout",
       "szoveg": "Egy hét a tengeren, szinte minden nap új kikötő. Indulás Velencéből, Barcelonából, Valenciából, Rómából, Nápolyból, Vallettából vagy Port Canaveralből.",
-      "jellemzok": ["Időpont- és kabinválasztás árakkal", "Repülőjegyet, transzfert is intézünk", "Családi ajánlatkérés"],
+      "jellemzok": [
+        "Időpont- és kabinválasztás árakkal",
+        "Repülőjegyet, transzfert is intézünk",
+        "Családi ajánlatkérés"
+      ],
       "kep": "mscutak",
       "kep_leiras": "MSC óceánjáró a nyílt tengeren",
       "kiemelt": false,
@@ -122,10 +160,14 @@
       "hely": "Kilenc úti cél, egy szállodalánc",
       "kod": "RIU",
       "honnan": "9 úti cél",
-      "cimke": "Tengerpart",
+      "cimke": "Számos úti cél, jól ismert minőség",
       "kategoria": "tengerpart",
       "szoveg": "Megbízható tengerparti szállodák Törökországtól a Kanári-szigeteken és Dubain át Zanzibárig, Mauritiusig és Dominikáig.",
-      "jellemzok": ["Törökország, Portugália, Kanári-szigetek", "Dubai, Szenegál, Mauritius", "Zanzibár, Maldív-szigetek, Dominika"],
+      "jellemzok": [
+        "Törökország, Portugália, Kanári-szigetek",
+        "Dubai, Szenegál, Mauritius",
+        "Zanzibár, Maldív-szigetek, Dominika"
+      ],
       "kep": "riu",
       "kep_leiras": "Pár pihen egy pálmafás RIU szálloda medencéjében",
       "kiemelt": false,
@@ -138,10 +180,14 @@
       "hely": "Atlasz Prémium · Indiai-óceán",
       "kod": "MRU",
       "honnan": "Egyedi ajánlat",
-      "cimke": "Prémium",
+      "cimke": "Szigetálom, nászút és felfedezés",
       "kategoria": "premium",
       "szoveg": "Szakértői kalauz és személyre szabott ajánlat: partvidékek, a legjobb időszak, szállodaválasztás és élmények.",
-      "jellemzok": ["Személyre szabott ajánlat", "Nászút, szimbolikus esküvő", "50 kérdés, 50 válasz"],
+      "jellemzok": [
+        "Személyre szabott ajánlat",
+        "Nászút, szimbolikus esküvő",
+        "50 kérdés, 50 válasz"
+      ],
       "kep": "mauritius",
       "kep_leiras": "A Le Morne-félsziget Mauritiuson naplementében",
       "kiemelt": false,
@@ -154,10 +200,14 @@
       "hely": "Atlasz Prémium · Indiai-óceán",
       "kod": "MLE",
       "honnan": "Egyedi ajánlat",
-      "cimke": "Prémium",
+      "cimke": "Mesesziget, vízi villák",
       "kategoria": "premium",
       "szoveg": "Resortszigetek, beach és water villák, víz alatti világ: a sziget kiválasztásától a transzferig személyre szabva.",
-      "jellemzok": ["Beach és water villák", "Speedboat, hidroplán vagy belső járat", "50 kérdés, 50 válasz"],
+      "jellemzok": [
+        "Beach és water villák",
+        "Speedboat, hidroplán vagy belső járat",
+        "50 kérdés, 50 válasz"
+      ],
       "kep": "maldiv",
       "kep_leiras": "Vízre épült villák a Maldív-szigeteken madártávlatból",
       "kiemelt": false,
