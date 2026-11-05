@@ -63,7 +63,8 @@ frissites.py az oldal mellé másol az `elo/` mappából:
   mindkettő a saját beállításaival (indulási helyek, célterület, szűrések).
 - `elo/bahari_proxy.php` – a bahari-oldal adatai (az oldal mellett `proxy.php` néven): a
   TUI BLUE Bahari pozsonyi, 7 éjszakás, all inclusive útjai az atlastravel.sk kínálatából.
-  Gyerekes utazásnál a pontos végösszeget a CeSYS árszolgáltatása adja.
+  A végösszeget a CeSYS árszolgáltatása adja minden olyan utasösszetételre, ami nem pontosan
+  2 felnőtt (2 felnőttnél az ár/fő × 2 megegyezik a forrás végösszegével).
 - `elo/zanzibar_api.php` – a zanzibar-oldal keresője (az oldal mellett `api.php` néven): szállodák,
   időpontok, szobák, pontos ár és last minute ajánlatok budapesti és bécsi indulással a győri
   CeSYS-oldalról (a bécsi kínálat a CeSYS Amadeus-kapcsolatából), pozsonyi indulással az
@@ -108,6 +109,11 @@ forrás besorolásából állapítja meg; ha rosszul sorol be egy szállodát, �
 A dominika-oldal saját oldal: a forrása a `sajat/dominika/index.html`. Ebben a `{{telefon}}`,
 `{{email}}`, `{{cim}}` stb. helyére a `frissites.py` a `GYOR` rész adatait írja, és ugyanúgy
 hozzáteszi a lábléc-tájékoztatót, mint a többi oldalhoz. Szöveget, képet itt kell módosítani.
+
+A teljes árat (végösszeget) az élő adatos oldalak mindig a forrás árszolgáltatásától kérik, nem
+szorzással számolják: egy felnőttnél egyágyas felár, a harmadik felnőttnél és a gyerekeknél
+kedvezmény lehet, és a forrás azt is megmondja, ha egy időpont az adott utaslétszámra nem
+foglalható (ilyenkor a kártya a következő foglalható időpontot mutatja).
 
 A források: az atlasztravelgyor.hu és az atlastravel.sk nyilvános adatszolgáltató címei
 (ugyanazok, amelyeket a böngésző is használ), valamint a CeSYS árszolgáltatása. A lekérdezések
