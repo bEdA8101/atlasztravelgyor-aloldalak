@@ -15,7 +15,8 @@
         "bahari",
         "zanzibar",
         "dominika",
-        "mscutak"
+        "mscutak",
+        "utazzvelunk"
       ]
     },
     {
@@ -53,6 +54,10 @@
     {
       "cel": "mscutak.atlasztravelgyor.hu",
       "forras": "mscutak"
+    },
+    {
+      "cel": "utazzvelunk.atlasztravelgyor.hu",
+      "forras": "utazzvelunk"
     }
   ]
 }
