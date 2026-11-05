@@ -28,6 +28,6 @@ Ez a tároló az atlasztravelgyor.hu aloldalait tartalmazza: a központi Atlasz 
   A forrás a CeSYS nyilvános adatszolgáltató címei (atlasztravelgyor.hu, atlastravel.sk,
   api-ng.cesys.eu). A lekérdezés mindig nevezze meg magát (CESYS_UA), használja a gyorsítótárat,
   és soha ne próbálja megkerülni a robotszűrőket (álcázott böngésző, ellenőrzés kijátszása).
-- `ELONEZET = True`, amíg az oldalak csak a GitHub Pages előnézetben futnak; élesítéskor `False`.
+- Az oldalak élesek (`ELONEZET = False`). A tesztoldalt a `robots.txt` rejti el a keresők elől.
 - Külön, kis commitokat készíts, érthető magyar leírással.
 - Soha ne commitolj jelszót, API-kulcsot vagy ügyféladatot (például tesztűrlapból származó adatot).

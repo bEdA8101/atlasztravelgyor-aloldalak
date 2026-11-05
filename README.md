@@ -15,7 +15,8 @@ A központ engedélyezte a tartalmak átvételét.
 | `mscutak/` | mscutak.atlasztravelgyor.hu | https://mscutak.atlasztravel.hu/ (MSC hajóutak; az árakat a központ az oldalban frissíti) |
 | `dominika/` | dominika.atlasztravelgyor.hu | saját oldal (`sajat/dominika/`), élő árakkal és foglalási igénnyel |
 
-**Előnézet** (a tárhely elkészültéig): https://beda8101.github.io/atlasztravelgyor-aloldalak/
+Az oldalak 2026 novembere óta élesek a táblázat második oszlopában álló címeken. A tesztoldal
+(tesztoldal.atlasztravelgyor.hu) ugyanezeket mutatja mappánként, a keresők elől elrejtve.
 
 ## Mi hol van?
 
@@ -183,13 +184,14 @@ előbb a tárhely felületén létre kell hozni az aldomaint (Domains Management
 venni a `feltoltes.json`-ba. A feltöltő csak a saját maga által feltöltött fájlokat frissíti
 vagy törli; a tárhelyen kézzel elhelyezett más fájlokhoz nem nyúl.
 
-## Élesítés
+## Élesítés (2026. november, elvégezve)
 
-1. A `frissites.py`-ban az `ELONEZET = True` sort írd át `False`-ra, és futtasd újra a programot
-   (így lekerül a „ne listázza a Google” jelölés).
-2. Az `urlap_kuldes.php` elején a `FELADO` címét igazítsd a tárhely domainjéhez.
-3. A `feltoltes.json`-ban minden aldomainhez a saját mappája kerüljön
-   (például `{"cel": "oman.atlasztravelgyor.hu", "forras": "oman"}`).
+1. A `frissites.py`-ban `ELONEZET = False`: az oldalakon nincs „ne listázza a Google” jelölés.
+2. A `FELADO` (az `urlap_kuldes.php` és az `elo/kereso_motor.php` elején)
+   weboldal@atlasztravelgyor.hu, a tárhely domainjén.
+3. A `feltoltes.json`-ban minden aldomainhez a saját mappája tartozik
+   (például `{"cel": "oman.atlasztravelgyor.hu", "forras": "oman"}`). A tesztoldalra emellett
+   a `robots.txt` is felkerül, hogy a keresők ne a tesztoldalt listázzák.
 
 PHP-s tárhelyen az ajánlatkérő űrlap e-mailt küld (`send.php`, illetve a RIU- és a
 Vietnám-oldalon `kuldes.php`). PHP nélkül (például a GitHub-előnézetben) az Omán-, a Mauritius-
