@@ -98,7 +98,7 @@ footer a[href^="tel:"],.adat a[href^="tel:"]{white-space:nowrap}
 .tabla-fej b{font:800 26px/1 var(--disp);letter-spacing:.06em;text-transform:uppercase;color:var(--amber)}
 .tabla-fej span{font-size:12px;color:rgba(255,255,255,.5);text-align:right}
 .tabla ol{list-style:none;margin:0;padding:6px 0 0}
-.tabla li a{display:grid;grid-template-columns:62px auto minmax(0,1fr);grid-template-areas:"kod cel cel" "kod honnan all";column-gap:16px;row-gap:3px;align-items:center;padding:10px 6px;text-decoration:none;border-bottom:1px dashed rgba(255,255,255,.09);border-radius:8px;transition:background .15s ease}
+.tabla li a{display:grid;grid-template-columns:62px minmax(0,1fr) auto;grid-template-areas:"kod cel all" "kod honnan all";column-gap:16px;row-gap:2px;align-items:center;padding:10px 6px;text-decoration:none;border-bottom:1px dashed rgba(255,255,255,.09);border-radius:8px;transition:background .15s ease}
 .tabla li:last-child a{border-bottom:0}
 .tabla li a:hover{background:rgba(255,255,255,.06)}
 .t-kod{grid-area:kod;display:flex;gap:2px}
@@ -107,10 +107,11 @@ footer a[href^="tel:"],.adat a[href^="tel:"]{white-space:nowrap}
 .t-cel{grid-area:cel;font:700 21px/1.05 var(--disp);text-transform:uppercase;letter-spacing:.02em;color:#fff}
 .t-honnan{grid-area:honnan;font-size:12.5px;color:rgba(255,255,255,.55);letter-spacing:.04em}
 /* felirat a jelzőfénnyel: zöld a hívó kifejezés, sárga (villogó) csak valódi határidőnél, mint egy reptéri táblán */
-.t-all{grid-area:all;font:700 11px/1.35 var(--body);letter-spacing:.05em;text-transform:uppercase;text-align:right;color:#7cf0b0}
-.t-all::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:currentColor;margin-right:8px;vertical-align:1px;box-shadow:0 0 0 3px rgba(124,240,176,.15)}
+.t-all{grid-area:all;font:700 11px/1.45 var(--body);letter-spacing:.05em;text-transform:uppercase;text-align:right;color:#7cf0b0}
+.t-all>span{display:block;white-space:nowrap}
+.t-all>span:first-child::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:currentColor;margin-right:8px;vertical-align:1px;box-shadow:0 0 0 3px rgba(124,240,176,.15)}
 .t-all.sarga{color:var(--amber)}
-.t-all.sarga::before{box-shadow:0 0 0 3px rgba(255,197,61,.18);animation:villog 1.6s ease-in-out infinite}
+.t-all.sarga>span:first-child::before{box-shadow:0 0 0 3px rgba(255,197,61,.18);animation:villog 1.6s ease-in-out infinite}
 @keyframes villog{50%{opacity:.25}}
 
 /* ajánlatok */
@@ -243,6 +244,8 @@ footer .logo-feher{height:40px;width:auto;background:#fff;border-radius:8px;padd
   .t-kod i{font-size:19px}
   .t-cel{font-size:19px}
   .t-all{text-align:left;font-size:10.5px;margin-top:3px}
+  .t-all>span{white-space:normal}
+  .t-all>span+span{padding-left:15px}
   .reptar-lista li{grid-template-columns:56px 1fr;gap:4px 12px}
   .reptar-lista em{grid-column:2}
   .adatok{grid-template-columns:1fr}

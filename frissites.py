@@ -700,6 +700,22 @@ def kartya_elrendezes(lista):
     return osztaly
 
 
+def tabla_sorok(szoveg):
+    """A táblafelirat két sorra bontva, természetes helyen: az első vessző után, az „ és ” előtt, vagy az első
+    szó után. Rövid (legfeljebb 20 betűs) felirat egy sorban marad; "|" jellel kézzel is megadható a törés."""
+    if "|" in szoveg:
+        return [r.strip() for r in szoveg.split("|", 1)]
+    if len(szoveg) <= 20:
+        return [szoveg]
+    if ", " in szoveg:
+        eleje, vege = szoveg.split(", ", 1)
+        return [eleje + ",", vege]
+    if " és " in szoveg:
+        eleje, vege = szoveg.split(" és ", 1)
+        return [eleje, "és " + vege]
+    return szoveg.split(" ", 1) if " " in szoveg else [szoveg]
+
+
 def gyujto_felirat(a, ma):
     """A táblán és a kártyán álló felirat: a most érvényes repülőtéri felirat (pl. „Utolsó hívás”, csak valódi
     határidőhöz), ha nincs ilyen, a hívó kifejezés. Visszaad: (szöveg, jelzés: "zold" vagy "sarga")."""
@@ -749,14 +765,14 @@ def gyujto_blokkok(forras):
         felirat, jelzes = gyujto_felirat(a, ma)
         tabla.append(f'        <li><a href="{e(a["cim"])}"><span class="t-kod" aria-hidden="true">{betuk}</span>'
                      f'<span class="t-cel">{e(a["nev"])}</span><span class="t-honnan">{e(a["honnan"])}</span>'
-                     f'<span class="t-all {jelzes}">{e(felirat)}</span></a></li>')
+                     f'<span class="t-all {jelzes}">{" ".join(f"<span>{e(s)}</span>" for s in tabla_sorok(felirat))}</span></a></li>')
         kiemelt = bool(a.get("kiemelt"))
         kartyak.append(GYUJTO_KARTYA.format(
             osztaly=elrendezes[a["azonosito"]], kiemelt_jel=' data-kiemelt="1"' if kiemelt else "",
             kat=e(kat), cim=e(a["cim"]), kep=e(a["kep"]),
             meretek=("(min-width: 1020px) 565px" if kiemelt else "(min-width: 1020px) 375px") + ", (min-width: 640px) 50vw, 100vw",
             szel=szel, mag=mag, alt=e(a.get("kep_leiras") or a["nev"]), kod=e(a["kod"]),
-            cimke=e(felirat), cimke_jel=" sarga" if jelzes == "sarga" else "",
+            cimke=e(felirat.replace("|", " ")), cimke_jel=" sarga" if jelzes == "sarga" else "",
             hely=e(a["hely"]), nev=e(a["nev"]), szoveg=e(a["szoveg"]),
             jellemzok="".join(f"<li>{e(j)}</li>" for j in a.get("jellemzok", [])), nyil=NYIL_SVG))
     szurok = [f'        <button type="button" class="szuro" data-kat="" aria-pressed="true">Mind <span>{len(lista)}</span></button>']
