@@ -96,10 +96,10 @@ SAJAT_OLDALAK = {
     "dominika": "sajat/dominika",
 }
 
-# Előnézet: amíg nincs saját tárhely, az oldalak a GitHub Pages-en láthatók. Ilyenkor
-# „noindex” jelölést kapnak, hogy a keresők ne listázzák az ideiglenes címet.
-# Élesítés előtt állítsd False-ra, és futtasd újra a programot.
-ELONEZET = True
+# Előnézet: True esetén az oldalak „noindex” jelölést kapnak, hogy a keresők ne listázzák őket.
+# 2026. november óta élesek (<név>.atlasztravelgyor.hu), ezért False. A tesztoldalt a robots.txt
+# rejti el a keresők elől (feltoltes.json).
+ELONEZET = False
 
 ALAP = Path(__file__).resolve().parent
 KIMENET = ALAP
