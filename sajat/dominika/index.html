@@ -665,8 +665,10 @@ function priceHTML(h) {
   const r = bestCache.get(qKey(state.q) + '#' + h.hotelId);
   const perPerson = h.priceHuf > 0 ? huf(h.priceHuf) : '';
   if (r && r.total) {
-    return `<small>összesen</small><b>${huf(r.total)}</b>`
-      + `<small>${r.totalEur ? eur(r.totalEur) + ' · ' : ''}${perPerson ? perPerson + '/fő-től' : ''}</small>`;
+    // a fejenkénti rész a végösszegből (egyedül utazónál az egyágyas felár, 3. felnőttnél a kedvezmény is benne van)
+    const fo = state.q.ac + state.q.ages.length;
+    const resz = [r.totalEur ? eur(r.totalEur) : '', fo > 1 ? huf(Math.round(r.total / fo)) + '/fő átlagosan' : ''].filter(Boolean).join(' · ');
+    return `<small>összesen</small><b>${huf(r.total)}</b>${resz ? `<small>${resz}</small>` : ''}`;
   }
   return `<small>ár/fő-től</small><b>${perPerson || 'Ár kérésre'}</b>${state.src === 'sk' && h.priceEur ? `<small>${eur(h.priceEur)}/fő</small>` : ''}`;
 }
@@ -704,21 +706,19 @@ async function computeBest(job) {
     if (!ds.length) { bestCache.set(k, {none: true}); }
     else {
       const sorted = ds.slice().sort((a, b) => a.priceHuf - b.priceHuf);
-      let x = sorted[0], total = null, totalEur = null;
-      if (!q.ages.length) { total = x.priceHuf * q.ac; totalEur = x.priceEur ? x.priceEur * q.ac : null; }
-      else {
-        // gyerekkel a végösszeget a forrás számolja; ha a legolcsóbb napra nem ad árat, a következőt is megnézzük
-        let nemFoglalhato = 0;
-        const probak = sorted.slice(0, 2);
-        for (const y of probak) {
-          const p = src === 'at' ? new URLSearchParams({action: 'price_at', code: y.room, date: y.id})
-            : new URLSearchParams({action: 'price', src: 'sk', date: y.id, room: y.room, ac: q.ac, ages: q.ages.join(',')});
-          const pr = await getJSON(API + '?' + p).catch(() => null);
-          if (pr && pr.ok && pr.available !== false && pr.totalHuf) { x = y; total = pr.totalHuf; totalEur = pr.totalEur || null; break; }
-          if (pr && pr.ok && pr.available === false) nemFoglalhato++;
-        }
-        if (!total && nemFoglalhato === probak.length) { bestCache.set(k, {notavail: true}); if (state.q && k === qKey(state.q) + '#' + h.hotelId) paintBest(h.hotelId); return; }
+      // a végösszeget mindig a forrás árszolgáltatása számolja (egy felnőttnél egyágyas felár, a harmadik felnőttnél
+      // és a gyerekeknél kedvezmény lehet); ha a legolcsóbb napra nem ad árat, a következőt is megnézzük
+      let x = sorted[0], total = null, totalEur = null, nemFoglalhato = 0;
+      const probak = sorted.slice(0, 2);
+      for (const y of probak) {
+        const p = src === 'at' ? new URLSearchParams({action: 'price_at', code: y.room, date: y.id})
+          : new URLSearchParams({action: 'price', src: 'sk', date: y.id, room: y.room, ac: q.ac});
+        if (src !== 'at' && q.ages.length) p.set('ages', q.ages.join(','));
+        const pr = await getJSON(API + '?' + p).catch(() => null);
+        if (pr && pr.ok && pr.available !== false && pr.totalHuf) { x = y; total = pr.totalHuf; totalEur = pr.totalEur || null; break; }
+        if (pr && pr.ok && pr.available === false) nemFoglalhato++;
       }
+      if (!total && nemFoglalhato === probak.length) { bestCache.set(k, {notavail: true}); if (state.q && k === qKey(state.q) + '#' + h.hotelId) paintBest(h.hotelId); return; }
       bestCache.set(k, {date: x, total, totalEur});
     }
   } catch (e) { bestCache.set(k, {err: true}); }
@@ -826,7 +826,6 @@ $('dRooms').addEventListener('click', async e => {
   $('dRooms').querySelectorAll('[data-r]').forEach(x => x.setAttribute('aria-pressed', x === b));
   $('dSumStep').hidden = false;
   $('dSum').innerHTML = '<p>Pontos ár lekérdezése…</p>';
-  const persons = state.q.ac + state.q.ages.length;
   const p = state.src === 'at'
     ? new URLSearchParams({action: 'price_at', code: state.room.id, date: state.room.date})
     : new URLSearchParams({action: 'price', src: 'sk', date: state.room.date, room: state.room.id, ac: state.q.ac});
@@ -834,7 +833,7 @@ $('dRooms').addEventListener('click', async e => {
   let pr = null;
   try { pr = await getJSON(API + '?' + p); } catch (e2) { pr = null; }
   if (!pr || !pr.ok) pr = {ok: false};
-  const tot = pr.totalHuf || (state.q.ages.length ? null : state.room.priceHuf * persons);
+  const tot = pr.totalHuf || null;   // a végösszeget csak a forrás árszolgáltatása adja, becslés nincs
   state.price = {totalHuf: tot, totalEur: pr.totalEur || null, available: pr.ok ? pr.available : null, airline: pr.airline || null, stops: pr.stops};
   const fl = pr.airline ? flightTxt({airline: pr.airline, stops: pr.stops}) : flightTxt(state.date.flight);
   $('dSum').innerHTML = `<p><strong>${esc(state.hotel.name)}</strong> · ${esc(state.hotel.region)}</p>
