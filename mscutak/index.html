@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-10835945371"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-10835945371');
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>MSC hajóutak a Földközi-tengeren és a Karib-tengeren | Atlasz Travel Győr</title>
@@ -373,6 +381,12 @@ s.was{font-family:var(--body);font-weight:500;color:var(--ink2);text-decoration-
 .cabin-note{font-size:13.5px;color:var(--ink2);margin-top:-4px}
 
 .total .t.long{font-size:26px;white-space:nowrap}
+.cfrom b{white-space:nowrap}
+.cfoot{flex-wrap:wrap}
+.cfoot .cfrom{margin-left:auto}
+.cbadge{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;margin-bottom:2px}
+.cbadge span{display:inline-block;background:var(--mag);color:var(--mag-ink);font-weight:700;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:5px 11px;line-height:1.2}
+.cbadge small{font-size:13px;color:var(--mag);font-weight:600}
 </style>
 </head>
 <body>
@@ -990,6 +1004,35 @@ function renderMap(c){
     ]};
 })();
 
+/* MSC Euribia – második ajánlat (külön kártya): ugyanaz az útvonal és időpont, új árakkal és képekkel */
+(function(){
+  const base=CRUISES.find(c=>c.id==="euribia"); if(!base)return;
+  const IMG={balcony:"img/beagyazott-1a98a59813eb.jpg"};
+  const e2={...base,
+    id:"euribia-2",
+    img:"img/beagyazott-2fe560edbf3d.jpg",
+    sub:"Tavaszi mediterrán hajóút repülővel, tengerre néző balkonos kabinban: 10 napos kikapcsolódás az MSC Euribia fedélzetén, már 485 008 Ft/fő áron.",
+    pkg:{title:"Tavaszi mediterrán hajóút – repülővel, balkonos kabinban!",
+      sub:"10 napos mediterrán kikapcsolódás az MSC Euribia fedélzetén, már 485 008 Ft/fő áron!",
+      lhead:"Mit tartalmaz a csomagár?",
+      items:["Közvetlen oda-vissza repülőjegy Budapest és Nápoly között, ülőhellyel","20 kg-os feladott poggyász fejenként","Mediterrán hajóút az MSC Euribia fedélzetén","Tengerre néző balkonos kabin","Teljes ellátás a hajón","Színházi előadások, esti programok, élőzene és szórakozási lehetőségek","Medencék, napozóteraszok és edzőterem használata","2 transzfer","Szállás Nápolyban, reggelivel","Kötelező borravaló és szervizdíj"],
+      q:"És mindez mennyiért?", price:"485 008 Ft/fő-től!", note:"Az ár dinamikus, ezért változhat.", dep:"2027-03-30", cabin:"package",
+      btn:"Csomagajánlatot kérek", msg:"A tavaszi csomagajánlat érdekel (MSC Euribia, 10 nap, közvetlen járattal Budapestről, nápolyi szállással, tengerre néző balkonos kabinban, 485 008 Ft/fő-től)."},
+    cur:"HUF",
+    badge:"Komplett utazási csomag", badgeSub:"Repülő + szállás + transzfer + hajóút",
+    cabins:[
+      {id:"package",img:IMG.balcony,name:"Csomagajánlat: tengerre néző balkonos kabin + repülő",tag:"Csomag",
+       text:"Minden egy áron: közvetlen repülőjárat Budapestről Nápolyba, szállás Nápolyban, transzferek, tengerre néző balkonos kabin, borravaló és szervizdíj. Összesen 10 nap.",
+       feats:["Közvetlen oda-vissza repülőjegy Budapest – Nápoly, ülőhellyel","20 kg-os feladott poggyász fejenként","Szállás Nápolyban, reggelivel","2 transzfer","Tengerre néző balkonos kabin, teljes ellátás a hajón","Kötelező borravaló és szervizdíj az árban"],
+       fixed:485008,cur:"HUF",from:true,note:"Az ár dinamikus, ezért változhat.",onlyDep:"2027-03-30"}],
+    sailings:[
+      {dep:"2027-03-30",ret:"2027-04-06",prices:{package:485008}}
+    ]
+  };
+  CRUISES.splice(CRUISES.indexOf(base)+1,0,e2);
+  if(MAPS.euribia) MAPS["euribia-2"]=MAPS.euribia;
+})();
+
 /* ====== segédfüggvények ====== */
 const MONTHS=["január","február","március","április","május","június","július","augusztus","szeptember","október","november","december"];
 const MSHORT=["jan.","febr.","márc.","ápr.","máj.","jún.","júl.","aug.","szept.","okt.","nov.","dec."];
@@ -999,6 +1042,7 @@ const eur=n=>String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g," ")+" €";
 const huf=n=>String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g," ")+" Ft";
 const cabOk=(k,s)=>!k.onlyDep||k.onlyDep===s.dep;
 const kPrice=(k,s)=>k&&k.fixed!=null?k.fixed:(k?s.prices[k.id]:null);
+const cFmt=(c,n)=>c&&c.cur==="HUF"?huf(n):eur(n);
 const kFmt=(k,n)=>{const v=k&&k.cur==="HUF"?huf(n):eur(n);return k&&k.from?v+"-tól":v};
 const pd=s=>{const [y,m,d]=s.split("-").map(Number);return{y,m,d}};
 const shortRange=s=>{const a=pd(s.dep),b=pd(s.ret);return `${MSHORT[a.m-1]} ${a.d}. – ${a.m===b.m?"":MSHORT[b.m-1]+" "}${b.d}.`};
@@ -1030,10 +1074,10 @@ function renderList(){
     b.setAttribute("aria-current",c===state.cruise);
     const mp=cruiseMin(c);
     b.innerHTML=`<div class="cimg"><span class="bf-ribbon">Black November</span><svg class="sp-web tr card" aria-hidden="true"><use href="#sp-web"/></svg>${c.img?`<img src="${c.img}" alt="${c.ship}">`:`<div class="noimg"><svg viewBox="0 0 24 12" aria-hidden="true"><path d="M2 8h20l-3 3H5z"/><path d="M6 8V5h10l2 3M9 5V3h4v2"/></svg><span>${c.ship}</span></div>`}</div>
-      <div class="cbody"><div class="cship">${c.ship}</div>
+      <div class="cbody">${c.badge?`<div class="cbadge"><span>${c.badge}</span>${c.badgeSub?`<small>${c.badgeSub}</small>`:""}</div>`:""}<div class="cship">${c.ship}</div>
       <div class="croute">${c.ports.join(" › ")}</div>
       <div class="cfoot"><span class="cmeta">${c.nights} éj, indulás ${c.port}, ${c.weekday}</span>
-      <span class="cfrom">${mp?`személyenként<b>${eur(mp)}</b>-tól, 2 felnőtt esetén`:"Ár kérésre"}</span></div><div class="cfam">Gyerekekkel? Családi ajánlatot is kérhetsz.</div></div>`;
+      <span class="cfrom">${mp?`személyenként<b>${cFmt(c,mp)}</b>-tól, 2 felnőtt esetén`:"Ár kérésre"}</span></div><div class="cfam">Gyerekekkel? Családi ajánlatot is kérhetsz.</div></div>`;
     b.onclick=()=>{selectCruise(c);history.replaceState(null,"","#"+c.id);$("hajout").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})};
     $("cruiseList").appendChild(b);
   });
@@ -1053,7 +1097,7 @@ function renderDetail(){
   const c=state.cruise, best=bestSailing(c);
   $("dPorts").innerHTML=c.ports.map(p=>p).join(' <span class="arrow" aria-hidden="true">›</span>');
   $("dSub").textContent=c.sub;
-  $("dFrom").innerHTML=best?(best.was?`<s class="was">${eur(best.was)}</s>`:"")+eur(minP(best)):"Ár kérésre";
+  $("dFrom").innerHTML=best?(best.was?`<s class="was">${cFmt(c,best.was)}</s>`:"")+cFmt(c,minP(best)):"Ár kérésre";
   if(best){const b=pd(best.dep);$("dFromDate").textContent=`-tól, ${b.y}. ${MONTHS[b.m-1]} ${b.d}-i indulással`;}
   document.querySelector(".shipline").hidden=!c.img;if(c.img){$("dShip").onload=e=>e.target.classList.toggle("photo",e.target.naturalWidth/e.target.naturalHeight<3);$("dShip").src=c.img;$("dShip").alt=`Az ${c.ship} hajó a nyílt tengeren`;}
   renderMap(c);
@@ -1071,7 +1115,7 @@ function renderDetail(){
     byMonth[k].forEach(s=>{
       const p=minP(s), b=document.createElement("button");b.type="button";
       b.className="date"+(p==null?" sold":"");b.setAttribute("aria-pressed",s===state.sailing);
-      b.innerHTML=`${s===best?'<span class="best">legjobb ár</span>':''}<span class="d">${shortRange(s)}</span><span class="p">${s.was&&p!=null?`<s class="was">${eur(s.was)}</s> `:""}${p!=null?eur(p):(s.soldout&&s.soldout.length?"Belső elfogyott,<br>más kabin kérésre":"Ár kérésre")}</span>`;
+      b.innerHTML=`${s===best?'<span class="best">legjobb ár</span>':''}<span class="d">${shortRange(s)}</span><span class="p">${s.was&&p!=null?`<s class="was">${cFmt(c,s.was)}</s> `:""}${p!=null?cFmt(c,p):(s.soldout&&s.soldout.length?"Belső elfogyott,<br>más kabin kérésre":"Ár kérésre")}</span>`;
       b.onclick=()=>{state.sailing=s;if((s.soldout||[]).includes(state.cabin))state.cabin=c.cabins.find(k=>!(s.soldout||[]).includes(k.id)).id;renderDetail()};
       row.querySelector(".dates").appendChild(b);
     });
@@ -1081,7 +1125,7 @@ function renderDetail(){
   // kabinok
   $("cabinDesc").textContent=`Árak a ${longDate(state.sailing)} közötti útra, személyenként.`;
   $("cabinList").innerHTML="";
-  if(!cabOk(c.cabins.find(k=>k.id===state.cabin)||{},state.sailing))state.cabin=c.cabins[0].id;
+  {const ck=c.cabins.find(k=>k.id===state.cabin);if(!ck||!cabOk(ck,state.sailing))state.cabin=c.cabins.find(k=>cabOk(k,state.sailing)).id;}
   c.cabins.filter(k=>cabOk(k,state.sailing)).forEach(k=>{
     const sold=(state.sailing.soldout||[]).includes(k.id), p=kPrice(k,state.sailing);
     const b=document.createElement("button");b.type="button";b.className="cabin"+(k.fixed!=null?" pk-cabin":"");b.disabled=sold;
@@ -1185,6 +1229,13 @@ function wireForm(form,after){
     btn.disabled=true;btn.textContent="Küldés…";
     try{
       const r=await fetch("kuldes.php",{method:"POST",body:new FormData(form)});const j=await r.json();if(!j.ok)throw 0;
+      if (typeof window.gtag === "function") {
+        window.gtag('event', 'conversion', {
+          send_to: 'AW-10835945371/h1PxCMD3l7MdEJvP_a4o',
+          value: 1.0,
+          currency: 'HUF'
+        });
+      }
       msg.className="msg ok show";msg.textContent="Köszönjük, megkaptuk az ajánlatkérésed. 24 órán belül jelentkezünk a pontos árral.";
       form.reset();after&&after();
     }catch(_){
