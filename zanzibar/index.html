@@ -485,7 +485,7 @@ dialog#hotel::backdrop{background:rgba(6,45,54,.65)}
 
 <script>
 // Keresési beállítások. Az élő árakat az api.php kéri le (győri CeSYS-oldal, atlastravel.sk).
-const CONFIG = {"style": "hu", "children": true, "sources": [{"label": "Budapesti indulás", "di": 685, "ai": [18, 19, 24], "key": "hu", "airports": [{"label": "Budapest", "ai": ""}]}, {"label": "Bécsi indulás", "di": 454, "ai": [18, 6], "key": "at", "airports": [{"label": "Bécs", "ai": "6"}]}, {"label": "Pozsonyi indulás", "key": "sk", "di": 685, "ai": [7], "airports": [{"label": "Pozsony", "ai": ""}]}], "priceOptions": [{"label": "500 000 Ft", "value": 500000}, {"label": "800 000 Ft", "value": 800000}, {"label": "1 200 000 Ft", "value": 1200000}, {"label": "2 000 000 Ft", "value": 2000000}, {"label": "3 000 000 Ft", "value": 3000000}, {"label": "Nincs felső határ", "value": 15000000}], "priceDefault": 15000000, "ufDefault": 5, "utDefault": 21, "months": ["jan.", "febr.", "márc.", "ápr.", "máj.", "jún.", "júl.", "aug.", "szept.", "okt.", "nov.", "dec."], "season": ["dry", "dry", "mixed", "wet", "wet", "dry", "dry", "dry", "dry", "dry", "mixed", "dry"], "presets": [{"label": "Karácsony és szilveszter", "kind": "xmas", "uf": 7, "ut": 12}, {"label": "Januári napsütés", "kind": "month", "month": 0, "uf": 7, "ut": 14}, {"label": "Február a tél helyett", "kind": "month", "month": 1, "uf": 7, "ut": 14}, {"label": "Nyár Zanzibáron", "kind": "month", "month": 6, "uf": 7, "ut": 14}, {"label": "Két hét a parton", "kind": "season", "uf": 13, "ut": 15}], "t": {"min": "legalább", "max": "legfeljebb", "nights": "éj", "dry": "száraz", "mixed": "változó", "wet": "esős", "childAge": "{n}. gyerek kora", "age": "{n} éves", "setSearch": "A kereső erre a hónapra áll be.", "errEmpty": "Adja meg a legkorábbi indulás és a legkésőbbi hazaérkezés dátumát.", "errOrder": "A hazaérkezés nem lehet korábbi az indulásnál."}, "email": "gyor@atlasztravel.hu", "phone": "+36 20 266 8144", "phoneTel": "+36202668144"};
+const CONFIG = {"style": "hu", "children": true, "sources": [{"label": "Budapesti indulás", "di": 685, "ai": [18, 19, 24], "key": "hu", "airports": [{"label": "Budapest", "ai": ""}]}, {"label": "Bécsi indulás", "di": 454, "ai": [18, 6], "key": "at", "airports": [{"label": "Bécs", "ai": "6"}]}, {"label": "Pozsonyi indulás", "key": "sk", "di": 685, "ai": [7], "airports": [{"label": "Pozsony", "ai": ""}]}], "priceOptions": [{"label": "500 000 Ft", "value": 500000}, {"label": "800 000 Ft", "value": 800000}, {"label": "1 200 000 Ft", "value": 1200000}, {"label": "2 000 000 Ft", "value": 2000000}, {"label": "3 000 000 Ft", "value": 3000000}, {"label": "Nincs felső határ", "value": 15000000}], "priceDefault": 15000000, "ufDefault": 7, "utDefault": 16, "months": ["jan.", "febr.", "márc.", "ápr.", "máj.", "jún.", "júl.", "aug.", "szept.", "okt.", "nov.", "dec."], "season": ["dry", "dry", "mixed", "wet", "wet", "dry", "dry", "dry", "dry", "dry", "mixed", "dry"], "presets": [{"label": "Karácsony és szilveszter", "kind": "xmas", "uf": 7, "ut": 12}, {"label": "Januári napsütés", "kind": "month", "month": 0, "uf": 7, "ut": 14}, {"label": "Február a tél helyett", "kind": "month", "month": 1, "uf": 7, "ut": 14}, {"label": "Nyár Zanzibáron", "kind": "month", "month": 6, "uf": 7, "ut": 14}, {"label": "Két hét a parton", "kind": "season", "uf": 13, "ut": 15}], "t": {"min": "legalább", "max": "legfeljebb", "nights": "éj", "dry": "száraz", "mixed": "változó", "wet": "esős", "childAge": "{n}. gyerek kora", "age": "{n} éves", "setSearch": "A kereső erre a hónapra áll be.", "errEmpty": "Adja meg a legkorábbi indulás és a legkésőbbi hazaérkezés dátumát.", "errOrder": "A hazaérkezés nem lehet korábbi az indulásnál."}, "email": "gyor@atlasztravel.hu", "phone": "+36 20 266 8144", "phoneTel": "+36202668144"};
 const API = 'api.php';
 // Ha a saját tárhely nem tudja kiszolgálni a fotót, közvetlenül a képszerverről töltjük be.
 window.zImgErr = function(el){
@@ -784,6 +784,11 @@ window.zImgErr = function(el){
       return probe(0);
     });
   }
+  function skTotal(dateId, roomId, comp){
+    const q = new URLSearchParams({action:'price', src:'sk', date: dateId, room: roomId, ac: comp.ac});
+    if(comp.ages.length) q.set('ages', comp.ages.join(','));
+    return fetch(API + '?' + q.toString()).then(r => r.json()).then(p => (p && p.ok) ? p : null).catch(() => null);
+  }
   function bestTerm(b){ return day(b.from,true)+' – '+day(b.to,false)+' ('+b.nights+' éj)'; }
   function showBest(el, res, comp){
     el.classList.remove('wait');
@@ -930,7 +935,7 @@ window.zImgErr = function(el){
       }
       html += '<ul class="rl">' + d.rooms.map((r,i) =>
         '<li><span class="rl-name">'+esc(huText(r.name))+(r.discPct ? ' <em>−'+Math.round(r.discPct)+'%</em>' : '')+(x.rooms ? '<small class="rl-sub">'+esc(huText(r.board))+(r.transfer ? ', transzferrel' : '')+'</small>' : '')+'</span>'+
-        '<span class="rl-price">'+huf(r.priceHuf)+'<small>/fő'+(x.eur ? ', '+eur(r.priceEur) : '')+'</small></span>'+
+        '<span class="rl-price">'+huf(r.priceHuf)+'<small>/'+(x.eur && dctx.comp.ages.length ? 'felnőtt' : 'fő')+(x.eur ? ', '+eur(r.priceEur) : '')+'</small></span>'+
         '<button type="button" class="hc-btn rl-pick" data-i="'+i+'">Ezt választom</button></li>').join('') + '</ul>';
       panel.innerHTML = html;
       panel.querySelectorAll('.rl-pick').forEach(b => b.addEventListener('click', () => pick(h, x, d.rooms[+b.dataset.i])));
@@ -1086,42 +1091,46 @@ window.zImgErr = function(el){
   /* ---------- last minute: TOP 3 ár indulási repülőterenként, a következő 14 napban ---------- */
   function loadLastMinute(){
     const box = $('lm-cols');
-    fetch(API + '?action=lastminute').then(r => r.json()).then(d => {
-      if(!d.ok) throw new Error(d.message || '');
-      const comp = {ac: 2, ages: []};
-      d.groups.forEach(g => { if(g.src === 'sk') g.hotels.forEach(skToHu); });
-      $('lm-range').textContent = '';
-      box.innerHTML = d.groups.map((g,gi) =>
-        '<div class="lm-col"><h3>Indulás: '+esc(g.label)+'</h3>'+
-        (g.hotels.length ? '<ol class="lm-list">'+g.hotels.map((h,hi) =>
-          '<li><button type="button" class="lm-item" data-g="'+gi+'" data-h="'+hi+'">'+
-            '<span class="lm-thumb">'+imgTag(h, '', true)+'</span>'+
-            '<span class="lm-txt"><strong>'+esc(h.name)+'</strong>'+
-              '<small>'+(h.stars ? '★'.repeat(h.stars)+' ' : '')+esc(h.board.toLowerCase())+'</small>'+
-              '<small class="lm-date" data-g="'+gi+'" data-h="'+hi+'"></small></span>'+
-            '<span class="lm-price" data-g="'+gi+'" data-h="'+hi+'">'+(h.priceHuf > 0 ? huf(h.priceHuf) : '…')+'<small>/fő-től</small></span>'+
-          '</button></li>').join('')+'</ol>'
-        : '<p class="d-note">A következő 14 napban most nincs szabad last minute ajánlat innen.</p>')+
-        '</div>').join('');
-      d.groups.forEach((g,gi) => g.hotels.forEach((h,hi) => {
-        h.ctx = {comp, params: {src: g.src, df: d.df, dt: d.dt, uf: d.uf, ut: d.ut, pt: 15000000, dm: 'dep', ai: g.ai.join(',')},
-                 srcLabel: (g.src === 'at' ? 'Bécsi indulás' : g.src === 'sk' ? 'Pozsonyi indulás' : 'Budapesti indulás') + ', last minute'};
-        // a legolcsóbb szabad időpont dátuma és pontos ára (akkor is, ha a kereső nem küldött árat)
-        if(h.hotelId){
-          getDates(h, h.ctx).then(dd => {
-            const ds = (dd.dates || []).filter(x => x.priceHuf > 0);
-            if(!ds.length) return;
-            const x = ds.reduce((m,y) => y.priceHuf < m.priceHuf ? y : m);
-            h.bestPrice = x.priceHuf;
-            const de = box.querySelector('.lm-date[data-g="'+gi+'"][data-h="'+hi+'"]');
-            if(de) de.textContent = day(x.from,false)+' – '+day(x.to,false);
-            const pr = box.querySelector('.lm-price[data-g="'+gi+'"][data-h="'+hi+'"]');
-            if(pr) pr.innerHTML = huf(x.priceHuf)+'<small>/fő-től</small>';
-          }).catch(() => {});
-        }
-      }));
-      box.querySelectorAll('.lm-item').forEach(b => b.addEventListener('click', () => openHotel(d.groups[+b.dataset.g].hotels[+b.dataset.h], false)));
-    }).catch(err => { $('lm-range').textContent = ''; box.innerHTML = '<p class="d-note">'+esc(err.message || 'A last minute ajánlatok most nem tölthetők be.')+'</p>'; });
+    const GROUPS = [{label:'Pozsony', src:'sk'}, {label:'Budapest', src:'hu'}, {label:'Bécs', src:'at'}];
+    const comp = {ac: 2, ages: []};
+    const t0 = new Date(); t0.setDate(t0.getDate()+1);
+    const t1 = new Date(); t1.setDate(t1.getDate()+14);
+    const iso = x => x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0');
+    $('lm-range').textContent = '';
+    box.innerHTML = GROUPS.map((g,gi) =>
+      '<div class="lm-col" id="lm-col-'+gi+'"><h3>Indulás: '+esc(g.label)+'</h3><div class="skel" style="height:200px;border-radius:10px"></div></div>').join('');
+    const msg = (gi, t) => { const c = $('lm-col-'+gi); c.innerHTML = c.querySelector('h3').outerHTML + '<p class="d-note">'+t+'</p>'; };
+
+    GROUPS.forEach((g0, gi) => {
+      const ctrl = ('AbortController' in window) ? new AbortController() : null;
+      const timer = setTimeout(() => ctrl && ctrl.abort(), 150000);
+      fetch(API + '?action=lastminute&g=' + gi, ctrl ? {signal: ctrl.signal} : {})
+        .then(r => r.json())
+        .then(g => {
+          clearTimeout(timer);
+          if(!g.ok) throw new Error('');
+          const col = $('lm-col-'+gi);
+          if(g.src === 'sk') g.hotels.forEach(skToHu);
+          if(!g.hotels.length){
+            msg(gi, g.error ? 'Az ajánlatok innen most nem tölthetők be, kérjük, próbálja újra pár perc múlva.' : 'A következő 14 napban most nincs szabad last minute ajánlat innen.');
+            return;
+          }
+          col.innerHTML = '<h3>Indulás: '+esc(g.label)+'</h3><ol class="lm-list">'+g.hotels.map((h,hi) =>
+            '<li><button type="button" class="lm-item" data-h="'+hi+'">'+
+              '<span class="lm-thumb">'+imgTag(h, '', true)+'</span>'+
+              '<span class="lm-txt"><strong>'+esc(h.name)+'</strong>'+
+                '<small>'+(h.stars ? '★'.repeat(h.stars)+' ' : '')+esc((h.board||'').toLowerCase())+'</small>'+
+                '<small class="lm-date">'+(h.lmFrom ? day(h.lmFrom,false)+' – '+day(h.lmTo,false) : '')+'</small></span>'+
+              '<span class="lm-price">'+(h.priceHuf > 0 ? huf(h.priceHuf) : '…')+'<small>/fő-től</small></span>'+
+            '</button></li>').join('')+'</ol>';
+          g.hotels.forEach(h => {
+            h.ctx = {comp, params: {src: g.src, df: g.df, dt: g.dt, uf: g.uf, ut: g.ut, pt: 15000000, dm: 'dep', ai: g.ai.join(',')},
+                     srcLabel: (g.src === 'at' ? 'Bécsi indulás' : g.src === 'sk' ? 'Pozsonyi indulás' : 'Budapesti indulás') + ', last minute'};
+          });
+          col.querySelectorAll('.lm-item').forEach(b => b.addEventListener('click', () => openHotel(g.hotels[+b.dataset.h], false)));
+        })
+        .catch(() => { clearTimeout(timer); msg(gi, 'Az ajánlatok innen most nem tölthetők be, kérjük, próbálja újra pár perc múlva.'); });
+    });
   }
   loadLastMinute();
 

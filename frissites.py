@@ -426,10 +426,11 @@ def zanzibar_cserek(html):
     # a keresési feltételeket (utasok, időszak) csak a kereső mutassa, a találatok fölött és az áraknál ne ismételjük
     html = csere(html, re.escape("""$('rstatus').textContent = list.length+' szálloda, '+compLabel(state.comp)+' részére. Indulás legkorábban: '+day(state.params.df,true)+', hazaérkezés legkésőbb: '+day(state.params.dt,true)+(min ? ' Ár/fő '+huf(min)+'-tól.' : '');"""),
                  lambda m: "$('rstatus').textContent = list.length+' szálloda';", "találati sor", pontosan=1)
-    html = csere(html, re.escape("""$('lm-range').textContent = 'Indulás '+day(d.df,false)+' és '+day(d.dt,false)+' között, 2 felnőtt részére.';"""),
+    # (a központi oldal az időszak kiszámítását időnként átírja, ezért a minta a szöveg elejére és végére illeszkedik)
+    html = csere(html, r"\$\('lm-range'\)\.textContent = 'Indulás '[^;\n]*?' között, 2 felnőtt részére\.';",
                  lambda m: "$('lm-range').textContent = '';", "last minute alcím", pontosan=1)
     html = csere(html, r"(['>])Összesen '\+esc\(compLabel\([\w.]+\)\)\+' részére: ", lambda m: m.group(1) + "Összesen: ",
-                 "összesen-feliratok", pontosan=4)
+                 "összesen-feliratok", legalabb=4)
     # foglalási igény: utasonként állampolgárság is, a program ellenőrzi az adatokat; feliratok
     html = csere(html, re.escape("const keep = [...bTrav.querySelectorAll('.trav-row')].map(r => [r.querySelector('[data-k=\"n\"]').value, r.querySelector('[data-k=\"d\"]').value]);"),
                  lambda m: "const keep = [...bTrav.querySelectorAll('.trav-row')].map(r => [r.querySelector('[data-k=\"n\"]').value, r.querySelector('[data-k=\"d\"]').value, r.querySelector('[data-k=\"c\"]').value]);",
