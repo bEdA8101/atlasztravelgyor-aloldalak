@@ -13,7 +13,8 @@
 //   ?action=price&src=…&date=…&room=…&ac=…&ages=…  (CeSYS-adatbázis: budapesti, pozsonyi kínálat)
 //   ?action=price_at&code=…&date=…                  (bécsi, Amadeus-kínálat)
 //   ?action=img&h=…|u=…                            (szállodafotó)
-//   ?action=lastminute
+//   ?action=lastminute            (minden indulási hely egyben)
+//   ?action=lastminute&g=0        (csak egy indulási hely: az LM_FORRASOK sorrendjében, pl. 0 = sk)
 //   ?action=allapot                                 (a forrásoldalak legutóbbi kimaradásai)
 //   POST ?action=send | ?action=book                (JSON: ajánlatkérés, foglalás)
 
@@ -706,10 +707,10 @@ function amadeus_ar(string $kod, string $idopont): array
 }
 
 /** A last minute doboz: forrásonként a 3 legolcsóbb szálloda, amelynek van útja a df–dt időszakban induló. */
-function last_minute(string $df, string $dt): array
+function last_minute(string $df, string $dt, ?array $csak = null): array
 {
     $csoportok = [];
-    foreach (array_intersect(LM_FORRASOK, array_keys(FORRASOK)) as $src) {
+    foreach ($csak ?? array_intersect(LM_FORRASOK, array_keys(FORRASOK)) as $src) {
         // ugyanazok az adatok, mint amelyekkel az oldal később az időpontokat kéri (így a tárolt válasz közös)
         $k = ['src' => $src, 'df' => $df, 'dt' => $dt, 'uf' => LM_EJ_MIN, 'ut' => LM_EJ_MAX, 'ai' => FORRASOK[$src]['ai'],
               'pt' => 15000000, 'ac' => 2, 'ages' => [], 'dm' => 'dep'];
@@ -752,6 +753,8 @@ function last_minute(string $df, string $dt): array
             usort($ok, fn($a, $b) => $a['priceHuf'] <=> $b['priceHuf']);
             $h['priceHuf'] = $ok[0]['priceHuf'];
             $h['priceEur'] = $ok[0]['priceEur'];
+            $h['lmFrom'] = substr((string)$ok[0]['from'], 0, 10);   // a legolcsóbb last minute út dátuma
+            $h['lmTo'] = substr((string)$ok[0]['to'], 0, 10);
             $talalt[] = $h;
         }
         usort($talalt, fn($a, $b) => $a['priceHuf'] <=> $b['priceHuf']);
@@ -761,6 +764,37 @@ function last_minute(string $df, string $dt): array
             'found' => count($e['hotels'] ?? []), 'url' => $e['searchUrl'] ?? null];
     }
     return ['ok' => true, 'df' => $df, 'dt' => $dt, 'uf' => LM_EJ_MIN, 'ut' => LM_EJ_MAX, 'groups' => $csoportok, 'frissitve' => date('c')];
+}
+
+/**
+ * Last minute válasz tárolással: friss (fél óránál újabb) tárolt listát azonnal ad; a legfeljebb 3 órás listát is
+ * azonnal adja, és a válasz után frissít; egyébként kiszámolja. Nem tér vissza (a választ elküldi).
+ */
+function lm_valasz(string $kulcs, callable $szamol): void
+{
+    $tarolt = gyorsitotar_olvas($kulcs, LM_TARTALEK);
+    $kor = $tarolt ? time() - (int)($tarolt['_ido'] ?? 0) : PHP_INT_MAX;
+    if ($kor >= LM_TARTALEK) {
+        $tarolt = null;   // 3 óránál régebbi listát nem mutatunk
+    }
+    if ($tarolt !== null && $kor < ERVENYES) {
+        json_valasz(array_diff_key($tarolt, ['_ido' => 1, '_frissul' => 1]));
+    }
+    if ($tarolt !== null && valasz_utan_folytathato()) {
+        // a látogató azonnal a legutóbbi (legfeljebb 3 órás) listát kapja; a frissítés a válasz után fut le
+        $frissul = time() - (int)($tarolt['_frissul'] ?? 0) < 300;
+        if (!$frissul) {
+            gyorsitotar_ir($kulcs, ['_frissul' => time()] + $tarolt);
+        }
+        valasz_es_folytatas(array_diff_key($tarolt, ['_ido' => 1, '_frissul' => 1]));
+        if (!$frissul) {
+            gyorsitotar_ir($kulcs, $szamol() + ['_ido' => time()]);
+        }
+        exit;
+    }
+    $e = $szamol();
+    gyorsitotar_ir($kulcs, $e + ['_ido' => time()]);
+    json_valasz($e);
 }
 
 // ---------------------------------------------------------------- levél (ajánlatkérés, foglalás)
@@ -901,30 +935,19 @@ function kereso_kerelmek(): void
             $ma = new DateTimeImmutable('tomorrow', new DateTimeZone('Europe/Budapest'));
             $df = $ma->format('Y-m-d');
             $dt = $ma->modify('+13 days')->format('Y-m-d');
-            $kulcs = 'lastminute-' . $df;
-            $tarolt = gyorsitotar_olvas($kulcs, LM_TARTALEK);
-            $kor = $tarolt ? time() - (int)($tarolt['_ido'] ?? 0) : PHP_INT_MAX;
-            if ($kor >= LM_TARTALEK) {
-                $tarolt = null;   // 3 óránál régebbi listát nem mutatunk
-            }
-            if ($tarolt !== null && $kor < ERVENYES) {
-                json_valasz(array_diff_key($tarolt, ['_ido' => 1, '_frissul' => 1]));
-            }
-            if ($tarolt !== null && valasz_utan_folytathato()) {
-                // a látogató azonnal a legutóbbi (legfeljebb 3 órás) listát kapja; a frissítés a válasz után fut le
-                $frissul = time() - (int)($tarolt['_frissul'] ?? 0) < 300;
-                if (!$frissul) {
-                    gyorsitotar_ir($kulcs, ['_frissul' => time()] + $tarolt);
+            $forrasok = array_values(array_intersect(LM_FORRASOK, array_keys(FORRASOK)));
+            if (isset($_GET['g'])) {
+                // egy indulási hely (a központi oldal 2026 novembere óta így kéri, helyenként külön)
+                $src = $forrasok[egesz($_GET['g'], 0, 9, 0)] ?? null;
+                if ($src === null) {
+                    hiba('Ismeretlen indulási hely.');
                 }
-                valasz_es_folytatas(array_diff_key($tarolt, ['_ido' => 1, '_frissul' => 1]));
-                if (!$frissul) {
-                    gyorsitotar_ir($kulcs, last_minute($df, $dt) + ['_ido' => time()]);
-                }
-                exit;
+                lm_valasz('lastminute-' . $df . '-' . $src, function () use ($df, $dt, $src) {
+                    $e = last_minute($df, $dt, [$src]);
+                    return array_diff_key($e, ['groups' => 1]) + $e['groups'][0];
+                });
             }
-            $e = last_minute($df, $dt);
-            gyorsitotar_ir($kulcs, $e + ['_ido' => time()]);
-            json_valasz($e);
+            lm_valasz('lastminute-' . $df, fn() => last_minute($df, $dt, $forrasok));
             break;
 
         case 'send':
