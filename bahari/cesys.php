@@ -39,6 +39,17 @@ function hibanaplo(int $db = 30): array
     return array_slice($sorok, -$db);
 }
 
+/**
+ * A forrás főoldala hivatkozásként (Referer). 2026 novemberétől a CeSYS-oldalak időpontlistája
+ * (generation_dates_terms) csak a saját oldalukról jövő kérésre válaszol, ahogy a böngésző is
+ * mindig elküldi; a lekérdezés továbbra is a saját nevén (CESYS_UA) azonosítja magát.
+ */
+function cesys_hivatkozo(string $url): string
+{
+    $r = parse_url($url);
+    return isset($r['scheme'], $r['host']) ? $r['scheme'] . '://' . $r['host'] . '/' : '';
+}
+
 function cesys_kezelo(string $url)
 {
     $ch = curl_init($url);
@@ -48,6 +59,7 @@ function cesys_kezelo(string $url)
         CURLOPT_USERAGENT => CESYS_UA,
         CURLOPT_ENCODING => '',
         CURLOPT_HTTPHEADER => ['Accept: application/json', 'X-Requested-With: XMLHttpRequest'],
+        CURLOPT_REFERER => cesys_hivatkozo($url),
     ]);
     return $ch;
 }
@@ -77,7 +89,7 @@ function cesys_html(string $url): ?string
         }
         $ch = curl_init($url);
         curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => CESYS_IDOKORLAT,
-            CURLOPT_USERAGENT => CESYS_UA, CURLOPT_ENCODING => '']);
+            CURLOPT_USERAGENT => CESYS_UA, CURLOPT_ENCODING => '', CURLOPT_REFERER => cesys_hivatkozo($url)]);
         $valasz = curl_exec($ch);
         $kod = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
         curl_close($ch);
@@ -99,7 +111,7 @@ function cesys_html_tobb(array $cimek, int $egyszerre = 3): array
         foreach ($csomag as $kulcs => $cim) {
             $ch = curl_init($cim);
             curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => CESYS_IDOKORLAT,
-                CURLOPT_USERAGENT => CESYS_UA, CURLOPT_ENCODING => '']);
+                CURLOPT_USERAGENT => CESYS_UA, CURLOPT_ENCODING => '', CURLOPT_REFERER => cesys_hivatkozo($cim)]);
             curl_multi_add_handle($multi, $ch);
             $kezelok[$kulcs] = $ch;
         }
