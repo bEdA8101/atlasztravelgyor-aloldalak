@@ -824,6 +824,8 @@ const today=new Date();today.setHours(0,0,0,0);
 const sel=document.getElementById("date"),roomSel=document.getElementById("room"),chosen=document.getElementById("chosen");
 let current="fanar";
 
+function rajzol(){
+document.querySelectorAll('[data-dates]').forEach(b=>b.innerHTML='');
 for(const[key,h]of Object.entries(HOTELS)){
   const mk=s=>{const[y,m,d]=s.split("-").map(Number);const a=new Date(y,m-1,d),b=new Date(a);b.setDate(b.getDate()+7);return{a,b,label:fmt(a,b)}};
   h.list=h.dates.map(([s,t,p,rp,dep])=>Object.assign(mk(s),{t,p,fam:false,dep:dep||"Pozsonyból",
@@ -849,11 +851,13 @@ for(const[key,h]of Object.entries(HOTELS)){
     g.appendChild(r);
   });
 }
+}
+rajzol();
 
 const priceTxt=x=>x.fam?`családi ajánlat, ${eur(x.p)} / ${huf(x.p)} összesen -tól`:`${eur(x.p)} / ${huf(x.p)} /fő-től`;
 function setRoom(q){
   const h=HOTELS[formHotel()];let name=q[0];
-  if(name==="Deluxe szoba"&&h.rooms[0].indexOf("Deluxe szoba")>-1)name=h.rooms[0];
+  if(h.rooms[0].indexOf("("+name+")")>-1)name=h.rooms[0];
   const label=q[1]==="2 fő"?name:`${name} (${q[1]})`;
   if(![...roomSel.options].some(o=>o.text===label))roomSel.add(new Option(label,label));
   roomSel.value=label;
@@ -885,6 +889,16 @@ function pick(key,scroll){
 document.querySelectorAll("[data-pick]").forEach(b=>b.addEventListener("click",()=>pick(b.dataset.pick,b.classList.contains("card"))));
 document.querySelectorAll('a[href="#idopontok"]').forEach(a=>a.addEventListener("click",e=>{e.preventDefault();document.getElementById("idopontok-"+current).scrollIntoView()}));
 pick("fanar",false);
+
+// élő árak (api.php, félóránként frissül); ha nem érhető el, a fenti beágyazott árak maradnak
+fetch("api.php",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(d=>{
+  if(!d||!d.ok||!d.hotels)return;let volt=false;
+  for(const[k,v]of Object.entries(d.hotels)){const h=HOTELS[k];
+    if(!h||!Array.isArray(v.dates)||!v.dates.length||!Array.isArray(v.cols))continue;
+    h.roomCols=v.cols;h.dates=v.dates;h.family=[];volt=true}
+  if(!volt)return;const s=sel.value;rajzol();fillForm(formHotel());
+  if([...sel.options].some(o=>o.value===s)){sel.value=s;showChosen()}
+}).catch(()=>{});
 
 // gyerekek életkora
 const kids=document.getElementById("kids"),ages=document.getElementById("ages");

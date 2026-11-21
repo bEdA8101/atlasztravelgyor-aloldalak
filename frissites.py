@@ -76,6 +76,7 @@ ELO_FAJLOK = {
                  "regiok.json": "elo/zanzibar_regiok.json"},
     "dominika": {"api.php": "elo/dominika_api.php", "motor.php": "elo/kereso_motor.php", "cesys.php": "elo/cesys.php",
                  "regiok.json": "elo/dominika_regiok.json"},
+    "oman": {"api.php": "elo/oman_api.php", "cesys.php": "elo/cesys.php"},
 }
 
 # Ajánlatkérés és foglalási igény minden oldalon (eszkozok/foglalas.js, az oldal mellé foglalas.js néven).
@@ -258,8 +259,38 @@ def oman_cserek(html):
     html = csere(html, r'(\n[ \t]*)(<a href="https://www\.atlasztravelgyor\.hu" target="_blank" rel="noopener">)',
                  rf'\1<p class="mails">Irodánk: {g["cim"]}<br>Nyitva: {g["nyitvatartas"]}</p>\1\2',
                  "iroda címe az ajánlatkérő kártyán", pontosan=1)
-    return csere(html, r'(<span>Telefon: .*?<br>E-mail: <a href="mailto:[^"]+">[^<]+</a>)(</span>)',
+    html = csere(html, r'(<span>Telefon: .*?<br>E-mail: <a href="mailto:[^"]+">[^<]+</a>)(</span>)',
                  rf'\1<br>Iroda: {g["cim"]}\2', "iroda címe a láblécben", pontosan=1)
+    return oman_elo_arak(html)
+
+
+def oman_elo_arak(html):
+    """
+    Élő árak (az oldal mellé másolt api.php, forrás: atlastravel.sk). Az időpontlista kirajzolása függvénybe
+    kerül; betöltéskor az oldal lekéri az élő időpontokat, és ha megjöttek, azokkal rajzolja újra. Ha nem
+    jönnek meg, a központi oldal beágyazott árai maradnak. Élő adatnál a beágyazott családi ajánlatok
+    (régebbi, rögzített végösszegek) kimaradnak; gyerekes elhelyezésre az oldal ajánlatkérést kínál.
+    """
+    html = csere(html, r"(\n)(for\(const\[key,h\]of Object\.entries\(HOTELS\)\)\{\n.*?\n\}\n)(\nconst priceTxt=)",
+                 lambda m: (f"{m.group(1)}function rajzol(){{\ndocument.querySelectorAll('[data-dates]').forEach(b=>b.innerHTML='');\n"
+                            f"{m.group(2)}}}\nrajzol();\n{m.group(3)}"),
+                 "időpontlista kirajzolása függvényben (élő árak)", pontosan=1, flags=re.S)
+    # a legkedvezőbb szoba neve a szállodák első szobatípusa („A legkedvezőbb (…)”), a Rotanánál is
+    html = csere(html, re.escape('if(name==="Deluxe szoba"&&h.rooms[0].indexOf("Deluxe szoba")>-1)name=h.rooms[0];'),
+                 lambda m: 'if(h.rooms[0].indexOf("("+name+")")>-1)name=h.rooms[0];',
+                 "legkedvezőbb szoba neve", pontosan=1)
+    betolto = (
+        '\n// élő árak (api.php, félóránként frissül); ha nem érhető el, a fenti beágyazott árak maradnak\n'
+        'fetch("api.php",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(d=>{\n'
+        '  if(!d||!d.ok||!d.hotels)return;let volt=false;\n'
+        '  for(const[k,v]of Object.entries(d.hotels)){const h=HOTELS[k];\n'
+        '    if(!h||!Array.isArray(v.dates)||!v.dates.length||!Array.isArray(v.cols))continue;\n'
+        '    h.roomCols=v.cols;h.dates=v.dates;h.family=[];volt=true}\n'
+        '  if(!volt)return;const s=sel.value;rajzol();fillForm(formHotel());\n'
+        '  if([...sel.options].some(o=>o.value===s)){sel.value=s;showChosen()}\n'
+        '}).catch(()=>{});\n')
+    return csere(html, r'(\npick\("fanar",false\);\n)', lambda m: m.group(1) + betolto,
+                 "élő árak betöltése", pontosan=1)
 
 
 def lablec_cim(html):
