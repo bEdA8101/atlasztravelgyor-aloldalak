@@ -159,7 +159,14 @@ indítást néha néhány perccel késve végzi). **Kézi frissítés:** az él�
 („© 2026”) kattintva a tárhelyen futó program azonnal frissíti az oldal árait, majd az oldal újratöltődik
 (`eszkozok/arfrissito.js`; oldalanként legfeljebb 5 percenként). Ahol a láblécben nem volt évszám (Vietnám,
 RIU), oda a program egy halvány „© 2026 Atlasz Travel Győr” sort tesz. A következő ütemezett frissítés ettől
-függetlenül megtörténik. Ha a forrás épp nem elérhető, a legutóbbi (legfeljebb egynapos) adatot adja (a válaszban
+függetlenül megtörténik. **A gyűjtőoldal (beszallas) évszámára kattintva az összes élő áras aloldal frissül**
+(egyszerre három; az évszám helyén látszik az állás, pl. „árak frissítése… 5/8”, a végén pedig, ha valamelyik
+nem sikerült).
+
+Az élő áras aloldalak listáját a `frissites.py` állítja össze az `ARFRISSITO` részből és a `feltoltes.json`
+aldomainjeiből; ebből készül a gyűjtőoldal árfrissítője és az `elo_oldalak.json`, amelyből az ütemezett
+frissítés (`.github/arfrissites.py`, `arfrissites.yml`) és a feltöltés utáni frissítés dolgozik. **Új élő áras
+aloldalnál elég az `ARFRISSITO`-ba felvenni** (ha kimarad, a `frissites.py` hibát jelez). Ha a forrás épp nem elérhető, a legutóbbi (legfeljebb egynapos) adatot adja (a válaszban
 `"elavult": true`), vagy az oldal a saját tartalék áraira vált. A meg nem jött kéréseket egyszer
 újrapróbálja, a kimaradásokat hibanaplóba írja; a zanzibar-oldalon ez így nézhető meg:
 `https://<aloldal>/zanzibar/api.php?action=allapot` (az utolsó 30 kimaradás ideje, címe és oka).

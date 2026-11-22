@@ -1,10 +1,11 @@
 name: Élő árak frissítése
 
-# 6:00 és éjfél között minden páros órában (budapesti idő) lekéri az élő áras oldalakat, hogy a tárhelyen futó
-# program akkor is frissítse az árakat, ha épp nincs látogató. A GitHub világidőben (UTC) ütemez:
+# 6:00 és éjfél között minden páros órában (budapesti idő) frissítteti az élő áras aloldalak árait a tárhelyen
+# (ugyanúgy, mint a lábléc évszámára kattintva), akkor is, ha épp nincs látogató. Az aloldalak listája az
+# elo_oldalak.json (a frissites.py készíti az ARFRISSITO alapján), így új aloldalnál nem kell ide írni semmit. A GitHub világidőben (UTC) ütemez:
 # télen (UTC+1) a budapesti 6, 8, … 24 óra = UTC 5, 7, … 23; nyáron (UTC+2) = UTC 4, 6, … 22.
-# Márciusban és októberben (óraátállítás) mindkét sor fut; a fölösleges futás nem kér le semmit, mert a program
-# csak a legutóbbi ütemezett időpont óta lejárt árakat frissíti. Kézzel is indítható (Actions → Run workflow).
+# Márciusban és októberben (óraátállítás) mindkét sor fut; a fölösleges (páratlan órás) futást a
+# .github/arfrissites.py kihagyja. Kézzel is indítható (Actions → Run workflow).
 on:
   schedule:
     - cron: "3 5-23/2 * 1-3,10-12 *"
@@ -20,21 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: Lekérés
-        run: |
-          for cim in \
-            "oman.atlasztravelgyor.hu/api.php" \
-            "vietnam.atlasztravelgyor.hu/api.php" \
-            "riu.atlasztravelgyor.hu/api.php" \
-            "maldiv.atlasztravelgyor.hu/api.php" \
-            "mauritius.atlasztravelgyor.hu/api.php?a=ajanlatok" \
-            "bahari.atlasztravelgyor.hu/proxy.php" \
-            "zanzibar.atlasztravelgyor.hu/api.php?action=lastminute&g=0" \
-            "zanzibar.atlasztravelgyor.hu/api.php?action=lastminute&g=1" \
-            "zanzibar.atlasztravelgyor.hu/api.php?action=lastminute&g=2" \
-            "dominika.atlasztravelgyor.hu/api.php?action=lastminute&g=0" \
-            "dominika.atlasztravelgyor.hu/api.php?action=lastminute&g=1" \
-            "dominika.atlasztravelgyor.hu/api.php?action=lastminute&g=2"; do
-            curl -s -o /dev/null -A "AtlaszTravelGyor-elomelegito/1.0" --max-time 280 \
-              -w "$cim: %{http_code}, %{time_total} mp\n" "https://$cim" || echo "$cim: nem válaszolt"
-          done
+      - uses: actions/checkout@v5
+      - name: Frissítés
+        run: python .github/arfrissites.py

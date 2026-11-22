@@ -18,6 +18,11 @@ Ez a tároló az atlasztravelgyor.hu aloldalait tartalmazza: a központi Atlasz 
   2026 novemberében megszűnt; ez az utolsó jó változata, élő ajánlatokkal). Ezeken a szöveget ott kell módosítani.
 - Élő árak: a közös `elo/idopontlista.php` és oldalanként egy `elo/*_beallitas.php`; a családi ár doboza
   `eszkozok/csaladi_ar.js` (beállítása a `frissites.py` `CSALADI_AR` részében). Részletek a README-ben.
+- Árfrissítés: 6:00 és éjfél között 2 óránként (ütemezett), illetve kézzel a lábléc évszámára kattintva
+  (`eszkozok/arfrissito.js`). A gyűjtőoldal (beszallas) évszáma az összes élő áras aloldalt frissíti.
+  **Új élő áras aloldalnál mindig vedd fel a `frissites.py` `ARFRISSITO` részébe** (és az aldomaint a
+  `feltoltes.json`-ba): így az aloldal évszáma, a gyűjtőoldal évszáma és az ütemezett frissítés
+  (`elo_oldalak.json`) is magától kezeli. Ha kimarad, a `frissites.py` hibát jelez.
 - Gyűjtőoldal: `sajat/beszallas/` (beszallas.atlasztravelgyor.hu). Új vagy megszűnő aloldalnál
   frissítsd az `ajanlatok.json`-t is (látható, latszik_tol / latszik_ig a szezonális oldalakhoz).
 - A győri adatok (telefon, e-mail, cím, nyitvatartás) a `frissites.py` `GYOR` részében vannak.
