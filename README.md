@@ -83,8 +83,8 @@ frissites.py az oldal mellé másol az `elo/` mappából:
   `api.php?a=csalad&h=…&ac=2&ages[]=6` (bármilyen létszámra a pontos végösszeg naponként), `api.php?a=ar&…` (egy
   szoba pontos ára), és Mauritiuson `api.php?a=ajanlatok` (szállodánként a legjobb aktuális ajánlat a győri oldal
   keresőjéből, a szálloda nevével és képével az adatlapjáról). A forrást egyszerre legfeljebb 4 kéréssel kérdezi; a
-  látogató a legutóbbi (legfeljebb egynapos) adatot azonnal kapja, a frissítés a válasz után fut. A feltöltés után a
-  munkafolyamat is lekéri egyszer mindegyiket, hogy a tárolt adat friss legyen.
+  látogató a legutóbbi (legfeljebb egynapos) adatot azonnal kapja, a frissítés a válasz után fut. A frissítés
+  ütemezését és a kézi frissítést lásd lent („Mikor frissülnek az árak?”).
 - `eszkozok/csaladi_ar.js` – a „Családi ár, gyerekekkel” doboz (az oldal mellett `csaladi_ar.js` néven, a
   `frissites.py` `CSALADI_AR` része szerint): felnőttek, gyerekek és életkoruk, indulási hónap; naponként a
   legolcsóbb foglalható szoba végösszege a forrás árszolgáltatásából, a többi szoba pontos ára kattintásra, és az
@@ -112,9 +112,9 @@ csak „Zanzibar”-t ír. Ilyenkor a program így pótolja a partszakaszt, ebbe
    A partszakaszok középpontját a győri aloldalakról veszi, a többit a táblázat „helyek” részéből.
 
 **Last minute doboz a zanzibar-oldalon.** Indulási helyenként a 3 legolcsóbb, a következő
-14 napban **induló** 6–21 éjszakás út (a hazaérkezés lehet később is). A lista fél óráig
-érvényes; ha ennél régebbi, de 3 óránál frissebb, a látogató azonnal ezt kapja, és a program a
-válasz után frissíti (ha a tárhely ezt engedi). A tárolt fájlokat a program magától törli
+14 napban **induló** 6–21 éjszakás út (a hazaérkezés lehet később is). A lista a
+következő ütemezett frissítésig érvényes; ha ennél régebbi, de 8 óránál frissebb, a látogató azonnal ezt kapja,
+és a program a válasz után frissíti (ha a tárhely ezt engedi). A tárolt fájlokat a program magától törli
 (a legtöbbet 2 nap után).
 
 A két szállodás utaknál mindkét partszakasz látszik („Jambiani / Kiwengwa”), és a szűrő
@@ -149,8 +149,17 @@ foglalható (ilyenkor a kártya a következő foglalható időpontot mutatja).
 A források: az atlasztravelgyor.hu és az atlastravel.sk nyilvános adatszolgáltató címei
 (ugyanazok, amelyeket a böngésző is használ), valamint a CeSYS árszolgáltatása. A lekérdezések
 nyíltan megnevezik magukat („AtlaszTravelGyor-arfrissito”), és egy keresés eredményét a program
-fél óráig megjegyzi (a tárhelyen az oldal melletti `.gyorsitotar` mappában), így a forrásokat
-nem terheli. Ha a forrás épp nem elérhető, a legutóbbi (legfeljebb egynapos) adatot adja (a válaszban
+a következő frissítésig megjegyzi (a tárhelyen az oldal melletti `.gyorsitotar` mappában), így a forrásokat
+nem terheli.
+
+**Mikor frissülnek az árak?** 6:00 és éjfél között minden páros órában (6, 8, 10, … 22 és 24 órakor, budapesti
+idő szerint); éjfél és 6:00 között nem. Ezekben az időpontokban az `arfrissites.yml` munkafolyamat le is kéri
+mindegyik élő áras oldalt, így a frissítés akkor is megtörténik, ha épp nincs látogató (a GitHub az ütemezett
+indítást néha néhány perccel késve végzi). **Kézi frissítés:** az élő áras oldalak láblécében az évszámra
+(„© 2026”) kattintva a tárhelyen futó program azonnal frissíti az oldal árait, majd az oldal újratöltődik
+(`eszkozok/arfrissito.js`; oldalanként legfeljebb 5 percenként). Ahol a láblécben nem volt évszám (Vietnám,
+RIU), oda a program egy halvány „© 2026 Atlasz Travel Győr” sort tesz. A következő ütemezett frissítés ettől
+függetlenül megtörténik. Ha a forrás épp nem elérhető, a legutóbbi (legfeljebb egynapos) adatot adja (a válaszban
 `"elavult": true`), vagy az oldal a saját tartalék áraira vált. A meg nem jött kéréseket egyszer
 újrapróbálja, a kimaradásokat hibanaplóba írja; a zanzibar-oldalon ez így nézhető meg:
 `https://<aloldal>/zanzibar/api.php?action=allapot` (az utolsó 30 kimaradás ideje, címe és oka).
