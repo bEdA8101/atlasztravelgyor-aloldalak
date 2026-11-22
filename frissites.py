@@ -60,7 +60,6 @@ LABLEC_TAJEKOZTATO = (
 OLDALAK = {
     "oman": "https://oman.atlasztravel.hu/",
     "riu": "https://riu.atlasztravel.hu/",
-    "mauritius": "https://mauritius.atlasztravel.hu/",
     "maldiv": "https://maldiv.atlasztravel.hu/",
     "vietnam": "https://vietnam.atlasztravel.hu/",
     "bahari": "https://bahari.atlasztravel.hu/",
@@ -80,6 +79,7 @@ ELO_FAJLOK = {
     "vietnam": {"api.php": "elo/idopontlista.php", "beallitas.php": "elo/vietnam_beallitas.php", "cesys.php": "elo/cesys.php"},
     "riu": {"api.php": "elo/idopontlista.php", "beallitas.php": "elo/riu_beallitas.php", "cesys.php": "elo/cesys.php"},
     "maldiv": {"api.php": "elo/idopontlista.php", "beallitas.php": "elo/maldiv_beallitas.php", "cesys.php": "elo/cesys.php"},
+    "mauritius": {"api.php": "elo/idopontlista.php", "beallitas.php": "elo/mauritius_beallitas.php", "cesys.php": "elo/cesys.php"},
 }
 
 # Ajánlatkérés és foglalási igény minden oldalon (eszkozok/foglalas.js, az oldal mellé foglalas.js néven).
@@ -106,6 +106,8 @@ CSALADI_AR = {
              "szalloda-mezo": "szalloda", "szin": "#B5135E"},
     "vietnam": {"hely": ".date-chips[data-offer]", "szallodak": {"melia": "Meliá Vinpearl Phu Quoc 5*"}, "arfolyam": "370",
                 "urlap": "#form", "letszam": "felnott,gyerek", "szin": "#C93A18"},
+    "mauritius": {"hely": "#ajanlatok .of-megj", "dinamikus": "1", "szallodak": {}, "arfolyam": "370", "urlap": "#form",
+                  "letszam": "felnottek,gyerekek", "szin": "#B60E66"},
     "riu": {"hely": "#kinalat #panel", "keret": "wrap", "tegez": "1", "urlap": "#form", "utasszoveg": "utasok", "szin": "#C8102E",
             "szallodak": {"riu-kaya-palazzo": "Riu Kaya Palazzo Golf Resort",
                          "riu-madeira": "Riu Madeira",
@@ -130,11 +132,15 @@ CSALADI_AR = {
 # {{cim}} stb. helyére a GYOR adatai kerülnek; a mappa többi fájlja változatlanul az oldal mellé kerül.
 SAJAT_OLDALAK = {
     "dominika": "sajat/dominika",
+    # 2026. novembertől a központi mauritius.atlasztravel.hu megszűnt (a domain alapoldala látszik); a győri oldal
+    # forrása az utolsó jó változat, élő ajánlatokkal kiegészítve
+    "mauritius": "sajat/mauritius",
     # gyűjtőoldal: a kártyák és az indulási tábla a mappa ajanlatok.json-jából készülnek (gyujto_blokkok)
     "beszallas": "sajat/beszallas",
 }
 SAJAT_LEIRAS = {
     "dominika": "saját oldal (élő árakkal, foglalási igénnyel)",
+    "mauritius": "saját oldal (a megszűnt központi oldal alapján, élő ajánlatokkal)",
     "beszallas": "gyűjtőoldal: innen érhető el a többi aloldal (ajánlatok: sajat/beszallas/ajanlatok.json)",
 }
 
@@ -742,7 +748,6 @@ def sorkoz_be(valaszto):
 OLDAL_CSEREK = {
     "oman": [oman_cserek],
     "riu": [riu_cserek, sorkoz_be("h1"), riu_elo_arak],
-    "mauritius": [premium_cserek, sorkoz_be("h2")],
     "maldiv": [premium_cserek, sorkoz_be("h2"), maldiv_elo_arak],
     "vietnam": [vietnam_cserek],
     "bahari": [bahari_cserek],
@@ -1057,7 +1062,10 @@ def sajat_oldal(nev):
         html = csere(html, r'(<meta charset="?utf-?8"?>)', r'\1\n<meta name="robots" content="noindex, nofollow">',
                      "előnézeti jelölés", pontosan=1, flags=re.I)
     html = tajekoztato_be(html)
+    html = foglalas_modul_be(html, nev)
+    html = csaladi_ar_be(html, nev)
     ellenoriz(html, nev)
+    kuldo = urlapkuldo_nev(html)
 
     cel = KIMENET / nev
     uj = KIMENET / f".{nev}.uj"
@@ -1070,6 +1078,12 @@ def sajat_oldal(nev):
         shutil.copyfile(LOGO, uj / "img" / GYOR["logo"])
         for cel_nev, elo in ELO_FAJLOK.get(nev, {}).items():
             shutil.copyfile(ALAP / elo, uj / cel_nev)
+        if kuldo:
+            shutil.copyfile(URLAP_SABLON, uj / kuldo)
+        if nev in FOGLALAS_MODUL:
+            shutil.copyfile(ALAP / "eszkozok" / "foglalas.js", uj / "foglalas.js")
+        if nev in CSALADI_AR:
+            shutil.copyfile(ALAP / "eszkozok" / "csaladi_ar.js", uj / "csaladi_ar.js")
     except BaseException:
         shutil.rmtree(uj, ignore_errors=True)
         raise

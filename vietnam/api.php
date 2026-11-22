@@ -294,6 +294,122 @@ function valasz_tartalekkal(string $kulcs, callable $szamol): void
 
 $muvelet = (string)($_GET['a'] ?? 'lista');
 
+// ---------------------------------------------------------------- ajánlatok célterületre (pl. Mauritius)
+// A beállítás AJANLATOK állandója adja: célterületek (destination_id), éjszakák, minimum csillag, reptér, darabszám.
+// Forrás: a győri CeSYS-oldal új keresőjének szolgáltatása (api-ng.cesys.eu …/cesys/dates-list), szállodánként a
+// legkedvezőbb ajánlat; a szálloda nevét, helyét és képét az atlasztravelgyor.hu adatlapja adja (30 napig tárolva).
+
+const DATES_LIST = 'https://api-ng.cesys.eu/online/v1.4/hu/cesys/dates-list?client_id=31307&lang=hu';
+// a győri oldal keresőjének utazásszervezői (ugyanazok, amelyeket a győri oldal is kér)
+const GYORI_SZERVEZOK = ['3005', '3012', '3013', '3014', '3017', '3019', '3021', '3027', '3046', '3050', '3069', '3087', '3095',
+                         '3101', '3107', '3134', '3137', '3143', '3145', '3150', '31307'];
+
+/** Szállodaadatok az adatlapról: [id => ['nev', 'hely', 'kep']] (30 napig tárolva). */
+function szalloda_adatok(array $idk): array
+{
+    $ki = [];
+    $kell = [];
+    foreach ($idk as $id) {
+        $t = gyorsitotar_olvas("szalloda-$id", 30 * 86400);
+        if ($t !== null) {
+            $ki[$id] = $t;
+        } else {
+            $kell[$id] = 'https://www.atlasztravelgyor.hu/utazas-megtekintes/szalloda/' . $id . 'a';
+        }
+    }
+    foreach (cesys_html_tobb($kell, EGYSZERRE, true) as $id => $h) {
+        if (!$h || !preg_match('/<title>\s*([^<]+)<\/title>/u', $h, $m)) {
+            continue;
+        }
+        $cim = html_entity_decode(trim($m[1]), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $reszek = array_map('trim', explode(' - ', preg_replace('/^[^|]*\|\s*/u', '', $cim)));
+        $kep = preg_match('/<meta property="og:image" content="(https:\/\/i\.ccdn\.hu\/[A-Za-z0-9\/._-]+)"/', $h, $k) ? $k[1] : null;
+        $e = ['nev' => $reszek[0] ?? '', 'hely' => count($reszek) > 2 ? end($reszek) : '', 'kep' => $kep];
+        if ($e['nev'] !== '') {
+            gyorsitotar_ir("szalloda-$id", $e);
+            $ki[$id] = $e;
+        }
+    }
+    return $ki;
+}
+
+if ($muvelet === 'ajanlatok' && defined('AJANLATOK')) {
+    $A = AJANLATOK;
+    $holnap = new DateTimeImmutable('tomorrow', new DateTimeZone('Europe/Budapest'));
+    $ho = (string)($_GET['ho'] ?? '');
+    if (preg_match('/^(\d{4})-(\d\d)$/', $ho, $m) && checkdate((int)$m[2], 1, (int)$m[1])) {
+        $tol = max($holnap->format('Y-m-d'), "$ho-01");
+        $ig = (new DateTimeImmutable("$ho-01"))->modify('last day of this month')->modify('+12 days')->format('Y-m-d');
+    } else {
+        $ho = '';
+        $tol = $holnap->format('Y-m-d');
+        $ig = $holnap->modify('+75 days')->format('Y-m-d');
+    }
+    $rep = in_array($_GET['rep'] ?? '', $A['repterek_nev'], true) ? (string)$_GET['rep'] : '';
+    // ellátás: a forrás azonosítói (all inclusive + light all inclusive, félpanzió, teljes ellátás); önellátás nélkül
+    $ELL = ['all inclusive' => ['8', '11'], 'félpanzió' => ['4'], 'teljes ellátás' => ['6']];
+    $ell = isset($ELL[$_GET['ell'] ?? '']) ? (string)$_GET['ell'] : '';
+    $ellIdk = $ell !== '' ? $ELL[$ell] : array_merge(...array_values($ELL));
+    valasz_tartalekkal("ajanlatok-$ho-" . md5($rep . $ell), function () use ($A, $ho, $tol, $ig, $rep, $ell, $ellIdk) {
+        $torzs = ['destination_id' => array_map('strval', $A['celok']), 'date' => ['from' => $tol, 'to' => $ig],
+                  'duration' => ['from' => $A['napok'][0], 'to' => $A['napok'][1]],
+                  'composition' => ['adults' => 2, 'children' => []], 'occupancy' => [['adults' => 2, 'children' => []]],
+                  'transport_id' => ['1'], 'boarding_id' => $ellIdk, 'tour_operator_id' => GYORI_SZERVEZOK,
+                  'price' => ['from' => 1, 'to' => 100000000], 'rows_on_page' => 1000, 'sort' => ['price asc', 'date_from asc'],
+                  'client_id' => '31307', 'customer_id' => '8198'];
+        $legjobb = [];
+        $volt = false;
+        for ($oldal = 1; $oldal <= 4 && count($legjobb) < $A['db'] * 2; $oldal++) {
+            $v = cesys_post_tobb(DATES_LIST, [0 => $torzs + ['page' => $oldal]])[0] ?? null;
+            $sorok = $v['data']['dates'] ?? null;
+            if (!is_array($sorok)) {
+                break;
+            }
+            $volt = true;
+            foreach ($sorok as $x) {
+                $id = (int)($x['name'] ?? 0);
+                $ar = $x['price_from']['EUR'] ?? null;
+                $ellatas = mb_strtolower((string)($x['boarding'] ?? ''));
+                $repter = (string)($x['airport'] ?? '');
+                $ej = (int)($x['duration_night'] ?? 0);
+                if ($id <= 0 || !is_numeric($ar) || (float)($x['rating'] ?? 0) < $A['min_csillag']
+                    || !in_array($repter, $A['repterek_nev'], true) || ($rep !== '' && $repter !== $rep)
+                    || !in_array($ej, $A['ejszakak'], true)) {
+                    continue;
+                }
+                if (!isset($legjobb[$id]) || $ar < $legjobb[$id]['ar']) {
+                    $ido = $x['outbound_flight_time'] ?? null;
+                    $legjobb[$id] = ['id' => $id, 'di' => (int)($x['destination'] ?? 0), 'csillag' => (int)round((float)$x['rating']),
+                                     'd' => (string)$x['date_from'], 'vege' => (string)$x['date_to'], 'n' => $ej,
+                                     'rep' => REPTER_NEVEK[$repter] ?? $repter, 'ido' => is_string($ido) ? $ido : null,
+                                     'ell' => $ellatas, 'ar' => round((float)$ar, 2), 'lm' => !empty($x['last_minute'])];
+                }
+            }
+            if (empty($v['data']['more_exists'])) {
+                break;
+            }
+        }
+        if (!$volt) {
+            return null;
+        }
+        uasort($legjobb, fn($a, $b) => $a['ar'] <=> $b['ar']);
+        $adatok = szalloda_adatok(array_keys(array_slice($legjobb, 0, $A['db'] + 4, true)));
+        $ki = [];
+        foreach ($legjobb as $id => $o) {
+            if (isset($adatok[$id]) && count($ki) < $A['db']) {
+                $ki[] = $o + $adatok[$id];
+            }
+        }
+        // a családi árhoz ezek a szállodák kérdezhetők le (más azonosítót nem engedünk)
+        $engedett = gyorsitotar_olvas('engedett-szallodak', 30 * 86400) ?? [];
+        foreach ($ki as $o) {
+            $engedett[(string)$o['id']] = $o['di'];
+        }
+        gyorsitotar_ir('engedett-szallodak', array_slice($engedett, -300, null, true));
+        return ['ok' => true, 'frissitve' => date('c'), 'penznem' => 'EUR', 'ho' => $ho, 'ajanlatok' => $ki];
+    });
+}
+
 if ($muvelet === 'lista') {
     valasz_tartalekkal('lista', function () {
         [$df, $dt] = idoszak();
@@ -327,14 +443,31 @@ if ($muvelet === 'lista') {
 
 [$felnott, $korok] = utasok_a_kerelembol();
 
+/** A szálloda beállítása: a SZALLODAK-ból, vagy az ajánlatok közül (h=d<azonosító>, csak ha ott szerepelt). */
+function szalloda_beallitas(string $h): ?array
+{
+    if (isset(SZALLODAK[$h])) {
+        return SZALLODAK[$h];
+    }
+    if (defined('AJANLATOK') && preg_match('/^d(\d{1,9})$/', $h, $m)) {
+        $di = (gyorsitotar_olvas('engedett-szallodak', 30 * 86400) ?? [])[$m[1]] ?? null;
+        if ($di) {
+            $A = AJANLATOK;
+            return ['id' => (int)$m[1], 'di' => (int)$di, 'napok' => $A['napok'], 'ejszakak' => $A['ejszakak'],
+                    'repterek_nev' => $A['repterek_nev']];
+        }
+    }
+    return null;
+}
+
 if ($muvelet === 'csalad') {
     $h = (string)($_GET['h'] ?? '');
-    if (!isset(SZALLODAK[$h])) {
+    if (szalloda_beallitas($h) === null) {
         json_valasz(['ok' => false, 'uzenet' => 'Ismeretlen szálloda.'], 400);
     }
     [$df, $dt] = idoszak();
     valasz_tartalekkal("csalad-$h-$felnott-" . implode('_', $korok) . "-$df-$dt", function () use ($h, $felnott, $korok, $df, $dt) {
-        $sz = SZALLODAK[$h];
+        $sz = szalloda_beallitas($h);
         $x = idopontok($sz, $felnott, $korok, $df, $dt);
         if ($x === null) {
             return null;
@@ -389,7 +522,7 @@ if ($muvelet === 'ar') {
     if ($did <= 0 || $rid <= 0) {
         json_valasz(['ok' => false, 'uzenet' => 'Hiányzó időpont vagy szoba.'], 400);
     }
-    $sz = SZALLODAK[(string)($_GET['h'] ?? '')] ?? [];
+    $sz = szalloda_beallitas((string)($_GET['h'] ?? '')) ?? [];
     $e = vegosszegek([0 => [$did, $rid]], $felnott, $korok, $sz)[0] ?? null;
     json_valasz($e ? ['ok' => true, 'elerheto' => $e['ok'], 'ossz' => $e['ossz'], 'penznem' => forras($sz)['penznem']]
                    : ['ok' => false, 'uzenet' => 'Az ár most nem kérdezhető le.']);

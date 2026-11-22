@@ -25,7 +25,8 @@
     cim: S.dataset.cim || 'Családi ár, gyerekekkel',
     szin: S.dataset.szin || '#1F4F6F',
     keret: S.dataset.keret || '',            // a doboz köré tett elem osztálya (pl. az oldal tartalomszélessége)
-    tegez: S.dataset.tegez === '1'           // az oldal tegeződik
+    tegez: S.dataset.tegez === '1',          // az oldal tegeződik
+    dinamikus: S.dataset.dinamikus === '1'   // a szállodákat az oldal adja meg később (csaladi-ar:szallodak esemény)
   };
   const T = cfg.tegez ? {
     bev: 'Add meg, hányan utaztok, és hány évesek lesznek a gyerekek az utazás idején. A szabad helyek alapján azonnal kiszámoljuk a teljes árat az egész társaságra.',
@@ -37,7 +38,7 @@
     hiba: 'Kérjük, próbálja újra később, vagy kérjen ajánlatot lent.'
   };
   const helyek = cfg.hely ? [...document.querySelectorAll(cfg.hely)] : [];
-  if (!helyek.length || !Object.keys(szallodak).length) return;
+  if (!helyek.length || (!cfg.dinamikus && !Object.keys(szallodak).length)) return;
 
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
   const csoport = n => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
@@ -93,7 +94,7 @@
   function doboz(hely, sorszam) {
     const fix = (hely.closest('[data-hotel]') || {}).dataset;
     const kulcsok = Object.keys(szallodak);
-    const fixKulcs = fix && szallodak[fix.hotel] ? fix.hotel : (kulcsok.length === 1 ? kulcsok[0] : null);
+    const fixKulcs = cfg.dinamikus ? null : (fix && szallodak[fix.hotel] ? fix.hotel : (kulcsok.length === 1 ? kulcsok[0] : null));
     const el = document.createElement('section');
     el.className = 'csa';
     const id = 'csa' + sorszam;
@@ -111,6 +112,23 @@
       <div class="csa-eredmeny" aria-live="polite"></div>`;
     if (cfg.keret) { const k = document.createElement('div'); k.className = cfg.keret; k.appendChild(el); hely.after(k); }
     else hely.after(el);
+    if (cfg.dinamikus) {
+      // a szállodák listáját az oldal adja meg (pl. az élő ajánlatok betöltése után); addig a doboz rejtett
+      el.hidden = !kulcsok.length;
+      document.addEventListener('csaladi-ar:szallodak', e => {
+        Object.assign(szallodak, e.detail || {});
+        const sel = el.querySelector('[data-sz]'), regi = sel.value;
+        sel.innerHTML = Object.entries(szallodak).map(([k, n]) => `<option value="${esc(k)}">${esc(n)}</option>`).join('');
+        if (szallodak[regi]) sel.value = regi;
+        el.hidden = !Object.keys(szallodak).length;
+      });
+      document.addEventListener('csaladi-ar:valaszt', e => {
+        const sel = el.querySelector('[data-sz]');
+        if (!e.detail || !szallodak[e.detail]) return;
+        sel.value = e.detail; el.hidden = false;
+        el.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth', block: 'start'});
+      });
+    }
     const $ = s => el.querySelector(s);
     const korok = $('[data-korok]');
     const korokRajz = () => {
@@ -193,11 +211,11 @@
         }
         sorok.forEach(g => ki.appendChild(sorRajz(g, k, j.penznem)));
         if (j.dates && j.dates.length) utolso = {utolsoNap: j.dates[j.dates.length - 1].d};
-        if (j.tobb && !ho) {
+        if (j.tobb && !ho && !j.egyedi) {
           const t = document.createElement('button'); t.type = 'button'; t.className = 'csa-tobb'; t.textContent = 'Későbbi időpontok';
           t.addEventListener('click', () => futtat(true)); ki.appendChild(t);
         }
-        if (!tovabb) ki.insertAdjacentHTML('beforeend', `<p class="csa-megj">A végösszeg az egész társaságra szól (repülőjegy, szállás, ellátás, transzfer), a forrás élő árai alapján${j.penznem === 'EUR' && cfg.arfolyam ? `; a forintár tájékoztató, ${cfg.arfolyam} Ft/€ árfolyammal` : ''}. A végleges árat és a helyet foglaláskor erősítjük meg.</p>`);
+        if (!tovabb && !j.egyedi) ki.insertAdjacentHTML('beforeend', `<p class="csa-megj">A végösszeg az egész társaságra szól (repülőjegy, szállás, ellátás, transzfer), a forrás élő árai alapján${j.penznem === 'EUR' && cfg.arfolyam ? `; a forintár tájékoztató, ${cfg.arfolyam} Ft/€ árfolyammal` : ''}. A végleges árat és a helyet foglaláskor erősítjük meg.</p>`);
       }).catch(e => {
         if (!tovabb) ki.innerHTML = `<p class="csa-allapot csa-hiba">Az árakat most nem sikerült lekérni${e.message ? ' (' + esc(e.message) + ')' : ''}. ${esc(T.hiba)}</p>`;
       }).finally(() => { gomb.disabled = false; });

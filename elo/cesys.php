@@ -102,7 +102,7 @@ function cesys_html(string $url): ?string
 }
 
 /** Több weboldal (HTML) párhuzamosan, kulcs szerint; ami nem jött meg, az null (újrapróbálás nélkül). */
-function cesys_html_tobb(array $cimek, int $egyszerre = 3): array
+function cesys_html_tobb(array $cimek, int $egyszerre = 3, bool $kovet = false): array
 {
     $eredmeny = [];
     foreach (array_chunk($cimek, $egyszerre, true) as $csomag) {
@@ -111,7 +111,8 @@ function cesys_html_tobb(array $cimek, int $egyszerre = 3): array
         foreach ($csomag as $kulcs => $cim) {
             $ch = curl_init($cim);
             curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => CESYS_IDOKORLAT,
-                CURLOPT_USERAGENT => CESYS_UA, CURLOPT_ENCODING => '', CURLOPT_REFERER => cesys_hivatkozo($cim)]);
+                CURLOPT_USERAGENT => CESYS_UA, CURLOPT_ENCODING => '', CURLOPT_REFERER => cesys_hivatkozo($cim),
+                CURLOPT_FOLLOWLOCATION => $kovet, CURLOPT_MAXREDIRS => 3]);
             curl_multi_add_handle($multi, $ch);
             $kezelok[$kulcs] = $ch;
         }
