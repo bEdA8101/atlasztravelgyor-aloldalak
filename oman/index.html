@@ -890,12 +890,17 @@ document.querySelectorAll("[data-pick]").forEach(b=>b.addEventListener("click",(
 document.querySelectorAll('a[href="#idopontok"]').forEach(a=>a.addEventListener("click",e=>{e.preventDefault();document.getElementById("idopontok-"+current).scrollIntoView()}));
 pick("fanar",false);
 
-// élő árak (api.php, félóránként frissül); ha nem érhető el, a fenti beágyazott árak maradnak
+// élő árak (api.php, félóránként frissül); ha nem érhető el, a fenti beágyazott árak maradnak.
+// Az api.php naponként adja a szobákat (név, ár/fő); ebből készül az oldal [nap, idő, ár, [árak oszloponként], hely] sora.
 fetch("api.php",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(d=>{
   if(!d||!d.ok||!d.hotels)return;let volt=false;
   for(const[k,v]of Object.entries(d.hotels)){const h=HOTELS[k];
     if(!h||!Array.isArray(v.dates)||!v.dates.length||!Array.isArray(v.cols))continue;
-    h.roomCols=v.cols;h.dates=v.dates;h.family=[];volt=true}
+    h.roomCols=v.cols;
+    h.dates=v.dates.map(g=>{const ar=v.cols.map(c=>{const x=g.szobak.find(s=>s.nev===c);return x?x.ar:null});
+      const hely=g.rep.length>1?"Pozsonyból vagy Kassáról":g.rep[0];
+      return hely==="Pozsonyból"?[g.d,g.ido,g.ar,ar]:[g.d,g.ido,g.ar,ar,hely]}).filter(r=>r[3].some(x=>x!=null));
+    h.family=[];volt=true}
   if(!volt)return;const s=sel.value;rajzol();fillForm(formHotel());
   if([...sel.options].some(o=>o.value===s)){sel.value=s;showChosen()}
 }).catch(()=>{});
@@ -943,5 +948,6 @@ form.addEventListener("submit",async e=>{
 });
 </script>
 <script src="foglalas.js" defer data-mod="beepitett" data-urlap="#form" data-alap="foglalasi_igeny" data-letszam="felnottek,gyerekek" data-telefon="+36 20 266 8144"></script>
+<script src="csaladi_ar.js" defer data-hely=".hotel[data-hotel] .more" data-szallodak="{&quot;fanar&quot;: &quot;Fanar Hotel &amp; Residences 5*&quot;, &quot;rotana&quot;: &quot;Salalah Rotana Resort 5*&quot;}" data-arfolyam="370" data-urlap="#form" data-letszam="felnottek,gyerekek" data-szalloda-mezo="szalloda" data-szin="#B5135E"></script>
 </body>
 </html>

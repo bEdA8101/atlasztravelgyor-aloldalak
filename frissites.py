@@ -76,7 +76,8 @@ ELO_FAJLOK = {
                  "regiok.json": "elo/zanzibar_regiok.json"},
     "dominika": {"api.php": "elo/dominika_api.php", "motor.php": "elo/kereso_motor.php", "cesys.php": "elo/cesys.php",
                  "regiok.json": "elo/dominika_regiok.json"},
-    "oman": {"api.php": "elo/oman_api.php", "cesys.php": "elo/cesys.php"},
+    "oman": {"api.php": "elo/idopontlista.php", "beallitas.php": "elo/oman_beallitas.php", "cesys.php": "elo/cesys.php"},
+    "vietnam": {"api.php": "elo/idopontlista.php", "beallitas.php": "elo/vietnam_beallitas.php", "cesys.php": "elo/cesys.php"},
 }
 
 # Ajánlatkérés és foglalási igény minden oldalon (eszkozok/foglalas.js, az oldal mellé foglalas.js néven).
@@ -92,6 +93,17 @@ FOGLALAS_MODUL = {
     "bahari": {"mod": "kulon-ajanlat", "urlap": "#offerForm", "kuldo": "send.php"},
     "mscutak": {"mod": "beepitett", "urlap": "#form,#form2", "alap": "ajanlatkeres", "letszam": "felnottek,gyermekek",
                 "utasszoveg": "utasok", "egyseg": "kabin"},
+}
+
+# Családi (bármilyen létszámú) pontos ár az élő időpontlistás oldalakon (eszkozok/csaladi_ar.js, az oldal mellé
+# csaladi_ar.js néven). hely: ezek után az elemek után kerül a doboz (szállodánként, ha [data-hotel] elemen belül van);
+# szallodak: az api.php szállodakulcsai és nevük; szalloda-mezo: az űrlap szállodaválasztója; szin: a gomb színe.
+CSALADI_AR = {
+    "oman": {"hely": ".hotel[data-hotel] .more", "szallodak": {"fanar": "Fanar Hotel & Residences 5*",
+             "rotana": "Salalah Rotana Resort 5*"}, "arfolyam": "370", "urlap": "#form", "letszam": "felnottek,gyerekek",
+             "szalloda-mezo": "szalloda", "szin": "#B5135E"},
+    "vietnam": {"hely": ".date-chips[data-offer]", "szallodak": {"melia": "Meliá Vinpearl Phu Quoc 5*"}, "arfolyam": "370",
+                "urlap": "#form", "letszam": "felnott,gyerek", "szin": "#C93A18"},
 }
 
 # Saját (nem a központtól átvett) oldalak: név -> forrásmappa. Az index.html-ben a {{telefon}}, {{email}},
@@ -266,10 +278,10 @@ def oman_cserek(html):
 
 def oman_elo_arak(html):
     """
-    Élő árak (az oldal mellé másolt api.php, forrás: atlastravel.sk). Az időpontlista kirajzolása függvénybe
-    kerül; betöltéskor az oldal lekéri az élő időpontokat, és ha megjöttek, azokkal rajzolja újra. Ha nem
-    jönnek meg, a központi oldal beágyazott árai maradnak. Élő adatnál a beágyazott családi ajánlatok
-    (régebbi, rögzített végösszegek) kimaradnak; gyerekes elhelyezésre az oldal ajánlatkérést kínál.
+    Élő árak (az oldal mellé másolt api.php = elo/idopontlista.php, forrás: atlastravel.sk). Az időpontlista
+    kirajzolása függvénybe kerül; betöltéskor az oldal lekéri az élő időpontokat, és ha megjöttek, azokkal rajzolja
+    újra. Ha nem jönnek meg, a központi oldal beágyazott árai maradnak. Élő adatnál a beágyazott családi ajánlatok
+    (régebbi, rögzített végösszegek) helyett a családi ár modul (CSALADI_AR) számol a gyerekek életkorával.
     """
     html = csere(html, r"(\n)(for\(const\[key,h\]of Object\.entries\(HOTELS\)\)\{\n.*?\n\}\n)(\nconst priceTxt=)",
                  lambda m: (f"{m.group(1)}function rajzol(){{\ndocument.querySelectorAll('[data-dates]').forEach(b=>b.innerHTML='');\n"
@@ -280,12 +292,17 @@ def oman_elo_arak(html):
                  lambda m: 'if(h.rooms[0].indexOf("("+name+")")>-1)name=h.rooms[0];',
                  "legkedvezőbb szoba neve", pontosan=1)
     betolto = (
-        '\n// élő árak (api.php, félóránként frissül); ha nem érhető el, a fenti beágyazott árak maradnak\n'
+        '\n// élő árak (api.php, félóránként frissül); ha nem érhető el, a fenti beágyazott árak maradnak.\n'
+        '// Az api.php naponként adja a szobákat (név, ár/fő); ebből készül az oldal [nap, idő, ár, [árak oszloponként], hely] sora.\n'
         'fetch("api.php",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(d=>{\n'
         '  if(!d||!d.ok||!d.hotels)return;let volt=false;\n'
         '  for(const[k,v]of Object.entries(d.hotels)){const h=HOTELS[k];\n'
         '    if(!h||!Array.isArray(v.dates)||!v.dates.length||!Array.isArray(v.cols))continue;\n'
-        '    h.roomCols=v.cols;h.dates=v.dates;h.family=[];volt=true}\n'
+        '    h.roomCols=v.cols;\n'
+        '    h.dates=v.dates.map(g=>{const ar=v.cols.map(c=>{const x=g.szobak.find(s=>s.nev===c);return x?x.ar:null});\n'
+        '      const hely=g.rep.length>1?"Pozsonyból vagy Kassáról":g.rep[0];\n'
+        '      return hely==="Pozsonyból"?[g.d,g.ido,g.ar,ar]:[g.d,g.ido,g.ar,ar,hely]}).filter(r=>r[3].some(x=>x!=null));\n'
+        '    h.family=[];volt=true}\n'
         '  if(!volt)return;const s=sel.value;rajzol();fillForm(formHotel());\n'
         '  if([...sel.options].some(o=>o.value===s)){sel.value=s;showChosen()}\n'
         '}).catch(()=>{});\n')
@@ -347,7 +364,55 @@ def vietnam_cserek(html):
     html = csere(html, re.escape("DATES.forEach(([iso, e]) => {"),
                  lambda m: "DATES.splice(0, DATES.length, ...DATES.filter(([iso]) => iso >= new Date().toISOString().slice(0, 10)));\n" + m.group(0),
                  "elmúlt indulások szűrése", pontosan=1)
-    return lablec_cim(html)
+    return vietnam_elo_arak(lablec_cim(html))
+
+
+def vietnam_elo_arak(html):
+    """
+    Élő árak (api.php = elo/idopontlista.php + elo/vietnam_beallitas.php, forrás: atlastravel.sk). Az időpontok
+    kirajzolása függvénybe kerül; ha az élő adat megjön, az időpontok és az all inclusive ár/fő abból jönnek, és a
+    szövegben szereplő „-tól” árak (reggeli, félpanzió, all inclusive, prémium all inclusive) is a legkedvezőbb
+    élő árra frissülnek. Ha nem jön meg, a központi oldal beágyazott árai maradnak.
+    """
+    html = csere(html, r"(DATES\.splice\(0, DATES\.length, \.\.\.DATES\.filter.*?\n)(DATES\.forEach\(\(\[iso, e\]\) => \{.*?"
+                       r"dateSel\.appendChild\(other\);\n)",
+                 lambda m: ("function rajzol() {\ndateSel.innerHTML = '';\nbox.innerHTML = '';\n" + m.group(1) + m.group(2)
+                            + "}\nrajzol();\n"),
+                 "időpontok kirajzolása függvényben (élő árak)", pontosan=1, flags=re.S)
+    betolto = r"""
+// élő árak (api.php, félóránként frissül); ha nem érhető el, a fenti beágyazott árak maradnak
+fetch("api.php", {cache: "no-store"}).then(r => r.ok ? r.json() : null).then(d => {
+  const h = d && d.ok && d.hotels && d.hotels.melia;
+  if (!h || !Array.isArray(h.dates)) return;
+  const min = {};   // ellátásonként a legkedvezőbb ár/fő (7 éj, 2 fő)
+  const uj = [];
+  h.dates.forEach(g => {
+    g.szobak.forEach(s => { if (!(s.ell in min) || s.ar < min[s.ell]) min[s.ell] = s.ar; });
+    const ai = g.szobak.filter(s => s.ell === "all inclusive").map(s => s.ar);
+    if (ai.length) uj.push([g.d, Math.min(...ai)]);
+  });
+  if (!uj.length) return;
+  const valasztott = dateSel.value;
+  DATES.splice(0, DATES.length, ...uj);
+  rajzol();
+  if ([...dateSel.options].some(o => o.value === valasztott)) { dateSel.value = valasztott; markPicked(); }
+  const ar = v => `${eur(v)} (${huf(v)})`;
+  const csere = (el, minta, v) => { if (v != null) el.innerHTML = el.innerHTML.replace(minta, (m, a) => a + ar(v)); };
+  const SZAM = "(?:[0-9 .]|\\u00a0|&nbsp;)+(?:€|&euro;) \\((?:[0-9 .]|\\u00a0|&nbsp;)+Ft\\)";
+  document.querySelectorAll("p").forEach(p => {
+    csere(p, new RegExp("(Reggelivel )" + SZAM), min["reggeli"]);
+    csere(p, new RegExp("(félpanzióval )" + SZAM), min["félpanzió"]);
+    csere(p, new RegExp("(prémium all inclusive ellátással )" + SZAM), min["prémium all inclusive"]);
+    csere(p, new RegExp("(All inclusive ellátással |All inclusive: )" + SZAM), min["all inclusive"]);
+  });
+  if (min["reggeli"] != null) {
+    document.querySelectorAll("p.amount").forEach(p => { p.firstChild.textContent = eur(min["reggeli"]) + " "; });
+    document.querySelectorAll("p.huf").forEach(p => { p.textContent = huf(min["reggeli"]) + " / fő-től"; });
+  }
+}).catch(() => {});
+"""
+    return csere(html, r"(\ndateSel\.addEventListener\(\"change\", markPicked\);\n)", lambda m: m.group(1) + betolto,
+                 "élő árak betöltése", pontosan=1)
 
 
 def bahari_cserek(html):
@@ -571,6 +636,17 @@ def foglalas_modul_be(html, nev):
     return csere(html, r"</body>", lambda m: f'<script src="foglalas.js" defer {adat}></script>\n</body>', "foglalási modul", pontosan=1)
 
 
+def csaladi_ar_be(html, nev):
+    """A családi ár modul betöltése (CSALADI_AR szerint)."""
+    beall = CSALADI_AR.get(nev)
+    if not beall:
+        return html
+    adat = " ".join(f'data-{k}="{html_lib.escape(v if isinstance(v, str) else json.dumps(v, ensure_ascii=False))}"'
+                    for k, v in beall.items())
+    return csere(html, r"</body>", lambda m: f'<script src="csaladi_ar.js" defer {adat}></script>\n</body>',
+                 "családi ár modul", pontosan=1)
+
+
 def logo_csere(html):
     """Az Atlasz Travel (és Atlasz Prémium) logók helyére a győri logó kerül."""
     g = GYOR
@@ -678,6 +754,7 @@ def frissit(nev):
             html = fuggveny(html)
         html = tajekoztato_be(html)
         html = foglalas_modul_be(html, nev)
+        html = csaladi_ar_be(html, nev)
         html = logo_csere(html)
         ellenoriz(html, nev)
 
@@ -691,7 +768,9 @@ def frissit(nev):
             shutil.copyfile(ALAP / forras, uj / cel_nev)
         if nev in FOGLALAS_MODUL:
             shutil.copyfile(ALAP / "eszkozok" / "foglalas.js", uj / "foglalas.js")
-        felesleges_torlese(html, uj, {"index.html", kuldo, "foglalas.js", *ELO_FAJLOK.get(nev, {})})
+        if nev in CSALADI_AR:
+            shutil.copyfile(ALAP / "eszkozok" / "csaladi_ar.js", uj / "csaladi_ar.js")
+        felesleges_torlese(html, uj, {"index.html", kuldo, "foglalas.js", "csaladi_ar.js", *ELO_FAJLOK.get(nev, {})})
     except BaseException:
         shutil.rmtree(uj, ignore_errors=True)
         raise

@@ -648,6 +648,9 @@ function label(iso) {
 
 const dateSel = document.getElementById("f-date");
 const box = document.querySelector(".date-chips");
+function rajzol() {
+dateSel.innerHTML = '';
+box.innerHTML = '';
 DATES.splice(0, DATES.length, ...DATES.filter(([iso]) => iso >= new Date().toISOString().slice(0, 10)));
 DATES.forEach(([iso, e]) => {
   const l = label(iso);
@@ -672,6 +675,8 @@ DATES.forEach(([iso, e]) => {
 const other = document.createElement("option");
 other.value = "mas"; other.textContent = "Más időpont érdekel";
 dateSel.appendChild(other);
+}
+rajzol();
 function markPicked() {
   box.querySelectorAll(".dchip").forEach(c => {
     const on = c.dataset.date === dateSel.value;
@@ -680,6 +685,37 @@ function markPicked() {
   });
 }
 dateSel.addEventListener("change", markPicked);
+
+// élő árak (api.php, félóránként frissül); ha nem érhető el, a fenti beágyazott árak maradnak
+fetch("api.php", {cache: "no-store"}).then(r => r.ok ? r.json() : null).then(d => {
+  const h = d && d.ok && d.hotels && d.hotels.melia;
+  if (!h || !Array.isArray(h.dates)) return;
+  const min = {};   // ellátásonként a legkedvezőbb ár/fő (7 éj, 2 fő)
+  const uj = [];
+  h.dates.forEach(g => {
+    g.szobak.forEach(s => { if (!(s.ell in min) || s.ar < min[s.ell]) min[s.ell] = s.ar; });
+    const ai = g.szobak.filter(s => s.ell === "all inclusive").map(s => s.ar);
+    if (ai.length) uj.push([g.d, Math.min(...ai)]);
+  });
+  if (!uj.length) return;
+  const valasztott = dateSel.value;
+  DATES.splice(0, DATES.length, ...uj);
+  rajzol();
+  if ([...dateSel.options].some(o => o.value === valasztott)) { dateSel.value = valasztott; markPicked(); }
+  const ar = v => `${eur(v)} (${huf(v)})`;
+  const csere = (el, minta, v) => { if (v != null) el.innerHTML = el.innerHTML.replace(minta, (m, a) => a + ar(v)); };
+  const SZAM = "(?:[0-9 .]|\\u00a0|&nbsp;)+(?:€|&euro;) \\((?:[0-9 .]|\\u00a0|&nbsp;)+Ft\\)";
+  document.querySelectorAll("p").forEach(p => {
+    csere(p, new RegExp("(Reggelivel )" + SZAM), min["reggeli"]);
+    csere(p, new RegExp("(félpanzióval )" + SZAM), min["félpanzió"]);
+    csere(p, new RegExp("(prémium all inclusive ellátással )" + SZAM), min["prémium all inclusive"]);
+    csere(p, new RegExp("(All inclusive ellátással |All inclusive: )" + SZAM), min["all inclusive"]);
+  });
+  if (min["reggeli"] != null) {
+    document.querySelectorAll("p.amount").forEach(p => { p.firstChild.textContent = eur(min["reggeli"]) + " "; });
+    document.querySelectorAll("p.huf").forEach(p => { p.textContent = huf(min["reggeli"]) + " / fő-től"; });
+  }
+}).catch(() => {});
 
 const form = document.getElementById("form");
 function setErr(id, msg) {
@@ -806,5 +842,6 @@ Ellátás: ${fd.get("ellatas")}
 })();
 </script>
 <script src="foglalas.js" defer data-mod="beepitett" data-urlap="#form" data-alap="ajanlatkeres" data-letszam="felnott,gyerek" data-telefon="+36 20 266 8144"></script>
+<script src="csaladi_ar.js" defer data-hely=".date-chips[data-offer]" data-szallodak="{&quot;melia&quot;: &quot;Meliá Vinpearl Phu Quoc 5*&quot;}" data-arfolyam="370" data-urlap="#form" data-letszam="felnott,gyerek" data-szin="#C93A18"></script>
 </body>
 </html>
