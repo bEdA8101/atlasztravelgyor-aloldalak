@@ -128,6 +128,14 @@ CSALADI_AR = {
                          "riu-bambu": "Riu Bambu"}},
 }
 
+# Rejtett árfrissítő (eszkozok/arfrissito.js, az oldal mellé arfrissito.js néven): a lábléc évszámára kattintva a
+# tárhelyen futó program azonnal frissíti az oldal élő árait. Oldalnév -> a frissítést kérő cím.
+ARFRISSITO = {
+    "oman": "api.php?a=frissit", "vietnam": "api.php?a=frissit", "riu": "api.php?a=frissit", "maldiv": "api.php?a=frissit",
+    "mauritius": "api.php?a=frissit", "bahari": "proxy.php?frissit=1", "zanzibar": "api.php?action=frissit",
+    "dominika": "api.php?action=frissit",
+}
+
 # Saját (nem a központtól átvett) oldalak: név -> forrásmappa. Az index.html-ben a {{telefon}}, {{email}},
 # {{cim}} stb. helyére a GYOR adatai kerülnek; a mappa többi fájlja változatlanul az oldal mellé kerül.
 SAJAT_OLDALAK = {
@@ -318,7 +326,7 @@ def oman_elo_arak(html):
                  lambda m: 'if(h.rooms[0].indexOf("("+name+")")>-1)name=h.rooms[0];',
                  "legkedvezőbb szoba neve", pontosan=1)
     betolto = (
-        '\n// élő árak (api.php, félóránként frissül); ha nem érhető el, a fenti beágyazott árak maradnak.\n'
+        '\n// élő árak (api.php; 6:00 és éjfél között 2 óránként, illetve a lábléc évszámára kattintva frissül); ha nem érhető el, a fenti beágyazott árak maradnak.\n'
         '// Az api.php naponként adja a szobákat (név, ár/fő); ebből készül az oldal [nap, idő, ár, [árak oszloponként], hely] sora.\n'
         'fetch("api.php",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(d=>{\n'
         '  if(!d||!d.ok||!d.hotels)return;let volt=false;\n'
@@ -382,7 +390,7 @@ def maldiv_elo_arak(html):
               "var(--line);padding-top:6px;line-height:1.4}</style>\n")
     html = csere(html, r"</head>", lambda m: stilus + "</head>", "élő ajánlatok stílusa", pontosan=1)
     betolto = r"""<script>
-// élő ajánlatok (api.php, félóránként frissül); ha nem érhető el, a központi oldal ajánlata marad
+// élő ajánlatok (api.php; 6:00 és éjfél között 2 óránként, illetve a lábléc évszámára kattintva frissül); ha nem érhető el, a központi oldal ajánlata marad
 (() => {
   const KULCS = {"Embudu Village": "embudu", "Cinnamon Dhonveli Maldives": "dhonveli", "Royal Island Resort & Spa": "royal"};
   const HO = ["jan.", "febr.", "márc.", "ápr.", "máj.", "jún.", "júl.", "aug.", "szept.", "okt.", "nov.", "dec."];
@@ -460,7 +468,7 @@ def riu_elo_arak(html):
                  lambda m: m.group(0) + '${!f && dep ? `<small class="dr-fl">${esc(dep)}</small>` : ""}',
                  "időpontsor: indulási hely kiírása", pontosan=1)
     betolto = r"""
-// élő árak (api.php, félóránként frissül); ha nem érhető el, a fenti beágyazott árak maradnak
+// élő árak (api.php; 6:00 és éjfél között 2 óránként, illetve a lábléc évszámára kattintva frissül); ha nem érhető el, a fenti beágyazott árak maradnak
 (() => {
   const penz = (v, p) => String(Math.round(v)).replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0") + (p === "EUR" ? "\u00a0€" : "\u00a0Ft");
   fetch("api.php", {cache: "no-store"}).then(r => r.ok ? r.json() : null).then(j => {
@@ -526,7 +534,7 @@ def vietnam_elo_arak(html):
                             + "}\nrajzol();\n"),
                  "időpontok kirajzolása függvényben (élő árak)", pontosan=1, flags=re.S)
     betolto = r"""
-// élő árak (api.php, félóránként frissül); ha nem érhető el, a fenti beágyazott árak maradnak
+// élő árak (api.php; 6:00 és éjfél között 2 óránként, illetve a lábléc évszámára kattintva frissül); ha nem érhető el, a fenti beágyazott árak maradnak
 fetch("api.php", {cache: "no-store"}).then(r => r.ok ? r.json() : null).then(d => {
   const h = d && d.ok && d.hotels && d.hotels.melia;
   if (!h || !Array.isArray(h.dates)) return;
@@ -792,6 +800,14 @@ def csaladi_ar_be(html, nev):
                  "családi ár modul", pontosan=1)
 
 
+def arfrissito_be(html, nev):
+    """A rejtett árfrissítő betöltése (ARFRISSITO szerint)."""
+    if nev not in ARFRISSITO:
+        return html
+    return csere(html, r"</body>", lambda m: f'<script src="arfrissito.js" defer data-url="{html_lib.escape(ARFRISSITO[nev])}"></script>\n</body>',
+                 "árfrissítő", pontosan=1)
+
+
 def logo_csere(html):
     """Az Atlasz Travel (és Atlasz Prémium) logók helyére a győri logó kerül."""
     g = GYOR
@@ -900,6 +916,7 @@ def frissit(nev):
         html = tajekoztato_be(html)
         html = foglalas_modul_be(html, nev)
         html = csaladi_ar_be(html, nev)
+        html = arfrissito_be(html, nev)
         html = logo_csere(html)
         ellenoriz(html, nev)
 
@@ -915,7 +932,9 @@ def frissit(nev):
             shutil.copyfile(ALAP / "eszkozok" / "foglalas.js", uj / "foglalas.js")
         if nev in CSALADI_AR:
             shutil.copyfile(ALAP / "eszkozok" / "csaladi_ar.js", uj / "csaladi_ar.js")
-        felesleges_torlese(html, uj, {"index.html", kuldo, "foglalas.js", "csaladi_ar.js", *ELO_FAJLOK.get(nev, {})})
+        if nev in ARFRISSITO:
+            shutil.copyfile(ALAP / "eszkozok" / "arfrissito.js", uj / "arfrissito.js")
+        felesleges_torlese(html, uj, {"index.html", kuldo, "foglalas.js", "csaladi_ar.js", "arfrissito.js", *ELO_FAJLOK.get(nev, {})})
     except BaseException:
         shutil.rmtree(uj, ignore_errors=True)
         raise
@@ -1064,6 +1083,7 @@ def sajat_oldal(nev):
     html = tajekoztato_be(html)
     html = foglalas_modul_be(html, nev)
     html = csaladi_ar_be(html, nev)
+    html = arfrissito_be(html, nev)
     ellenoriz(html, nev)
     kuldo = urlapkuldo_nev(html)
 
@@ -1084,6 +1104,8 @@ def sajat_oldal(nev):
             shutil.copyfile(ALAP / "eszkozok" / "foglalas.js", uj / "foglalas.js")
         if nev in CSALADI_AR:
             shutil.copyfile(ALAP / "eszkozok" / "csaladi_ar.js", uj / "csaladi_ar.js")
+        if nev in ARFRISSITO:
+            shutil.copyfile(ALAP / "eszkozok" / "arfrissito.js", uj / "arfrissito.js")
     except BaseException:
         shutil.rmtree(uj, ignore_errors=True)
         raise

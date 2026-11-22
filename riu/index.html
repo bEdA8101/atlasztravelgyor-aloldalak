@@ -1388,7 +1388,7 @@ destSel.addEventListener("change", () => fillHotels(destSel.value));
 const fromHash = location.hash.replace("#", "").split("/")[0];
 select(DESTINATIONS.some(d => d.id === fromHash) ? fromHash : (DESTINATIONS.find(d => d.hotels.length) || DESTINATIONS[0]).id, false);
 
-// élő árak (api.php, félóránként frissül); ha nem érhető el, a fenti beágyazott árak maradnak
+// élő árak (api.php; 6:00 és éjfél között 2 óránként, illetve a lábléc évszámára kattintva frissül); ha nem érhető el, a fenti beágyazott árak maradnak
 (() => {
   const penz = (v, p) => String(Math.round(v)).replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0") + (p === "EUR" ? "\u00a0€" : "\u00a0Ft");
   fetch("api.php", {cache: "no-store"}).then(r => r.ok ? r.json() : null).then(j => {
@@ -1599,5 +1599,6 @@ Utasok: ${fd.get("utasok") || "-"}
 </script>
 <script src="foglalas.js" defer data-mod="beepitett" data-urlap="#form" data-alap="ajanlatkeres" data-letszam="" data-utasszoveg="utasok" data-telefon="+36 20 266 8144"></script>
 <script src="csaladi_ar.js" defer data-hely="#kinalat #panel" data-keret="wrap" data-tegez="1" data-urlap="#form" data-utasszoveg="utasok" data-szin="#C8102E" data-szallodak="{&quot;riu-kaya-palazzo&quot;: &quot;Riu Kaya Palazzo Golf Resort&quot;, &quot;riu-madeira&quot;: &quot;Riu Madeira&quot;, &quot;riu-palace-maspalomas&quot;: &quot;Riu Palace Maspalomas&quot;, &quot;riu-palace-tenerife&quot;: &quot;Riu Palace Tenerife&quot;, &quot;riu-palace-meloneras&quot;: &quot;Riu Palace Meloneras&quot;, &quot;riu-buena-vista&quot;: &quot;Riu Buena Vista&quot;, &quot;riu-arecas&quot;: &quot;Riu Arecas&quot;, &quot;riu-dubai&quot;: &quot;Riu Dubai&quot;, &quot;riu-baobab&quot;: &quot;Riu Baobab&quot;, &quot;riu-turquoise&quot;: &quot;Riu Turquoise&quot;, &quot;riu-palace-swahili&quot;: &quot;Riu Palace Swahili&quot;, &quot;riu-palace-zanzibar&quot;: &quot;Riu Palace Zanzibar&quot;, &quot;riu-jambo&quot;: &quot;Riu Jambo&quot;, &quot;riu-palace-maldives&quot;: &quot;Riu Palace Maldives&quot;, &quot;riu-atoll&quot;: &quot;Riu Atoll&quot;, &quot;riu-republica&quot;: &quot;Riu Republica&quot;, &quot;riu-bambu&quot;: &quot;Riu Bambu&quot;}"></script>
+<script src="arfrissito.js" defer data-url="api.php?a=frissit"></script>
 </body>
 </html>

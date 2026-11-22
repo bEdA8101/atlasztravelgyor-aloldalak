@@ -390,7 +390,7 @@ footer a{color:var(--deep)}
   <div class="wrap">
     <div class="chead">
       <div><span class="kicker rv"><span class="num">✦</span> Élő árak</span><h2 id="aj-cim" class="rv d1">Aktuális <em>ajánlataink</em></h2></div>
-      <p class="lead rv d2">A legkedvezőbb mauritiusi ajánlatok négycsillagos és jobb szállodákban, budapesti vagy bécsi indulással – a szervezők élő árai alapján, félóránként frissítve.</p>
+      <p class="lead rv d2">A legkedvezőbb mauritiusi ajánlatok négycsillagos és jobb szállodákban, budapesti vagy bécsi indulással – a szervezők élő árai alapján, naponta többször frissítve.</p>
     </div>
     <form class="of-szuro" onsubmit="return false" aria-label="Ajánlatok szűrése">
       <label>Indulás hónapja<select id="of-ho"><option value="">A következő hetekben</option></select></label>
@@ -859,5 +859,6 @@ form.addEventListener("submit",async e=>{
 </script>
 <script src="foglalas.js" defer data-mod="beepitett" data-urlap="#form" data-alap="ajanlatkeres" data-letszam="felnottek,gyerekek" data-telefon="+36 20 266 8144"></script>
 <script src="csaladi_ar.js" defer data-hely="#ajanlatok .of-megj" data-dinamikus="1" data-szallodak="{}" data-arfolyam="370" data-urlap="#form" data-letszam="felnottek,gyerekek" data-szin="#B60E66"></script>
+<script src="arfrissito.js" defer data-url="api.php?a=frissit"></script>
 </body>
 </html>

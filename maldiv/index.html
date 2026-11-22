@@ -1036,7 +1036,7 @@ form.addEventListener("submit",async e=>{
   io.observe(document.getElementById("ajanlat"));io.observe(document.getElementById("cim"))})();
 </script>
 <script>
-// élő ajánlatok (api.php, félóránként frissül); ha nem érhető el, a központi oldal ajánlata marad
+// élő ajánlatok (api.php; 6:00 és éjfél között 2 óránként, illetve a lábléc évszámára kattintva frissül); ha nem érhető el, a központi oldal ajánlata marad
 (() => {
   const KULCS = {"Embudu Village": "embudu", "Cinnamon Dhonveli Maldives": "dhonveli", "Royal Island Resort & Spa": "royal"};
   const HO = ["jan.", "febr.", "márc.", "ápr.", "máj.", "jún.", "júl.", "aug.", "szept.", "okt.", "nov.", "dec."];
@@ -1098,5 +1098,6 @@ form.addEventListener("submit",async e=>{
 })();
 </script>
 <script src="foglalas.js" defer data-mod="beepitett" data-urlap="#form" data-alap="ajanlatkeres" data-letszam="felnottek,gyerekek" data-telefon="+36 20 266 8144"></script>
+<script src="arfrissito.js" defer data-url="api.php?a=frissit"></script>
 </body>
 </html>

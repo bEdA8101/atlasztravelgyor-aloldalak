@@ -686,7 +686,7 @@ function markPicked() {
 }
 dateSel.addEventListener("change", markPicked);
 
-// élő árak (api.php, félóránként frissül); ha nem érhető el, a fenti beágyazott árak maradnak
+// élő árak (api.php; 6:00 és éjfél között 2 óránként, illetve a lábléc évszámára kattintva frissül); ha nem érhető el, a fenti beágyazott árak maradnak
 fetch("api.php", {cache: "no-store"}).then(r => r.ok ? r.json() : null).then(d => {
   const h = d && d.ok && d.hotels && d.hotels.melia;
   if (!h || !Array.isArray(h.dates)) return;
@@ -843,5 +843,6 @@ Ellátás: ${fd.get("ellatas")}
 </script>
 <script src="foglalas.js" defer data-mod="beepitett" data-urlap="#form" data-alap="ajanlatkeres" data-letszam="felnott,gyerek" data-telefon="+36 20 266 8144"></script>
 <script src="csaladi_ar.js" defer data-hely=".date-chips[data-offer]" data-szallodak="{&quot;melia&quot;: &quot;Meliá Vinpearl Phu Quoc 5*&quot;}" data-arfolyam="370" data-urlap="#form" data-letszam="felnott,gyerek" data-szin="#C93A18"></script>
+<script src="arfrissito.js" defer data-url="api.php?a=frissit"></script>
 </body>
 </html>
