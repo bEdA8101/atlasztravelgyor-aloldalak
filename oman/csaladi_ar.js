@@ -185,7 +185,10 @@
         const k = {h, ac, ages};
         if (!tovabb) ki.innerHTML = `<p class="csa-allapot">${esc(szallodak[h])} · ${esc(utasok(ac, ages))}</p>`;
         const regiTobb = ki.querySelector('.csa-tobb'); if (regiTobb) regiTobb.remove();
-        if (!sorok.length && !tovabb) {
+        if (j.egyedi && !tovabb) {
+          ki.insertAdjacentHTML('beforeend', `<p class="csa-allapot">Ennél a szállodánál a szervező a gyerekes (vagy nem 2 fős) végösszeget csak egyedi lekérdezéssel adja meg. ${cfg.tegez ? 'Kérj ajánlatot lent, és elküldjük a pontos árat.' : 'Kérjen ajánlatot lent, és elküldjük a pontos árat.'}</p>`);
+        } else if (!sorok.length && !tovabb) {
+
           ki.insertAdjacentHTML('beforeend', `<p class="csa-allapot">Erre a létszámra ${ho ? 'ebben a hónapban ' : ''}most nem találtunk szabad helyet. ${esc(T.nincs)}</p>`);
         }
         sorok.forEach(g => ki.appendChild(sorRajz(g, k, j.penznem)));

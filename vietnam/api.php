@@ -37,7 +37,11 @@ gyorsitotar_takaritas(['hibanaplo' => 400 * 86400]);
 /** A forrás adatai: a szálloda saját forrása ('forras'), különben az oldal alapforrása (FORRAS). */
 function forras(array $sz = []): array
 {
-    return FORRASOK[$sz['forras'] ?? FORRAS] + ['nev' => $sz['forras'] ?? FORRAS];
+    $f = FORRASOK[$sz['forras'] ?? FORRAS] + ['nev' => $sz['forras'] ?? FORRAS];
+    if (!isset($sz['forras']) && defined('PENZNEM')) {
+        $f['penznem'] = PENZNEM;   // az oldal más pénznemben mutat (a forrás mindkettőt adja)
+    }
+    return $f;
 }
 
 /** A szlovák szobanév magyarul (a bahari-oldal szótárával), a „2+1 ” jellegű előtag nélkül. */
@@ -47,6 +51,12 @@ function szobanev(string $nev, string $forras = FORRAS): string
     $cseh = [
         '/Pokoj\s+se dvěma lůžky/iu' => 'Kétágyas szoba', '/s částečným výhledem na moře/iu' => 'részleges tengeri kilátással',
         '/s výhledem na moře/iu' => 'tengerre néző', '/s transferem vnitrostátním letem/iu' => 'belföldi repülős transzferrel',
+        '/s transferem rychločlunem/iu' => 'gyorshajós transzferrel', '/s výhledem na západ slunce/iu' => 'naplementére néző',
+        '/s výhledem do zahrady/iu' => 'kertre néző', '/s privátním bazénem a transferem vnitrostátním letem/iu' => 'saját medencével, belföldi repülős transzferrel',
+        '/s privátním bazénem/iu' => 'saját medencével', '/\\bBungalov water\\b/iu' => 'Vízi bungaló', '/\\bSuite overwater\\b/iu' => 'Vízi lakosztály',
+        '/\\bJunior suite beach\\b/iu' => 'Tengerparti junior lakosztály', '/\\bVila beach\\b/iu' => 'Tengerparti villa',
+        '/\\bBungalov\\b/iu' => 'Bungaló', '/\\bVila\\b/u' => 'Villa', '/s výhledem na oceán/iu' => 'óceánra néző',
+        '/\\bPokoj\\b/iu' => 'Szoba',
         '/\s{2,}/u' => ' ',
     ];
     $nev = trim((string)preg_replace(array_keys($cseh), array_values($cseh), $nev));
@@ -236,7 +246,9 @@ function vegosszegek(array $parok, int $felnott, array $korok, array $sz = []): 
         }
         $ossz = $d['total_price'][$f['penznem']] ?? null;
         $e = ['ok' => in_array($d['availability'] ?? '', ['OK', 'RQ'], true) && is_numeric($ossz),
-              'ossz' => is_numeric($ossz) ? round((float)$ossz, 2) : null];
+              'ossz' => is_numeric($ossz) ? round((float)$ossz, 2) : null,
+              // XX: a szervező (pl. dinamikus csomag) csak egyedi lekérdezéssel ad végösszeget
+              'egyedi' => ($d['availability'] ?? '') === 'XX'];
         [$did, $rid] = $parok[$k];
         gyorsitotar_ir('ar-' . $f['nev'] . "-$did-$rid-$felnott-" . implode('_', $korok), $e);
         $eredmeny[$k] = $e;
@@ -348,6 +360,7 @@ if ($muvelet === 'csalad') {
             $ossz += vegosszegek($parok, $felnott, $korok, $sz);
         }
         $ki = [];
+        $egyedi = $ossz && !array_filter($ossz, fn($o) => empty($o['egyedi']));   // egyik szobára sem ad végösszeget
         foreach ($napok as $i => $g) {
             foreach ($g['szobak'] as $j => &$s) {
                 $o = $ossz["$i-$j"] ?? null;
@@ -366,7 +379,7 @@ if ($muvelet === 'csalad') {
             $ki[] = $g;
         }
         return ['ok' => true, 'frissitve' => date('c'), 'penznem' => forras($sz)['penznem'], 'ac' => $felnott, 'ages' => $korok,
-                'dates' => $ki, 'tobb' => count($napok) >= MAX_CSALADI_NAP];
+                'dates' => $ki, 'tobb' => count($napok) >= MAX_CSALADI_NAP, 'egyedi' => $egyedi && !$ki];
     });
 }
 

@@ -79,6 +79,7 @@ ELO_FAJLOK = {
     "oman": {"api.php": "elo/idopontlista.php", "beallitas.php": "elo/oman_beallitas.php", "cesys.php": "elo/cesys.php"},
     "vietnam": {"api.php": "elo/idopontlista.php", "beallitas.php": "elo/vietnam_beallitas.php", "cesys.php": "elo/cesys.php"},
     "riu": {"api.php": "elo/idopontlista.php", "beallitas.php": "elo/riu_beallitas.php", "cesys.php": "elo/cesys.php"},
+    "maldiv": {"api.php": "elo/idopontlista.php", "beallitas.php": "elo/maldiv_beallitas.php", "cesys.php": "elo/cesys.php"},
 }
 
 # Ajánlatkérés és foglalási igény minden oldalon (eszkozok/foglalas.js, az oldal mellé foglalas.js néven).
@@ -358,6 +359,86 @@ def riu_cserek(html):
                  lambda m: "const dates = [...D.dates].filter(r => r[0] >= new Date().toISOString().slice(0, 10)).sort((a, b) => a[0].localeCompare(b[0]));",
                  "elmúlt indulások szűrése", pontosan=1)
     return lablec_cim(html)
+
+
+def maldiv_elo_arak(html):
+    """
+    Élő ajánlatok a Maldív-oldal három resortjára (api.php = elo/idopontlista.php + elo/maldiv_beallitas.php, a győri
+    CeSYS-oldal bécsi, 7 éjszakás kínálata, euróban). A kártyákon ellátásonként a legkedvezőbb élő ár (2 főre és
+    fejenként) az időponttal és a szobatípussal; kártyánként lenyitható a többi időpont is. A régi, rögzített
+    időpontra (pl. „2026. november 2–10.”) szóló szövegek ilyenkor általánosra cserélődnek. Ha az élő adat nem jön
+    meg, a központi oldal ajánlata marad.
+    """
+    stilus = ("<style>/* élő ajánlatok (Maldív) */.deal .elo-d{display:block;font-size:13.5px;color:var(--muted);margin-top:4px}"
+              ".deal details.elo-l{margin:4px 26px 22px;font-size:14.5px}.deal details.elo-l summary{cursor:pointer;font-weight:600;"
+              "color:var(--reef)}.deal details.elo-l ul{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}"
+              ".deal details.elo-l li{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 12px;border-top:1px dashed "
+              "var(--line);padding-top:6px;line-height:1.4}</style>\n")
+    html = csere(html, r"</head>", lambda m: stilus + "</head>", "élő ajánlatok stílusa", pontosan=1)
+    betolto = r"""<script>
+// élő ajánlatok (api.php, félóránként frissül); ha nem érhető el, a központi oldal ajánlata marad
+(() => {
+  const KULCS = {"Embudu Village": "embudu", "Cinnamon Dhonveli Maldives": "dhonveli", "Royal Island Resort & Spa": "royal"};
+  const HO = ["jan.", "febr.", "márc.", "ápr.", "máj.", "jún.", "júl.", "aug.", "szept.", "okt.", "nov.", "dec."];
+  const HONAP = ["január", "február", "március", "április", "május", "június", "július", "augusztus", "szeptember", "október", "november", "december"];
+  const eur = v => String(Math.round(v)).replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " €";
+  const dt = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
+  const szak = (a, b) => { const x = dt(a), y = dt(b); return `${x.getFullYear()}. ${HO[x.getMonth()]} ${x.getDate()}. – ${x.getMonth() !== y.getMonth() ? HO[y.getMonth()] + " " : ""}${y.getDate()}.`; };
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+  fetch("api.php", {cache: "no-store"}).then(r => r.ok ? r.json() : null).then(j => {
+    if (!j || !j.ok || !j.hotels) return;
+    let elso = null, utolso = null, volt = false;
+    document.querySelectorAll(".deal").forEach(card => {
+      const h3 = card.querySelector("h3"), nev = h3 ? h3.textContent.trim() : "", v = j.hotels[KULCS[nev]];
+      if (!v || !Array.isArray(v.dates) || !v.dates.length) return;
+      const legjobb = ell => {
+        let b = null;
+        v.dates.forEach(g => g.szobak.forEach(s => { if (s.ell === ell && (!b || s.ar < b.ar)) b = {ar: s.ar, nev: s.nev, d: g.d, vege: g.vege}; }));
+        return b;
+      };
+      card.querySelectorAll(".price").forEach(pr => {
+        const bd = pr.querySelector(".bd"), ell = /panzi/i.test(bd ? bd.textContent : "") ? "teljes ellátás" : "all inclusive";
+        const b = legjobb(ell);
+        if (!b) { pr.hidden = true; return; }
+        pr.querySelector(".am").innerHTML = `${eur(2 * b.ar)} <small>/ 2 fő</small>`;
+        pr.querySelector(".pp").textContent = `${eur(b.ar)} / fő`;
+        let d = pr.querySelector(".elo-d");
+        if (!d) { d = document.createElement("span"); d.className = "elo-d"; pr.querySelector(".pp").after(d); }
+        d.textContent = `${szak(b.d, b.vege)}, ${b.nev}`;
+        const a = pr.querySelector("[data-ajanlat]");
+        if (a) a.dataset.ajanlat = `${nev} – ${bd.textContent.trim()} – ${Math.round(2 * b.ar)} EUR / 2 fő – ${szak(b.d, b.vege)}, ${b.nev}`;
+        volt = true;
+      });
+      const dd = card.querySelector("dl dd");
+      const fp = legjobb("teljes ellátás") || legjobb("all inclusive");
+      if (dd && fp) dd.textContent = fp.nev;
+      v.dates.forEach(g => { if (!elso || g.d < elso) elso = g.d; if (!utolso || g.d > utolso) utolso = g.d; });
+      // a többi időpont: naponként a legkedvezőbb teljes panziós és all inclusive ár/fő
+      const sorok = v.dates.slice(0, 14).map(g => {
+        const min = ell => { const x = g.szobak.filter(s => s.ell === ell).map(s => s.ar); return x.length ? Math.min(...x) : null; };
+        const fp2 = min("teljes ellátás"), ai = min("all inclusive");
+        return `<li><span>${szak(g.d, g.vege)}</span><span>${fp2 != null ? "teljes panzió " + eur(fp2) : ""}${fp2 != null && ai != null ? " · " : ""}${ai != null ? "all inclusive " + eur(ai) : ""} / fő</span></li>`;
+      }).join("");
+      let det = card.querySelector("details.elo-l");
+      if (!det) { det = document.createElement("details"); det.className = "elo-l"; card.querySelector(".prices").after(det); }
+      det.innerHTML = `<summary>További időpontok</summary><ul>${sorok}</ul>`;
+    });
+    if (!volt) return;
+    const ho = s => { const x = dt(s); return `${x.getFullYear()}. ${HONAP[x.getMonth()]}`; };
+    const idoszak = elso.slice(0, 7) === utolso.slice(0, 7) ? ho(elso) : `${ho(elso)} – ${ho(utolso)}`;
+    const mono = document.querySelector("#ajanlataink .shead .mono");
+    if (mono) mono.textContent = "Aktuális ajánlataink · élő árak";
+    const em = document.querySelector("#deal-cim em");
+    if (em) em.textContent = "a következő hetekre";
+    document.querySelectorAll("#ajanlataink .facts li").forEach(li => {
+      if (/\d{4}\.\s/.test(li.textContent)) li.textContent = "Indulás: " + idoszak;
+      else if (/Airlines/i.test(li.textContent)) li.textContent = "Járat: az ajánlatban küldjük a pontos menetrendet";
+    });
+  }).catch(() => {});
+})();
+</script>
+"""
+    return csere(html, r"</body>", lambda m: betolto + "</body>", "élő ajánlatok betöltése", pontosan=1)
 
 
 def riu_elo_arak(html):
@@ -662,7 +743,7 @@ OLDAL_CSEREK = {
     "oman": [oman_cserek],
     "riu": [riu_cserek, sorkoz_be("h1"), riu_elo_arak],
     "mauritius": [premium_cserek, sorkoz_be("h2")],
-    "maldiv": [premium_cserek, sorkoz_be("h2")],
+    "maldiv": [premium_cserek, sorkoz_be("h2"), maldiv_elo_arak],
     "vietnam": [vietnam_cserek],
     "bahari": [bahari_cserek],
     "zanzibar": [zanzibar_cserek],
