@@ -14,6 +14,10 @@ Ez a tároló az atlasztravelgyor.hu aloldalait tartalmazza: a központi Atlasz 
 - A kész oldalakat (`oman/`, `riu/`, `mauritius/`, `maldiv/`, `vietnam/`, `index.html`) a
   `frissites.py` állítja elő. **Ne szerkeszd őket kézzel**: minden változtatást a
   `frissites.py` cseréiben vezess, majd futtasd: `python frissites.py`.
+- Saját oldalak (nem a központtól másolva): `sajat/dominika/` és `sajat/mauritius/` (a központi Mauritius-oldal
+  2026 novemberében megszűnt; ez az utolsó jó változata, élő ajánlatokkal). Ezeken a szöveget ott kell módosítani.
+- Élő árak: a közös `elo/idopontlista.php` és oldalanként egy `elo/*_beallitas.php`; a családi ár doboza
+  `eszkozok/csaladi_ar.js` (beállítása a `frissites.py` `CSALADI_AR` részében). Részletek a README-ben.
 - Gyűjtőoldal: `sajat/beszallas/` (beszallas.atlasztravelgyor.hu). Új vagy megszűnő aloldalnál
   frissítsd az `ajanlatok.json`-t is (látható, latszik_tol / latszik_ig a szezonális oldalakhoz).
 - A győri adatok (telefon, e-mail, cím, nyitvatartás) a `frissites.py` `GYOR` részében vannak.
