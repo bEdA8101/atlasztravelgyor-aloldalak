@@ -78,6 +78,7 @@ ELO_FAJLOK = {
                  "regiok.json": "elo/dominika_regiok.json"},
     "oman": {"api.php": "elo/idopontlista.php", "beallitas.php": "elo/oman_beallitas.php", "cesys.php": "elo/cesys.php"},
     "vietnam": {"api.php": "elo/idopontlista.php", "beallitas.php": "elo/vietnam_beallitas.php", "cesys.php": "elo/cesys.php"},
+    "riu": {"api.php": "elo/idopontlista.php", "beallitas.php": "elo/riu_beallitas.php", "cesys.php": "elo/cesys.php"},
 }
 
 # Ajánlatkérés és foglalási igény minden oldalon (eszkozok/foglalas.js, az oldal mellé foglalas.js néven).
@@ -104,6 +105,24 @@ CSALADI_AR = {
              "szalloda-mezo": "szalloda", "szin": "#B5135E"},
     "vietnam": {"hely": ".date-chips[data-offer]", "szallodak": {"melia": "Meliá Vinpearl Phu Quoc 5*"}, "arfolyam": "370",
                 "urlap": "#form", "letszam": "felnott,gyerek", "szin": "#C93A18"},
+    "riu": {"hely": "#kinalat #panel", "keret": "wrap", "tegez": "1", "urlap": "#form", "utasszoveg": "utasok", "szin": "#C8102E",
+            "szallodak": {"riu-kaya-palazzo": "Riu Kaya Palazzo Golf Resort",
+                         "riu-madeira": "Riu Madeira",
+                         "riu-palace-maspalomas": "Riu Palace Maspalomas",
+                         "riu-palace-tenerife": "Riu Palace Tenerife",
+                         "riu-palace-meloneras": "Riu Palace Meloneras",
+                         "riu-buena-vista": "Riu Buena Vista",
+                         "riu-arecas": "Riu Arecas",
+                         "riu-dubai": "Riu Dubai",
+                         "riu-baobab": "Riu Baobab",
+                         "riu-turquoise": "Riu Turquoise",
+                         "riu-palace-swahili": "Riu Palace Swahili",
+                         "riu-palace-zanzibar": "Riu Palace Zanzibar",
+                         "riu-jambo": "Riu Jambo",
+                         "riu-palace-maldives": "Riu Palace Maldives",
+                         "riu-atoll": "Riu Atoll",
+                         "riu-republica": "Riu Republica",
+                         "riu-bambu": "Riu Bambu"}},
 }
 
 # Saját (nem a központtól átvett) oldalak: név -> forrásmappa. Az index.html-ben a {{telefon}}, {{email}},
@@ -339,6 +358,46 @@ def riu_cserek(html):
                  lambda m: "const dates = [...D.dates].filter(r => r[0] >= new Date().toISOString().slice(0, 10)).sort((a, b) => a[0].localeCompare(b[0]));",
                  "elmúlt indulások szűrése", pontosan=1)
     return lablec_cim(html)
+
+
+def riu_elo_arak(html):
+    """
+    Élő árak (api.php = elo/idopontlista.php + elo/riu_beallitas.php): a győri CeSYS-oldal kínálata (a két dominikai
+    RIU-nál az atlastravel.sk). Ha megjön, szállodánként az időpontok (legfeljebb 40), az ár/fő, a 2 főre szóló
+    összeg és a kártyák „-tól” ára is élő; ha egy időpont járata nem egyezik a központi oldal járataival (pl. bécsi
+    indulás), az időpontnál megnevezzük az indulási helyet. Ha nem jön meg, a központi oldal beágyazott árai maradnak.
+    """
+    html = csere(html, re.escape("const rowHtml = ([iso, pp, trip, dd, nn, fk]) => {"),
+                 lambda m: "const rowHtml = ([iso, pp, trip, dd, nn, fk, dep]) => {", "időpontsor: indulási hely", pontosan=1)
+    html = csere(html, re.escape('${f ? `<small class="dr-fl">${esc(f.short)}</small>` : ""}'),
+                 lambda m: m.group(0) + '${!f && dep ? `<small class="dr-fl">${esc(dep)}</small>` : ""}',
+                 "időpontsor: indulási hely kiírása", pontosan=1)
+    betolto = r"""
+// élő árak (api.php, félóránként frissül); ha nem érhető el, a fenti beágyazott árak maradnak
+(() => {
+  const penz = (v, p) => String(Math.round(v)).replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0") + (p === "EUR" ? "\u00a0€" : "\u00a0Ft");
+  fetch("api.php", {cache: "no-store"}).then(r => r.ok ? r.json() : null).then(j => {
+    if (!j || !j.ok || !j.hotels) return;
+    let volt = false;
+    DESTINATIONS.forEach(d => d.hotels.forEach(h => {
+      const v = j.hotels[h.id];
+      if (!v || !h.detail || !Array.isArray(v.dates) || !v.dates.length) return;
+      const D = h.detail;
+      D.dates = v.dates.map(g => {
+        const nap = Math.round((Date.parse(g.vege) - Date.parse(g.d)) / 864e5) + 1;
+        const fk = D.flights ? Object.keys(D.flights).find(k => { const f = D.flights[k]; return f.out && f.out[0] === g.rept[0] && f.out[1] === g.ido; }) : null;
+        const dep = fk ? "" : "Indulás " + g.rep.join(" vagy ") + (g.ido ? ", " + g.ido + "-kor" : "");
+        return [g.d, penz(g.ar, v.penznem), penz(2 * g.ar, v.penznem), nap > 0 ? nap : null, g.n, fk || null, dep];
+      });
+      h.price = penz(Math.min(...v.dates.map(g => g.ar)), v.penznem);
+      volt = true;
+    }));
+    if (volt && current) select(current, false);
+  }).catch(() => {});
+})();
+"""
+    return csere(html, r"(\nselect\(DESTINATIONS\.some\(d => d\.id === fromHash\).*?\n)", lambda m: m.group(1) + betolto,
+                 "élő árak betöltése", pontosan=1)
 
 
 def vietnam_cserek(html):
@@ -601,7 +660,7 @@ def sorkoz_be(valaszto):
 
 OLDAL_CSEREK = {
     "oman": [oman_cserek],
-    "riu": [riu_cserek, sorkoz_be("h1")],
+    "riu": [riu_cserek, sorkoz_be("h1"), riu_elo_arak],
     "mauritius": [premium_cserek, sorkoz_be("h2")],
     "maldiv": [premium_cserek, sorkoz_be("h2")],
     "vietnam": [vietnam_cserek],

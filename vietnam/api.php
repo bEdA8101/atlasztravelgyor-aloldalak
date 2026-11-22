@@ -20,6 +20,7 @@ require __DIR__ . '/beallitas.php';
 
 const ERVENYES = 1800;
 const MAX_OLDAL = 10;          // 200 időpont / oldal
+const EGYSZERRE = 4;          // egyszerre legfeljebb ennyi kérés a forráshoz (kíméljük)
 const MAX_CSALADI_NAP = 24;    // ennyi indulási napra számolunk végösszeget egy családi kérésben (a többi: df-fel)
 
 const FORRASOK = [
@@ -33,16 +34,23 @@ const FORRASOK = [
 
 gyorsitotar_takaritas(['hibanaplo' => 400 * 86400]);
 
-function forras(): array
+/** A forrás adatai: a szálloda saját forrása ('forras'), különben az oldal alapforrása (FORRAS). */
+function forras(array $sz = []): array
 {
-    return FORRASOK[FORRAS];
+    return FORRASOK[$sz['forras'] ?? FORRAS] + ['nev' => $sz['forras'] ?? FORRAS];
 }
 
 /** A szlovák szobanév magyarul (a bahari-oldal szótárával), a „2+1 ” jellegű előtag nélkül. */
-function szobanev(string $nev): string
+function szobanev(string $nev, string $forras = FORRAS): string
 {
     $nev = trim(str_replace("\u{a0}", ' ', html_entity_decode($nev, ENT_QUOTES | ENT_HTML5, 'UTF-8')));
-    if (FORRAS !== 'sk') {
+    $cseh = [
+        '/Pokoj\s+se dvěma lůžky/iu' => 'Kétágyas szoba', '/s částečným výhledem na moře/iu' => 'részleges tengeri kilátással',
+        '/s výhledem na moře/iu' => 'tengerre néző', '/s transferem vnitrostátním letem/iu' => 'belföldi repülős transzferrel',
+        '/\s{2,}/u' => ' ',
+    ];
+    $nev = trim((string)preg_replace(array_keys($cseh), array_values($cseh), $nev));
+    if ($forras !== 'sk') {
         return $nev;
     }
     $csere = [
@@ -71,7 +79,7 @@ function oldal_szobaneve(array $sz, string $eredeti): ?string
             return $magyar;
         }
     }
-    return szobanev($alap);
+    return szobanev($alap, forras($sz)['nev']);
 }
 
 function ellatas_neve(string $s): string
@@ -81,10 +89,10 @@ function ellatas_neve(string $s): string
     return $t[$s] ?? mb_strtolower($s);
 }
 
-/** Egy szálloda időpontjai a megadott összetételre, oldalanként; hiba esetén null. */
-function idopontok(array $sz, int $felnott, array $korok, string $df, string $dt): ?array
+/** Az időpontlista címe egy szállodára, összetételre és oldalra. */
+function idopont_cim(array $sz, int $felnott, array $korok, string $df, string $dt, int $oldal): string
 {
-    $f = forras();
+    $f = forras($sz);
     $p = [['di[]', $sz['di']], ['df', $df], ['dt', $dt], ['ac', $felnott], ['cc', count($korok)]];
     foreach (array_values($korok) as $i => $kor) {
         $p[] = ['ca' . ($i + 1), $kor];
@@ -96,33 +104,60 @@ function idopontok(array $sz, int $felnott, array $korok, string $df, string $dt
     }
     $p = array_merge($p, [['sp', 'false'], ['ti_f', 1]], $napok ? [['uf_f', $napok[0]], ['ut_f', $napok[1]]] : [], [
         ['ns_f', 'false'], ['sp_f', 'false'], ['rop', 200], ['hotel', $sz['id']], ['skip', 0], ['source', 'cesys_default'],
-        ['sm', 1], ['sort', 'date_from'], ['direction', 'asc'], ['currency', $f['penznem']],
+        ['sm', 1], ['sort', 'date_from'], ['direction', 'asc'], ['currency', $f['penznem']], ['pg', $oldal],
     ]);
-    $osszes = [];
-    for ($oldal = 1; $oldal <= MAX_OLDAL; $oldal++) {
-        $adat = cesys_get($f['oldal'] . '/searchmasks/generation_dates_terms?' . cesys_lekerdezes(array_merge($p, [['pg', $oldal]])));
-        if ($adat === null || !isset($adat['dates']) || !is_array($adat['dates'])) {
-            return $oldal === 1 ? null : $osszes;
+    return $f['oldal'] . '/searchmasks/generation_dates_terms?' . cesys_lekerdezes($p);
+}
+
+/**
+ * Több szálloda időpontjai egyszerre: körönként minden még folytatódó szálloda következő oldala, egyszerre
+ * legfeljebb EGYSZERRE kéréssel. [kulcs => [szálloda, felnőtt, korok, df, dt]] -> [kulcs => sorok vagy null]
+ */
+function idopontok_tobb(array $kerek): array
+{
+    $ki = array_fill_keys(array_keys($kerek), []);
+    $fut = array_keys($kerek);
+    for ($oldal = 1; $oldal <= MAX_OLDAL && $fut; $oldal++) {
+        $cimek = [];
+        foreach ($fut as $k) {
+            [$sz, $felnott, $korok, $df, $dt] = $kerek[$k];
+            $cimek[$k] = idopont_cim($sz, $felnott, $korok, $df, $dt, $oldal);
         }
-        array_push($osszes, ...$adat['dates']);
-        if (empty($adat['more_exists'])) {
-            break;
+        $tovabb = [];
+        foreach (cesys_get_tobb($cimek, EGYSZERRE) as $k => $adat) {
+            if ($adat === null || !isset($adat['dates']) || !is_array($adat['dates'])) {
+                if ($oldal === 1) {
+                    $ki[$k] = null;   // a forrás erre a szállodára nem válaszolt
+                }
+                continue;
+            }
+            array_push($ki[$k], ...$adat['dates']);
+            if (!empty($adat['more_exists'])) {
+                $tovabb[] = $k;
+            }
         }
+        $fut = $tovabb;
     }
-    return $osszes;
+    return $ki;
+}
+
+function idopontok(array $sz, int $felnott, array $korok, string $df, string $dt): ?array
+{
+    return idopontok_tobb([0 => [$sz, $felnott, $korok, $df, $dt]])[0];
 }
 
 /** Egy forrásbeli időpont az oldal számára, vagy null, ha nem illik a beállításhoz. */
 function idopont_sor(array $sz, array $x): ?array
 {
-    $penz = forras()['penznem'];
+    $penz = forras($sz)['penznem'];
     $ar = $x['price_from'][$penz] ?? null;
     $nap = (string)($x['date_from'] ?? '');
     $ej = (int)($x['duration_night'] ?? 0);
     $ellatas = (string)($x['boarding'] ?? '');
     if (!is_numeric($ar) || !preg_match('/^\d{4}-\d\d-\d\d$/', $nap)
         || (isset($sz['ejszakak']) && !in_array($ej, $sz['ejszakak'], true))
-        || (isset($sz['ellatasok']) && !in_array($ellatas, $sz['ellatasok'], true))) {
+        || (isset($sz['ellatasok']) && !in_array($ellatas, $sz['ellatasok'], true))
+        || (isset($sz['repterek_nev']) && !in_array((string)($x['airport'] ?? ''), $sz['repterek_nev'], true))) {
         return null;
     }
     $eredeti = trim(str_replace("\u{a0}", ' ', html_entity_decode((string)($x['room_original_name'] ?? $x['room_name'] ?? ''),
@@ -131,7 +166,7 @@ function idopont_sor(array $sz, array $x): ?array
     $ido = $x['outbound_flight_time'] ?? null;
     return [
         'd' => $nap, 'n' => $ej, 'vege' => (string)($x['date_to'] ?? ''),
-        'rep' => REPTER_NEVEK[$repter] ?? $repter, 'ido' => is_string($ido) && preg_match('/^\d\d:\d\d$/', $ido) ? $ido : null,
+        'rep' => REPTER_NEVEK[$repter] ?? $repter, 'repter' => $repter, 'ido' => is_string($ido) && preg_match('/^\d\d:\d\d$/', $ido) ? $ido : null,
         'ell' => ellatas_neve($ellatas), 'szoba' => oldal_szobaneve($sz, $eredeti), 'eredeti' => $eredeti,
         'ar' => round((float)$ar, 2), 'did' => (int)($x['id'] ?? 0), 'rid' => (int)($x['room_id'] ?? 0),
         'lm' => !empty($x['last_minute']),
@@ -144,21 +179,24 @@ function csoportosit(array $sorok): array
     $napok = [];
     foreach ($sorok as $s) {
         $k = $s['d'] . '|' . $s['n'];
-        $napok[$k] ??= ['d' => $s['d'], 'n' => $s['n'], 'vege' => $s['vege'], 'rep' => [], 'ido' => null, 'lm' => false, 'szobak' => []];
+        $napok[$k] ??= ['d' => $s['d'], 'n' => $s['n'], 'vege' => $s['vege'], 'rep' => [], 'rept' => [], 'ido' => null, 'lm' => false,
+                        'szobak' => []];
         $g = &$napok[$k];
         $g['rep'][$s['rep']] = true;
+        $g['rept'][$s['repter']] = true;
         $g['ido'] ??= $s['ido'];
         $g['lm'] = $g['lm'] || $s['lm'];
         $kulcs = $s['szoba'] . '|' . $s['ell'];
         if (!isset($g['szobak'][$kulcs]) || $s['ar'] < $g['szobak'][$kulcs]['ar']) {
             $g['szobak'][$kulcs] = ['nev' => $s['szoba'], 'ell' => $s['ell'], 'ar' => $s['ar'], 'did' => $s['did'], 'rid' => $s['rid'],
-                                    'rep' => $s['rep']];
+                                    'rep' => $s['rep'], 'repter' => $s['repter'], 'ido' => $s['ido']];
         }
         unset($g);
     }
     ksort($napok);
     foreach ($napok as &$g) {
         $g['rep'] = array_keys($g['rep']);
+        $g['rept'] = array_keys($g['rept']);
         $g['szobak'] = array_values($g['szobak']);
         usort($g['szobak'], fn($a, $b) => $a['ar'] <=> $b['ar']);
         $g['ar'] = $g['szobak'][0]['ar'];
@@ -177,13 +215,13 @@ function idoszak(): array
 }
 
 /** Pontos végösszegek az árszolgáltatásból: [kulcs => [did, rid]] -> [kulcs => ['ok'=>bool, 'ossz'=>?float]] */
-function vegosszegek(array $parok, int $felnott, array $korok): array
+function vegosszegek(array $parok, int $felnott, array $korok, array $sz = []): array
 {
-    $f = forras();
+    $f = forras($sz);
     $eredmeny = [];
     $kerendo = [];
     foreach ($parok as $k => [$did, $rid]) {
-        $tarolt = gyorsitotar_olvas('ar-' . FORRAS . "-$did-$rid-$felnott-" . implode('_', $korok), ERVENYES);
+        $tarolt = gyorsitotar_olvas('ar-' . $f['nev'] . "-$did-$rid-$felnott-" . implode('_', $korok), ERVENYES);
         if ($tarolt !== null) {
             $eredmeny[$k] = $tarolt;
         } else {
@@ -200,24 +238,45 @@ function vegosszegek(array $parok, int $felnott, array $korok): array
         $e = ['ok' => in_array($d['availability'] ?? '', ['OK', 'RQ'], true) && is_numeric($ossz),
               'ossz' => is_numeric($ossz) ? round((float)$ossz, 2) : null];
         [$did, $rid] = $parok[$k];
-        gyorsitotar_ir('ar-' . FORRAS . "-$did-$rid-$felnott-" . implode('_', $korok), $e);
+        gyorsitotar_ir('ar-' . $f['nev'] . "-$did-$rid-$felnott-" . implode('_', $korok), $e);
         $eredmeny[$k] = $e;
     }
     return $eredmeny;
 }
 
+/**
+ * Fél óránál frissebb tárolt adat: azonnal. Régebbi, de egy napnál frissebb: a látogató azonnal ezt kapja, és a
+ * program a válasz után frissít (ha a tárhely ezt engedi). Nincs tárolt adat: lekérés, majd válasz.
+ */
 function valasz_tartalekkal(string $kulcs, callable $szamol): void
 {
-    $friss = gyorsitotar_olvas($kulcs, ERVENYES);
-    if ($friss !== null) {
-        json_valasz($friss);
+    $tarolt = gyorsitotar_olvas($kulcs, GYORSITOTAR_TARTALEK);
+    $kor = $tarolt ? time() - (int)($tarolt['_ido'] ?? 0) : PHP_INT_MAX;
+    $tiszta = fn($a) => array_diff_key($a, ['_ido' => 1, '_frissul' => 1]);
+    if ($tarolt !== null && $kor < ERVENYES) {
+        json_valasz($tiszta($tarolt));
+    }
+    @set_time_limit(240);
+    if ($tarolt !== null && $kor < GYORSITOTAR_TARTALEK && valasz_utan_folytathato()) {
+        $frissul = time() - (int)($tarolt['_frissul'] ?? 0) < 300;
+        if (!$frissul) {
+            gyorsitotar_ir($kulcs, ['_frissul' => time()] + $tarolt);
+        }
+        valasz_es_folytatas($tiszta($tarolt));
+        if (!$frissul) {
+            $e = $szamol();
+            if ($e !== null) {
+                gyorsitotar_ir($kulcs, $e + ['_ido' => time()]);
+            }
+        }
+        exit;
     }
     $e = $szamol();
     if ($e === null) {
-        $regi = gyorsitotar_olvas($kulcs, GYORSITOTAR_TARTALEK);
-        json_valasz($regi ? $regi + ['elavult' => true] : ['ok' => false, 'uzenet' => 'Az élő árak most nem tölthetők be.'], $regi ? 200 : 503);
+        json_valasz($tarolt ? $tiszta($tarolt) + ['elavult' => true] : ['ok' => false, 'uzenet' => 'Az élő árak most nem tölthetők be.'],
+                    $tarolt ? 200 : 503);
     }
-    gyorsitotar_ir($kulcs, $e);
+    gyorsitotar_ir($kulcs, $e + ['_ido' => time()]);
     json_valasz($e);
 }
 
@@ -227,8 +286,9 @@ if ($muvelet === 'lista') {
     valasz_tartalekkal('lista', function () {
         [$df, $dt] = idoszak();
         $e = ['ok' => true, 'frissitve' => date('c'), 'penznem' => forras()['penznem'], 'hotels' => []];
-        foreach (SZALLODAK as $kulcs => $sz) {
-            $x = idopontok($sz, 2, [], $df, $dt);
+        $kerek = array_map(fn($sz) => [$sz, 2, [], $df, $dt], SZALLODAK);
+        foreach (idopontok_tobb($kerek) as $kulcs => $x) {
+            $sz = SZALLODAK[$kulcs];
             if ($x === null) {
                 continue;
             }
@@ -237,9 +297,16 @@ if ($muvelet === 'lista') {
                 // 2 felnőttnél az oldal szobatípusai („2+0 …”); a pótágyas és 2+2-es változatok a családi árnál jönnek
                 $sorok = array_filter($sorok, fn($s) => in_array($s['eredeti'], $sz['szobak'], true));
             }
-            $napok = csoportosit($sorok);
+            $napok = array_slice(csoportosit($sorok), 0, $sz['max_nap'] ?? (defined('MAX_NAP') ? MAX_NAP : 400));
+            foreach ($napok as &$g) {
+                // a listához elég a szobák neve, ellátása és ára (a pontos árhoz a családi kérés adja az azonosítókat)
+                $g['szobak'] = array_map(fn($s) => ['nev' => $s['nev'], 'ell' => $s['ell'], 'ar' => $s['ar']],
+                                         array_slice($g['szobak'], 0, 14));
+            }
+            unset($g);
             if ($napok) {
-                $e['hotels'][$kulcs] = ['cols' => isset($sz['szobak']) ? array_keys($sz['szobak']) : null, 'dates' => $napok];
+                $e['hotels'][$kulcs] = ['cols' => isset($sz['szobak']) ? array_keys($sz['szobak']) : null, 'dates' => $napok,
+                                        'penznem' => forras($sz)['penznem']];
             }
         }
         return $e['hotels'] ? $e : null;
@@ -278,7 +345,7 @@ if ($muvelet === 'csalad') {
             if (!$parok) {
                 break;
             }
-            $ossz += vegosszegek($parok, $felnott, $korok);
+            $ossz += vegosszegek($parok, $felnott, $korok, $sz);
         }
         $ki = [];
         foreach ($napok as $i => $g) {
@@ -298,7 +365,7 @@ if ($muvelet === 'csalad') {
             $g['ell'] = $jo[0]['ell'];
             $ki[] = $g;
         }
-        return ['ok' => true, 'frissitve' => date('c'), 'penznem' => forras()['penznem'], 'ac' => $felnott, 'ages' => $korok,
+        return ['ok' => true, 'frissitve' => date('c'), 'penznem' => forras($sz)['penznem'], 'ac' => $felnott, 'ages' => $korok,
                 'dates' => $ki, 'tobb' => count($napok) >= MAX_CSALADI_NAP];
     });
 }
@@ -309,8 +376,9 @@ if ($muvelet === 'ar') {
     if ($did <= 0 || $rid <= 0) {
         json_valasz(['ok' => false, 'uzenet' => 'Hiányzó időpont vagy szoba.'], 400);
     }
-    $e = vegosszegek([0 => [$did, $rid]], $felnott, $korok)[0] ?? null;
-    json_valasz($e ? ['ok' => true, 'elerheto' => $e['ok'], 'ossz' => $e['ossz'], 'penznem' => forras()['penznem']]
+    $sz = SZALLODAK[(string)($_GET['h'] ?? '')] ?? [];
+    $e = vegosszegek([0 => [$did, $rid]], $felnott, $korok, $sz)[0] ?? null;
+    json_valasz($e ? ['ok' => true, 'elerheto' => $e['ok'], 'ossz' => $e['ossz'], 'penznem' => forras($sz)['penznem']]
                    : ['ok' => false, 'uzenet' => 'Az ár most nem kérdezhető le.']);
 }
 

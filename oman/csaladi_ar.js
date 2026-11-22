@@ -21,8 +21,20 @@
     urlap: S.dataset.urlap || '#form',
     letszam: (S.dataset.letszam || '').split(',').map(s => s.trim()).filter(Boolean),
     szallodaMezo: S.dataset.szallodaMezo || '',
+    utasszoveg: S.dataset.utasszoveg || '',  // szöveges utasmező az űrlapon (pl. „utasok”)
     cim: S.dataset.cim || 'Családi ár, gyerekekkel',
-    szin: S.dataset.szin || '#1F4F6F'
+    szin: S.dataset.szin || '#1F4F6F',
+    keret: S.dataset.keret || '',            // a doboz köré tett elem osztálya (pl. az oldal tartalomszélessége)
+    tegez: S.dataset.tegez === '1'           // az oldal tegeződik
+  };
+  const T = cfg.tegez ? {
+    bev: 'Add meg, hányan utaztok, és hány évesek lesznek a gyerekek az utazás idején. A szabad helyek alapján azonnal kiszámoljuk a teljes árat az egész társaságra.',
+    nincs: 'Írj nekünk vagy hívj, más szobatípussal vagy időponttal is szívesen keresünk.',
+    hiba: 'Kérjük, próbáld újra később, vagy kérj ajánlatot lent.'
+  } : {
+    bev: 'Adja meg, hányan utaznak, és hány évesek lesznek a gyerekek az utazás idején. A szabad helyek alapján azonnal kiszámoljuk a teljes árat az egész társaságra.',
+    nincs: 'Írjon nekünk vagy hívjon, más szobatípussal vagy időponttal is szívesen keresünk.',
+    hiba: 'Kérjük, próbálja újra később, vagy kérjen ajánlatot lent.'
   };
   const helyek = cfg.hely ? [...document.querySelectorAll(cfg.hely)] : [];
   if (!helyek.length || !Object.keys(szallodak).length) return;
@@ -87,7 +99,7 @@
     const id = 'csa' + sorszam;
     el.setAttribute('aria-labelledby', id + 'c');
     el.innerHTML = `<h3 id="${id}c">${esc(cfg.cim)}</h3>
-      <p>Adja meg, hányan utaznak, és hány évesek lesznek a gyerekek az utazás idején. A szabad helyek alapján azonnal kiszámoljuk a teljes árat az egész társaságra.</p>
+      <p>${esc(T.bev)}</p>
       <div class="csa-urlap">
         ${fixKulcs ? '' : `<label class="csa-m"><span>Szálloda</span><select data-sz>${Object.entries(szallodak).map(([k, n]) => `<option value="${esc(k)}">${esc(n)}</option>`).join('')}</select></label>`}
         <label class="csa-m"><span>Felnőttek</span><select data-ac>${szamOpt(1, 4, 2)}</select></label>
@@ -97,7 +109,8 @@
         <button type="button" class="csa-gomb" data-kalk>Árak kiszámítása</button>
       </div>
       <div class="csa-eredmeny" aria-live="polite"></div>`;
-    hely.after(el);
+    if (cfg.keret) { const k = document.createElement('div'); k.className = cfg.keret; k.appendChild(el); hely.after(k); }
+    else hely.after(el);
     const $ = s => el.querySelector(s);
     const korok = $('[data-korok]');
     const korokRajz = () => {
@@ -140,7 +153,7 @@
           const hely2 = b.closest('[data-i]'), x = g.szobak[+hely2.dataset.i];
           if (b.hasAttribute('data-kerem2')) { kitolt(k.h, g, x, ac, kor, penznem); return; }
           b.disabled = true; b.textContent = 'Számolás…';
-          const p = new URLSearchParams({a: 'ar', d: x.did, r: x.rid, ac});
+          const p = new URLSearchParams({a: 'ar', h: k.h, d: x.did, r: x.rid, ac});
           kor.forEach(a => p.append('ages[]', a));
           fetch(cfg.api + '?' + p.toString(), {cache: 'no-store'}).then(r => r.json()).then(j => {
             if (j.ok && j.elerheto && j.ossz != null) { x.ossz = j.ossz; hely2.innerHTML = `<b>${penz(j.ossz, penznem)}</b> összesen · <button type="button" data-kerem2>Ezt kérem</button>`; }
@@ -173,7 +186,7 @@
         if (!tovabb) ki.innerHTML = `<p class="csa-allapot">${esc(szallodak[h])} · ${esc(utasok(ac, ages))}</p>`;
         const regiTobb = ki.querySelector('.csa-tobb'); if (regiTobb) regiTobb.remove();
         if (!sorok.length && !tovabb) {
-          ki.insertAdjacentHTML('beforeend', `<p class="csa-allapot">Erre a létszámra ${ho ? 'ebben a hónapban ' : ''}most nem találtunk szabad helyet. Írjon nekünk vagy hívjon, más szobatípussal vagy időponttal is szívesen keresünk.</p>`);
+          ki.insertAdjacentHTML('beforeend', `<p class="csa-allapot">Erre a létszámra ${ho ? 'ebben a hónapban ' : ''}most nem találtunk szabad helyet. ${esc(T.nincs)}</p>`);
         }
         sorok.forEach(g => ki.appendChild(sorRajz(g, k, j.penznem)));
         if (j.dates && j.dates.length) utolso = {utolsoNap: j.dates[j.dates.length - 1].d};
@@ -183,7 +196,7 @@
         }
         if (!tovabb) ki.insertAdjacentHTML('beforeend', `<p class="csa-megj">A végösszeg az egész társaságra szól (repülőjegy, szállás, ellátás, transzfer), a forrás élő árai alapján${j.penznem === 'EUR' && cfg.arfolyam ? `; a forintár tájékoztató, ${cfg.arfolyam} Ft/€ árfolyammal` : ''}. A végleges árat és a helyet foglaláskor erősítjük meg.</p>`);
       }).catch(e => {
-        if (!tovabb) ki.innerHTML = `<p class="csa-allapot csa-hiba">Az árakat most nem sikerült lekérni${e.message ? ' (' + esc(e.message) + ')' : ''}. Kérjük, próbálja újra később, vagy kérjen ajánlatot lent.</p>`;
+        if (!tovabb) ki.innerHTML = `<p class="csa-allapot csa-hiba">Az árakat most nem sikerült lekérni${e.message ? ' (' + esc(e.message) + ')' : ''}. ${esc(T.hiba)}</p>`;
       }).finally(() => { gomb.disabled = false; });
     }
     $('[data-kalk]').addEventListener('click', () => futtat(false));
@@ -205,6 +218,7 @@
       if (el.tagName === 'SELECT' && ![...el.options].some(o => (o.value || o.text) === String(v))) return;
       el.value = String(v); el.dispatchEvent(new Event('change', {bubbles: true}));
     };
+    if (cfg.utasszoveg && form.elements[cfg.utasszoveg]) form.elements[cfg.utasszoveg].value = utasok(ac, korok);
     allit(cfg.letszam[0], ac);
     allit(cfg.letszam[1], korok.length);
     setTimeout(() => {
