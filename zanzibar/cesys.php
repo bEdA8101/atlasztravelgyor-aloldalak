@@ -270,6 +270,13 @@ function gyorsitotar_friss(string $kulcs): ?array
  */
 function kenyszeritett_frissites(): ?int
 {
+    // a főoldal (beszallas.atlasztravelgyor.hu) évszáma az összes aloldal árait frissíti: a győri aldomainekről
+    // érkező kérésnek a böngésző megengedi, hogy a választ is elolvassa
+    $honnan = (string)($_SERVER['HTTP_ORIGIN'] ?? '');
+    if (preg_match('#^https://([a-z0-9-]+\.)?atlasztravelgyor\.hu$#', $honnan)) {
+        header('Access-Control-Allow-Origin: ' . $honnan);
+        header('Vary: Origin');
+    }
     $fajl = gyorsitotar_fajl('kenyszeritett-frissites');
     clearstatcache(true, $fajl);
     $elozo = is_file($fajl) ? (int)filemtime($fajl) : 0;
