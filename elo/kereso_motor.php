@@ -33,7 +33,6 @@ foreach ([
         'sk' => ['url' => 'https://api-ng.cesys.eu/online/v1.4//sk/online/availability-price', 'client_id' => 21656, 'customer_id' => '8116'],
     ],
     'ARFOLYAM' => 370,              // a pozsonyi (euróban árazott) utak forintára
-    'ERVENYES' => 1800,             // fél óra
     'MAX_KERESO_OLDAL' => 6,        // legfeljebb ennyi találati oldal (oldalanként 10–12 szálloda)
     'RESZLEGES_ERVENYES' => 300,    // ha egy keresés csak részben sikerült, csak 5 percig jegyezzük meg
     'IDOPONT_CSOMAG' => 200,        // ennyi időpont-sort kérünk egyszerre
@@ -42,7 +41,7 @@ foreach ([
     'LM_EJ_MIN' => 6,               // last minute: 6–21 éjszakás utak (rövidebbet nem ajánlunk)
     'LM_EJ_MAX' => 21,
     'LM_ELLENORZOTT' => 8,          // last minute: forrásonként legfeljebb ennyi szálloda időpontjait nézzük meg
-    'LM_TARTALEK' => 3 * 3600,      // last minute: fél–3 óra közötti listát azonnal adunk, és utána frissítjük
+    'LM_TARTALEK' => 8 * 3600,      // last minute: a legfeljebb 8 órás listát azonnal adjuk, és ha lejárt, utána frissítjük
     'HELY_ERVENYES' => 30 * 86400,  // egy szálloda térképes helyét (a győri adatlapjáról) 30 napig jegyezzük meg
     'HELY_EGYSZERRE' => 3,          // ennyi adatlapot kérünk egyszerre …
     'HELY_MAX_UJ' => 9,             // … és egy válaszhoz legfeljebb ennyit (a többi a következő látogatáskor jön)
@@ -276,12 +275,12 @@ function szallodak(array $k, int $maxOldal = MAX_KERESO_OLDAL): ?array
     return function_exists('oldal_szallodak') ? oldal_szallodak($e, $k) : $e;
 }
 
-/** A keresés találatai úgy, ahogy a forrás adja (fél óráig tárolva). */
+/** A keresés találatai úgy, ahogy a forrás adja (a következő ütemezett vagy kézi frissítésig tárolva). */
 function szallodak_nyers(array $k, int $maxOldal = MAX_KERESO_OLDAL): ?array
 {
     $maxOldal = max(1, min($maxOldal, MAX_KERESO_OLDAL));
     $kulcs = kulcs($maxOldal < MAX_KERESO_OLDAL ? "kereses-$maxOldal" : 'kereses', $k);
-    $tarolt = gyorsitotar_olvas($kulcs, ERVENYES);
+    $tarolt = gyorsitotar_friss($kulcs);
     if ($tarolt !== null && !(!empty($tarolt['_reszleges']) && time() - (int)($tarolt['_ido'] ?? 0) > RESZLEGES_ERVENYES)) {
         unset($tarolt['_reszleges'], $tarolt['_ido']);
         return $tarolt;
@@ -524,7 +523,7 @@ function ar_par(array $x, string $src): array
 /** Tárolt időpontok (ha még érvényesek), különben null. */
 function idopontok_tarolt(array $k, int $szalloda): ?array
 {
-    return gyorsitotar_olvas(kulcs('idopontok-' . $szalloda, $k), ERVENYES);
+    return gyorsitotar_friss(kulcs('idopontok-' . $szalloda, $k));
 }
 
 /** Kell-e az időpontlista következő oldala (van még, és indulási időszaknál még nem értünk az időszak végére)? */
@@ -541,7 +540,7 @@ function kell_tovabbi_idopont(array $k, array $oldal): bool
 function idopontok(array $k, int $szalloda, array $elore = []): ?array
 {
     $kulcs = kulcs('idopontok-' . $szalloda, $k);
-    $tarolt = gyorsitotar_olvas($kulcs, ERVENYES);
+    $tarolt = gyorsitotar_friss($kulcs);
     if ($tarolt !== null) {
         return $tarolt;
     }
@@ -645,8 +644,8 @@ function idopontok(array $k, int $szalloda, array $elore = []): ?array
 
 function cesys_ar(string $src, int $datum, int $szoba, int $felnott, array $korok): array
 {
-    $kulcs = kulcs('ar', [$src, $datum, $szoba, $felnott, $korok]);   // fél óráig megjegyezzük (a kártyák is kérik)
-    $tarolt = gyorsitotar_olvas($kulcs, ERVENYES);
+    $kulcs = kulcs('ar', [$src, $datum, $szoba, $felnott, $korok]);   // a következő frissítésig megjegyezzük (a kártyák is kérik)
+    $tarolt = gyorsitotar_friss($kulcs);
     if ($tarolt !== null) {
         return $tarolt;
     }
@@ -677,7 +676,7 @@ function cesys_ar(string $src, int $datum, int $szoba, int $felnott, array $koro
 function amadeus_ar(string $kod, string $idopont): array
 {
     $kulcs = kulcs('arat', [$kod]);
-    $tarolt = gyorsitotar_olvas($kulcs, ERVENYES);
+    $tarolt = gyorsitotar_friss($kulcs);
     if ($tarolt !== null) {
         return $tarolt;
     }
@@ -767,7 +766,7 @@ function last_minute(string $df, string $dt, ?array $csak = null): array
 }
 
 /**
- * Last minute válasz tárolással: friss (fél óránál újabb) tárolt listát azonnal ad; a legfeljebb 3 órás listát is
+ * Last minute válasz tárolással: friss (a legutóbbi ütemezett frissítés óta készült) listát azonnal ad; a legfeljebb 8 órás listát is
  * azonnal adja, és a válasz után frissít; egyébként kiszámolja. Nem tér vissza (a választ elküldi).
  */
 function lm_valasz(string $kulcs, callable $szamol): void
@@ -777,11 +776,11 @@ function lm_valasz(string $kulcs, callable $szamol): void
     if ($kor >= LM_TARTALEK) {
         $tarolt = null;   // 3 óránál régebbi listát nem mutatunk
     }
-    if ($tarolt !== null && $kor < ERVENYES) {
+    if ($tarolt !== null && (int)($tarolt['_ido'] ?? 0) >= ar_friss_ota()) {
         json_valasz(array_diff_key($tarolt, ['_ido' => 1, '_frissul' => 1]));
     }
     if ($tarolt !== null && valasz_utan_folytathato()) {
-        // a látogató azonnal a legutóbbi (legfeljebb 3 órás) listát kapja; a frissítés a válasz után fut le
+        // a látogató azonnal a legutóbbi (legfeljebb 8 órás) listát kapja; a frissítés a válasz után fut le
         $frissul = time() - (int)($tarolt['_frissul'] ?? 0) < 300;
         if (!$frissul) {
             gyorsitotar_ir($kulcs, ['_frissul' => time()] + $tarolt);
@@ -909,6 +908,22 @@ function kereso_kerelmek(): void
 
         case 'price_at':
             json_valasz(amadeus_ar(substr((string)($_GET['code'] ?? ''), 0, 400), substr((string)($_GET['date'] ?? ''), 0, 100)));
+            break;
+
+        case 'frissit':
+            // kézi frissítés (a lábléc évszáma): a tárolt árak lejárnak (a keresések a következő kéréskor
+            // frissülnek), a last minute listák pedig azonnal újra elkészülnek
+            if (kenyszeritett_frissites() === null) {
+                kenyszer_valasz_hamar();
+            }
+            $ma = new DateTimeImmutable('tomorrow', new DateTimeZone('Europe/Budapest'));
+            $df = $ma->format('Y-m-d');
+            $dt = $ma->modify('+13 days')->format('Y-m-d');
+            foreach (array_values(array_intersect(LM_FORRASOK, array_keys(FORRASOK))) as $src) {
+                $e = last_minute($df, $dt, [$src]);
+                gyorsitotar_ir('lastminute-' . $df . '-' . $src, array_diff_key($e, ['groups' => 1]) + $e['groups'][0] + ['_ido' => time()]);
+            }
+            json_valasz(['ok' => true, 'frissitve' => date('c')]);
             break;
 
         case 'allapot':

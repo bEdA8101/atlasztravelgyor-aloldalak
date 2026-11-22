@@ -18,14 +18,19 @@ const SZALLODA = 8255;          // TUI BLUE Bahari (atlastravel.sk)
 const UTICEL = 685;             // Zanzibár
 const REPTER = 7;               // Pozsony
 const ELLATAS = 8;              // all inclusive
-const ERVENYES = 1800;          // a tárolt adat fél óráig friss
 const NAPOK_ELORE = 330;        // ennyi napra előre keresünk
 const MAX_OLDAL = 2;            // legfeljebb ennyi találati oldal (oldalanként 200 időpont; általában 1 elég)
 
 [$felnott, $korok] = utasok_a_kerelembol();
 $kulcs = 'bahari-' . $felnott . '-' . implode('_', $korok);
 
-$friss = gyorsitotar_olvas($kulcs, ERVENYES);
+// kézi frissítés (a lábléc évszáma): a tárolt árak lejárnak, és a 2 felnőttes lista azonnal újra elkészül
+if (isset($_GET['frissit']) && kenyszeritett_frissites() === null) {
+    kenyszer_valasz_hamar();
+}
+
+// a tárolt adat a legutóbbi ütemezett (6:00 és éjfél között 2 óránként) vagy kézi frissítésig friss
+$friss = gyorsitotar_friss($kulcs);
 if ($friss !== null) {
     json_valasz($friss);
 }

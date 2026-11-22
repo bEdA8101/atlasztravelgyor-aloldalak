@@ -12,13 +12,13 @@
 //   api.php?a=ar&d=…&r=…&ac=…&ages[]=…
 //                                   egy szoba pontos végösszege az adott összetételre
 //
-// Minden válasz fél óráig tárolt; ha a forrás nem válaszol, a legutóbbi (legfeljebb egynapos) adat jön.
+// A válaszok a legutóbbi ütemezett (6:00 és éjfél között 2 óránként) vagy kézi frissítésig (api.php?a=frissit,
+// a lábléc évszáma) tároltak; ha a forrás nem válaszol, a legutóbbi (legfeljebb egynapos) adat jön.
 
 declare(strict_types=1);
 require __DIR__ . '/cesys.php';
 require __DIR__ . '/beallitas.php';
 
-const ERVENYES = 1800;
 const MAX_OLDAL = 10;          // 200 időpont / oldal
 const EGYSZERRE = 4;          // egyszerre legfeljebb ennyi kérés a forráshoz (kíméljük)
 const MAX_CSALADI_NAP = 24;    // ennyi indulási napra számolunk végösszeget egy családi kérésben (a többi: df-fel)
@@ -32,7 +32,7 @@ const FORRASOK = [
              'ugyfel' => ['client_id' => 21656, 'customer_id' => '8116']],
 ];
 
-gyorsitotar_takaritas(['hibanaplo' => 400 * 86400]);
+gyorsitotar_takaritas(['hibanaplo' => 400 * 86400, 'szalloda-' => 31 * 86400, 'engedett-szallodak' => 31 * 86400]);
 
 /** A forrás adatai: a szálloda saját forrása ('forras'), különben az oldal alapforrása (FORRAS). */
 function forras(array $sz = []): array
@@ -231,7 +231,7 @@ function vegosszegek(array $parok, int $felnott, array $korok, array $sz = []): 
     $eredmeny = [];
     $kerendo = [];
     foreach ($parok as $k => [$did, $rid]) {
-        $tarolt = gyorsitotar_olvas('ar-' . $f['nev'] . "-$did-$rid-$felnott-" . implode('_', $korok), ERVENYES);
+        $tarolt = gyorsitotar_friss('ar-' . $f['nev'] . "-$did-$rid-$felnott-" . implode('_', $korok));
         if ($tarolt !== null) {
             $eredmeny[$k] = $tarolt;
         } else {
@@ -265,11 +265,11 @@ function valasz_tartalekkal(string $kulcs, callable $szamol): void
     $tarolt = gyorsitotar_olvas($kulcs, GYORSITOTAR_TARTALEK);
     $kor = $tarolt ? time() - (int)($tarolt['_ido'] ?? 0) : PHP_INT_MAX;
     $tiszta = fn($a) => array_diff_key($a, ['_ido' => 1, '_frissul' => 1]);
-    if ($tarolt !== null && $kor < ERVENYES) {
+    if ($tarolt !== null && (int)($tarolt['_ido'] ?? 0) >= ar_friss_ota()) {
         json_valasz($tiszta($tarolt));
     }
     @set_time_limit(240);
-    if ($tarolt !== null && $kor < GYORSITOTAR_TARTALEK && valasz_utan_folytathato()) {
+    if ($tarolt !== null && $kor < GYORSITOTAR_TARTALEK && valasz_utan_folytathato() && empty($GLOBALS['KENYSZER'])) {
         $frissul = time() - (int)($tarolt['_frissul'] ?? 0) < 300;
         if (!$frissul) {
             gyorsitotar_ir($kulcs, ['_frissul' => time()] + $tarolt);
@@ -293,6 +293,16 @@ function valasz_tartalekkal(string $kulcs, callable $szamol): void
 }
 
 $muvelet = (string)($_GET['a'] ?? 'lista');
+
+// kézi frissítés (a lábléc évszáma): a tárolt árak lejárnak, és az oldal fő listája azonnal újra elkészül
+// (a családi árak és a többi lekérdezés a következő kéréskor frissül)
+if ($muvelet === 'frissit') {
+    if (kenyszeritett_frissites() === null) {
+        kenyszer_valasz_hamar();
+    }
+    $KENYSZER = true;
+    $muvelet = SZALLODAK ? 'lista' : (defined('AJANLATOK') ? 'ajanlatok' : 'lista');
+}
 
 // ---------------------------------------------------------------- ajánlatok célterületre (pl. Mauritius)
 // A beállítás AJANLATOK állandója adja: célterületek (destination_id), éjszakák, minimum csillag, reptér, darabszám.

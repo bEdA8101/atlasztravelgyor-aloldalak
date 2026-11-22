@@ -5,7 +5,7 @@
 // oldalak mellé másolja (cesys.php néven).
 //
 // A lekérdezések nyíltan megnevezik magukat (CESYS_UA), és a gyorsítótár miatt
-// egy adott keresés legfeljebb félóránként egyszer jut el a forráshoz.
+// egy adott keresés 6:00 és éjfél között legfeljebb 2 óránként egyszer jut el a forráshoz (lásd ar_friss_ota).
 
 declare(strict_types=1);
 
@@ -102,7 +102,7 @@ function cesys_html(string $url): ?string
 }
 
 /** Több weboldal (HTML) párhuzamosan, kulcs szerint; ami nem jött meg, az null (újrapróbálás nélkül). */
-function cesys_html_tobb(array $cimek, int $egyszerre = 3): array
+function cesys_html_tobb(array $cimek, int $egyszerre = 3, bool $kovet = false): array
 {
     $eredmeny = [];
     foreach (array_chunk($cimek, $egyszerre, true) as $csomag) {
@@ -111,7 +111,8 @@ function cesys_html_tobb(array $cimek, int $egyszerre = 3): array
         foreach ($csomag as $kulcs => $cim) {
             $ch = curl_init($cim);
             curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => CESYS_IDOKORLAT,
-                CURLOPT_USERAGENT => CESYS_UA, CURLOPT_ENCODING => '', CURLOPT_REFERER => cesys_hivatkozo($cim)]);
+                CURLOPT_USERAGENT => CESYS_UA, CURLOPT_ENCODING => '', CURLOPT_REFERER => cesys_hivatkozo($cim),
+                CURLOPT_FOLLOWLOCATION => $kovet, CURLOPT_MAXREDIRS => 3]);
             curl_multi_add_handle($multi, $ch);
             $kezelok[$kulcs] = $ch;
         }
@@ -233,6 +234,60 @@ function gyorsitotar_fajl(string $kulcs): string
         @mkdir($mappa, 0700, true);
     }
     return $mappa . '/' . preg_replace('/[^a-z0-9_-]/i', '_', $kulcs) . '.json';
+}
+
+// ---------------------------------------------------------------- az árak frissítésének ütemezése
+// A tárolt árak 6:00 és éjfél között minden páros órában (budapesti idő) járnak le; éjfél és 6:00 között nincs
+// frissítés. A lábléc évszámára kattintva (kenyszeritett_frissites) az oldal árai azonnal is frissíthetők.
+const FRISSITES_ORAK = [0, 6, 8, 10, 12, 14, 16, 18, 20, 22];
+const KENYSZER_SZUNET = 300;   // kézi frissítés oldalanként legfeljebb 5 percenként (a forrásokat kíméljük)
+
+/** Az időpont, amely óta tárolt ár még frissnek számít: a legutóbbi ütemezett frissítés vagy kézi frissítés. */
+function ar_friss_ota(): int
+{
+    $most = new DateTimeImmutable('now', new DateTimeZone('Europe/Budapest'));
+    $ora = (int)$most->format('G');
+    $hatar = $most->setTime(max(array_filter(FRISSITES_ORAK, fn($o) => $o <= $ora)), 0)->getTimestamp();
+    $kenyszer = gyorsitotar_fajl('kenyszeritett-frissites');
+    return max($hatar, is_file($kenyszer) ? (int)filemtime($kenyszer) : 0);
+}
+
+/** Tárolt ár, ha a legutóbbi (ütemezett vagy kézi) frissítés óta készült; különben null. */
+function gyorsitotar_friss(string $kulcs): ?array
+{
+    $fajl = gyorsitotar_fajl($kulcs);
+    clearstatcache(true, $fajl);
+    if (!is_file($fajl) || (int)filemtime($fajl) < ar_friss_ota()) {
+        return null;
+    }
+    $adat = json_decode((string)file_get_contents($fajl), true);
+    return is_array($adat) ? $adat : null;
+}
+
+/**
+ * Kézi frissítés (a lábléc évszáma): ettől kezdve minden korábban tárolt ár lejártnak számít. Oldalanként
+ * legfeljebb KENYSZER_SZUNET másodpercenként; ha előbb kérik, null (az árak épp most frissültek).
+ */
+function kenyszeritett_frissites(): ?int
+{
+    $fajl = gyorsitotar_fajl('kenyszeritett-frissites');
+    clearstatcache(true, $fajl);
+    $elozo = is_file($fajl) ? (int)filemtime($fajl) : 0;
+    if (time() - $elozo < KENYSZER_SZUNET) {
+        return null;
+    }
+    touch($fajl);
+    clearstatcache(true, $fajl);
+    @set_time_limit(300);
+    return time();
+}
+
+/** Válasz a kézi frissítésre (ha túl hamar kérik). */
+function kenyszer_valasz_hamar(): void
+{
+    $fajl = gyorsitotar_fajl('kenyszeritett-frissites');
+    json_valasz(['ok' => true, 'friss' => true, 'perce' => intdiv(time() - (int)filemtime($fajl), 60),
+                 'uzenet' => 'Az árak néhány perce frissültek.']);
 }
 
 /** A tárolt adat, ha nem régebbi $maxKor másodpercnél; különben null. */
