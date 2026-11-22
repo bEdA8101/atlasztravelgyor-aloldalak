@@ -135,6 +135,10 @@ ARFRISSITO = {
     "mauritius": "api.php?a=frissit", "bahari": "proxy.php?frissit=1", "zanzibar": "api.php?action=frissit",
     "dominika": "api.php?action=frissit",
 }
+# A gyűjtőoldal évszáma az összes ARFRISSITO-beli aloldal árait frissíti (a címüket a feltoltes.json adja).
+# Új élő áras aloldalnál elég az ARFRISSITO-ba felvenni: a gyűjtőoldal és az ütemezett frissítés
+# (elo_oldalak.json, .github/workflows/arfrissites.yml) magától követi.
+ARFRISSITO_OSSZES = {"beszallas"}
 
 # Saját (nem a központtól átvett) oldalak: név -> forrásmappa. Az index.html-ben a {{telefon}}, {{email}},
 # {{cim}} stb. helyére a GYOR adatai kerülnek; a mappa többi fájlja változatlanul az oldal mellé kerül.
@@ -800,8 +804,33 @@ def csaladi_ar_be(html, nev):
                  "családi ár modul", pontosan=1)
 
 
+def elo_oldalak():
+    """Az élő áras aloldalak (ARFRISSITO) éles címe és frissítő címe, a feltoltes.json alapján."""
+    celok = {c["forras"]: c["cel"] for c in json.loads((ALAP / "feltoltes.json").read_text(encoding="utf-8"))["celok"]
+             if c.get("forras") not in (None, ".")}
+    hianyzik = [n for n in ARFRISSITO if n not in celok]
+    if hianyzik:
+        raise CsereHiba(f"árfrissítő: nincs aldomain a feltoltes.json-ban ehhez: {', '.join(hianyzik)}")
+    return [{"nev": n, "cim": f"https://{celok[n]}/", "url": f"https://{celok[n]}/{ARFRISSITO[n]}"} for n in ARFRISSITO]
+
+
+def elo_oldalak_lista_ir():
+    """Az elo_oldalak.json: az ütemezett frissítés (.github/workflows/arfrissites.yml) ebből dolgozik."""
+    fajl = ALAP / "elo_oldalak.json"
+    tartalom = json.dumps(elo_oldalak(), ensure_ascii=False, indent=1) + "\n"
+    if not fajl.exists() or fajl.read_text(encoding="utf-8") != tartalom:
+        fajl.write_text(tartalom, encoding="utf-8")
+
+
 def arfrissito_be(html, nev):
-    """A rejtett árfrissítő betöltése (ARFRISSITO szerint)."""
+    """A rejtett árfrissítő betöltése (ARFRISSITO szerint; a gyűjtőoldalon az összes aloldalé)."""
+    if nev in ELO_FAJLOK and nev not in ARFRISSITO:
+        # élő áras oldal árfrissítő nélkül: a gyűjtőoldal és az ütemezett frissítés sem tudna róla
+        raise CsereHiba(f"{nev}: élő áras oldal, de nincs az ARFRISSITO-ban (vedd fel a frissites.py-ban)")
+    if nev in ARFRISSITO_OSSZES:
+        lista = json.dumps([{"nev": o["nev"], "url": o["url"]} for o in elo_oldalak()], ensure_ascii=False)
+        return csere(html, r"</body>", lambda m: f'<script src="arfrissito.js" defer data-osszes="{html_lib.escape(lista)}"></script>\n</body>',
+                     "árfrissítő (összes aloldal)", pontosan=1)
     if nev not in ARFRISSITO:
         return html
     return csere(html, r"</body>", lambda m: f'<script src="arfrissito.js" defer data-url="{html_lib.escape(ARFRISSITO[nev])}"></script>\n</body>',
@@ -932,7 +961,7 @@ def frissit(nev):
             shutil.copyfile(ALAP / "eszkozok" / "foglalas.js", uj / "foglalas.js")
         if nev in CSALADI_AR:
             shutil.copyfile(ALAP / "eszkozok" / "csaladi_ar.js", uj / "csaladi_ar.js")
-        if nev in ARFRISSITO:
+        if nev in ARFRISSITO or nev in ARFRISSITO_OSSZES:
             shutil.copyfile(ALAP / "eszkozok" / "arfrissito.js", uj / "arfrissito.js")
         felesleges_torlese(html, uj, {"index.html", kuldo, "foglalas.js", "csaladi_ar.js", "arfrissito.js", *ELO_FAJLOK.get(nev, {})})
     except BaseException:
@@ -1104,7 +1133,7 @@ def sajat_oldal(nev):
             shutil.copyfile(ALAP / "eszkozok" / "foglalas.js", uj / "foglalas.js")
         if nev in CSALADI_AR:
             shutil.copyfile(ALAP / "eszkozok" / "csaladi_ar.js", uj / "csaladi_ar.js")
-        if nev in ARFRISSITO:
+        if nev in ARFRISSITO or nev in ARFRISSITO_OSSZES:
             shutil.copyfile(ALAP / "eszkozok" / "arfrissito.js", uj / "arfrissito.js")
     except BaseException:
         shutil.rmtree(uj, ignore_errors=True)
@@ -1183,6 +1212,7 @@ def main(nevek):
         except (urllib.error.URLError, ConnectionError, TimeoutError) as hiba:
             hibak.append(f"{nev}: nem sikerült letölteni ({hiba}).")
     nyitolap()
+    elo_oldalak_lista_ir()
     if hibak:
         sys.exit("HIBA – ezek az oldalak nem frissültek, a régi változatuk maradt:\n" + "\n".join(hibak))
 

@@ -1,0 +1,42 @@
+[
+ {
+  "nev": "oman",
+  "cim": "https://oman.atlasztravelgyor.hu/",
+  "url": "https://oman.atlasztravelgyor.hu/api.php?a=frissit"
+ },
+ {
+  "nev": "vietnam",
+  "cim": "https://vietnam.atlasztravelgyor.hu/",
+  "url": "https://vietnam.atlasztravelgyor.hu/api.php?a=frissit"
+ },
+ {
+  "nev": "riu",
+  "cim": "https://riu.atlasztravelgyor.hu/",
+  "url": "https://riu.atlasztravelgyor.hu/api.php?a=frissit"
+ },
+ {
+  "nev": "maldiv",
+  "cim": "https://maldiv.atlasztravelgyor.hu/",
+  "url": "https://maldiv.atlasztravelgyor.hu/api.php?a=frissit"
+ },
+ {
+  "nev": "mauritius",
+  "cim": "https://mauritius.atlasztravelgyor.hu/",
+  "url": "https://mauritius.atlasztravelgyor.hu/api.php?a=frissit"
+ },
+ {
+  "nev": "bahari",
+  "cim": "https://bahari.atlasztravelgyor.hu/",
+  "url": "https://bahari.atlasztravelgyor.hu/proxy.php?frissit=1"
+ },
+ {
+  "nev": "zanzibar",
+  "cim": "https://zanzibar.atlasztravelgyor.hu/",
+  "url": "https://zanzibar.atlasztravelgyor.hu/api.php?action=frissit"
+ },
+ {
+  "nev": "dominika",
+  "cim": "https://dominika.atlasztravelgyor.hu/",
+  "url": "https://dominika.atlasztravelgyor.hu/api.php?action=frissit"
+ }
+]
