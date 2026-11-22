@@ -5,11 +5,11 @@ A központ engedélyezte a tartalmak átvételét.
 
 | Mappa | Cím | Forrás |
 |---|---|---|
-| `oman/` | oman.atlasztravelgyor.hu | https://oman.atlasztravel.hu/ |
-| `riu/` | riu.atlasztravelgyor.hu | https://riu.atlasztravel.hu/ |
-| `mauritius/` | mauritius.atlasztravelgyor.hu | https://mauritius.atlasztravel.hu/ |
-| `maldiv/` | maldiv.atlasztravelgyor.hu | https://maldiv.atlasztravel.hu/ |
-| `vietnam/` | vietnam.atlasztravelgyor.hu | https://vietnam.atlasztravel.hu/ |
+| `oman/` | oman.atlasztravelgyor.hu | https://oman.atlasztravel.hu/ (élő árakkal, családi árral) |
+| `riu/` | riu.atlasztravelgyor.hu | https://riu.atlasztravel.hu/ (élő árakkal mind a 17 szállodánál, családi árral) |
+| `mauritius/` | mauritius.atlasztravelgyor.hu | saját oldal (`sajat/mauritius/`): a megszűnt központi oldal utolsó változata, élő ajánlatokkal |
+| `maldiv/` | maldiv.atlasztravelgyor.hu | https://maldiv.atlasztravel.hu/ (élő ajánlatokkal a három resortra) |
+| `vietnam/` | vietnam.atlasztravelgyor.hu | https://vietnam.atlasztravel.hu/ (élő árakkal, családi árral) |
 | `bahari/` | bahari.atlasztravelgyor.hu | https://bahari.atlasztravel.hu/ (élő árakkal) |
 | `zanzibar/` | zanzibar.atlasztravelgyor.hu | https://zanzibar.atlasztravel.hu/ (teljes kereső élő adatokkal) |
 | `mscutak/` | mscutak.atlasztravelgyor.hu | https://mscutak.atlasztravel.hu/ (MSC hajóutak; az árakat a központ az oldalban frissíti) |
@@ -73,6 +73,30 @@ frissites.py az oldal mellé másol az `elo/` mappából:
   CeSYS-oldalról (a bécsi kínálat a CeSYS Amadeus-kapcsolatából), pozsonyi indulással az
   atlastravel.sk-ról. Az ajánlatkérést és a foglalást levélben küldi a gyor@atlasztravel.hu címre
   (az ügyfélnek nem küld másolatot). Forrásonként egyszerre legfeljebb 2–3 kérést küld.
+
+- `elo/idopontlista.php` – közös élő időpontlista (az oldal mellett `api.php` néven) az Omán, a Vietnám, a
+  RIU, a Maldív és a Mauritius oldalhoz. Oldalanként egy beállítófájl mondja meg, mit kérdezzen (az oldal mellett
+  `beallitas.php` néven): `elo/oman_beallitas.php`, `elo/vietnam_beallitas.php`, `elo/riu_beallitas.php`,
+  `elo/maldiv_beallitas.php`, `elo/mauritius_beallitas.php`. Bennük: a forrás (győri CeSYS-oldal vagy atlastravel.sk),
+  a szállodák azonosítói, az éjszakák, az ellátás és az indulási hely (a központi oldal kínálata szerint), az Omán-
+  oldalnál a szlovák szobanevek magyar megfelelője is. Kérések: `api.php` (2 felnőtt, minden szálloda),
+  `api.php?a=csalad&h=…&ac=2&ages[]=6` (bármilyen létszámra a pontos végösszeg naponként), `api.php?a=ar&…` (egy
+  szoba pontos ára), és Mauritiuson `api.php?a=ajanlatok` (szállodánként a legjobb aktuális ajánlat a győri oldal
+  keresőjéből, a szálloda nevével és képével az adatlapjáról). A forrást egyszerre legfeljebb 4 kéréssel kérdezi; a
+  látogató a legutóbbi (legfeljebb egynapos) adatot azonnal kapja, a frissítés a válasz után fut. A feltöltés után a
+  munkafolyamat is lekéri egyszer mindegyiket, hogy a tárolt adat friss legyen.
+- `eszkozok/csaladi_ar.js` – a „Családi ár, gyerekekkel” doboz (az oldal mellett `csaladi_ar.js` néven, a
+  `frissites.py` `CSALADI_AR` része szerint): felnőttek, gyerekek és életkoruk, indulási hónap; naponként a
+  legolcsóbb foglalható szoba végösszege a forrás árszolgáltatásából, a többi szoba pontos ára kattintásra, és az
+  „Ezt kérem” gomb kitölti az ajánlatkérő űrlapot (létszám, gyerekek kora, megjegyzés a választott ajánlattal).
+  Ha a szervező (pl. egy dinamikus csomagnál) csak egyedi lekérdezéssel ad végösszeget, a doboz ezt megmondja, és
+  ajánlatkérést kínál; ilyenkor nem becsül. A Maldív-oldal resortjainál ez a helyzet, ezért ott nincs családi doboz.
+
+**Ahol nincs élő ár:** az MSC-oldal hajóútjai egyik CeSYS-kínálatban sem szerepelnek, ezért az a központi oldal
+napi frissítésű másolata marad.
+
+**Árak forintban (RIU):** a győri forrás a fejenkénti forintárat másképp kerekíti, mint a végösszeget, ezért a
+„2 főre összesen” érték néhány tíz forinttal eltérhet a foglaláskori végösszegtől (euróban nincs ilyen eltérés).
 
 A zanzibar-oldal szállodafotói közvetlenül a CeSYS képtárából (i.ccdn.hu, i.ccdn.sk, f.ccdn.hu)
 töltődnek, nem a tárhelyen keresztül.

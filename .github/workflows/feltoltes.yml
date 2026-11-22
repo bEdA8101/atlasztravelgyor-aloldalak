@@ -35,3 +35,11 @@ jobs:
       - name: Feltöltés
         if: env.FTP_SZERVER != ''
         run: python feltoltes.py
+      - name: Élő árak előkészítése (az első látogatónak se kelljen várnia)
+        if: env.FTP_SZERVER != ''
+        continue-on-error: true
+        run: |
+          for cim in oman/api.php vietnam/api.php riu/api.php maldiv/api.php "mauritius/api.php?a=ajanlatok"; do
+            nev="${cim%%/*}"
+            curl -s -o /dev/null -A "AtlaszTravelGyor-elomelegito/1.0" --max-time 280 -w "$nev: %{http_code}, %{time_total} mp\n" "https://$nev.atlasztravelgyor.hu/${cim#*/}" || true
+          done
