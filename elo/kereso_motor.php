@@ -11,7 +11,7 @@
 //   ?action=dates&hotel=…&src=…&df=…&dt=…&uf=…&ut=…&ac=…&ages=…
 //   ?action=rooms&date=…&hotel=…&ac=…&ages=…
 //   ?action=price&src=…&date=…&room=…&ac=…&ages=…  (CeSYS-adatbázis: budapesti, pozsonyi kínálat)
-//   ?action=price_at&code=…&date=…                  (bécsi, Amadeus-kínálat)
+//   ?action=price_at&code=…&date=…                  (bécsi, Amadeus-kínálat; 2026. 11. 25. óta kikapcsolva)
 //   ?action=img&h=…|u=…                            (szállodafotó)
 //   ?action=lastminute            (minden indulási hely egyben)
 //   ?action=lastminute&g=0        (csak egy indulási hely: az LM_FORRASOK sorrendjében, pl. 0 = sk)
@@ -37,7 +37,7 @@ foreach ([
     'RESZLEGES_ERVENYES' => 300,    // ha egy keresés csak részben sikerült, csak 5 percig jegyezzük meg
     'IDOPONT_CSOMAG' => 200,        // ennyi időpont-sort kérünk egyszerre
     'MAX_IDOPONT_OLDAL' => 2,       // legfeljebb ennyi időpont-csomag
-    'LM_FORRASOK' => ['sk', 'hu', 'at'],
+    'LM_FORRASOK' => ['sk', 'hu'],   // az Amadeus (at) forrás 2026. 11. 25. óta tiltott
     'LM_EJ_MIN' => 6,               // last minute: 6–21 éjszakás utak (rövidebbet nem ajánlunk)
     'LM_EJ_MAX' => 21,
     'LM_ELLENORZOTT' => 8,          // last minute: forrásonként legfeljebb ennyi szálloda időpontjait nézzük meg
@@ -907,7 +907,9 @@ function kereso_kerelmek(): void
             break;
 
         case 'price_at':
-            json_valasz(amadeus_ar(substr((string)($_GET['code'] ?? ''), 0, 400), substr((string)($_GET['date'] ?? ''), 0, 100)));
+            // 2026. november 25-től a CeSYS nem engedi az Amadeus-rendszer gépi lekérdezését a saját rendszerén
+            // kívül: a bécsi (Amadeus) pontos árat nem kérdezzük le (a régi hívás: amadeus_ar())
+            hiba('A bécsi indulású ajánlatok most nem érhetők el.');
             break;
 
         case 'frissit':

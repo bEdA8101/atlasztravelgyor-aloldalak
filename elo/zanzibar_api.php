@@ -1,20 +1,23 @@
 <?php
 // A zanzibar-oldal élő adatai (az oldal mellett api.php néven): a közös keresőmotor (motor.php)
 // a zanzibári beállításokkal, és a partszakaszok pótlása (ahol a forrás csak „Zanzibar”-t ír).
-// Budapesti és bécsi indulás a győri CeSYS-oldalról, pozsonyi az atlastravel.sk-ról. Az
-// ajánlatkérések és foglalások a győri irodának mennek levélben. A kérések leírása: motor.php.
+// Budapesti indulás a győri CeSYS-oldalról, pozsonyi az atlastravel.sk-ról. Az ajánlatkérések és
+// foglalások a győri irodának mennek levélben. A kérések leírása: motor.php.
+//
+// 2026. november 25-től a CeSYS szerződéses tiltásra hivatkozva nem engedi az Amadeus-rendszerből
+// történő gépi lekérdezést a saját rendszerén kívül, ezért a bécsi (Amadeus, am-utazas-kereses) forrás ki van
+// kapcsolva; csak a CeSYS-adatbázis (győri és szlovák) kínálatát kérdezzük. Visszakapcsolni csak a tiltás
+// feloldása után szabad (a régi beállítás: git-előzmények, 2026. november 24-i változat).
 
 declare(strict_types=1);
 
 const FORRASOK = [
     'hu' => ['oldal' => 'https://www.atlasztravelgyor.hu', 'kereso' => '/utazas-kereses/1', 'cel' => ['di', 685], 'ai' => [18, 19, 24],
              'source' => 'cesys_default', 'sm' => 1, 'cimke' => 'Budapest'],
-    'at' => ['oldal' => 'https://www.atlasztravelgyor.hu', 'kereso' => '/am-utazas-kereses/2', 'cel' => ['di', 454], 'ai' => [6],
-             'source' => 'amadeus_connector', 'sm' => 2, 'cimke' => 'Bécs'],
     'sk' => ['oldal' => 'https://www.atlastravel.sk', 'kereso' => '/vyhladavanie-zajazdov/1', 'cel' => ['di', 685], 'ai' => [7],
              'source' => 'cesys_default', 'sm' => 1, 'cimke' => 'Pozsony'],
 ];
-const EGYSZERRE = ['hu' => 3, 'at' => 3, 'sk' => 2];   // egyszerre legfeljebb ennyi kérés forrásonként (kíméljük őket)
+const EGYSZERRE = ['hu' => 3, 'sk' => 2];   // egyszerre legfeljebb ennyi kérés forrásonként (kíméljük őket)
 const OLDAL_NEV = 'Zanzibár';
 const OLDAL_MAPPA = 'zanzibar';
 const REGIO_OLDAL = 'https://www.atlasztravelgyor.hu/tanzania/zanzibar';   // a győri oldal partszakasz-aloldalai

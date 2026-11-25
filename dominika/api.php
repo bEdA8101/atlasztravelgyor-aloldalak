@@ -1,18 +1,19 @@
 <?php
 // A dominika-oldal élő adatai (az oldal mellett api.php néven): a közös keresőmotor (motor.php)
-// a dominikai beállításokkal. Bécsi indulás átszállással (a győri CeSYS-oldal Amadeus-kínálata),
-// budapesti indulás átszállással (a győri CeSYS-oldal saját kínálata, jellemzően Frankfurton át) és
+// a dominikai beállításokkal. Budapesti indulás átszállással (a győri CeSYS-oldal saját kínálata, jellemzően Frankfurton át) és
 // pozsonyi indulás közvetlen járattal (atlastravel.sk); csak 4 és 5 csillagos szállodák, csak
 // Punta Cana, Bávaro és Bayahibe területén. Az ajánlatkérések és a foglalási igények a győri irodának
 // mennek levélben; a foglalási igényhez a program ellenőrzi a kötelező utasadatokat. A kérések
 // leírása: motor.php.
+//
+// 2026. november 25-től a CeSYS szerződéses tiltásra hivatkozva nem engedi az Amadeus-rendszerből
+// történő gépi lekérdezést a saját rendszerén kívül, ezért a bécsi (Amadeus, am-utazas-kereses) forrás ki van
+// kapcsolva; csak a CeSYS-adatbázis (győri és szlovák) kínálatát kérdezzük. Visszakapcsolni csak a tiltás
+// feloldása után szabad (a régi beállítás: git-előzmények, 2026. november 24-i változat).
 
 declare(strict_types=1);
 
 const FORRASOK = [
-    'at' => ['oldal' => 'https://www.atlasztravelgyor.hu', 'kereso' => '/am-utazas-kereses/2', 'cel' => ['ci', 'DO'], 'ai' => [6],
-             'source' => 'amadeus_connector', 'sm' => 2, 'cimke' => 'Bécs', 'extra' => [['ar', 4]],
-             'ellatas' => ['ai' => [['bi', 'AllInclusive']]]],
     'sk' => ['oldal' => 'https://www.atlastravel.sk', 'kereso' => '/vyhladavanie-zajazdov/1', 'cel' => ['ci', 46], 'ai' => [7],
              'source' => 'cesys_default', 'sm' => 1, 'cimke' => 'Pozsony', 'extra' => [['ar', 4]],
              'ellatas' => ['ai' => [['bi', 8]]], 'ellatas_idopont' => ['ai' => [['bi', 8], ['bi_f[]', 8]]]],
@@ -21,10 +22,10 @@ const FORRASOK = [
              'source' => 'cesys_default', 'sm' => 1, 'cimke' => 'Budapest', 'extra' => [['ar', 4]],
              'ellatas_idopont' => ['ai' => [['bi', 8], ['bi_f[]', 8]]]],
 ];
-const EGYSZERRE = ['at' => 3, 'sk' => 2, 'hu' => 3];   // egyszerre legfeljebb ennyi kérés forrásonként (kíméljük őket)
+const EGYSZERRE = ['sk' => 2, 'hu' => 3];   // egyszerre legfeljebb ennyi kérés forrásonként (kíméljük őket)
 const OLDAL_NEV = 'Dominikai Köztársaság';
 const OLDAL_MAPPA = 'dominika';
-const LM_FORRASOK = ['sk', 'hu', 'at'];
+const LM_FORRASOK = ['sk', 'hu'];
 const HELY_MAX_UJ = 12;          // egy válaszhoz legfeljebb ennyi szálloda-adatlapot nézünk meg (térképes hely)
 const MIN_CSILLAG = 4;
 const TERULETEK = ['Punta Cana', 'Bávaro', 'Bayahibe'];
