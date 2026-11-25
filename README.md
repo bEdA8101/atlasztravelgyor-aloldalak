@@ -69,9 +69,8 @@ frissites.py az oldal mellé másol az `elo/` mappából:
   A végösszeget a CeSYS árszolgáltatása adja minden olyan utasösszetételre, ami nem pontosan
   2 felnőtt (2 felnőttnél az ár/fő × 2 megegyezik a forrás végösszegével).
 - `elo/zanzibar_api.php` – a zanzibar-oldal keresője (az oldal mellett `api.php` néven): szállodák,
-  időpontok, szobák, pontos ár és last minute ajánlatok budapesti és bécsi indulással a győri
-  CeSYS-oldalról (a bécsi kínálat a CeSYS Amadeus-kapcsolatából), pozsonyi indulással az
-  atlastravel.sk-ról. Az ajánlatkérést és a foglalást levélben küldi a gyor@atlasztravel.hu címre
+  időpontok, szobák, pontos ár és last minute ajánlatok budapesti indulással a győri
+  CeSYS-oldalról, pozsonyi indulással az atlastravel.sk-ról. Az ajánlatkérést és a foglalást levélben küldi a gyor@atlasztravel.hu címre
   (az ügyfélnek nem küld másolatot). Forrásonként egyszerre legfeljebb 2–3 kérést küld.
 
 - `elo/idopontlista.php` – közös élő időpontlista (az oldal mellett `api.php` néven) az Omán, a Vietnám, a
@@ -101,7 +100,7 @@ napi frissítésű másolata marad.
 A zanzibar-oldal szállodafotói közvetlenül a CeSYS képtárából (i.ccdn.hu, i.ccdn.sk, f.ccdn.hu)
 töltődnek, nem a tárhelyen keresztül.
 
-**Partszakaszok (régiók) a zanzibar-oldalon.** A bécsi és a pozsonyi kínálatban a forrás sokszor
+**Partszakaszok (régiók) a zanzibar-oldalon.** A pozsonyi kínálatban a forrás sokszor
 csak „Zanzibar”-t ír. Ilyenkor a program így pótolja a partszakaszt, ebben a sorrendben:
 
 1. a kézzel szerkeszthető táblázat: `elo/zanzibar_regiok.json`, „szallodak” rész;
@@ -122,7 +121,7 @@ mindkettőnél megtalálja. Ha egy szállodánál rossz vagy hiányzó partszaka
 táblázat „szallodak” részébe (`"Szálloda neve": "Partszakasz"`), vagy kérd Claude-tól.
 
 **A dominika-oldal** (`elo/dominika_api.php`, az oldal mellett `api.php`): pozsonyi indulás közvetlen
-járattal (atlastravel.sk), bécsi indulás átszállással (a győri oldal Amadeus-kínálata) és budapesti
+járattal (atlastravel.sk) és budapesti
 indulás átszállással (a győri oldal saját kínálata, `di=130`; jellemzően Lufthansa, Frankfurton át),
 csak 4 és 5 csillagos szállodák, alapból all inclusive ellátással (a budapesti keresőben ez nem
 szűrhető, ezért a program a kártyák ellátása szerint szűr, a körutazásokat pedig kihagyja), és csak
@@ -170,6 +169,19 @@ aloldalnál elég az `ARFRISSITO`-ba felvenni** (ha kimarad, a `frissites.py` hi
 `"elavult": true`), vagy az oldal a saját tartalék áraira vált. A meg nem jött kéréseket egyszer
 újrapróbálja, a kimaradásokat hibanaplóba írja; a zanzibar-oldalon ez így nézhető meg:
 `https://<aloldal>/zanzibar/api.php?action=allapot` (az utolsó 30 kimaradás ideje, címe és oka).
+
+## Amadeus (bécsi) kínálat: kikapcsolva
+
+2026. november 25-től a CeSYS szerződéses tiltásra hivatkozva nem engedi az Amadeus-rendszerből történő gépi
+lekérdezést a saját rendszerén kívül. Ezért a győri oldal bécsi Amadeus-keresője (`am-utazas-kereses`,
+`amadeus_connector`) és az Amadeus pontos ára (`check_date_amadeus.php`) ki van kapcsolva: a Zanzibár- és a
+Dominika-oldal keresője és last minute doboza csak a budapesti (győri CeSYS) és a pozsonyi (atlastravel.sk)
+kínálatot mutatja, az `action=price_at` kérés hibát ad. Minden oldal csak a CeSYS-adatbázisból (győri és szlovák)
+kérdez. A többi oldalon előforduló bécsi indulások (pl. Maldív, Mauritius, RIU) a CeSYS saját adatbázisából
+jönnek (utazásszervezők csomagjai, pl. Čedok), nem az Amadeusból. A foglalási és ajánlatkérő űrlapokon a
+„Bécs” választás megmaradt: azt az iroda kézzel intézi. Ha a tiltást feloldják, a régi beállítás a
+git-előzményekben megvan (2026. november 24-i változat: `elo/zanzibar_api.php`, `elo/dominika_api.php`,
+`elo/kereso_motor.php`, a `frissites.py` `zanzibar_amadeus_nelkul` cseréi és a `sajat/dominika` oldal).
 
 ## Ajánlatkérés és foglalási igény
 

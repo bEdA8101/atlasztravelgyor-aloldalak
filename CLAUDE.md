@@ -42,6 +42,10 @@ Ez a tároló az atlasztravelgyor.hu aloldalait tartalmazza: a központi Atlasz 
   A forrás a CeSYS nyilvános adatszolgáltató címei (atlasztravelgyor.hu, atlastravel.sk,
   api-ng.cesys.eu). A lekérdezés mindig nevezze meg magát (CESYS_UA), használja a gyorsítótárat,
   és soha ne próbálja megkerülni a robotszűrőket (álcázott böngésző, ellenőrzés kijátszása).
+- **Amadeus-forrást (bécsi `am-utazas-kereses`, `amadeus_connector`, `check_date_amadeus`) ne használj:** 2026. 11. 25.
+  óta a CeSYS szerződésben tiltja a gépi lekérdezését a saját rendszerén kívül. Csak a CeSYS-adatbázis (győri és
+  szlovák, `cesys_default`, ill. az api-ng `dates-list`/`availability-price`) kérdezhető. Visszakapcsolni csak a
+  felhasználó kifejezett kérésére, a tiltás feloldása után szabad (README: „Amadeus (bécsi) kínálat”).
 - Az oldalak élesek (`ELONEZET = False`). A tesztoldalt a `robots.txt` rejti el a keresők elől.
 - Külön, kis commitokat készíts, érthető magyar leírással.
 - Soha ne commitolj jelszót, API-kulcsot vagy ügyféladatot (például tesztűrlapból származó adatot).
