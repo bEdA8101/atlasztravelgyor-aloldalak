@@ -71,7 +71,7 @@ h1,h2,h3{font-family:"Unbounded","Arial Black",system-ui,sans-serif; line-height
 .field input:focus,.field select:focus{border-color:var(--lagoon); outline:none; box-shadow:0 0 0 3px rgba(47,191,181,.25)}
 .btn{display:block; width:100%; font:700 1.05rem "Figtree",sans-serif; color:#fff; background:var(--magenta); border:0; border-radius:12px; padding:1rem; cursor:pointer; margin-top:.4rem}
 .btn:hover{background:var(--magenta-dark)}
-.src{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; background:var(--foam); border-radius:12px; padding:5px; margin-bottom:1.1rem}
+.src{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; background:var(--foam); border-radius:12px; padding:5px; margin-bottom:1.1rem}
 .src button{font:600 .9rem/1.25 "Figtree",sans-serif; color:var(--muted); background:transparent; border:0; border-radius:9px; padding:.6rem .4rem; cursor:pointer}
 .src button[aria-pressed="true"]{background:var(--surface); color:var(--ocean); box-shadow:0 2px 6px rgba(10,77,92,.18)}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .src button[aria-pressed="true"]{color:var(--text)}}
@@ -217,7 +217,7 @@ dialog#hotel::backdrop{background:rgba(6,45,54,.65)}
 /* last minute */
 .lm{padding:3rem 0 0}
 .lm h2{font-size:clamp(1.5rem,3vw,2.1rem); color:var(--magenta)}
-.lm-cols{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.2rem}
+.lm-cols{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.2rem}
 .lm-col{background:var(--surface); border:1px solid var(--line); border-top:4px solid var(--magenta); border-radius:10px; padding:1rem}
 .lm-col h3{font-size:1rem; color:var(--ocean); margin:0 0 .7rem}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .lm-col h3{color:var(--lagoon)}}
@@ -485,7 +485,7 @@ dialog#hotel::backdrop{background:rgba(6,45,54,.65)}
 
 <script>
 // Keresési beállítások. Az élő árakat az api.php kéri le (győri CeSYS-oldal, atlastravel.sk).
-const CONFIG = {"style": "hu", "children": true, "sources": [{"label": "Budapesti indulás", "di": 685, "ai": [18, 19, 24], "key": "hu", "airports": [{"label": "Budapest", "ai": ""}]}, {"label": "Bécsi indulás", "di": 454, "ai": [18, 6], "key": "at", "airports": [{"label": "Bécs", "ai": "6"}]}, {"label": "Pozsonyi indulás", "key": "sk", "di": 685, "ai": [7], "airports": [{"label": "Pozsony", "ai": ""}]}], "priceOptions": [{"label": "500 000 Ft", "value": 500000}, {"label": "800 000 Ft", "value": 800000}, {"label": "1 200 000 Ft", "value": 1200000}, {"label": "2 000 000 Ft", "value": 2000000}, {"label": "3 000 000 Ft", "value": 3000000}, {"label": "Nincs felső határ", "value": 15000000}], "priceDefault": 15000000, "ufDefault": 7, "utDefault": 16, "months": ["jan.", "febr.", "márc.", "ápr.", "máj.", "jún.", "júl.", "aug.", "szept.", "okt.", "nov.", "dec."], "season": ["dry", "dry", "mixed", "wet", "wet", "dry", "dry", "dry", "dry", "dry", "mixed", "dry"], "presets": [{"label": "Karácsony és szilveszter", "kind": "xmas", "uf": 7, "ut": 12}, {"label": "Januári napsütés", "kind": "month", "month": 0, "uf": 7, "ut": 14}, {"label": "Február a tél helyett", "kind": "month", "month": 1, "uf": 7, "ut": 14}, {"label": "Nyár Zanzibáron", "kind": "month", "month": 6, "uf": 7, "ut": 14}, {"label": "Két hét a parton", "kind": "season", "uf": 13, "ut": 15}], "t": {"min": "legalább", "max": "legfeljebb", "nights": "éj", "dry": "száraz", "mixed": "változó", "wet": "esős", "childAge": "{n}. gyerek kora", "age": "{n} éves", "setSearch": "A kereső erre a hónapra áll be.", "errEmpty": "Adja meg a legkorábbi indulás és a legkésőbbi hazaérkezés dátumát.", "errOrder": "A hazaérkezés nem lehet korábbi az indulásnál."}, "email": "gyor@atlasztravel.hu", "phone": "+36 20 266 8144", "phoneTel": "+36202668144"};
+const CONFIG = {"style": "hu", "children": true, "sources": [{"label": "Budapesti indulás", "di": 685, "ai": [18, 19, 24], "key": "hu", "airports": [{"label": "Budapest", "ai": ""}]}, {"label": "Pozsonyi indulás", "key": "sk", "di": 685, "ai": [7], "airports": [{"label": "Pozsony", "ai": ""}]}], "priceOptions": [{"label": "500 000 Ft", "value": 500000}, {"label": "800 000 Ft", "value": 800000}, {"label": "1 200 000 Ft", "value": 1200000}, {"label": "2 000 000 Ft", "value": 2000000}, {"label": "3 000 000 Ft", "value": 3000000}, {"label": "Nincs felső határ", "value": 15000000}], "priceDefault": 15000000, "ufDefault": 7, "utDefault": 16, "months": ["jan.", "febr.", "márc.", "ápr.", "máj.", "jún.", "júl.", "aug.", "szept.", "okt.", "nov.", "dec."], "season": ["dry", "dry", "mixed", "wet", "wet", "dry", "dry", "dry", "dry", "dry", "mixed", "dry"], "presets": [{"label": "Karácsony és szilveszter", "kind": "xmas", "uf": 7, "ut": 12}, {"label": "Januári napsütés", "kind": "month", "month": 0, "uf": 7, "ut": 14}, {"label": "Február a tél helyett", "kind": "month", "month": 1, "uf": 7, "ut": 14}, {"label": "Nyár Zanzibáron", "kind": "month", "month": 6, "uf": 7, "ut": 14}, {"label": "Két hét a parton", "kind": "season", "uf": 13, "ut": 15}], "t": {"min": "legalább", "max": "legfeljebb", "nights": "éj", "dry": "száraz", "mixed": "változó", "wet": "esős", "childAge": "{n}. gyerek kora", "age": "{n} éves", "setSearch": "A kereső erre a hónapra áll be.", "errEmpty": "Adja meg a legkorábbi indulás és a legkésőbbi hazaérkezés dátumát.", "errOrder": "A hazaérkezés nem lehet korábbi az indulásnál."}, "email": "gyor@atlasztravel.hu", "phone": "+36 20 266 8144", "phoneTel": "+36202668144"};
 const API = 'api.php';
 // Ha a saját tárhely nem tudja kiszolgálni a fotót, közvetlenül a képszerverről töltjük be.
 window.zImgErr = function(el){
@@ -1091,7 +1091,7 @@ window.zImgErr = function(el){
   /* ---------- last minute: TOP 3 ár indulási repülőterenként, a következő 14 napban ---------- */
   function loadLastMinute(){
     const box = $('lm-cols');
-    const GROUPS = [{label:'Pozsony', src:'sk'}, {label:'Budapest', src:'hu'}, {label:'Bécs', src:'at'}];
+    const GROUPS = [{label:'Pozsony', src:'sk'}, {label:'Budapest', src:'hu'}];
     const comp = {ac: 2, ages: []};
     const t0 = new Date(); t0.setDate(t0.getDate()+1);
     const t1 = new Date(); t1.setDate(t1.getDate()+14);

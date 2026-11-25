@@ -459,6 +459,21 @@ def maldiv_elo_arak(html):
     return csere(html, r"</body>", lambda m: betolto + "</body>", "élő ajánlatok betöltése", pontosan=1)
 
 
+def zanzibar_amadeus_nelkul(html):
+    """
+    2026. november 25-től a CeSYS nem engedi az Amadeus-rendszer gépi lekérdezését a saját rendszerén kívül, ezért a
+    bécsi (Amadeus) indulás kikerül a keresőből és a last minute dobozból; Budapest és Pozsony marad (CeSYS-adatbázis).
+    A foglalási űrlap reptérválasztójában a Bécs megmarad: az egyedi kérést az iroda kézzel intézi.
+    """
+    html = csere(html, r'\{"label": "Bécsi indulás", "di": \d+, "ai": \[[^\]]*\], "key": "at", "airports": \[[^\]]*\]\}, ', "",
+                 "bécsi (Amadeus) forrás a keresőből", pontosan=1)
+    html = csere(html, re.escape(".src{display:grid; grid-template-columns:repeat(3,minmax(0,1fr));"),
+                 lambda m: ".src{display:grid; grid-template-columns:repeat(2,minmax(0,1fr));", "forrásválasztó két oszlopa", pontosan=1)
+    html = csere(html, re.escape(", {label:'Bécs', src:'at'}];"), lambda m: "];", "bécsi last minute oszlop", pontosan=1)
+    return csere(html, re.escape(".lm-cols{display:grid; grid-template-columns:repeat(3,minmax(0,1fr));"),
+                 lambda m: ".lm-cols{display:grid; grid-template-columns:repeat(2,minmax(0,1fr));", "last minute két oszlopa", pontosan=1)
+
+
 def riu_elo_arak(html):
     """
     Élő árak (api.php = elo/idopontlista.php + elo/riu_beallitas.php): a győri CeSYS-oldal kínálata (a két dominikai
@@ -763,7 +778,7 @@ OLDAL_CSEREK = {
     "maldiv": [premium_cserek, sorkoz_be("h2"), maldiv_elo_arak],
     "vietnam": [vietnam_cserek],
     "bahari": [bahari_cserek],
-    "zanzibar": [zanzibar_cserek],
+    "zanzibar": [zanzibar_cserek, zanzibar_amadeus_nelkul],
     "mscutak": [msc_cserek],
 }
 
