@@ -377,6 +377,9 @@ if ($muvelet === 'ajanlatok' && defined('AJANLATOK')) {
             }
             $volt = true;
             foreach ($sorok as $x) {
+                if (($x['source'] ?? 'national') !== 'national') {
+                    continue;   // csak a CeSYS saját adatbázisa (az Amadeus-forrás tiltott)
+                }
                 $id = (int)($x['name'] ?? 0);
                 $ar = $x['price_from']['EUR'] ?? null;
                 $ellatas = mb_strtolower((string)($x['boarding'] ?? ''));

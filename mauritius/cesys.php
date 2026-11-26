@@ -50,6 +50,36 @@ function cesys_hivatkozo(string $url): string
     return isset($r['scheme'], $r['host']) ? $r['scheme'] . '://' . $r['host'] . '/' : '';
 }
 
+// ---------------------------------------------------------------- tiltott forrás: Amadeus
+// A győri CeSYS-oldal német–osztrák keresőjének (am-utazas-kereses, amadeus_connector, check_date_amadeus) adatait
+// a CeSYS az Amadeus-rendszerből kéri le, amelynek gépi lekérdezését a CeSYS-en kívül szerződés tiltja
+// (2026. 11. 25.). Ilyen kérés egyetlen programból sem mehet ki: a lekérő függvények el sem küldik, csak naplózzák.
+function cesys_tiltott(string $url, string $torzs = ''): bool
+{
+    return (bool)preg_match('/am-utazas-kereses|amadeus|[?&]sm=2(?:&|$)/i', $url . ' ' . $torzs);
+}
+
+function cesys_tiltott_naplo(string $url): void
+{
+    naplo($url, 'tiltott forrás (Amadeus / német–osztrák kereső): a kérés nem ment ki');
+}
+
+/**
+ * Csak a CeSYS saját adatbázisából származó időpontlistát fogadjuk el (origin: database); az Amadeus-válaszokban
+ * ilyen jelölés nincs. Az atlastravel.sk és az atlasztravelgyor.hu időpontlistája (generation_dates_terms) és a
+ * győri kereső szolgáltatása (dates-list) is így jelöli a saját adatbázisát.
+ */
+function cesys_adatbazisbol(string $url, array $adat): bool
+{
+    if (str_contains($url, 'generation_dates_terms')) {
+        return ($adat['origin'] ?? '') === 'database';
+    }
+    if (str_contains($url, '/cesys/dates-list')) {
+        return ($adat['data']['origin'] ?? '') === 'database';
+    }
+    return true;
+}
+
 function cesys_kezelo(string $url)
 {
     $ch = curl_init($url);
@@ -77,12 +107,20 @@ function cesys_valasz($ch, string $url, $valasz): ?array
         naplo($url, 'nem JSON válasz: ' . substr(preg_replace('/\s+/', ' ', strip_tags((string)$valasz)), 0, 60));
         return null;
     }
+    if (!cesys_adatbazisbol($url, $adat)) {
+        naplo($url, 'nem a CeSYS-adatbázisból jött válasz (eldobva)');
+        return null;
+    }
     return $adat;
 }
 
 /** Egy HTML-oldal letöltése (nem JSON), egy újrapróbálással; hiba esetén null. */
 function cesys_html(string $url): ?string
 {
+    if (cesys_tiltott($url)) {
+        cesys_tiltott_naplo($url);
+        return null;
+    }
     for ($proba = 0; $proba < 2; $proba++) {
         if ($proba) {
             usleep(800000);
@@ -105,6 +143,13 @@ function cesys_html(string $url): ?string
 function cesys_html_tobb(array $cimek, int $egyszerre = 3, bool $kovet = false): array
 {
     $eredmeny = [];
+    foreach ($cimek as $kulcs => $cim) {
+        if (cesys_tiltott($cim)) {
+            cesys_tiltott_naplo($cim);
+            $eredmeny[$kulcs] = null;
+            unset($cimek[$kulcs]);
+        }
+    }
     foreach (array_chunk($cimek, $egyszerre, true) as $csomag) {
         $multi = curl_multi_init();
         $kezelok = [];
@@ -139,6 +184,10 @@ function cesys_html_tobb(array $cimek, int $egyszerre = 3, bool $kovet = false):
 /** Egy JSON-GET; ha nem sikerül, egyszer újrapróbálja. */
 function cesys_get(string $url): ?array
 {
+    if (cesys_tiltott($url)) {
+        cesys_tiltott_naplo($url);
+        return null;
+    }
     for ($proba = 0; $proba < 2; $proba++) {
         if ($proba) {
             usleep(800000);
@@ -157,6 +206,14 @@ function cesys_get(string $url): ?array
 function cesys_get_tobb(array $cimek, int $egyszerre = 4): array
 {
     $eredmeny = [];
+    $tiltott = [];
+    foreach ($cimek as $kulcs => $cim) {
+        if (cesys_tiltott($cim)) {
+            cesys_tiltott_naplo($cim);
+            $tiltott[$kulcs] = null;
+            unset($cimek[$kulcs]);
+        }
+    }
     foreach (array_chunk($cimek, $egyszerre, true) as $csomag) {
         $multi = curl_multi_init();
         $kezelok = [];
@@ -187,13 +244,20 @@ function cesys_get_tobb(array $cimek, int $egyszerre = 4): array
             curl_close($ch);
         }
     }
-    return $eredmeny;
+    return $eredmeny + $tiltott;
 }
 
 /** Több JSON-POST párhuzamosan (a CeSYS árszolgáltatásához). Kulcs szerint adja vissza a válaszokat. */
 function cesys_post_tobb(string $url, array $torzsek, int $egyszerre = 10): array
 {
     $eredmeny = [];
+    foreach ($torzsek as $kulcs => $torzs) {
+        if (cesys_tiltott($url, (string)json_encode($torzs))) {
+            cesys_tiltott_naplo($url);
+            $eredmeny[$kulcs] = null;
+            unset($torzsek[$kulcs]);
+        }
+    }
     foreach (array_chunk($torzsek, $egyszerre, true) as $csomag) {
         $multi = curl_multi_init();
         $kezelok = [];
@@ -218,6 +282,10 @@ function cesys_post_tobb(string $url, array $torzsek, int $egyszerre = 10): arra
         } while ($fut && $allapot === CURLM_OK);
         foreach ($kezelok as $kulcs => $ch) {
             $adat = curl_getinfo($ch, CURLINFO_RESPONSE_CODE) === 200 ? json_decode((string)curl_multi_getcontent($ch), true) : null;
+            if (is_array($adat) && !cesys_adatbazisbol($url, $adat)) {
+                naplo($url, 'nem a CeSYS-adatbázisból jött válasz (eldobva)');
+                $adat = null;
+            }
             $eredmeny[$kulcs] = is_array($adat) ? $adat : null;
             curl_multi_remove_handle($multi, $ch);
             curl_close($ch);
