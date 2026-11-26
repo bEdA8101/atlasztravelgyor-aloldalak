@@ -5,10 +5,10 @@ A központ engedélyezte a tartalmak átvételét.
 
 | Mappa | Cím | Forrás |
 |---|---|---|
-| `oman/` | oman.atlasztravelgyor.hu | https://oman.atlasztravel.hu/ (élő árakkal, családi árral) |
+| `oman/` | oman.atlasztravelgyor.hu | saját oldal (`sajat/oman/`): a 2026. 11. 26-án megszűnt központi oldal utolsó változata, élő árakkal, családi árral |
 | `riu/` | riu.atlasztravelgyor.hu | https://riu.atlasztravel.hu/ (élő árakkal mind a 17 szállodánál, családi árral) |
 | `mauritius/` | mauritius.atlasztravelgyor.hu | saját oldal (`sajat/mauritius/`): a megszűnt központi oldal utolsó változata, élő ajánlatokkal |
-| `maldiv/` | maldiv.atlasztravelgyor.hu | https://maldiv.atlasztravel.hu/ (élő ajánlatokkal a három resortra) |
+| `maldiv/` | maldiv.atlasztravelgyor.hu | saját oldal (`sajat/maldiv/`): a 2026. 11. 26-án megszűnt központi oldal utolsó változata, élő ajánlatokkal a három resortra |
 | `vietnam/` | vietnam.atlasztravelgyor.hu | https://vietnam.atlasztravel.hu/ (élő árakkal, családi árral) |
 | `bahari/` | bahari.atlasztravelgyor.hu | https://bahari.atlasztravel.hu/ (élő árakkal) |
 | `zanzibar/` | zanzibar.atlasztravelgyor.hu | https://zanzibar.atlasztravel.hu/ (teljes kereső élő adatokkal) |
@@ -169,6 +169,14 @@ aloldalnál elég az `ARFRISSITO`-ba felvenni** (ha kimarad, a `frissites.py` hi
 `"elavult": true`), vagy az oldal a saját tartalék áraira vált. A meg nem jött kéréseket egyszer
 újrapróbálja, a kimaradásokat hibanaplóba írja; a zanzibar-oldalon ez így nézhető meg:
 `https://<aloldal>/zanzibar/api.php?action=allapot` (az utolsó 30 kimaradás ideje, címe és oka).
+
+## Ha egy központi oldal megszűnik vagy nem érhető el
+
+Ha a központi oldal helyén a domainszolgáltató alapoldala áll (2026 novemberében így szűnt meg a Mauritius, az
+Omán és a Maldív), a győri oldal saját oldallá válik: a forrása az utolsó jó győri változat a `sajat/<név>/`
+mappában (a győri adatok `{{telefon}}` stb. sablonmezőkkel), és a `frissites.py` `SAJAT_OLDALAK` része alá kerül.
+Ha a központi oldal csak átmenetileg nem érhető el (pl. 503), a győri oldal szövege a régi marad, de az élő árak
+programjai és a közös modulok akkor is frissülnek (`elo_programok_frissitese()`).
 
 ## Amadeus (bécsi) kínálat: kikapcsolva
 

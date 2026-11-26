@@ -14,8 +14,9 @@ Ez a tároló az atlasztravelgyor.hu aloldalait tartalmazza: a központi Atlasz 
 - A kész oldalakat (`oman/`, `riu/`, `mauritius/`, `maldiv/`, `vietnam/`, `index.html`) a
   `frissites.py` állítja elő. **Ne szerkeszd őket kézzel**: minden változtatást a
   `frissites.py` cseréiben vezess, majd futtasd: `python frissites.py`.
-- Saját oldalak (nem a központtól másolva): `sajat/dominika/` és `sajat/mauritius/` (a központi Mauritius-oldal
-  2026 novemberében megszűnt; ez az utolsó jó változata, élő ajánlatokkal). Ezeken a szöveget ott kell módosítani.
+- Saját oldalak (nem a központtól másolva): `sajat/dominika/`, `sajat/mauritius/`, `sajat/oman/` és `sajat/maldiv/`
+  (a központi Mauritius-, Omán- és Maldív-oldal 2026 novemberében megszűnt; ezek az utolsó jó változataik, élő
+  árakkal). Ezeken a szöveget ott kell módosítani.
 - Élő árak: a közös `elo/idopontlista.php` és oldalanként egy `elo/*_beallitas.php`; a családi ár doboza
   `eszkozok/csaladi_ar.js` (beállítása a `frissites.py` `CSALADI_AR` részében). Részletek a README-ben.
 - Árfrissítés: 6:00 és éjfél között 2 óránként (ütemezett), illetve kézzel a lábléc évszámára kattintva
