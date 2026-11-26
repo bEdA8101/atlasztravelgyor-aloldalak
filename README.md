@@ -179,7 +179,18 @@ Dominika-oldal keresője és last minute doboza csak a budapesti (győri CeSYS) 
 kínálatot mutatja, az `action=price_at` kérés hibát ad. Minden oldal csak a CeSYS-adatbázisból (győri és szlovák)
 kérdez. A többi oldalon előforduló bécsi indulások (pl. Maldív, Mauritius, RIU) a CeSYS saját adatbázisából
 jönnek (utazásszervezők csomagjai, pl. Čedok), nem az Amadeusból. A foglalási és ajánlatkérő űrlapokon a
-„Bécs” választás megmaradt: azt az iroda kézzel intézi. Ha a tiltást feloldják, a régi beállítás a
+„Bécs” választás megmaradt: azt az iroda kézzel intézi.
+
+**Védelem (2026. 11. 26.):** a német és osztrák szervezők ajánlatait, amelyek a győri oldal német–osztrák
+keresőjén érhetők el, a CeSYS az Amadeus-rendszerből kéri le; ezekből egyetlen élő árlekérdezés sem vehet adatot.
+Ezért az `elo/cesys.php` minden lekérő függvénye (`cesys_get`, `cesys_get_tobb`, `cesys_html`, `cesys_html_tobb`,
+`cesys_post_tobb`) el sem küldi az olyan kérést, amely a német–osztrák keresőre vagy az Amadeusra mutat
+(`cesys_tiltott()`: `am-utazas-kereses`, `amadeus`, `sm=2`), csak a hibanaplóba írja. Időpontlistát csak akkor
+fogad el, ha a válasz a CeSYS saját adatbázisából jön (`origin: database`, `cesys_adatbazisbol()`); a győri kereső
+szolgáltatásának sorai közül csak a `source: national` jelölésűeket használja, a keresőmotor pedig kihagyja az
+Amadeus-szállodákat (az adatlapjuk címe „…aa” végű). Felmérés (2026. 11. 26.): az összes élő áras oldal minden
+válasza a CeSYS-adatbázisból jött; a szervezők Čedok, Fischer CK, Itaka, Hydrotour, Satur, Kartago, Viasale
+Travel, Sun & Fun Holidays, Anubis Travel és Jetwing Travel, német vagy osztrák szervező nincs köztük. Ha a tiltást feloldják, a régi beállítás a
 git-előzményekben megvan (2026. november 24-i változat: `elo/zanzibar_api.php`, `elo/dominika_api.php`,
 `elo/kereso_motor.php`, a `frissites.py` `zanzibar_amadeus_nelkul` cseréi és a `sajat/dominika` oldal).
 

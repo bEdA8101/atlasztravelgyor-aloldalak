@@ -46,6 +46,9 @@ Ez a tároló az atlasztravelgyor.hu aloldalait tartalmazza: a központi Atlasz 
   óta a CeSYS szerződésben tiltja a gépi lekérdezését a saját rendszerén kívül. Csak a CeSYS-adatbázis (győri és
   szlovák, `cesys_default`, ill. az api-ng `dates-list`/`availability-price`) kérdezhető. Visszakapcsolni csak a
   felhasználó kifejezett kérésére, a tiltás feloldása után szabad (README: „Amadeus (bécsi) kínálat”).
+  A német és osztrák szervezők ajánlatai (a győri oldal német–osztrák keresője) is az Amadeusból jönnek: ezekből
+  egyetlen élő árlekérdezés sem vehet adatot. Az `elo/cesys.php` védelmét (`cesys_tiltott`, `cesys_adatbazisbol`)
+  ne kerüld meg, és új lekérdezést csak a meglévő lekérő függvényeken át írj.
 - Az oldalak élesek (`ELONEZET = False`). A tesztoldalt a `robots.txt` rejti el a keresők elől.
 - Külön, kis commitokat készíts, érthető magyar leírással.
 - Soha ne commitolj jelszót, API-kulcsot vagy ügyféladatot (például tesztűrlapból származó adatot).
