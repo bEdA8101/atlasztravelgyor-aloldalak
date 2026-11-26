@@ -199,6 +199,9 @@ function kartya(string $c, string $src): ?array
         return null;
     }
     $url = $f['oldal'] . html_entity_decode($m[1], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    if (preg_match('#/\d+aa(?:[?/\#]|$)#', $url) || cesys_tiltott($url)) {
+        return null;   // Amadeus-szálloda (a győri oldal német–osztrák keresőjéből): tiltott forrás
+    }
     $nev = szoveg($m[2]);
     preg_match('/data-slider-id="(\d+)"/', $c, $id);
     preg_match('/title="(\d)\*"/', $c, $csillag);
