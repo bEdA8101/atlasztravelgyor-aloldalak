@@ -58,9 +58,7 @@ LABLEC_TAJEKOZTATO = (
 
 # A klónozott aloldalak: név -> a központi aloldal címe.
 OLDALAK = {
-    "oman": "https://oman.atlasztravel.hu/",
     "riu": "https://riu.atlasztravel.hu/",
-    "maldiv": "https://maldiv.atlasztravel.hu/",
     "vietnam": "https://vietnam.atlasztravel.hu/",
     "bahari": "https://bahari.atlasztravel.hu/",
     "zanzibar": "https://zanzibar.atlasztravel.hu/",
@@ -147,12 +145,19 @@ SAJAT_OLDALAK = {
     # 2026. novembertől a központi mauritius.atlasztravel.hu megszűnt (a domain alapoldala látszik); a győri oldal
     # forrása az utolsó jó változat, élő ajánlatokkal kiegészítve
     "mauritius": "sajat/mauritius",
+    # 2026. november 26-tól az oman.atlasztravel.hu és a maldiv.atlasztravel.hu is megszűnt (a domain alapoldala
+    # látszik): a győri oldalak forrása az utolsó jó változatuk, élő árakkal (az ománi élő árak és a maldívi élő
+    # ajánlatok programkódja az oldalba épült)
+    "oman": "sajat/oman",
+    "maldiv": "sajat/maldiv",
     # gyűjtőoldal: a kártyák és az indulási tábla a mappa ajanlatok.json-jából készülnek (gyujto_blokkok)
     "beszallas": "sajat/beszallas",
 }
 SAJAT_LEIRAS = {
     "dominika": "saját oldal (élő árakkal, foglalási igénnyel)",
     "mauritius": "saját oldal (a megszűnt központi oldal alapján, élő ajánlatokkal)",
+    "oman": "saját oldal (a megszűnt központi oldal alapján, élő árakkal, családi árral)",
+    "maldiv": "saját oldal (a megszűnt központi oldal alapján, élő ajánlatokkal)",
     "beszallas": "gyűjtőoldal: innen érhető el a többi aloldal (ajánlatok: sajat/beszallas/ajanlatok.json)",
 }
 
@@ -280,72 +285,10 @@ GOMBOSTU = '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx
 BORITEK = '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>'
 
 
-def premium_cserek(html):
-    """A Mauritius és a Maldív oldal közös (Atlasz Prémium) sablonja."""
-    g = GYOR
-    html = csere(html, r'<div class="nm">[^<]*</div>', f'<div class="nm">{g["nev"]}</div>',
-                 "tanácsadó neve", pontosan=1)
-    # az ajánlatkérő kártyán a telefon és az e-mail alá az iroda címe
-    html = csere(html, r'(<div class="contact">.*?<a href="mailto:[^"]+">[^<]+</a>)(\s*)(</div>)',
-                 lambda m: f'{m.group(1)}\n        <a {TERKEP_LINK}>{g["cim"]}</a>{m.group(2)}{m.group(3)}',
-                 "iroda címe az ajánlatkérő kártyán", pontosan=1, flags=re.S)
-    irodak = (
-        f'\n      <p><b>Győri irodánk</b>{g["cim"]}</p>'
-        f'\n      <p><b>Nyitvatartás</b>{g["nyitvatartas"]}</p>'
-        f'\n      <p><b>Időpontfoglalás</b><a href="tel:{g["telefon_link"]}">{g["telefon"]}</a>'
-        f' · <a href="mailto:{g["email"]}">{g["email"]}</a></p>\n    '
-    )
-    html = csere(html, r'(<div class="offrow">)(?:(?!</div>).)*(</div>)', lambda m: m.group(1) + irodak + m.group(2),
-                 "irodák listája", pontosan=1, flags=re.S)
-    html = csere(html, r'(<h2 id="iroda-cim">)[^<]*(</h2>)', r"\1Személyesen is várjuk győri irodánkban\2",
-                 "irodák címsora", pontosan=1)
-    # lábléc: a tanácsadó neve helyett az iroda címe
-    html = csere(html, r'(<br>\s*)[^<>\n]+? · (<a href="tel:)', rf'\g<1>{g["cim"]} · \2', "lábléc neve", pontosan=1)
-    return html
 
 
-def oman_cserek(html):
-    g = GYOR
-    html = csere(html, r'(\n[ \t]*)(<a href="https://www\.atlasztravelgyor\.hu" target="_blank" rel="noopener">)',
-                 rf'\1<p class="mails">Irodánk: {g["cim"]}<br>Nyitva: {g["nyitvatartas"]}</p>\1\2',
-                 "iroda címe az ajánlatkérő kártyán", pontosan=1)
-    html = csere(html, r'(<span>Telefon: .*?<br>E-mail: <a href="mailto:[^"]+">[^<]+</a>)(</span>)',
-                 rf'\1<br>Iroda: {g["cim"]}\2', "iroda címe a láblécben", pontosan=1)
-    return oman_elo_arak(html)
 
 
-def oman_elo_arak(html):
-    """
-    Élő árak (az oldal mellé másolt api.php = elo/idopontlista.php, forrás: atlastravel.sk). Az időpontlista
-    kirajzolása függvénybe kerül; betöltéskor az oldal lekéri az élő időpontokat, és ha megjöttek, azokkal rajzolja
-    újra. Ha nem jönnek meg, a központi oldal beágyazott árai maradnak. Élő adatnál a beágyazott családi ajánlatok
-    (régebbi, rögzített végösszegek) helyett a családi ár modul (CSALADI_AR) számol a gyerekek életkorával.
-    """
-    html = csere(html, r"(\n)(for\(const\[key,h\]of Object\.entries\(HOTELS\)\)\{\n.*?\n\}\n)(\nconst priceTxt=)",
-                 lambda m: (f"{m.group(1)}function rajzol(){{\ndocument.querySelectorAll('[data-dates]').forEach(b=>b.innerHTML='');\n"
-                            f"{m.group(2)}}}\nrajzol();\n{m.group(3)}"),
-                 "időpontlista kirajzolása függvényben (élő árak)", pontosan=1, flags=re.S)
-    # a legkedvezőbb szoba neve a szállodák első szobatípusa („A legkedvezőbb (…)”), a Rotanánál is
-    html = csere(html, re.escape('if(name==="Deluxe szoba"&&h.rooms[0].indexOf("Deluxe szoba")>-1)name=h.rooms[0];'),
-                 lambda m: 'if(h.rooms[0].indexOf("("+name+")")>-1)name=h.rooms[0];',
-                 "legkedvezőbb szoba neve", pontosan=1)
-    betolto = (
-        '\n// élő árak (api.php; 6:00 és éjfél között 2 óránként, illetve a lábléc évszámára kattintva frissül); ha nem érhető el, a fenti beágyazott árak maradnak.\n'
-        '// Az api.php naponként adja a szobákat (név, ár/fő); ebből készül az oldal [nap, idő, ár, [árak oszloponként], hely] sora.\n'
-        'fetch("api.php",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(d=>{\n'
-        '  if(!d||!d.ok||!d.hotels)return;let volt=false;\n'
-        '  for(const[k,v]of Object.entries(d.hotels)){const h=HOTELS[k];\n'
-        '    if(!h||!Array.isArray(v.dates)||!v.dates.length||!Array.isArray(v.cols))continue;\n'
-        '    h.roomCols=v.cols;\n'
-        '    h.dates=v.dates.map(g=>{const ar=v.cols.map(c=>{const x=g.szobak.find(s=>s.nev===c);return x?x.ar:null});\n'
-        '      const hely=g.rep.length>1?"Pozsonyból vagy Kassáról":g.rep[0];\n'
-        '      return hely==="Pozsonyból"?[g.d,g.ido,g.ar,ar]:[g.d,g.ido,g.ar,ar,hely]}).filter(r=>r[3].some(x=>x!=null));\n'
-        '    h.family=[];volt=true}\n'
-        '  if(!volt)return;const s=sel.value;rajzol();fillForm(formHotel());\n'
-        '  if([...sel.options].some(o=>o.value===s)){sel.value=s;showChosen()}\n'
-        '}).catch(()=>{});\n')
-    return csere(html, r'(\npick\("fanar",false\);\n)', lambda m: m.group(1) + betolto,
-                 "élő árak betöltése", pontosan=1)
 
 
 def lablec_cim(html):
@@ -379,84 +322,6 @@ def riu_cserek(html):
     return lablec_cim(html)
 
 
-def maldiv_elo_arak(html):
-    """
-    Élő ajánlatok a Maldív-oldal három resortjára (api.php = elo/idopontlista.php + elo/maldiv_beallitas.php, a győri
-    CeSYS-oldal bécsi, 7 éjszakás kínálata, euróban). A kártyákon ellátásonként a legkedvezőbb élő ár (2 főre és
-    fejenként) az időponttal és a szobatípussal; kártyánként lenyitható a többi időpont is. A régi, rögzített
-    időpontra (pl. „2026. november 2–10.”) szóló szövegek ilyenkor általánosra cserélődnek. Ha az élő adat nem jön
-    meg, a központi oldal ajánlata marad.
-    """
-    stilus = ("<style>/* élő ajánlatok (Maldív) */.deal .elo-d{display:block;font-size:13.5px;color:var(--muted);margin-top:4px}"
-              ".deal details.elo-l{margin:4px 26px 22px;font-size:14.5px}.deal details.elo-l summary{cursor:pointer;font-weight:600;"
-              "color:var(--reef)}.deal details.elo-l ul{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}"
-              ".deal details.elo-l li{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 12px;border-top:1px dashed "
-              "var(--line);padding-top:6px;line-height:1.4}</style>\n")
-    html = csere(html, r"</head>", lambda m: stilus + "</head>", "élő ajánlatok stílusa", pontosan=1)
-    betolto = r"""<script>
-// élő ajánlatok (api.php; 6:00 és éjfél között 2 óránként, illetve a lábléc évszámára kattintva frissül); ha nem érhető el, a központi oldal ajánlata marad
-(() => {
-  const KULCS = {"Embudu Village": "embudu", "Cinnamon Dhonveli Maldives": "dhonveli", "Royal Island Resort & Spa": "royal"};
-  const HO = ["jan.", "febr.", "márc.", "ápr.", "máj.", "jún.", "júl.", "aug.", "szept.", "okt.", "nov.", "dec."];
-  const HONAP = ["január", "február", "március", "április", "május", "június", "július", "augusztus", "szeptember", "október", "november", "december"];
-  const eur = v => String(Math.round(v)).replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " €";
-  const dt = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
-  const szak = (a, b) => { const x = dt(a), y = dt(b); return `${x.getFullYear()}. ${HO[x.getMonth()]} ${x.getDate()}. – ${x.getMonth() !== y.getMonth() ? HO[y.getMonth()] + " " : ""}${y.getDate()}.`; };
-  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
-  fetch("api.php", {cache: "no-store"}).then(r => r.ok ? r.json() : null).then(j => {
-    if (!j || !j.ok || !j.hotels) return;
-    let elso = null, utolso = null, volt = false;
-    document.querySelectorAll(".deal").forEach(card => {
-      const h3 = card.querySelector("h3"), nev = h3 ? h3.textContent.trim() : "", v = j.hotels[KULCS[nev]];
-      if (!v || !Array.isArray(v.dates) || !v.dates.length) return;
-      const legjobb = ell => {
-        let b = null;
-        v.dates.forEach(g => g.szobak.forEach(s => { if (s.ell === ell && (!b || s.ar < b.ar)) b = {ar: s.ar, nev: s.nev, d: g.d, vege: g.vege}; }));
-        return b;
-      };
-      card.querySelectorAll(".price").forEach(pr => {
-        const bd = pr.querySelector(".bd"), ell = /panzi/i.test(bd ? bd.textContent : "") ? "teljes ellátás" : "all inclusive";
-        const b = legjobb(ell);
-        if (!b) { pr.hidden = true; return; }
-        pr.querySelector(".am").innerHTML = `${eur(2 * b.ar)} <small>/ 2 fő</small>`;
-        pr.querySelector(".pp").textContent = `${eur(b.ar)} / fő`;
-        let d = pr.querySelector(".elo-d");
-        if (!d) { d = document.createElement("span"); d.className = "elo-d"; pr.querySelector(".pp").after(d); }
-        d.textContent = `${szak(b.d, b.vege)}, ${b.nev}`;
-        const a = pr.querySelector("[data-ajanlat]");
-        if (a) a.dataset.ajanlat = `${nev} – ${bd.textContent.trim()} – ${Math.round(2 * b.ar)} EUR / 2 fő – ${szak(b.d, b.vege)}, ${b.nev}`;
-        volt = true;
-      });
-      const dd = card.querySelector("dl dd");
-      const fp = legjobb("teljes ellátás") || legjobb("all inclusive");
-      if (dd && fp) dd.textContent = fp.nev;
-      v.dates.forEach(g => { if (!elso || g.d < elso) elso = g.d; if (!utolso || g.d > utolso) utolso = g.d; });
-      // a többi időpont: naponként a legkedvezőbb teljes panziós és all inclusive ár/fő
-      const sorok = v.dates.slice(0, 14).map(g => {
-        const min = ell => { const x = g.szobak.filter(s => s.ell === ell).map(s => s.ar); return x.length ? Math.min(...x) : null; };
-        const fp2 = min("teljes ellátás"), ai = min("all inclusive");
-        return `<li><span>${szak(g.d, g.vege)}</span><span>${fp2 != null ? "teljes panzió " + eur(fp2) : ""}${fp2 != null && ai != null ? " · " : ""}${ai != null ? "all inclusive " + eur(ai) : ""} / fő</span></li>`;
-      }).join("");
-      let det = card.querySelector("details.elo-l");
-      if (!det) { det = document.createElement("details"); det.className = "elo-l"; card.querySelector(".prices").after(det); }
-      det.innerHTML = `<summary>További időpontok</summary><ul>${sorok}</ul>`;
-    });
-    if (!volt) return;
-    const ho = s => { const x = dt(s); return `${x.getFullYear()}. ${HONAP[x.getMonth()]}`; };
-    const idoszak = elso.slice(0, 7) === utolso.slice(0, 7) ? ho(elso) : `${ho(elso)} – ${ho(utolso)}`;
-    const mono = document.querySelector("#ajanlataink .shead .mono");
-    if (mono) mono.textContent = "Aktuális ajánlataink · élő árak";
-    const em = document.querySelector("#deal-cim em");
-    if (em) em.textContent = "a következő hetekre";
-    document.querySelectorAll("#ajanlataink .facts li").forEach(li => {
-      if (/\d{4}\.\s/.test(li.textContent)) li.textContent = "Indulás: " + idoszak;
-      else if (/Airlines/i.test(li.textContent)) li.textContent = "Járat: az ajánlatban küldjük a pontos menetrendet";
-    });
-  }).catch(() => {});
-})();
-</script>
-"""
-    return csere(html, r"</body>", lambda m: betolto + "</body>", "élő ajánlatok betöltése", pontosan=1)
 
 
 def zanzibar_amadeus_nelkul(html):
@@ -773,9 +638,7 @@ def sorkoz_be(valaszto):
 
 
 OLDAL_CSEREK = {
-    "oman": [oman_cserek],
     "riu": [riu_cserek, sorkoz_be("h1"), riu_elo_arak],
-    "maldiv": [premium_cserek, sorkoz_be("h2"), maldiv_elo_arak],
     "vietnam": [vietnam_cserek],
     "bahari": [bahari_cserek],
     "zanzibar": [zanzibar_cserek, zanzibar_amadeus_nelkul],
@@ -1210,6 +1073,23 @@ a GitHub-előnézetben ehelyett a legtöbb oldal a levelezőprogramot nyitja meg
     (KIMENET / "index.html").write_text(tartalom, encoding="utf-8")
 
 
+def elo_programok_frissitese(nev):
+    """
+    Ha egy központi oldal épp nem tölthető le, a győri oldal szövege a régi marad, de az élő árak programjai
+    (ELO_FAJLOK) és a közös modulok akkor is a mostani változatra frissülnek: ezek nem függnek a központi oldaltól
+    (pl. az Amadeus-forrás elleni védelem így minden oldalra kikerül).
+    """
+    cel = KIMENET / nev
+    if not cel.is_dir():
+        return
+    for cel_nev, forras in ELO_FAJLOK.get(nev, {}).items():
+        shutil.copyfile(ALAP / forras, cel / cel_nev)
+    for modul, beallitas in (("foglalas.js", FOGLALAS_MODUL), ("csaladi_ar.js", CSALADI_AR), ("arfrissito.js", ARFRISSITO)):
+        if nev in beallitas and (cel / modul).exists():
+            shutil.copyfile(ALAP / "eszkozok" / modul, cel / modul)
+    print(f"  {nev}: a központi oldal nem érhető el, de az élő árak programjai frissültek")
+
+
 def main(nevek):
     ismeretlen = [n for n in nevek if n not in OLDALAK and n not in SAJAT_OLDALAK]
     if ismeretlen:
@@ -1226,6 +1106,7 @@ def main(nevek):
             hibak.append(f"{hiba}\n  A központi oldal valószínűleg megváltozott, a frissites.py cseréit igazítani kell.")
         except (urllib.error.URLError, ConnectionError, TimeoutError) as hiba:
             hibak.append(f"{nev}: nem sikerült letölteni ({hiba}).")
+            elo_programok_frissitese(nev)
     nyitolap()
     elo_oldalak_lista_ir()
     if hibak:
